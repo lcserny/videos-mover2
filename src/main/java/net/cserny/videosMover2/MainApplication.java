@@ -16,10 +16,13 @@ public class MainApplication extends Application
         launch();
     }
 
+    public Parent getRootNode() throws Exception {
+        return FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(getRootNode()));
         primaryStage.setTitle("Downloads VideoMover");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         primaryStage.centerOnScreen();
