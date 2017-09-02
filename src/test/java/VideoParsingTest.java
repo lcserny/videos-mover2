@@ -1,9 +1,8 @@
-import net.cserny.videosMover2.service.VideoParser;
-import net.cserny.videosMover2.service.VideoParserImpl;
+import net.cserny.videosMover2.service.VideoChecker;
+import net.cserny.videosMover2.service.VideoCheckerImpl;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertFalse;
@@ -14,10 +13,10 @@ import static org.junit.Assert.assertTrue;
  */
 public class VideoParsingTest
 {
-    private VideoParser videoParser = new VideoParserImpl();
+    private VideoChecker videoChecker = new VideoCheckerImpl();
 
     private boolean isVideoResult(String pathString) throws IOException {
-        return videoParser.isVideo(Paths.get(pathString));
+        return videoChecker.isVideo(Paths.get(pathString));
     }
 
     @Test

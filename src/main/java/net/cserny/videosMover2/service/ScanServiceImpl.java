@@ -15,10 +15,12 @@ import java.util.stream.Collectors;
  */
 public class ScanServiceImpl implements ScanService
 {
-    private VideoParser videoParser;
+    private VideoChecker videoChecker;
+    private SubtitlesFinder subtitlesFinder;
 
-    public ScanServiceImpl(VideoParser videoParser) {
-        this.videoParser = videoParser;
+    public ScanServiceImpl(VideoChecker videoChecker, SubtitlesFinder subtitlesFinder) {
+        this.videoChecker = videoChecker;
+        this.subtitlesFinder = subtitlesFinder;
     }
 
     @Override
@@ -26,9 +28,10 @@ public class ScanServiceImpl implements ScanService
         List<Video> videos = new ArrayList<>();
         List<Path> files = Files.walk(Paths.get(location)).filter(Files::isRegularFile).collect(Collectors.toList());
         for (Path file : files) {
-            if (videoParser.isVideo(file)) {
+            if (videoChecker.isVideo(file)) {
                 Video video = new Video();
-                video.setFile(file);
+                video.setInput(file);
+                video.setSubtitles(subtitlesFinder.find(file));
                 videos.add(video);
             }
         }

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class VideoParserImpl implements VideoParser
+public class VideoCheckerImpl implements VideoChecker
 {
     public static final String RESOURCE_MIMETYPES = "mime_types.cfg";
     public static final String RESOURCE_EXCLUDEPATHS = "excluded_paths.cfg";
@@ -21,7 +21,7 @@ public class VideoParserImpl implements VideoParser
     private List<String> allowedMimeTypes;
     private List<String> excludedVideoPaths;
 
-    public VideoParserImpl() {
+    public VideoCheckerImpl() {
         initExcludedVideoPaths();
         initAllowedMimeTypes();
     }

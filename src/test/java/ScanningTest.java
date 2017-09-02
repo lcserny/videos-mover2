@@ -1,11 +1,12 @@
 import net.cserny.videosMover2.dto.Video;
-import net.cserny.videosMover2.service.ScanService;
-import net.cserny.videosMover2.service.ScanServiceImpl;
-import net.cserny.videosMover2.service.VideoParserImpl;
+import net.cserny.videosMover2.service.*;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -14,13 +15,29 @@ import static org.junit.Assert.assertNotNull;
  */
 public class ScanningTest
 {
+    private VideoOutputNameResolver videoOutputNameResolver = new VideoOutputNameResolverImpl();
+    private List<Video> videosScanned;
+
+    public ScanningTest() throws IOException {
+        ScanService scanService = new ScanServiceImpl(new VideoCheckerImpl(), new SubtitlesFinderImpl());
+        String location = "/mnt/Data/Downloads/";
+        videosScanned = scanService.scan(location);
+    }
+
     @Test
     public void whenScanningReturnVideosFromLocation() throws Exception {
-        ScanService scanService = new ScanServiceImpl(new VideoParserImpl());
-        String location = "/mnt/Data/Downloads/";
-        List<Video> videos = scanService.scan(location);
+        assertNotNull(videosScanned);
+        assertFalse(videosScanned.isEmpty());
+    }
 
-        assertNotNull(videos);
-        assertFalse(videos.isEmpty());
+    @Test
+    public void givenVideoInputWithSubtitlesWhenScanningShouldReturnVideoWithSubtitles() throws Exception {
+        for (Video video : videosScanned) {
+            if (video.getInput().toString().contains("71.2014.1080p.BluRay.x264.YIFY.mkv")) {
+                List<Path> subtitles = video.getSubtitles();
+                assertNotNull(subtitles);
+                assertFalse(subtitles.isEmpty());
+            }
+        }
     }
 }

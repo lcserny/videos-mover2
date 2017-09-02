@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="container" prefHeight="650.0" prefWidth="900.0"
             style="-fx-background-color: #666666;" styleClass="container" stylesheets="@/css/main.css"
-            xmlns="http://javafx.com/javafx/8.0.112">
+            fx:controller="net.cserny.videosMover2.controller.MainController" xmlns="http://javafx.com/javafx/8.0.112">
     <top>
         <BorderPane prefHeight="75.0" prefWidth="900.0" styleClass="top-container" BorderPane.alignment="CENTER">
             <left>
@@ -28,8 +28,8 @@
                 <HBox alignment="CENTER" prefHeight="75.0" prefWidth="300.0" styleClass="scan-container"
                       BorderPane.alignment="CENTER">
                     <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false"
-                            prefHeight="50.0" prefWidth="215.0" styleClass="scan-button" text="Search Downloads"
-                            textAlignment="CENTER">
+                            prefHeight="50.0" prefWidth="215.0" fx:id="scanButton" styleClass="scan-button" text="Search Downloads"
+                            textAlignment="CENTER" onAction="#loadTableView">
                         <graphic>
                             <ImageView fx:id="loadingImage" fitHeight="30.0" fitWidth="45.0" pickOnBounds="true"
                                        preserveRatio="true">
