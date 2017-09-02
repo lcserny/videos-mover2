@@ -1,0 +1,61 @@
+* {
+    -fx-font-size: 13;
+    -fx-font-family: Ubuntu, Arial, sans-serif;
+    -fx-font-smoothing-type: gray;
+}
+
+.scan-button {
+    -fx-background-color: linear-gradient(to top right, #0094ff, #6a95ab);
+    -fx-text-fill: white;
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+}
+
+.scan-button:hover {
+    -fx-background-color: linear-gradient(to top right, #0077cc, #4f6f80);
+}
+
+.default-button {
+    -fx-border-color: black;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(#666666, #555555);
+}
+
+.default-button:hover {
+    -fx-background-color: #444444;
+}
+
+.path-text {
+    -fx-background-color: #999999;
+    -fx-text-fill: #eeeeee;
+    -fx-border-color: black;
+}
+
+.table-view {
+    -fx-base: #bbbbbb;
+    -fx-control-inner-background: #777777;
+    -fx-background-color: #777777;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #555555;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 30px;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: white;
+}
