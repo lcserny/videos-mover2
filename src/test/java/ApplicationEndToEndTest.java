@@ -1,13 +1,14 @@
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
+import net.cserny.videosMover2.controller.MainController;
+import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.Before;
 import org.junit.Test;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
 import static org.junit.Assert.*;
@@ -17,38 +18,72 @@ import static org.junit.Assert.*;
  */
 public class ApplicationEndToEndTest extends ApplicationTest
 {
-    private Parent root;
+    private Scene scene;
 
     @Override
     public void start(Stage stage) throws Exception {
-        root = new MainApplication().getRootNode();
-        stage.setScene(new Scene(root));
-        stage.show();
+        MainApplication application = new MainApplication();
+        application.start(stage);
+        this.scene = stage.getScene();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        FxToolkit.cleanupStages();
+        FxToolkit.hideStage();
     }
 
     @Test
-    public void givenScanButtonAndMainTableWhenClickedThenAppPopulatesMainTableWithVideosFound() throws Exception {
-        Button scanButton = from(root).lookup("#scanButton").query();
-        TableView tableView = from(root).lookup("#tableView").query();
+    public void givenNoDownloadsLocationWhenScanningThenShowPopup() throws Exception {
+        SystemPathsProvider.setDownloadsPath(null);
+        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
 
         clickOn(scanButton);
 
-        assertFalse(tableView.getItems().isEmpty());
+        assertEquals(MainController.INPUT_MISSING, scene.getUserData());
     }
 
-//    @Test
-//    public void givenSetDownloadsPathButtonWhenClickedSetsSystemPathForDownloads() throws Exception {
-//        Button setDownloadsButton = from(root).lookup(".downloads-button").query();
-//
-//        clickOn(setDownloadsButton);
-//        // file chooser is opened
-//        // set path of file chooser
-//        // get File from chooser
-//
-//        assertEquals("", SystemPathsProvider.getDownloadsPath());
-//    }
+    @Test
+    public void givenNoTvShowsOrMoviesLocationWhenScanningAndTryingToMoveShowsPopup() throws Exception {
+        SystemPathsProvider.setTvShowsPath(null);
+        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
-    // given populated main table with videos, when clicking on Movie for a video, should resolve movie path correctly
+        clickOn(scanButton);
+        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+                .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
+        clickOn(movieCheckOnFirstRow);
+        clickOn(moveButton);
 
-    // given populated main table with videos, when clicking on TvShow for a video, should resolve tvShow path correctly
+        assertEquals(MainController.OUTPUT_MISSING, scene.getUserData());
+    }
+
+    @Test
+    public void selectingNoVideoAfterScanningAndTryingToMoveShowsPopup() throws Exception {
+        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+
+        clickOn(scanButton);
+        clickOn(moveButton);
+
+        assertEquals(MainController.NOTHING_SELECTED, scene.getUserData());
+    }
+
+    @Test
+    public void applicationScansCheckmarksAVideoAsMovieAndMovesItProperly() throws Exception {
+        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+
+        clickOn(scanButton);
+        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+                .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
+        clickOn(movieCheckOnFirstRow);
+        clickOn(moveButton);
+
+        // expecting no popup triggered and no exception thrown
+        assertEquals(null, scene.getUserData());
+    }
 }

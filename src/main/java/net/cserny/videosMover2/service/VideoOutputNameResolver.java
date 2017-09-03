@@ -1,5 +1,7 @@
 package net.cserny.videosMover2.service;
 
+import net.cserny.videosMover2.dto.Video;
+
 import java.nio.file.Path;
 
 /**
@@ -7,5 +9,7 @@ import java.nio.file.Path;
  */
 public interface VideoOutputNameResolver
 {
-    Path resolve(Path name);
+    String resolveTvShow(Video video);
+
+    String resolveMovie(Video video);
 }

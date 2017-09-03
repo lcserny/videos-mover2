@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.cserny.videosMover2.controller.MainController;
 
 /**
  * Created by leonardo on 02.09.2017.
@@ -16,13 +17,13 @@ public class MainApplication extends Application
         launch();
     }
 
-    public Parent getRootNode() throws Exception {
-        return FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setScene(new Scene(getRootNode()));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        Scene scene = new Scene(loader.load());
+        MainController controller = loader.getController();
+        controller.setScene(scene);
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Downloads VideoMover");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         primaryStage.centerOnScreen();

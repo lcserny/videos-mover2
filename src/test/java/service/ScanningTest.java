@@ -1,14 +1,17 @@
+package service;
+
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.*;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by leonardo on 02.09.2017.
@@ -38,6 +41,16 @@ public class ScanningTest
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());
             }
+        }
+    }
+
+    @Test
+    public void scannedVideosShouldBeSortedByInput() throws Exception {
+        List<Video> sortedVideos = new ArrayList<>(videosScanned);
+        sortedVideos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));
+
+        for (int i = 0; i < videosScanned.size(); i++) {
+            assertEquals(sortedVideos.get(i), videosScanned.get(i));
         }
     }
 }

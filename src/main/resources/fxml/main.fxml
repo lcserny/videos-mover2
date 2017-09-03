@@ -14,7 +14,7 @@
                 <HBox alignment="CENTER" prefHeight="75.0" prefWidth="500.0" styleClass="downloads-path-container">
                     <Button alignment="CENTER" mnemonicParsing="false" prefHeight="30.0"
                             prefWidth="140.0" styleClass="default-button, downloads-button" text="Downloads"
-                            textFill="WHITE"/>
+                            textFill="WHITE" fx:id="setDownloadsButton" onAction="#setDownloadsPath"/>
                     <TextField fx:id="downloadsPathTextField" disable="true" prefHeight="30.0" prefWidth="300.0">
                         <styleClass>
                             <String fx:value="downloads-text"/>
@@ -50,8 +50,8 @@
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="500.0" styleClass="paths-container"
                       BorderPane.alignment="CENTER">
                     <HBox alignment="CENTER" styleClass="movie-path-container">
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0"
-                                styleClass="default-button, movies-button" text="Movies" textFill="WHITE"/>
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" fx:id="setMoviesButton"
+                                styleClass="default-button, movies-button" text="Movies" textFill="WHITE" onAction="#setMoviesPath"/>
                         <TextField fx:id="moviePathTextField" disable="true" prefHeight="30.0" prefWidth="300.0">
                             <styleClass>
                                 <String fx:value="movies-text"/>
@@ -61,8 +61,8 @@
                     </HBox>
 
                     <HBox alignment="CENTER" styleClass="tv-path-container">
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0"
-                                styleClass="default-button, tv-button" text="TV Shows" textFill="WHITE"/>
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="140.0" fx:id="setTvShowsButton"
+                                styleClass="default-button, tv-button" text="TV Shows" textFill="WHITE" onAction="#setTvShowsPath"/>
                         <TextField fx:id="tvShowPathTextField" disable="true" prefHeight="30.0" prefWidth="300.0">
                             <styleClass>
                                 <String fx:value="tv-text"/>
@@ -76,7 +76,7 @@
 
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0" styleClass="move-container"
                       BorderPane.alignment="CENTER">
-                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0"
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="215.0" disable="true" fx:id="moveButton" onAction="#moveVideos"
                             styleClass="default-button, move-button" text="Move Selected Files" textFill="WHITE"/>
                 </HBox>
             </right>

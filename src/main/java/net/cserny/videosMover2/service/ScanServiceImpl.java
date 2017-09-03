@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,7 @@ public class ScanServiceImpl implements ScanService
                 videos.add(video);
             }
         }
+        videos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));
         return videos;
     }
 }

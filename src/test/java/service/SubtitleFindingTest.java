@@ -1,3 +1,5 @@
+package service;
+
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.SubtitlesFinder;
 import net.cserny.videosMover2.service.SubtitlesFinderImpl;

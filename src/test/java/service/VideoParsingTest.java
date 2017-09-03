@@ -1,3 +1,5 @@
+package service;
+
 import net.cserny.videosMover2.service.VideoChecker;
 import net.cserny.videosMover2.service.VideoCheckerImpl;
 import org.junit.Test;
