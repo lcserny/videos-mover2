@@ -85,7 +85,7 @@ public class VideoOutputNameResolverImpl implements VideoOutputNameResolver
             }
 
             if (selectedFolder != null && maxCoefficient >= SIMILARITY_PERCENT) {
-                filename = selectedFolder.toString();
+                return selectedFolder.toString();
             }
         } catch (IOException e) {
             e.printStackTrace();

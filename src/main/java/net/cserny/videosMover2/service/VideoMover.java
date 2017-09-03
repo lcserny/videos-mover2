@@ -3,6 +3,7 @@ package net.cserny.videosMover2.service;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface VideoMover
 {
-    boolean move(Video video);
+    boolean move(Video video) throws IOException;
 
-    boolean moveAll(List<VideoRow> videoRowList);
+    boolean moveAll(List<Video> videoList) throws IOException;
 }

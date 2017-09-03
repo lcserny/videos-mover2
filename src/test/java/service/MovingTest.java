@@ -25,25 +25,21 @@ public class MovingTest
 {
     private VideoOutputNameResolver nameResolver = new VideoOutputNameResolverImpl();
     private VideoMover videoMover = new VideoMoverImpl();
-    private List<VideoRow> restoreVideos = new ArrayList<>();
+    private List<Video> restoreVideos = new ArrayList<>();
 
-    // TODO: uncomment as moving actually happens
-//    @After
-//    public void tearDown() throws Exception {
-//        for (VideoRow videoRow : restoreVideos) {
-//            Video video = videoRow.getVideo();
-//            Path input = video.getInput();
-//            Path output = video.getOutput();
-//            Files.move(output, input);
-//
-//            List<Path> subtitles = video.getSubtitles();
-//            if (subtitles != null && !subtitles.isEmpty()) {
-//                for (Path subtitle : subtitles) {
-//                    Files.move(subtitle, video.getInput().getParent().resolve(subtitle.getFileName()));
-//                }
-//            }
-//        }
-//    }
+    @After
+    public void tearDown() throws Exception {
+        for (Video video : restoreVideos) {
+            Files.move(video.getOutput(), video.getInput());
+
+            List<Path> subtitles = video.getSubtitles();
+            if (subtitles != null && !subtitles.isEmpty()) {
+                for (Path subtitle : subtitles) {
+                    Files.move(subtitle, video.getInput().getParent().resolve(subtitle.getFileName()));
+                }
+            }
+        }
+    }
 
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
@@ -57,7 +53,7 @@ public class MovingTest
 
         assertTrue(videoMover.move(video));
 
-        restoreVideos.add(videoRow);
+        restoreVideos.add(videoRow.getVideo());
     }
 
     @Test
@@ -78,11 +74,11 @@ public class MovingTest
         videoRow2.setIsTvShow(true);
         videoRow2.setOutput(nameResolver.resolveTvShow(video2));
 
-        List<VideoRow> videoRowList = Arrays.asList(videoRow1, videoRow2);
+        List<Video> videoList = Arrays.asList(videoRow1.getVideo(), videoRow2.getVideo());
 
-        assertTrue(videoMover.moveAll(videoRowList));
+        assertTrue(videoMover.moveAll(videoList));
 
-        restoreVideos.addAll(videoRowList);
+        restoreVideos.addAll(videoList);
     }
 
 //    @Test

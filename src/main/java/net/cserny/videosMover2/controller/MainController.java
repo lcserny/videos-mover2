@@ -34,8 +34,10 @@ public class MainController implements Initializable
     public static final String INPUT_MISSING = "inputMissing";
     public static final String OUTPUT_MISSING = "outputMissing";
     public static final String NOTHING_SELECTED = "nothingSelected";
+    public static final String MOVE_RESULT = "moveResult";
 
     private ScanService scanService = new ScanServiceImpl(new VideoCheckerImpl(), new SubtitlesFinderImpl());
+    private VideoMover videoMover = new VideoMoverImpl();
     private Scene scene;
 
     @FXML
@@ -125,20 +127,34 @@ public class MainController implements Initializable
         return videoRow;
     }
 
-    public void moveVideos(ActionEvent event) {
+    public void moveVideos(ActionEvent event) throws IOException {
         if (SystemPathsProvider.getMoviesPath() == null || SystemPathsProvider.getTvShowsPath() == null) {
             showAlert(Alert.AlertType.ERROR, "Movies or TvShows folder/s not set, please set correct paths and try again.", "Output Path Error", OUTPUT_MISSING);
             return;
         }
 
-        List<VideoRow> selectedVideos = tableView.getItems().stream()
-                .filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie()).collect(Collectors.toList());
+        List<Video> selectedVideos = tableView.getItems().stream()
+                .filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
+                .map(VideoRow::getVideo).collect(Collectors.toList());
         if (selectedVideos.isEmpty()) {
             showAlert(Alert.AlertType.INFORMATION, "No video files have been selected, nothing was moved...", "No Move Done", NOTHING_SELECTED);
             return;
         }
 
-        // TODO: implement me
+        boolean result = videoMover.moveAll(selectedVideos);
+
+        Alert.AlertType resultType = Alert.AlertType.INFORMATION;
+        String resultMessage = "Selected video files have been moved successfully";
+        String resultTitle = "Move Successful";
+        if (!result) {
+            resultType = Alert.AlertType.WARNING;
+            resultMessage = "Problem occurred while moving, some files might not have been moved, please check";
+            resultTitle = "Move Error Detected";
+        }
+
+        showAlert(resultType, resultMessage, resultTitle, MOVE_RESULT);
+
+        loadTableView(null);
     }
 
     public void setDownloadsPath(ActionEvent event) {
