@@ -87,13 +87,9 @@ public class MovingTest
 
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
-        SystemPathsProvider.setDownloadsPath("/home/user/Videos");
-        SystemPathsProvider.setMoviesPath("/home/user/Videos");
-        SystemPathsProvider.setTvShowsPath("/home/user/Videos");
-
         Video video = new Video();
-        video.setInput(Paths.get("/home/user/Videos/prezentare_2_elan/recording.mp4"));
-        video.setSubtitles(Collections.singletonList(Paths.get("/home/user/Videos/prezentare_2_elan/subtitle.srt")));
+        video.setInput(Paths.get("/mnt/Data/Downloads/71 (2014) [1080p]/71.2014.1080p.BluRay.x264.YIFY.mkv"));
+        video.setSubtitles(Collections.singletonList(Paths.get("/mnt/Data/Downloads/71 (2014) [1080p]/71.2014.1080p.BluRay.x264.YIFY.srt")));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
