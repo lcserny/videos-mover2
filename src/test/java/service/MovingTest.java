@@ -2,10 +2,7 @@ package service;
 
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.VideoMover;
-import net.cserny.videosMover2.service.VideoMoverImpl;
-import net.cserny.videosMover2.service.VideoOutputNameResolver;
-import net.cserny.videosMover2.service.VideoOutputNameResolverImpl;
+import net.cserny.videosMover2.service.*;
 import org.junit.After;
 import org.junit.Test;
 
@@ -14,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
@@ -35,7 +33,9 @@ public class MovingTest
             List<Path> subtitles = video.getSubtitles();
             if (subtitles != null && !subtitles.isEmpty()) {
                 for (Path subtitle : subtitles) {
-                    Files.move(subtitle, video.getInput().getParent().resolve(subtitle.getFileName()));
+                    Path subtitleSource = video.getOutput().getParent().resolve(subtitle.getFileName());
+                    Path subtitleTarget = video.getInput().getParent().resolve(subtitle.getFileName());
+                    Files.move(subtitleSource, subtitleTarget);
                 }
             }
         }
@@ -52,6 +52,7 @@ public class MovingTest
         videoRow.setOutput(nameResolver.resolveTvShow(video));
 
         assertTrue(videoMover.move(video));
+        assertTrue(Files.exists(video.getOutput()));
 
         restoreVideos.add(videoRow.getVideo());
     }
@@ -77,12 +78,34 @@ public class MovingTest
         List<Video> videoList = Arrays.asList(videoRow1.getVideo(), videoRow2.getVideo());
 
         assertTrue(videoMover.moveAll(videoList));
+        for (Video video : videoList) {
+            assertTrue(Files.exists(video.getOutput()));
+        }
 
         restoreVideos.addAll(videoList);
     }
 
-//    @Test
-//    public void givenVideoRowMovieWithSubtitlesWhenMovingThennMoveToMoviesOutputWithSubtitles() throws Exception {
-//
-//    }
+    @Test
+    public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
+        SystemPathsProvider.setDownloadsPath("/home/user/Videos");
+        SystemPathsProvider.setMoviesPath("/home/user/Videos");
+        SystemPathsProvider.setTvShowsPath("/home/user/Videos");
+
+        Video video = new Video();
+        video.setInput(Paths.get("/home/user/Videos/prezentare_2_elan/recording.mp4"));
+        video.setSubtitles(Collections.singletonList(Paths.get("/home/user/Videos/prezentare_2_elan/subtitle.srt")));
+
+        VideoRow videoRow = new VideoRow();
+        videoRow.setVideo(video);
+        videoRow.setIsMovie(true);
+        videoRow.setOutput(nameResolver.resolveMovie(video));
+
+        assertTrue(videoMover.move(video));
+        assertTrue(Files.exists(video.getOutput()));
+        for (Path subtitle : video.getSubtitles()) {
+            assertTrue(Files.exists(video.getOutput().getParent().resolve(subtitle.getFileName())));
+        }
+
+        restoreVideos.add(videoRow.getVideo());
+    }
 }

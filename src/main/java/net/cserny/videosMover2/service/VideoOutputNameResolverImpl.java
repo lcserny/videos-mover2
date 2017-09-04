@@ -4,13 +4,10 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosMover2.dto.Video;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class VideoOutputNameResolverImpl implements VideoOutputNameResolver
+public class VideoOutputNameResolverImpl extends ResourceInitializer implements VideoOutputNameResolver
 {
     public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";
     public static final int SIMILARITY_PERCENT = 80;
@@ -27,36 +24,31 @@ public class VideoOutputNameResolverImpl implements VideoOutputNameResolver
     private List<String> nameTrimParts;
 
     public VideoOutputNameResolverImpl() {
-        nameTrimParts = initTrimParts();
-    }
-
-    private List<String> initTrimParts() {
-        List<String> list = new ArrayList<>();
-        try {
-            list = Files.readAllLines(
-                    Paths.get(getClass().getClassLoader().getResource(RESOURCE_NAME_PARTS).toURI()),
-                    Charset.forName("UTF-8"));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return list;
+        nameTrimParts = fillListFromResource(RESOURCE_NAME_PARTS);
     }
 
     @Override
     public String resolveTvShow(Video video) {
-        String fileNameString = video.getInput().getFileName().toString();
-        String trimmed = trim(fileNameString);
-        String camelCased = toCamelCase(trimmed);
-        return checkExisting(SystemPathsProvider.getTvShowsPath(), camelCased);
+        String partiallyResolved = resolvePartial(video);
+        return checkExisting(SystemPathsProvider.getTvShowsPath(), partiallyResolved);
     }
 
     @Override
     public String resolveMovie(Video video) {
+        String partiallyResolved = resolvePartial(video);
+        String yearAppended = appendYear(partiallyResolved);
+        return checkExisting(SystemPathsProvider.getMoviesPath(), yearAppended);
+    }
+
+    private String resolvePartial(Video video) {
         String fileNameString = video.getInput().getFileName().toString();
         String trimmed = trim(fileNameString);
-        String camelCased = toCamelCase(trimmed);
-        String yearAppended = appendYear(camelCased);
-        return checkExisting(SystemPathsProvider.getMoviesPath(), yearAppended);
+        String withoutExtension = removeExtension(trimmed);
+        return toCamelCase(withoutExtension);
+    }
+
+    private String removeExtension(String test) {
+        return test.substring(0, test.length() - 4);
     }
 
     private String appendYear(String videoName) {
@@ -105,16 +97,16 @@ public class VideoOutputNameResolverImpl implements VideoOutputNameResolver
         return filename;
     }
 
-    private String stripSpecialChars(String videoName) {
-        return videoName.replaceAll("([._])", " ").trim();
-    }
-
     private String toCamelCase(String text) {
         StringBuilder camelCaseString = new StringBuilder();
         for (String part : stripSpecialChars(text).split("\\s+")) {
             camelCaseString.append(toProperCase(part)).append(" ");
         }
         return camelCaseString.toString().trim();
+    }
+
+    private String stripSpecialChars(String videoName) {
+        return videoName.replaceAll("([._])", " ").trim();
     }
 
     private String toProperCase(String text) {

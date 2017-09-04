@@ -1,18 +1,14 @@
 package net.cserny.videosMover2.service;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class VideoCheckerImpl implements VideoChecker
+public class VideoCheckerImpl extends ResourceInitializer implements VideoChecker
 {
     public static final String RESOURCE_MIMETYPES = "mime_types.cfg";
     public static final String RESOURCE_EXCLUDEPATHS = "excluded_paths.cfg";
@@ -32,18 +28,6 @@ public class VideoCheckerImpl implements VideoChecker
 
     private void initAllowedMimeTypes() {
         allowedMimeTypes = fillListFromResource(RESOURCE_MIMETYPES);
-    }
-
-    private List<String> fillListFromResource(String resource) {
-        List<String> list = new ArrayList<>();
-        try {
-             list = Files.readAllLines(
-                    Paths.get(getClass().getClassLoader().getResource(resource).toURI()),
-                    Charset.forName("UTF-8"));
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-        return list;
     }
 
     @Override

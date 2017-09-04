@@ -5,11 +5,14 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.controller.MainController;
+import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
+
+import java.nio.file.Files;
 
 import static org.junit.Assert.*;
 
@@ -48,7 +51,6 @@ public class ApplicationEndToEndTest extends ApplicationTest
         SystemPathsProvider.setTvShowsPath(null);
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
@@ -63,7 +65,6 @@ public class ApplicationEndToEndTest extends ApplicationTest
     public void selectingNoVideoAfterScanningAndTryingToMoveShowsPopup() throws Exception {
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         clickOn(moveButton);
@@ -75,7 +76,6 @@ public class ApplicationEndToEndTest extends ApplicationTest
     public void applicationScansCheckmarksAVideoAsMovieAndMovesItProperly() throws Exception {
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
@@ -85,5 +85,29 @@ public class ApplicationEndToEndTest extends ApplicationTest
 
         // expecting no popup triggered and no exception thrown
         assertEquals(null, scene.getUserData());
+    }
+
+    @Test
+    public void whenApplicationScansCheckmarksAVideoAsMovieAndMovesItThenShowPopup() throws Exception {
+        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+
+        clickOn(scanButton);
+        Thread.sleep(1000);
+        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+                .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
+        clickOn(movieCheckOnFirstRow);
+
+        VideoRow videoRow = tableView.getItems().get(0);
+        Video removeVideo = new Video();
+        removeVideo.setInput(videoRow.getVideo().getInput());
+        removeVideo.setOutput(videoRow.getVideo().getOutput());
+
+        clickOn(moveButton);
+
+        assertEquals(MainController.MOVE_RESULT, scene.getUserData());
+
+        Files.move(removeVideo.getOutput(), removeVideo.getInput());
     }
 }

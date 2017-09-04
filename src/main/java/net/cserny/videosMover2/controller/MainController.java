@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import net.cserny.videosMover2.dto.Video;
@@ -20,7 +21,6 @@ import net.cserny.videosMover2.service.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -108,14 +108,23 @@ public class MainController implements Initializable
             return;
         }
 
-        List<Video> scannedVideos = scanService.scan(SystemPathsProvider.getDownloadsPath());
-        List<VideoRow> videoRowList = new ArrayList<>();
-        for (Video video : scannedVideos) {
-            VideoRow videoRow = buildVideoRow(video);
-            videoRowList.add(videoRow);
-        }
-        tableView.setItems(FXCollections.observableList(videoRowList));
-        moveButton.setDisable(videoRowList.isEmpty());
+        loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
+        Runnable expensiveTask = () -> {
+            try {
+                List<Video> scannedVideos = scanService.scan(SystemPathsProvider.getDownloadsPath());
+                List<VideoRow> videoRowList = new ArrayList<>();
+                for (Video video : scannedVideos) {
+                    VideoRow videoRow = buildVideoRow(video);
+                    videoRowList.add(videoRow);
+                }
+                tableView.setItems(FXCollections.observableList(videoRowList));
+                moveButton.setDisable(videoRowList.isEmpty());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
+        };
+        new Thread(expensiveTask).start();
     }
 
     private VideoRow buildVideoRow(Video video) {
