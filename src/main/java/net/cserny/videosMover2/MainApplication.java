@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import net.cserny.videosMover2.configuration.ControllerConfig;
 import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.controller.MainController;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -16,22 +17,16 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class MainApplication extends Application
 {
-    private ConfigurableApplicationContext context;
-    private FXMLLoader loader;
-
     public static void main(String[] args) {
         launch();
     }
 
     @Override
-    public void init() throws Exception {
-        context = new AnnotationConfigApplicationContext(ControllerConfig.class, ServiceConfig.class);
-        loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        loader.setControllerFactory(context::getBean);
-    }
-
-    @Override
     public void start(Stage primaryStage) throws Exception {
+        ApplicationContext context = new AnnotationConfigApplicationContext(ControllerConfig.class, ServiceConfig.class);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        loader.setControllerFactory(context::getBean);
+
         Scene scene = new Scene(loader.load());
         MainController controller = loader.getController();
         controller.setScene(scene);
@@ -41,10 +36,5 @@ public class MainApplication extends Application
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         primaryStage.centerOnScreen();
         primaryStage.show();
-    }
-
-    @Override
-    public void stop() throws Exception {
-        context.stop();
     }
 }

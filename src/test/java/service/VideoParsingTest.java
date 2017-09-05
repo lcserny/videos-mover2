@@ -1,8 +1,12 @@
 package service;
 
+import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.service.VideoChecker;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -13,14 +17,12 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {ServiceConfig.class})
 public class VideoParsingTest
 {
-    private VideoChecker videoChecker;
-
     @Autowired
-    public VideoParsingTest(VideoChecker videoChecker) {
-        this.videoChecker = videoChecker;
-    }
+    private VideoChecker videoChecker;
 
     private boolean isVideoResult(String pathString) throws IOException {
         return videoChecker.isVideo(Paths.get(pathString));
@@ -28,26 +30,26 @@ public class VideoParsingTest
 
     @Test
     public void givenDirectoryWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult("/mnt"));
+        assertFalse(isVideoResult(TestVideosProvider.getDirectoryPath()));
     }
 
     @Test
     public void givenRegularNonVideoFileWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult("/etc/hosts"));
+        assertFalse(isVideoResult(TestVideosProvider.getNonVideoFilePath()));
     }
 
     @Test
     public void givenVideoFileWhenParsingShouldReturnTrue() throws Exception {
-        assertTrue(isVideoResult("/mnt/Data/Downloads/Nunta Leo si Sabina - Ciuleandra (Road Band).mp4"));
+        assertTrue(isVideoResult(TestVideosProvider.getTvShowFilePath()));
     }
 
     @Test
     public void givenSmallVideoFileWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult("/mnt/Data/Downloads/Serj Tankian - Sky Is Over (OFFICIAL VIDEO).mp4"));
+        assertFalse(isVideoResult(TestVideosProvider.getSmallMovieFilePath()));
     }
 
     @Test
     public void givenVideoFileFromDisallowedPathWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult("/mnt/Data/Downloads/Programming Stuff/criminal.minds.s12e11.720p.hdtv.hevc.x265.rmteam.mkv"));
+        assertFalse(isVideoResult(TestVideosProvider.getVideoFromDisallowedFilePath()));
     }
 }

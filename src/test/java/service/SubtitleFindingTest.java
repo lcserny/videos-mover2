@@ -1,8 +1,12 @@
 package service;
 
+import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.service.SubtitlesFinder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -15,14 +19,12 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {ServiceConfig.class})
 public class SubtitleFindingTest
 {
-    private SubtitlesFinder subtitlesFinder;
-
     @Autowired
-    public SubtitleFindingTest(SubtitlesFinder subtitlesFinder) {
-        this.subtitlesFinder = subtitlesFinder;
-    }
+    private SubtitlesFinder subtitlesFinder;
 
     private List<Path> processSubtitles(String pathString) throws IOException {
         Path videoPath = Paths.get(pathString);
@@ -31,19 +33,19 @@ public class SubtitleFindingTest
 
     @Test
     public void givenVideoWithoutSubtitlesWhenFindingReturnsEmptyList() throws Exception {
-        List<Path> subtitles = processSubtitles("/mnt/Data/Downloads/[ www.torrenting.com ] - Criminal.Minds.S12E01.HDTV.x264-FLEET/Criminal.Minds.S12E01.HDTV.x264-FLEET.mkv");
+        List<Path> subtitles = processSubtitles(TestVideosProvider.getMovieFilePath());
         assertTrue(subtitles.isEmpty());
     }
 
     @Test
     public void givenVideoWithSubtitlesWhenFindingReturnsSubtitlesList() throws Exception {
-        List<Path> subtitles = processSubtitles("/mnt/Data/Downloads/71 (2014) [1080p]/71.2014.1080p.BluRay.x264.YIFY.mkv");
+        List<Path> subtitles = processSubtitles(TestVideosProvider.getMovieWithSubtitleFilePath());
         assertFalse(subtitles.isEmpty());
     }
 
     @Test
     public void givenVideoFromDownloadsRootPathWhenFindingReturnsEmptySubtitlesList() throws Exception {
-        List<Path> subtitles = processSubtitles("/mnt/Data/Downloads/Nunta Leo si Sabina - Ciuleandra (Road Band).mp4");
+        List<Path> subtitles = processSubtitles(TestVideosProvider.getVideoFromDownloadsRootFilePath());
         assertTrue(subtitles.isEmpty());
     }
 }

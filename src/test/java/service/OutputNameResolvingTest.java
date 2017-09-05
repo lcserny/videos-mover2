@@ -1,11 +1,15 @@
 package service;
 
+import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
 import net.cserny.videosMover2.service.SystemPathsProvider;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.nio.file.Paths;
 
@@ -14,20 +18,18 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {ServiceConfig.class})
 public class OutputNameResolvingTest
 {
-    private OutputNameResolver nameResolver;
-
     @Autowired
-    public OutputNameResolvingTest(OutputNameResolver nameResolver) {
-        this.nameResolver = nameResolver;
-    }
+    private OutputNameResolver nameResolver;
 
     @Test
     public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {
         SystemPathsProvider.setMoviesPath(null);
         Video video = new Video();
-        video.setInput(Paths.get("/mnt/Data/Downloads/71 (2014) [1080p]/71.2014.1080p.BluRay.x264.YIFY.mkv"));
+        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
 
         String movieOutputPath = nameResolver.resolveMovie(video);
 
@@ -37,7 +39,7 @@ public class OutputNameResolvingTest
     @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get("/mnt/Data/Downloads/[ www.torrenting.com ] - Criminal.Minds.S12E01.HDTV.x264-FLEET/Criminal.Minds.S12E01.HDTV.x264-FLEET.mkv"));
+        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -50,7 +52,7 @@ public class OutputNameResolvingTest
     @Test
     public void givenMovieVideoInputWhenParsingShouldReturnMovieOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get("/mnt/Data/Downloads/71 (2014) [1080p]/71.2014.1080p.BluRay.x264.YIFY.mkv"));
+        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -63,7 +65,7 @@ public class OutputNameResolvingTest
     @Test
     public void givenTvShowVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get("/mnt/Data/Downloads/[ www.torrenting.com ] - Criminal.Minds.S12E01.HDTV.x264-FLEET/Criminal.Minds.S12E01.HDTV.x264-FLEET.mkv"));
+        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -76,20 +78,20 @@ public class OutputNameResolvingTest
     @Test
     public void givenMovieVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get("/mnt/Data/Videos/Movies/A Cure For Wellness (2016)/A.Cure.for.Wellness.2016.BDRip.x264-DRONES.mkv"));
+        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolveMovie(video));
 
-        assertTrue(video.getOutput().getFileName().toString().equals("A Cure For Wellness (2016)"));
+        assertTrue(video.getOutput().getFileName().toString().equals("71 (2014)"));
     }
 
     @Test
     public void givenTvShowWhichAlreadyExistsThenSetOutputToExistingTvShowName() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get("/mnt/Data/Downloads/www.Torrenting.com - Criminal.Minds.S12E22.HDTV.x264-SVA/Crimil.Minds.S12E22.HDTV.x264-SVA.mkv"));
+        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);

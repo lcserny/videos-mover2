@@ -1,9 +1,13 @@
 package service;
 
+import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.ScanService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,14 +20,17 @@ import static org.junit.Assert.*;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {ServiceConfig.class})
 public class ScanningTest
 {
+    @Autowired
+    private ScanService scanService;
+
     private List<Video> videosScanned;
 
-    @Autowired
-    public ScanningTest(ScanService scanService) throws IOException {
-        String location = "/mnt/Data/Downloads/";
-        videosScanned = scanService.scan(location);
+    public ScanningTest() throws IOException {
+        videosScanned = scanService.scan(TestVideosProvider.getSingleMovieDirectoryDirectoryPath());
     }
 
     @Test
@@ -35,7 +42,7 @@ public class ScanningTest
     @Test
     public void givenVideoInputWithSubtitlesWhenScanningShouldReturnVideoWithSubtitles() throws Exception {
         for (Video video : videosScanned) {
-            if (video.getInput().toString().contains("71.2014.1080p.BluRay.x264.YIFY.mkv")) {
+            if (video.getInput().toString().contains(TestVideosProvider.getSingleMovieDirectoryMovieFile())) {
                 List<Path> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());

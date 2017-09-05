@@ -11,8 +11,7 @@ import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -21,21 +20,25 @@ import static org.junit.Assert.*;
 /**
  * Created by leonardo on 03.09.2017.
  */
+// TODO: implement mocks for the services so we just test the UI
 public class UserInterfaceTest extends ApplicationTest
 {
     private Scene scene;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        MainApplication application = new MainApplication();
-        application.start(stage);
-        scene = stage.getScene();
+    @BeforeClass
+    public static void setupClass() throws Exception {
+        ApplicationTest.launch(MainApplication.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        FxToolkit.cleanupStages();
     }
 
     @Override
-    public void stop() throws Exception {
-        FxToolkit.cleanupStages();
-        FxToolkit.hideStage();
+    public void start(Stage stage) throws Exception {
+        this.scene = stage.getScene();
+        stage.show();
     }
 
     @Test
@@ -87,15 +90,15 @@ public class UserInterfaceTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         VideoRow videoRow = tableView.getItems().get(0);
-
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
-
         Node movieUnCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieUnCheckOnFirstRow);
+
         assertFalse(videoRow.isTvShow());
     }
 
@@ -105,15 +108,15 @@ public class UserInterfaceTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         VideoRow videoRow = tableView.getItems().get(0);
-
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
-
         Node tvShowUnCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowUnCheckOnFirstRow);
+
         assertFalse(videoRow.isMovie());
     }
 
@@ -123,10 +126,10 @@ public class UserInterfaceTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
-
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -140,10 +143,10 @@ public class UserInterfaceTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
-
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
@@ -160,6 +163,7 @@ public class UserInterfaceTest extends ApplicationTest
 
         assertFalse(loadingImage.isVisible());
         clickOn(scanButton);
+        Thread.sleep(500);
         // while scanning check that loadingImage is visible
         assertFalse(loadingImage.isVisible());
     }
@@ -170,6 +174,7 @@ public class UserInterfaceTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -185,6 +190,7 @@ public class UserInterfaceTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);

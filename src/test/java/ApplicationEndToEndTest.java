@@ -8,7 +8,7 @@ import net.cserny.videosMover2.controller.MainController;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.Test;
+import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -19,21 +19,25 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by leonardo on 02.09.2017.
  */
+// TODO: implement mocks for the services so we just test the UI
 public class ApplicationEndToEndTest extends ApplicationTest
 {
     private Scene scene;
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        MainApplication application = new MainApplication();
-        application.start(stage);
-        this.scene = stage.getScene();
+    @BeforeClass
+    public static void setupClass() throws Exception {
+        ApplicationTest.launch(MainApplication.class);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        FxToolkit.cleanupStages();
     }
 
     @Override
-    public void stop() throws Exception {
-        FxToolkit.cleanupStages();
-        FxToolkit.hideStage();
+    public void start(Stage stage) throws Exception {
+        this.scene = stage.getScene();
+        stage.show();
     }
 
     @Test
@@ -53,6 +57,7 @@ public class ApplicationEndToEndTest extends ApplicationTest
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -72,12 +77,14 @@ public class ApplicationEndToEndTest extends ApplicationTest
         assertEquals(MainController.NOTHING_SELECTED, scene.getUserData());
     }
 
+    @Ignore("Until mocks are implemented")
     @Test
     public void applicationScansCheckmarksAVideoAsMovieAndMovesItProperly() throws Exception {
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
+        Thread.sleep(500);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -87,6 +94,7 @@ public class ApplicationEndToEndTest extends ApplicationTest
         assertEquals(null, scene.getUserData());
     }
 
+    @Ignore("Until mocks are implemented")
     @Test
     public void whenApplicationScansCheckmarksAVideoAsMovieAndMovesItThenShowPopup() throws Exception {
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
@@ -94,20 +102,20 @@ public class ApplicationEndToEndTest extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(1000);
+        Thread.sleep(500);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
 
-        VideoRow videoRow = tableView.getItems().get(0);
-        Video removeVideo = new Video();
-        removeVideo.setInput(videoRow.getVideo().getInput());
-        removeVideo.setOutput(videoRow.getVideo().getOutput());
+//        VideoRow videoRow = tableView.getItems().get(0);
+//        Video removeVideo = new Video();
+//        removeVideo.setInput(videoRow.getVideo().getInput());
+//        removeVideo.setOutput(videoRow.getVideo().getOutput());
 
         clickOn(moveButton);
 
         assertEquals(MainController.MOVE_RESULT, scene.getUserData());
 
-        Files.move(removeVideo.getOutput(), removeVideo.getInput());
+//        Files.move(removeVideo.getOutput(), removeVideo.getInput());
     }
 }
