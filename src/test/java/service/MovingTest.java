@@ -25,10 +25,14 @@ public class MovingTest
 {
     private List<Video> restoreVideos = new ArrayList<>();
 
-    @Autowired
     private OutputNameResolver nameResolver;
-    @Autowired
     private VideoMover videoMover;
+
+    @Autowired
+    public MovingTest(OutputNameResolver nameResolver, VideoMover videoMover) {
+        this.nameResolver = nameResolver;
+        this.videoMover = videoMover;
+    }
 
     @After
     public void tearDown() throws Exception {

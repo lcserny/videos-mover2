@@ -15,8 +15,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class VideoParsingTest
 {
-    @Autowired
     private VideoChecker videoChecker;
+
+    @Autowired
+    public VideoParsingTest(VideoChecker videoChecker) {
+        this.videoChecker = videoChecker;
+    }
 
     private boolean isVideoResult(String pathString) throws IOException {
         return videoChecker.isVideo(Paths.get(pathString));

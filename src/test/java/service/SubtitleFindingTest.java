@@ -17,8 +17,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class SubtitleFindingTest
 {
-    @Autowired
     private SubtitlesFinder subtitlesFinder;
+
+    @Autowired
+    public SubtitleFindingTest(SubtitlesFinder subtitlesFinder) {
+        this.subtitlesFinder = subtitlesFinder;
+    }
 
     private List<Path> processSubtitles(String pathString) throws IOException {
         Path videoPath = Paths.get(pathString);

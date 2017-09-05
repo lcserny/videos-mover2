@@ -9,7 +9,7 @@ public class ServiceConfig
 {
     @Bean
     public ScanService scanService() {
-        return new ScanServiceImpl();
+        return new ScanServiceImpl(videoChecker(), subtitlesFinder());
     }
 
     @Bean

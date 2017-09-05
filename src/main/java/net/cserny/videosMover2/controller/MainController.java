@@ -58,6 +58,13 @@ public class MainController implements Initializable
     private OutputNameResolver nameResolver;
     private Scene scene;
 
+    @Autowired
+    public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver) {
+        this.scanService = scanService;
+        this.videoMover = videoMover;
+        this.nameResolver = nameResolver;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initTable();
@@ -66,21 +73,6 @@ public class MainController implements Initializable
 
     public void setScene(Scene scene) {
         this.scene = scene;
-    }
-
-    @Autowired
-    public void setScanService(ScanService scanService) {
-        this.scanService = scanService;
-    }
-
-    @Autowired
-    public void setVideoMover(VideoMover videoMover) {
-        this.videoMover = videoMover;
-    }
-
-    @Autowired
-    public void setNameResolver(OutputNameResolver nameResolver) {
-        this.nameResolver = nameResolver;
     }
 
     private void initDefaultPaths() {

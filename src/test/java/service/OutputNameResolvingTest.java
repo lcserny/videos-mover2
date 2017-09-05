@@ -16,8 +16,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class OutputNameResolvingTest
 {
-    @Autowired
     private OutputNameResolver nameResolver;
+
+    @Autowired
+    public OutputNameResolvingTest(OutputNameResolver nameResolver) {
+        this.nameResolver = nameResolver;
+    }
 
     @Test
     public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {

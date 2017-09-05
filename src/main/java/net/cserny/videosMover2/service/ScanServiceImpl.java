@@ -24,12 +24,8 @@ public class ScanServiceImpl implements ScanService
     private SubtitlesFinder subtitlesFinder;
 
     @Autowired
-    public void setVideoChecker(VideoChecker videoChecker) {
+    public ScanServiceImpl(VideoChecker videoChecker, SubtitlesFinder subtitlesFinder) {
         this.videoChecker = videoChecker;
-    }
-
-    @Autowired
-    public void setSubtitlesFinder(SubtitlesFinder subtitlesFinder) {
         this.subtitlesFinder = subtitlesFinder;
     }
 

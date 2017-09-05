@@ -18,12 +18,10 @@ import static org.junit.Assert.*;
  */
 public class ScanningTest
 {
-    @Autowired
-    private ScanService scanService;
-
     private List<Video> videosScanned;
 
-    public ScanningTest() throws IOException {
+    @Autowired
+    public ScanningTest(ScanService scanService) throws IOException {
         String location = "/mnt/Data/Downloads/";
         videosScanned = scanService.scan(location);
     }
