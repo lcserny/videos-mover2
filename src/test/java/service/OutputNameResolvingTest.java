@@ -1,15 +1,14 @@
 package service;
 
-import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.SystemPathsProvider;
 import net.cserny.videosMover2.service.OutputNameResolver;
+import net.cserny.videosMover2.service.SystemPathsProvider;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class OutputNameResolvingTest
 {
-    @Inject
+    @Autowired
     private OutputNameResolver nameResolver;
 
     @Test

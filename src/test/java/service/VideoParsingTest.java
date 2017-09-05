@@ -1,9 +1,8 @@
 package service;
 
-import com.google.inject.Inject;
 import net.cserny.videosMover2.service.VideoChecker;
-import net.cserny.videosMover2.service.VideoCheckerImpl;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class VideoParsingTest
 {
-    @Inject
+    @Autowired
     private VideoChecker videoChecker;
 
     private boolean isVideoResult(String pathString) throws IOException {

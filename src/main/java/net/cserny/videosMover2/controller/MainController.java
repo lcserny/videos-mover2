@@ -1,6 +1,5 @@
 package net.cserny.videosMover2.controller;
 
-import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +14,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.*;
+import net.cserny.videosMover2.service.OutputNameResolver;
+import net.cserny.videosMover2.service.ScanService;
+import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.VideoMover;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,19 +32,13 @@ import java.util.stream.Collectors;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@Controller
 public class MainController implements Initializable
 {
     public static final String INPUT_MISSING = "inputMissing";
     public static final String OUTPUT_MISSING = "outputMissing";
     public static final String NOTHING_SELECTED = "nothingSelected";
     public static final String MOVE_RESULT = "moveResult";
-
-    @Inject
-    private ScanService scanService;
-    @Inject
-    private VideoMover videoMover;
-    @Inject
-    private OutputNameResolver nameResolver;
 
     @FXML
     private ImageView loadingImage;
@@ -55,6 +53,9 @@ public class MainController implements Initializable
     @FXML
     private Button moveButton;
 
+    private ScanService scanService;
+    private VideoMover videoMover;
+    private OutputNameResolver nameResolver;
     private Scene scene;
 
     @Override
@@ -65,6 +66,21 @@ public class MainController implements Initializable
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    @Autowired
+    public void setScanService(ScanService scanService) {
+        this.scanService = scanService;
+    }
+
+    @Autowired
+    public void setVideoMover(VideoMover videoMover) {
+        this.videoMover = videoMover;
+    }
+
+    @Autowired
+    public void setNameResolver(OutputNameResolver nameResolver) {
+        this.nameResolver = nameResolver;
     }
 
     private void initDefaultPaths() {

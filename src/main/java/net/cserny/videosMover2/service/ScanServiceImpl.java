@@ -1,8 +1,8 @@
 package net.cserny.videosMover2.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosMover2.dto.Video;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,13 +17,21 @@ import java.util.stream.Collectors;
  * Created by leonardo on 02.09.2017.
  */
 
-@Singleton
+@Service
 public class ScanServiceImpl implements ScanService
 {
-    @Inject
     private VideoChecker videoChecker;
-    @Inject
     private SubtitlesFinder subtitlesFinder;
+
+    @Autowired
+    public void setVideoChecker(VideoChecker videoChecker) {
+        this.videoChecker = videoChecker;
+    }
+
+    @Autowired
+    public void setSubtitlesFinder(SubtitlesFinder subtitlesFinder) {
+        this.subtitlesFinder = subtitlesFinder;
+    }
 
     @Override
     public List<Video> scan(String location) throws IOException {

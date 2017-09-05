@@ -1,9 +1,9 @@
 package service;
 
-import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
-import net.cserny.videosMover2.service.*;
+import net.cserny.videosMover2.service.ScanService;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,10 +18,9 @@ import static org.junit.Assert.*;
  */
 public class ScanningTest
 {
-    @Inject
+    @Autowired
     private ScanService scanService;
 
-    private OutputNameResolver outputNameResolver = new OutputNameResolverImpl();
     private List<Video> videosScanned;
 
     public ScanningTest() throws IOException {

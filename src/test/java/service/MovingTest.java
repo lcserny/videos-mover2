@@ -1,11 +1,12 @@
 package service;
 
-import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.*;
+import net.cserny.videosMover2.service.OutputNameResolver;
+import net.cserny.videosMover2.service.VideoMover;
 import org.junit.After;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,9 +25,9 @@ public class MovingTest
 {
     private List<Video> restoreVideos = new ArrayList<>();
 
-    @Inject
+    @Autowired
     private OutputNameResolver nameResolver;
-    @Inject
+    @Autowired
     private VideoMover videoMover;
 
     @After

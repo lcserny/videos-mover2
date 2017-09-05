@@ -1,8 +1,8 @@
 package net.cserny.videosMover2.service;
 
-import com.google.inject.Singleton;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosMover2.dto.Video;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * Created by leonardo on 02.09.2017.
  */
-@Singleton
+@Service
 public class OutputNameResolverImpl extends ResourceInitializer implements OutputNameResolver
 {
     public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";

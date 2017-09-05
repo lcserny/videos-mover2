@@ -1,10 +1,8 @@
 package service;
 
-import com.google.inject.Inject;
-import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.SubtitlesFinder;
-import net.cserny.videosMover2.service.SubtitlesFinderImpl;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class SubtitleFindingTest
 {
-    @Inject
+    @Autowired
     private SubtitlesFinder subtitlesFinder;
 
     private List<Path> processSubtitles(String pathString) throws IOException {

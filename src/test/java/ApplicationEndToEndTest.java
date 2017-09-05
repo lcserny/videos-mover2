@@ -14,7 +14,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import java.nio.file.Files;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by leonardo on 02.09.2017.

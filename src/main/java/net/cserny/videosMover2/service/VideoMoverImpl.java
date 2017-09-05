@@ -1,7 +1,7 @@
 package net.cserny.videosMover2.service;
 
-import com.google.inject.Singleton;
 import net.cserny.videosMover2.dto.Video;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by leonardo on 03.09.2017.
  */
-@Singleton
+@Service
 public class VideoMoverImpl implements VideoMover
 {
     @Override
