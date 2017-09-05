@@ -1,5 +1,6 @@
 package net.cserny.videosMover2.controller;
 
+import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.listener.VideoRowMovieListener;
-import net.cserny.videosMover2.listener.VideoRowTvShowListener;
 import net.cserny.videosMover2.service.*;
 
 import java.io.File;
@@ -36,9 +35,12 @@ public class MainController implements Initializable
     public static final String NOTHING_SELECTED = "nothingSelected";
     public static final String MOVE_RESULT = "moveResult";
 
-    private ScanService scanService = new ScanServiceImpl(new VideoCheckerImpl(), new SubtitlesFinderImpl());
-    private VideoMover videoMover = new VideoMoverImpl();
-    private Scene scene;
+    @Inject
+    private ScanService scanService;
+    @Inject
+    private VideoMover videoMover;
+    @Inject
+    private OutputNameResolver nameResolver;
 
     @FXML
     private ImageView loadingImage;
@@ -52,6 +54,8 @@ public class MainController implements Initializable
     private TextField tvShowPathTextField;
     @FXML
     private Button moveButton;
+
+    private Scene scene;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -131,8 +135,14 @@ public class MainController implements Initializable
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setName(video.getInput().getFileName().toString());
-        videoRow.isMovieProperty().addListener(new VideoRowMovieListener(videoRow));
-        videoRow.isTvShowProperty().addListener(new VideoRowTvShowListener(videoRow));
+        videoRow.isMovieProperty().addListener((observable, oldValue, newValue) -> {
+            videoRow.setIsMovie(newValue);
+            videoRow.setOutput(newValue && SystemPathsProvider.getMoviesPath() != null ? nameResolver.resolveMovie(videoRow.getVideo()) : "");
+        });
+        videoRow.isTvShowProperty().addListener((observable, oldValue, newValue) -> {
+            videoRow.setIsTvShow(newValue);
+            videoRow.setOutput(newValue && SystemPathsProvider.getTvShowsPath() != null ? nameResolver.resolveTvShow(videoRow.getVideo()) : "");
+        });
         return videoRow;
     }
 

@@ -1,5 +1,7 @@
 package net.cserny.videosMover2.service;
 
+import com.google.inject.Singleton;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +10,7 @@ import java.util.List;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@Singleton
 public class VideoCheckerImpl extends ResourceInitializer implements VideoChecker
 {
     public static final String RESOURCE_MIMETYPES = "mime_types.cfg";

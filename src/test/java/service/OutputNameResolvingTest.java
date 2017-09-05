@@ -1,16 +1,12 @@
 package service;
 
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
+import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import net.cserny.videosMover2.service.VideoOutputNameResolver;
-import net.cserny.videosMover2.service.VideoOutputNameResolverImpl;
+import net.cserny.videosMover2.service.OutputNameResolver;
 import org.junit.Test;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
@@ -19,9 +15,21 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class VideoNameResolvingTest
+public class OutputNameResolvingTest
 {
-    private VideoOutputNameResolver nameResolver = new VideoOutputNameResolverImpl();
+    @Inject
+    private OutputNameResolver nameResolver;
+
+    @Test
+    public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {
+        SystemPathsProvider.setMoviesPath(null);
+        Video video = new Video();
+        video.setInput(Paths.get("/mnt/Data/Downloads/71 (2014) [1080p]/71.2014.1080p.BluRay.x264.YIFY.mkv"));
+
+        String movieOutputPath = nameResolver.resolveMovie(video);
+
+        assertTrue(movieOutputPath.isEmpty());
+    }
 
     @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {

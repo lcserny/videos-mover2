@@ -1,10 +1,8 @@
 package ui;
 
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -13,8 +11,6 @@ import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import net.cserny.videosMover2.service.VideoOutputNameResolver;
-import net.cserny.videosMover2.service.VideoOutputNameResolverImpl;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.testfx.api.FxToolkit;

@@ -1,5 +1,7 @@
 package net.cserny.videosMover2.service;
 
+import com.google.inject.Singleton;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@Singleton
 public class SubtitlesFinderImpl extends ResourceInitializer implements SubtitlesFinder
 {
     public static final String RESOURCE_SUBTITLE_EXTENSIONS = "subtitle_extensions.cfg";

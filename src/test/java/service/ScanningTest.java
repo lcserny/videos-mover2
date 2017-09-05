@@ -1,5 +1,6 @@
 package service;
 
+import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.*;
 import org.junit.Test;
@@ -7,7 +8,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -18,11 +18,13 @@ import static org.junit.Assert.*;
  */
 public class ScanningTest
 {
-    private VideoOutputNameResolver videoOutputNameResolver = new VideoOutputNameResolverImpl();
+    @Inject
+    private ScanService scanService;
+
+    private OutputNameResolver outputNameResolver = new OutputNameResolverImpl();
     private List<Video> videosScanned;
 
     public ScanningTest() throws IOException {
-        ScanService scanService = new ScanServiceImpl(new VideoCheckerImpl(), new SubtitlesFinderImpl());
         String location = "/mnt/Data/Downloads/";
         videosScanned = scanService.scan(location);
     }

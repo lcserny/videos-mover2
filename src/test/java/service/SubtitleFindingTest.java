@@ -1,5 +1,6 @@
 package service;
 
+import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.SubtitlesFinder;
 import net.cserny.videosMover2.service.SubtitlesFinderImpl;
@@ -18,7 +19,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class SubtitleFindingTest
 {
-    private SubtitlesFinder subtitlesFinder = new SubtitlesFinderImpl();
+    @Inject
+    private SubtitlesFinder subtitlesFinder;
 
     private List<Path> processSubtitles(String pathString) throws IOException {
         Path videoPath = Paths.get(pathString);

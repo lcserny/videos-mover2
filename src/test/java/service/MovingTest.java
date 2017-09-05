@@ -1,5 +1,6 @@
 package service;
 
+import com.google.inject.Inject;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.*;
@@ -21,9 +22,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class MovingTest
 {
-    private VideoOutputNameResolver nameResolver = new VideoOutputNameResolverImpl();
-    private VideoMover videoMover = new VideoMoverImpl();
     private List<Video> restoreVideos = new ArrayList<>();
+
+    @Inject
+    private OutputNameResolver nameResolver;
+    @Inject
+    private VideoMover videoMover;
 
     @After
     public void tearDown() throws Exception {

@@ -1,5 +1,6 @@
 package net.cserny.videosMover2.service;
 
+import com.google.inject.Singleton;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosMover2.dto.Video;
 
@@ -15,7 +16,8 @@ import java.util.regex.Pattern;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class VideoOutputNameResolverImpl extends ResourceInitializer implements VideoOutputNameResolver
+@Singleton
+public class OutputNameResolverImpl extends ResourceInitializer implements OutputNameResolver
 {
     public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";
     public static final int SIMILARITY_PERCENT = 80;
@@ -23,7 +25,7 @@ public class VideoOutputNameResolverImpl extends ResourceInitializer implements 
     private Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
     private List<String> nameTrimParts;
 
-    public VideoOutputNameResolverImpl() {
+    public OutputNameResolverImpl() {
         nameTrimParts = fillListFromResource(RESOURCE_NAME_PARTS);
     }
 

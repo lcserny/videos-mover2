@@ -1,5 +1,6 @@
 package net.cserny.videosMover2.service;
 
+import com.google.inject.Singleton;
 import net.cserny.videosMover2.dto.Video;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by leonardo on 03.09.2017.
  */
+@Singleton
 public class VideoMoverImpl implements VideoMover
 {
     @Override

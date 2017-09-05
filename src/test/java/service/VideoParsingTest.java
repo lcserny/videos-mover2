@@ -1,5 +1,6 @@
 package service;
 
+import com.google.inject.Inject;
 import net.cserny.videosMover2.service.VideoChecker;
 import net.cserny.videosMover2.service.VideoCheckerImpl;
 import org.junit.Test;
@@ -15,7 +16,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class VideoParsingTest
 {
-    private VideoChecker videoChecker = new VideoCheckerImpl();
+    @Inject
+    private VideoChecker videoChecker;
 
     private boolean isVideoResult(String pathString) throws IOException {
         return videoChecker.isVideo(Paths.get(pathString));
