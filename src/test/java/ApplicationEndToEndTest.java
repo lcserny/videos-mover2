@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by leonardo on 02.09.2017.
  */
-// TODO: implement mocks for the services so we just test the UI
+// TODO: leave this last : this should only test if interfaces are called on button clicks, and register activeProfile the mock interfaces
 public class ApplicationEndToEndTest extends ApplicationTest
 {
     private Scene scene;

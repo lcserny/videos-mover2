@@ -24,6 +24,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
+// TODO: use a custom File for Video input, output and subtitles list like SimpleFile and generate some before tests
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class, TestServiceConfig.class})
 public class MovingTest

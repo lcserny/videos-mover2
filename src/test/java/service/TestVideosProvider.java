@@ -3,7 +3,11 @@ package service;
 public class TestVideosProvider
 {
     static {
-        // TODO: setup tmp files of specific mime types and sizes
+        // TODO: this doesn't need to be static, make proper class
+        // TODO: use in-memory file system (https://github.com/google/jimfs) to generate files in /mnt/Data/Downloads (in-memory) and maybe the Movies and TvShows folder also
+        // TODO: put in there, each file needed from below
+        // TODO: regenerate the in-memory FS in Setup before each test
+        // TODO: change these return types to Path
     }
 
 

@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 /**
  * Created by leonardo on 03.09.2017.
  */
-// TODO: implement mocks for the services so we just test the UI
+// TODO: leave this last : this should only test the UI!
 public class UserInterfaceTest extends ApplicationTest
 {
     private Scene scene;
