@@ -1,6 +1,7 @@
 package service;
 
 import net.cserny.videosMover2.configuration.ServiceConfig;
+import net.cserny.videosMover2.dto.SimpleFile;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
@@ -30,7 +31,7 @@ public class OutputNameResolvingTest
     public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {
         SystemPathsProvider.setMoviesPath(null);
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
 
         String movieOutputPath = nameResolver.resolveMovie(video);
 
@@ -40,65 +41,65 @@ public class OutputNameResolvingTest
     @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolveTvShow(video));
 
-        assertTrue(video.getOutput().startsWith(SystemPathsProvider.getTvShowsPath()));
+        assertTrue(video.getOutput().getPath().startsWith(SystemPathsProvider.getTvShowsPath()));
     }
 
     @Test
     public void givenMovieVideoInputWhenParsingShouldReturnMovieOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolveMovie(video));
 
-        assertTrue(video.getOutput().startsWith(SystemPathsProvider.getMoviesPath()));
+        assertTrue(video.getOutput().getPath().startsWith(SystemPathsProvider.getMoviesPath()));
     }
 
     @Test
     public void givenTvShowVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolveTvShow(video));
 
-        assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
+        assertTrue(video.getOutput().getPath().getFileName().toString().equals("Criminal Minds"));
     }
 
     @Test
     public void givenMovieVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolveMovie(video));
 
-        assertTrue(video.getOutput().getFileName().toString().equals("71 (2014)"));
+        assertTrue(video.getOutput().getPath().getFileName().toString().equals("71 (2014)"));
     }
 
     @Test
     public void givenTvShowWhichAlreadyExistsThenSetOutputToExistingTvShowName() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolveTvShow(video));
 
-        assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
+        assertTrue(video.getOutput().getPath().getFileName().toString().equals("Criminal Minds"));
     }
 }

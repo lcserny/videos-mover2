@@ -1,6 +1,7 @@
 package service;
 
 import net.cserny.videosMover2.configuration.ServiceConfig;
+import net.cserny.videosMover2.dto.SimpleFile;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
@@ -39,7 +40,7 @@ public class MovingTest
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -52,7 +53,7 @@ public class MovingTest
     @Test
     public void givenMultipleVideoRowsTvShowWhenMovingThenMoveAllToTvShowOutput() throws Exception {
         Video video1 = new Video();
-        video1.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video1.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
 
         VideoRow videoRow1 = new VideoRow();
         videoRow1.setVideo(video1);
@@ -60,7 +61,7 @@ public class MovingTest
         videoRow1.setOutput(nameResolver.resolveTvShow(video1));
 
         Video video2 = new Video();
-        video2.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video2.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
 
         VideoRow videoRow2 = new VideoRow();
         videoRow2.setVideo(video2);
@@ -75,8 +76,8 @@ public class MovingTest
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
-        video.setSubtitles(Collections.singletonList(Paths.get(TestVideosProvider.getMovieSubtitleFilePath())));
+        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
+        video.setSubtitles(Collections.singletonList(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieSubtitleFilePath())).build()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);

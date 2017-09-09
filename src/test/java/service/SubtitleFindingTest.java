@@ -1,6 +1,7 @@
 package service;
 
 import net.cserny.videosMover2.configuration.ServiceConfig;
+import net.cserny.videosMover2.dto.AbstractSimpleFile;
 import net.cserny.videosMover2.service.SubtitlesFinder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,26 +28,26 @@ public class SubtitleFindingTest
     @Autowired
     private SubtitlesFinder subtitlesFinder;
 
-    private List<Path> processSubtitles(String pathString) throws IOException {
+    private List<AbstractSimpleFile> processSubtitles(String pathString) throws IOException {
         Path videoPath = Paths.get(pathString);
         return subtitlesFinder.find(videoPath);
     }
 
     @Test
     public void givenVideoWithoutSubtitlesWhenFindingReturnsEmptyList() throws Exception {
-        List<Path> subtitles = processSubtitles(TestVideosProvider.getMovieFilePath());
+        List<AbstractSimpleFile> subtitles = processSubtitles(TestVideosProvider.getMovieFilePath());
         assertTrue(subtitles.isEmpty());
     }
 
     @Test
     public void givenVideoWithSubtitlesWhenFindingReturnsSubtitlesList() throws Exception {
-        List<Path> subtitles = processSubtitles(TestVideosProvider.getMovieWithSubtitleFilePath());
+        List<AbstractSimpleFile> subtitles = processSubtitles(TestVideosProvider.getMovieWithSubtitleFilePath());
         assertFalse(subtitles.isEmpty());
     }
 
     @Test
     public void givenVideoFromDownloadsRootPathWhenFindingReturnsEmptySubtitlesList() throws Exception {
-        List<Path> subtitles = processSubtitles(TestVideosProvider.getVideoFromDownloadsRootFilePath());
+        List<AbstractSimpleFile> subtitles = processSubtitles(TestVideosProvider.getVideoFromDownloadsRootFilePath());
         assertTrue(subtitles.isEmpty());
     }
 }

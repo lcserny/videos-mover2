@@ -1,5 +1,6 @@
 package service;
 
+import net.cserny.videosMover2.dto.AbstractSimpleFile;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.VideoMover;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,14 +16,14 @@ public class TestVideoMover implements VideoMover
 {
     @Override
     public boolean move(Video video) throws IOException {
-        boolean sourceIsReadable = Files.isReadable(video.getInput());
-        boolean targetPathIsWritable = Files.isWritable(video.getOutput().getParent().getParent());
+        boolean sourceIsReadable = Files.isReadable(video.getInput().getPath());
+        boolean targetPathIsWritable = Files.isWritable(video.getOutput().getPath().getParent().getParent());
         boolean subtitlesCanBeMoved = true;
 
-        List<Path> subtitles = video.getSubtitles();
+        List<AbstractSimpleFile> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
-            for (Path subtitle : subtitles) {
-                boolean subtitleIsReadable = Files.isReadable(subtitle);
+            for (AbstractSimpleFile subtitle : subtitles) {
+                boolean subtitleIsReadable = Files.isReadable(subtitle.getPath());
                 if (subtitlesCanBeMoved) {
                     subtitlesCanBeMoved = subtitleIsReadable;
                 }

@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -47,8 +48,9 @@ public class VideoRow
     }
 
     public void setOutput(String output) {
+        Path path = Paths.get(output).resolve(this.video.getInput().getPath().getFileName());
         this.output.set(output);
-        this.video.setOutput(Paths.get(output + "/" + this.video.getInput().getFileName().toString()));
+        this.video.setOutput(new SimpleFile.Builder(path).build());
     }
 
     public boolean isMovie() {

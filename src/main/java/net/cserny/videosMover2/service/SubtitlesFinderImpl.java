@@ -1,6 +1,8 @@
 package net.cserny.videosMover2.service;
 
 
+import net.cserny.videosMover2.dto.AbstractSimpleFile;
+import net.cserny.videosMover2.dto.SimpleFile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,8 +27,8 @@ public class SubtitlesFinderImpl extends ResourceInitializer implements Subtitle
     }
 
     @Override
-    public List<Path> find(Path file) throws IOException {
-        List<Path> subtitles = new ArrayList<>();
+    public List<AbstractSimpleFile> find(Path file) throws IOException {
+        List<AbstractSimpleFile> subtitles = new ArrayList<>();
 
         Path directory = file.getParent();
         if (directory.toString().equals(SystemPathsProvider.getDownloadsPath())) {
@@ -37,12 +39,12 @@ public class SubtitlesFinderImpl extends ResourceInitializer implements Subtitle
         return subtitles;
     }
 
-    private void addSubtitles(List<Path> subtitles, Path directory) throws IOException {
+    private void addSubtitles(List<AbstractSimpleFile> subtitles, Path directory) throws IOException {
         List<Path> files = Files.walk(directory).filter(Files::isRegularFile).collect(Collectors.toList());
         for (Path tmpFile : files) {
             for (String subtitleExtension : subtitleExtensions) {
                 if (tmpFile.toString().endsWith(subtitleExtension)) {
-                    subtitles.add(tmpFile);
+                    subtitles.add(new SimpleFile.Builder(tmpFile).build());
                 }
             }
         }

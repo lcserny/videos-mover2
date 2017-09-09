@@ -8,25 +8,25 @@ import java.util.List;
  */
 public class Video
 {
-    private Path input;
-    private Path output;
-    private List<Path> subtitles;
+    private AbstractSimpleFile input;
+    private AbstractSimpleFile output;
+    private List<AbstractSimpleFile> subtitles;
     private boolean isTvShow;
     private boolean isMovie;
 
-    public Path getInput() {
+    public AbstractSimpleFile getInput() {
         return input;
     }
 
-    public void setInput(Path input) {
+    public void setInput(AbstractSimpleFile input) {
         this.input = input;
     }
 
-    public Path getOutput() {
+    public AbstractSimpleFile getOutput() {
         return output;
     }
 
-    public void setOutput(Path output) {
+    public void setOutput(AbstractSimpleFile output) {
         this.output = output;
     }
 
@@ -46,11 +46,11 @@ public class Video
         return isMovie;
     }
 
-    public List<Path> getSubtitles() {
+    public List<AbstractSimpleFile> getSubtitles() {
         return subtitles;
     }
 
-    public void setSubtitles(List<Path> subtitles) {
+    public void setSubtitles(List<AbstractSimpleFile> subtitles) {
         this.subtitles = subtitles;
     }
 

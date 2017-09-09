@@ -43,7 +43,7 @@ public class OutputNameResolverImpl extends ResourceInitializer implements Outpu
     }
 
     private String resolvePartial(Video video) {
-        String fileNameString = video.getInput().getFileName().toString();
+        String fileNameString = video.getInput().getPath().getFileName().toString();
         String trimmed = trim(fileNameString);
         String withoutExtension = removeExtension(trimmed);
         return toCamelCase(withoutExtension);
