@@ -4,6 +4,7 @@ import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
+import net.cserny.videosMover2.service.PathsProvider;
 import net.cserny.videosMover2.service.VideoMover;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ public class MovingTest extends TempVideoInitializer
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_TVSHOW));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -47,7 +48,7 @@ public class MovingTest extends TempVideoInitializer
     @Test
     public void givenMultipleVideoRowsTvShowWhenMovingThenMoveAllToTvShowOutput() throws Exception {
         Video video1 = new Video();
-        video1.setInput(Paths.get(DOWNLOADS_TVSHOW));
+        video1.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow1 = new VideoRow();
         videoRow1.setVideo(video1);
@@ -55,7 +56,7 @@ public class MovingTest extends TempVideoInitializer
         videoRow1.setOutput(nameResolver.resolveTvShow(video1));
 
         Video video2 = new Video();
-        video2.setInput(Paths.get(DOWNLOADS_EXISTING_TVSHOW));
+        video2.setInput(PathsProvider.getPath(DOWNLOADS_EXISTING_TVSHOW));
 
         VideoRow videoRow2 = new VideoRow();
         videoRow2.setVideo(video2);
@@ -70,8 +71,8 @@ public class MovingTest extends TempVideoInitializer
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
-        video.setSubtitles(Collections.singletonList(Paths.get(DOWNLOADS_SUBTITLE)));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        video.setSubtitles(Collections.singletonList(PathsProvider.getPath(DOWNLOADS_SUBTITLE)));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);

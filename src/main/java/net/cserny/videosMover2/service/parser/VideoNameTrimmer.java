@@ -1,53 +1,85 @@
 package net.cserny.videosMover2.service.parser;
 
-import me.xdrop.fuzzywuzzy.FuzzySearch;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.ResourceInitializer;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by leonardo on 10.09.2017.
  */
 @Component
-public class VideoNameTrimmer implements VideoNameParser
+public class VideoNameTrimmer extends ResourceInitializer implements VideoNameParser
 {
-    public static final int SIMILARITY_PERCENT = 80;
+    public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";
+
+    private Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
+    private List<String> nameTrimParts;
+
+    public VideoNameTrimmer() {
+        this.nameTrimParts = fillListFromResource(RESOURCE_NAME_PARTS);
+    }
 
     @Override
     public String parseTvShow(String text) {
-        return checkExisting(SystemPathsProvider.getTvShowsPath(), text);
+        String trimmed = trim(text);
+        String withoutExtension = removeExtension(trimmed);
+        return toCamelCase(withoutExtension);
     }
 
     @Override
     public String parseMovie(String text) {
-        return checkExisting(SystemPathsProvider.getMoviesPath(), text);
+        String trimmed = trim(text);
+        String withoutExtension = removeExtension(trimmed);
+        String camelCased = toCamelCase(withoutExtension);
+        return appendYear(camelCased);
     }
 
-    private String checkExisting(String path, String filename) {
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(path), Files::isDirectory)) {
-            int maxCoefficient = 0;
-            Path selectedFolder = null;
-
-            for (Path dirPath : directoryStream) {
-                int currentCoefficient = FuzzySearch.ratio(filename, dirPath.getFileName().toString());
-                if (currentCoefficient > maxCoefficient) {
-                    maxCoefficient = currentCoefficient;
-                    selectedFolder = dirPath;
-                }
+    private String trim(String filename) {
+        for (String part : nameTrimParts) {
+            Pattern compile = Pattern.compile("(?i)(" + part + ")");
+            Matcher matcher = compile.matcher(filename);
+            if (!part.isEmpty() && matcher.find()) {
+                filename = filename.substring(0, matcher.start());
             }
-
-            if (selectedFolder != null && maxCoefficient >= SIMILARITY_PERCENT) {
-                return selectedFolder.toString();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        return filename;
+    }
 
-        return path + "/" + filename;
+    private String toCamelCase(String text) {
+        StringBuilder camelCaseString = new StringBuilder();
+        for (String part : stripSpecialChars(text).split("\\s+")) {
+            camelCaseString.append(toProperCase(part)).append(" ");
+        }
+        return camelCaseString.toString().trim();
+    }
+
+    private String removeExtension(String text) {
+        if (text.charAt(text.length() - 4) == '.') {
+            return text.substring(0, text.length() - 4);
+        }
+        return text;
+    }
+
+    private String stripSpecialChars(String videoName) {
+        return videoName.replaceAll("([._])", " ").trim();
+    }
+
+    private String toProperCase(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
+    private String appendYear(String videoName) {
+        Matcher matcher = videoPattern.matcher(videoName);
+        if (matcher.find()) {
+            videoName = matcher.group(1).trim();
+            String yearString = matcher.group(2);
+            if (yearString != null) {
+                videoName = String.format("%s (%s)", videoName, yearString);
+            }
+        }
+        return videoName;
     }
 }

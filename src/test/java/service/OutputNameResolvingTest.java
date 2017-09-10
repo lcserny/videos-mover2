@@ -4,7 +4,7 @@ import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.PathsProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ public class OutputNameResolvingTest extends TempVideoInitializer
 
     @Test
     public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {
-        SystemPathsProvider.setMoviesPath(null);
+        PathsProvider.setMoviesPath(null);
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
         String movieOutputPath = nameResolver.resolveMovie(video);
 
@@ -39,33 +39,33 @@ public class OutputNameResolvingTest extends TempVideoInitializer
     @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_TVSHOW));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolveTvShow(video));
 
-        assertTrue(video.getOutput().startsWith(SystemPathsProvider.getTvShowsPath()));
+        assertTrue(video.getOutput().startsWith(PathsProvider.getTvShowsPath()));
     }
 
     @Test
     public void givenMovieVideoInputWhenParsingShouldReturnMovieOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolveMovie(video));
 
-        assertTrue(video.getOutput().startsWith(SystemPathsProvider.getMoviesPath()));
+        assertTrue(video.getOutput().startsWith(PathsProvider.getMoviesPath()));
     }
 
     @Test
     public void givenTvShowVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_TVSHOW));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -78,7 +78,7 @@ public class OutputNameResolvingTest extends TempVideoInitializer
     @Test
     public void givenMovieVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -91,7 +91,7 @@ public class OutputNameResolvingTest extends TempVideoInitializer
     @Test
     public void givenTvShowWhichAlreadyExistsThenSetOutputToExistingTvShowName() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(DOWNLOADS_EXISTING_TVSHOW));
+        video.setInput(PathsProvider.getPath(DOWNLOADS_EXISTING_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);

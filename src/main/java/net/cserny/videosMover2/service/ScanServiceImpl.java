@@ -32,7 +32,7 @@ public class ScanServiceImpl implements ScanService
     @Override
     public List<Video> scan(String location) throws IOException {
         List<Video> videos = new ArrayList<>();
-        List<Path> files = Files.walk(Paths.get(location)).filter(Files::isRegularFile).collect(Collectors.toList());
+        List<Path> files = Files.walk(PathsProvider.getPath(location)).filter(Files::isRegularFile).collect(Collectors.toList());
         for (Path file : files) {
             if (videoChecker.isVideo(file)) {
                 Video video = new Video();

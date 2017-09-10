@@ -3,7 +3,8 @@ package service;
 import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.ScanService;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.PathsProvider;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ public class ScanningTest extends TempVideoInitializer
 
     private List<Video> videosScanned;
 
-    public ScanningTest() throws IOException {
-        videosScanned = scanService.scan(SystemPathsProvider.getDownloadsPath());
+    @Override
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+        videosScanned = scanService.scan(PathsProvider.getDownloadsPath());
     }
 
     @Test

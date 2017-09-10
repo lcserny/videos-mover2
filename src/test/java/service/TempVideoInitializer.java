@@ -2,10 +2,9 @@ package service;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.PathsProvider;
 import org.junit.After;
 import org.junit.Before;
-import org.testfx.framework.junit.ApplicationTest;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -63,22 +62,21 @@ public class TempVideoInitializer
         createFolder(tvShowsFolder, "Criminal Minds");
     }
 
-    //TODO: when using memory FS I can't do `Paths.get()` from somewhere else cause that uses default FS
-    //TODO: either try with Commons VFS or use disk-based temp solution from Junit or java.nio (not fast...)
     private void setupInMemoryFolders() throws IOException {
         inMemoryFilesystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
+        PathsProvider.setFileSystem(inMemoryFilesystem);
 
         downloadsFolder = inMemoryFilesystem.getPath("/Downloads");
         Files.createDirectory(downloadsFolder);
-        SystemPathsProvider.setDownloadsPath(downloadsFolder.toString());
+        PathsProvider.setDownloadsPath(downloadsFolder.toString());
 
         moviesFolder = inMemoryFilesystem.getPath("/Movies");
         Files.createDirectory(moviesFolder);
-        SystemPathsProvider.setMoviesPath(moviesFolder.toString());
+        PathsProvider.setMoviesPath(moviesFolder.toString());
 
         tvShowsFolder = inMemoryFilesystem.getPath("/TvShows");
         Files.createDirectory(tvShowsFolder);
-        SystemPathsProvider.setTvShowsPath(tvShowsFolder.toString());
+        PathsProvider.setTvShowsPath(tvShowsFolder.toString());
     }
 
     private void createFolder(Path root, String folderName) throws IOException {

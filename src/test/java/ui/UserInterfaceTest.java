@@ -10,7 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.PathsProvider;
 import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
@@ -66,7 +66,7 @@ public class UserInterfaceTest extends ApplicationTest
         clickOn(setDownloadsButton);
         push(KeyCode.ENTER);
 
-        assertEquals(SystemPathsProvider.getDownloadsPath(), downloadsTextField.getText());
+        assertEquals(PathsProvider.getDownloadsPath(), downloadsTextField.getText());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UserInterfaceTest extends ApplicationTest
         clickOn(setMoviesButton);
         push(KeyCode.ENTER);
 
-        assertEquals(SystemPathsProvider.getMoviesPath(), moviesTextField.getText());
+        assertEquals(PathsProvider.getMoviesPath(), moviesTextField.getText());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class UserInterfaceTest extends ApplicationTest
         clickOn(setTvShowsButton);
         push(KeyCode.ENTER);
 
-        assertEquals(SystemPathsProvider.getTvShowsPath(), tvShowsTextField.getText());
+        assertEquals(PathsProvider.getTvShowsPath(), tvShowsTextField.getText());
     }
 
     @Test

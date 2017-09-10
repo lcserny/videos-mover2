@@ -16,7 +16,7 @@ import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
 import net.cserny.videosMover2.service.ScanService;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.PathsProvider;
 import net.cserny.videosMover2.service.VideoMover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,9 +76,9 @@ public class MainController implements Initializable
     }
 
     private void initDefaultPaths() {
-        downloadsPathTextField.setText(SystemPathsProvider.getDownloadsPath());
-        moviePathTextField.setText(SystemPathsProvider.getMoviesPath());
-        tvShowPathTextField.setText(SystemPathsProvider.getTvShowsPath());
+        downloadsPathTextField.setText(PathsProvider.getDownloadsPath());
+        moviePathTextField.setText(PathsProvider.getMoviesPath());
+        tvShowPathTextField.setText(PathsProvider.getTvShowsPath());
     }
 
     @SuppressWarnings("unchecked")
@@ -115,7 +115,7 @@ public class MainController implements Initializable
     }
 
     public void loadTableView(ActionEvent event) throws IOException {
-        if (SystemPathsProvider.getDownloadsPath() == null) {
+        if (PathsProvider.getDownloadsPath() == null) {
             showAlert(Alert.AlertType.ERROR, "Downloads folder doesn't exist, please set correct path and try again.", "Input Path Error", INPUT_MISSING);
             return;
         }
@@ -123,7 +123,7 @@ public class MainController implements Initializable
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
         Runnable expensiveTask = () -> {
             try {
-                List<Video> scannedVideos = scanService.scan(SystemPathsProvider.getDownloadsPath());
+                List<Video> scannedVideos = scanService.scan(PathsProvider.getDownloadsPath());
                 List<VideoRow> videoRowList = new ArrayList<>();
                 for (Video video : scannedVideos) {
                     VideoRow videoRow = buildVideoRow(video);
@@ -145,17 +145,17 @@ public class MainController implements Initializable
         videoRow.setName(video.getInput().getFileName().toString());
         videoRow.isMovieProperty().addListener((observable, oldValue, newValue) -> {
             videoRow.setIsMovie(newValue);
-            videoRow.setOutput(newValue && SystemPathsProvider.getMoviesPath() != null ? nameResolver.resolveMovie(videoRow.getVideo()) : "");
+            videoRow.setOutput(newValue ? nameResolver.resolveMovie(videoRow.getVideo()) : "");
         });
         videoRow.isTvShowProperty().addListener((observable, oldValue, newValue) -> {
             videoRow.setIsTvShow(newValue);
-            videoRow.setOutput(newValue && SystemPathsProvider.getTvShowsPath() != null ? nameResolver.resolveTvShow(videoRow.getVideo()) : "");
+            videoRow.setOutput(newValue ? nameResolver.resolveTvShow(videoRow.getVideo()) : "");
         });
         return videoRow;
     }
 
     public void moveVideos(ActionEvent event) throws IOException {
-        if (SystemPathsProvider.getMoviesPath() == null || SystemPathsProvider.getTvShowsPath() == null) {
+        if (PathsProvider.getMoviesPath() == null || PathsProvider.getTvShowsPath() == null) {
             showAlert(Alert.AlertType.ERROR, "Movies or TvShows folder/s not set, please set correct paths and try again.", "Output Path Error", OUTPUT_MISSING);
             return;
         }
@@ -185,26 +185,26 @@ public class MainController implements Initializable
     }
 
     public void setDownloadsPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose Downloads folder", SystemPathsProvider.getDownloadsPath());
+        String path = processDirectoryChooserPath("Choose Downloads folder", PathsProvider.getDownloadsPath());
         if (path != null) {
             downloadsPathTextField.setText(path);
-            SystemPathsProvider.setDownloadsPath(path);
+            PathsProvider.setDownloadsPath(path);
         }
     }
 
     public void setMoviesPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose Movies folder", SystemPathsProvider.getMoviesPath());
+        String path = processDirectoryChooserPath("Choose Movies folder", PathsProvider.getMoviesPath());
         if (path != null) {
             moviePathTextField.setText(path);
-            SystemPathsProvider.setMoviesPath(path);
+            PathsProvider.setMoviesPath(path);
         }
     }
 
     public void setTvShowsPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose TvShows folder", SystemPathsProvider.getTvShowsPath());
+        String path = processDirectoryChooserPath("Choose TvShows folder", PathsProvider.getTvShowsPath());
         if (path != null) {
             tvShowPathTextField.setText(path);
-            SystemPathsProvider.setTvShowsPath(path);
+            PathsProvider.setTvShowsPath(path);
         }
     }
 

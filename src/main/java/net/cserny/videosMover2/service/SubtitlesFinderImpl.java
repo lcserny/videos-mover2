@@ -28,7 +28,7 @@ public class SubtitlesFinderImpl extends ResourceInitializer implements Subtitle
         List<Path> subtitles = new ArrayList<>();
 
         Path directory = file.getParent();
-        if (directory.toString().equals(SystemPathsProvider.getDownloadsPath())) {
+        if (directory.toString().equals(PathsProvider.getDownloadsPath())) {
             return subtitles;
         }
 

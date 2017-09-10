@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.controller.MainController;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.SystemPathsProvider;
+import net.cserny.videosMover2.service.PathsProvider;
 import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Created by leonardo on 02.09.2017.
+ * FIXME: too many tests gives OutOfMemory error
  */
 public class ApplicationEndToEndTest extends ApplicationTest
 {
@@ -46,7 +47,7 @@ public class ApplicationEndToEndTest extends ApplicationTest
 
     @Test
     public void givenNoDownloadsLocationWhenScanningThenShowPopup() throws Exception {
-        SystemPathsProvider.setDownloadsPath(null);
+        PathsProvider.setDownloadsPath(null);
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
 
         clickOn(scanButton);
@@ -56,7 +57,7 @@ public class ApplicationEndToEndTest extends ApplicationTest
 
     @Test
     public void givenNoTvShowsOrMoviesLocationWhenScanningAndTryingToMoveShowsPopup() throws Exception {
-        SystemPathsProvider.setTvShowsPath(null);
+        PathsProvider.setTvShowsPath(null);
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
 

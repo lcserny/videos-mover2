@@ -1,6 +1,7 @@
 package service;
 
 import net.cserny.videosMover2.configuration.ServiceConfig;
+import net.cserny.videosMover2.service.PathsProvider;
 import net.cserny.videosMover2.service.SubtitlesFinder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ public class SubtitleFindingTest extends TempVideoInitializer
     private SubtitlesFinder subtitlesFinder;
 
     private List<Path> processSubtitles(String pathString) throws IOException {
-        Path videoPath = Paths.get(pathString);
+        Path videoPath = PathsProvider.getPath(pathString);
         return subtitlesFinder.find(videoPath);
     }
 

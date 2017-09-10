@@ -1,6 +1,7 @@
 package service;
 
 import net.cserny.videosMover2.configuration.ServiceConfig;
+import net.cserny.videosMover2.service.PathsProvider;
 import net.cserny.videosMover2.service.VideoChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +26,7 @@ public class VideoParsingTest extends TempVideoInitializer
     private VideoChecker videoChecker;
 
     private boolean isVideoResult(String pathString) throws IOException {
-        return videoChecker.isVideo(Paths.get(pathString));
+        return videoChecker.isVideo(PathsProvider.getPath(pathString));
     }
 
     @Test

@@ -23,11 +23,11 @@ public class VideoMoverImpl implements VideoMover
             Files.createDirectory(target.getParent());
         }
 
-        Files.move(source, target);
+        moveInternal(source, target);
         List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
             for (Path subtitle : subtitles) {
-                Files.move(subtitle, target.getParent().resolve(subtitle.getFileName()));
+                moveInternal(subtitle, target.getParent().resolve(subtitle.getFileName()));
             }
         }
 
@@ -44,5 +44,11 @@ public class VideoMoverImpl implements VideoMover
             }
         }
         return finalResult;
+    }
+
+    private void moveInternal(Path source, Path target) throws IOException {
+        if (!Files.exists(target)) {
+            Files.move(source, target);
+        }
     }
 }

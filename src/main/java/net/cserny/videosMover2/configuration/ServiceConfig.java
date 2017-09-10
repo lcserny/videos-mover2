@@ -1,9 +1,9 @@
 package net.cserny.videosMover2.configuration;
 
 import net.cserny.videosMover2.service.*;
-import net.cserny.videosMover2.service.parser.VideoExistenceChecker;
-import net.cserny.videosMover2.service.parser.VideoNameParser;
 import net.cserny.videosMover2.service.parser.VideoNameTrimmer;
+import net.cserny.videosMover2.service.parser.VideoNameParser;
+import net.cserny.videosMover2.service.parser.VideoExistenceChecker;
 import net.cserny.videosMover2.service.validator.VideoPathValidator;
 import net.cserny.videosMover2.service.validator.VideoTypeValidator;
 import net.cserny.videosMover2.service.validator.VideoValidator;

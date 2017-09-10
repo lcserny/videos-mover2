@@ -1,82 +1,57 @@
 package net.cserny.videosMover2.service.parser;
 
-import net.cserny.videosMover2.service.ResourceInitializer;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import net.cserny.videosMover2.service.PathsProvider;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by leonardo on 10.09.2017.
  */
 @Component
-public class VideoExistenceChecker extends ResourceInitializer implements VideoNameParser
+public class VideoExistenceChecker implements VideoNameParser
 {
-    public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";
-
-    private Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
-    private List<String> nameTrimParts;
-
-    public VideoExistenceChecker() {
-        this.nameTrimParts = fillListFromResource(RESOURCE_NAME_PARTS);
-    }
+    public static final int SIMILARITY_PERCENT = 80;
 
     @Override
     public String parseTvShow(String text) {
-        String trimmed = trim(text);
-        String withoutExtension = removeExtension(trimmed);
-        return toCamelCase(withoutExtension);
+        return checkExisting(PathsProvider.getTvShowsPath(), text);
     }
 
     @Override
     public String parseMovie(String text) {
-        String trimmed = trim(text);
-        String withoutExtension = removeExtension(trimmed);
-        String camelCased = toCamelCase(withoutExtension);
-        return appendYear(camelCased);
+        return checkExisting(PathsProvider.getMoviesPath(), text);
     }
 
-    private String trim(String filename) {
-        for (String part : nameTrimParts) {
-            Pattern compile = Pattern.compile("(?i)(" + part + ")");
-            Matcher matcher = compile.matcher(filename);
-            if (!part.isEmpty() && matcher.find()) {
-                filename = filename.substring(0, matcher.start());
+    private String checkExisting(String path, String filename) {
+        if (path == null) {
+            return "";
+        }
+
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(PathsProvider.getPath(path), Files::isDirectory)) {
+            int maxCoefficient = 0;
+            Path selectedFolder = null;
+
+            for (Path dirPath : directoryStream) {
+                int currentCoefficient = FuzzySearch.ratio(filename, dirPath.getFileName().toString());
+                if (currentCoefficient > maxCoefficient) {
+                    maxCoefficient = currentCoefficient;
+                    selectedFolder = dirPath;
+                }
             }
-        }
-        return filename;
-    }
 
-    private String toCamelCase(String text) {
-        StringBuilder camelCaseString = new StringBuilder();
-        for (String part : stripSpecialChars(text).split("\\s+")) {
-            camelCaseString.append(toProperCase(part)).append(" ");
-        }
-        return camelCaseString.toString().trim();
-    }
-
-    private String removeExtension(String test) {
-        return test.substring(0, test.length() - 4);
-    }
-
-    private String stripSpecialChars(String videoName) {
-        return videoName.replaceAll("([._])", " ").trim();
-    }
-
-    private String toProperCase(String text) {
-        return text.substring(0, 1).toUpperCase() + text.substring(1);
-    }
-
-    private String appendYear(String videoName) {
-        Matcher matcher = videoPattern.matcher(videoName);
-        if (matcher.find()) {
-            videoName = matcher.group(1);
-            String yearString = matcher.group(2);
-            if (yearString != null) {
-                videoName = String.format("%s (%s)", videoName, yearString);
+            if (selectedFolder != null && maxCoefficient >= SIMILARITY_PERCENT) {
+                return selectedFolder.toString();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return videoName;
+
+        return path + "/" + filename;
     }
 }
