@@ -11,7 +11,10 @@ import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.*;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -20,7 +23,6 @@ import static org.junit.Assert.*;
 /**
  * Created by leonardo on 03.09.2017.
  */
-// TODO: leave this last : this should only test the UI!
 public class UserInterfaceTest extends ApplicationTest
 {
     private Scene scene;

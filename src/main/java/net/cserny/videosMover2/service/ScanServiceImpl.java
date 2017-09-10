@@ -1,6 +1,5 @@
 package net.cserny.videosMover2.service;
 
-import net.cserny.videosMover2.dto.SimpleFile;
 import net.cserny.videosMover2.dto.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,15 +36,12 @@ public class ScanServiceImpl implements ScanService
         for (Path file : files) {
             if (videoChecker.isVideo(file)) {
                 Video video = new Video();
-                video.setInput(new SimpleFile.Builder(file)
-                        .withSize(Files.size(file))
-                        .withType(Files.probeContentType(file))
-                        .build());
+                video.setInput(file);
                 video.setSubtitles(subtitlesFinder.find(file));
                 videos.add(video);
             }
         }
-        videos.sort(Comparator.comparing(video -> video.getInput().getPath().getFileName().toString().toLowerCase()));
+        videos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));
         return videos;
     }
 }

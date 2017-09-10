@@ -9,11 +9,11 @@ import net.cserny.videosMover2.configuration.ControllerConfig;
 import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.controller.MainController;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
  * Created by leonardo on 02.09.2017.
+ * TODO: make app auto scan Beans and Components
  */
 public class MainApplication extends Application
 {

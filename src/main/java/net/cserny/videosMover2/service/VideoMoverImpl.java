@@ -1,6 +1,5 @@
 package net.cserny.videosMover2.service;
 
-import net.cserny.videosMover2.dto.AbstractSimpleFile;
 import net.cserny.videosMover2.dto.Video;
 import org.springframework.stereotype.Service;
 
@@ -17,18 +16,18 @@ public class VideoMoverImpl implements VideoMover
 {
     @Override
     public boolean move(Video video) throws IOException {
-        Path source = video.getInput().getPath();
-        Path target = video.getOutput().getPath();
+        Path source = video.getInput();
+        Path target = video.getOutput();
 
         if (!Files.exists(target.getParent())) {
             Files.createDirectory(target.getParent());
         }
 
         Files.move(source, target);
-        List<AbstractSimpleFile> subtitles = video.getSubtitles();
+        List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
-            for (AbstractSimpleFile subtitle : subtitles) {
-                Files.move(subtitle.getPath(), target.getParent().resolve(subtitle.getPath().getFileName()));
+            for (Path subtitle : subtitles) {
+                Files.move(subtitle, target.getParent().resolve(subtitle.getFileName()));
             }
         }
 

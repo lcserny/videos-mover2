@@ -1,13 +1,10 @@
 package service;
 
 import net.cserny.videosMover2.configuration.ServiceConfig;
-import net.cserny.videosMover2.dto.SimpleFile;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.OutputNameResolver;
-import net.cserny.videosMover2.service.SystemPathsProvider;
 import net.cserny.videosMover2.service.VideoMover;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +22,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
-// TODO: use a custom File for Video input, output and subtitles list like SimpleFile and generate some before tests
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class, TestServiceConfig.class})
 public class MovingTest
@@ -33,6 +29,7 @@ public class MovingTest
     @Autowired
     private OutputNameResolver nameResolver;
 
+    // TODO: might not be needed as in-memory filesystem is created for testing
     @Autowired
     @Qualifier("testVideoMover")
     private VideoMover videoMover;
@@ -40,7 +37,7 @@ public class MovingTest
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
         Video video = new Video();
-        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
+        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -53,7 +50,7 @@ public class MovingTest
     @Test
     public void givenMultipleVideoRowsTvShowWhenMovingThenMoveAllToTvShowOutput() throws Exception {
         Video video1 = new Video();
-        video1.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getTvShowFilePath())).build());
+        video1.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
 
         VideoRow videoRow1 = new VideoRow();
         videoRow1.setVideo(video1);
@@ -61,7 +58,7 @@ public class MovingTest
         videoRow1.setOutput(nameResolver.resolveTvShow(video1));
 
         Video video2 = new Video();
-        video2.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
+        video2.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
 
         VideoRow videoRow2 = new VideoRow();
         videoRow2.setVideo(video2);
@@ -76,8 +73,8 @@ public class MovingTest
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
         Video video = new Video();
-        video.setInput(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieFilePath())).build());
-        video.setSubtitles(Collections.singletonList(new SimpleFile.Builder(Paths.get(TestVideosProvider.getMovieSubtitleFilePath())).build()));
+        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setSubtitles(Collections.singletonList(Paths.get(TestVideosProvider.getMovieSubtitleFilePath())));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);

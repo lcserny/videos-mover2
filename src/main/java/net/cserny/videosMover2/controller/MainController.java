@@ -142,7 +142,7 @@ public class MainController implements Initializable
     private VideoRow buildVideoRow(Video video) {
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
-        videoRow.setName(video.getInput().getPath().getFileName().toString());
+        videoRow.setName(video.getInput().getFileName().toString());
         videoRow.isMovieProperty().addListener((observable, oldValue, newValue) -> {
             videoRow.setIsMovie(newValue);
             videoRow.setOutput(newValue && SystemPathsProvider.getMoviesPath() != null ? nameResolver.resolveMovie(videoRow.getVideo()) : "");

@@ -1,16 +1,8 @@
 package service;
 
+// TODO: move these out, use path strings directly in tests, delete class
 public class TestVideosProvider
 {
-    static {
-        // TODO: this doesn't need to be static, make proper class
-        // TODO: use in-memory file system (https://github.com/google/jimfs) to generate files in /mnt/Data/Downloads (in-memory) and maybe the Movies and TvShows folder also
-        // TODO: put in there, each file needed from below
-        // TODO: regenerate the in-memory FS in Setup before each test
-        // TODO: change these return types to Path
-    }
-
-
     public static String getTvShowFilePath() {
         return "/mnt/Data/Downloads/www.Torrenting.com - Criminal.Minds.S12E22.HDTV.x264-SVA/Crimil.Minds.S12E22.HDTV.x264-SVA.mkv";
     }

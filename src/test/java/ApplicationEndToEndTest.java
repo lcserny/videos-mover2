@@ -5,21 +5,20 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.controller.MainController;
-import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.*;
+import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
-
-import java.nio.file.Files;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
-// TODO: leave this last : this should only test if interfaces are called on button clicks, and register activeProfile the mock interfaces
 public class ApplicationEndToEndTest extends ApplicationTest
 {
     private Scene scene;
