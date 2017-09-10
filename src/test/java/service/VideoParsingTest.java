@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class VideoParsingTest
+public class VideoParsingTest extends TempVideoInitializer
 {
     @Autowired
     private VideoChecker videoChecker;
@@ -30,26 +30,26 @@ public class VideoParsingTest
 
     @Test
     public void givenDirectoryWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult(TestVideosProvider.getDirectoryPath()));
+        assertFalse(isVideoResult(DOWNLOADS_EMPTY_FOLDER));
     }
 
     @Test
     public void givenRegularNonVideoFileWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult(TestVideosProvider.getNonVideoFilePath()));
+        assertFalse(isVideoResult(DOWNLOADS_REGULAR_FILE));
     }
 
     @Test
     public void givenVideoFileWhenParsingShouldReturnTrue() throws Exception {
-        assertTrue(isVideoResult(TestVideosProvider.getTvShowFilePath()));
+        assertTrue(isVideoResult(DOWNLOADS_TVSHOW));
     }
 
     @Test
     public void givenSmallVideoFileWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult(TestVideosProvider.getSmallMovieFilePath()));
+        assertFalse(isVideoResult(DOWNLOADS_SMALL_VIDEO));
     }
 
     @Test
     public void givenVideoFileFromDisallowedPathWhenParsingShouldReturnFalse() throws Exception {
-        assertFalse(isVideoResult(TestVideosProvider.getVideoFromDisallowedFilePath()));
+        assertFalse(isVideoResult(DOWNLOADS_ILLEGAL_VIDEO));
     }
 }

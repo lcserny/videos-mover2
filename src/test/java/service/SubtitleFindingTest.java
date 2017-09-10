@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class SubtitleFindingTest
+public class SubtitleFindingTest extends TempVideoInitializer
 {
     @Autowired
     private SubtitlesFinder subtitlesFinder;
@@ -33,19 +33,19 @@ public class SubtitleFindingTest
 
     @Test
     public void givenVideoWithoutSubtitlesWhenFindingReturnsEmptyList() throws Exception {
-        List<Path> subtitles = processSubtitles(TestVideosProvider.getMovieFilePath());
+        List<Path> subtitles = processSubtitles(DOWNLOADS_TVSHOW);
         assertTrue(subtitles.isEmpty());
     }
 
     @Test
     public void givenVideoWithSubtitlesWhenFindingReturnsSubtitlesList() throws Exception {
-        List<Path> subtitles = processSubtitles(TestVideosProvider.getMovieWithSubtitleFilePath());
+        List<Path> subtitles = processSubtitles(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         assertFalse(subtitles.isEmpty());
     }
 
     @Test
     public void givenVideoFromDownloadsRootPathWhenFindingReturnsEmptySubtitlesList() throws Exception {
-        List<Path> subtitles = processSubtitles(TestVideosProvider.getVideoFromDownloadsRootFilePath());
+        List<Path> subtitles = processSubtitles(DOWNLOADS_ROOT_VIDEO);
         assertTrue(subtitles.isEmpty());
     }
 }

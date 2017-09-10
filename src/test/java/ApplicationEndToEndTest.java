@@ -7,12 +7,10 @@ import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.controller.MainController;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
+import service.TempVideoInitializer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,6 +19,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ApplicationEndToEndTest extends ApplicationTest
 {
+    private TempVideoInitializer tempVideoInitializer = new TempVideoInitializer();
     private Scene scene;
 
     @BeforeClass
@@ -28,9 +27,15 @@ public class ApplicationEndToEndTest extends ApplicationTest
         ApplicationTest.launch(MainApplication.class);
     }
 
+    @Before
+    public void setUp() throws Exception {
+        tempVideoInitializer.setUp();
+    }
+
     @After
     public void tearDown() throws Exception {
         FxToolkit.cleanupStages();
+        tempVideoInitializer.tearDown();
     }
 
     @Override

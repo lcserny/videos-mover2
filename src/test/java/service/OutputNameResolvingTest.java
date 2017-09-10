@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class OutputNameResolvingTest extends TempVideosInitializer
+public class OutputNameResolvingTest extends TempVideoInitializer
 {
     @Autowired
     private OutputNameResolver nameResolver;
@@ -29,7 +29,7 @@ public class OutputNameResolvingTest extends TempVideosInitializer
     public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {
         SystemPathsProvider.setMoviesPath(null);
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
         String movieOutputPath = nameResolver.resolveMovie(video);
 
@@ -39,7 +39,7 @@ public class OutputNameResolvingTest extends TempVideosInitializer
     @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -52,7 +52,7 @@ public class OutputNameResolvingTest extends TempVideosInitializer
     @Test
     public void givenMovieVideoInputWhenParsingShouldReturnMovieOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -65,33 +65,33 @@ public class OutputNameResolvingTest extends TempVideosInitializer
     @Test
     public void givenTvShowVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolveTvShow(video));
 
-        assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
+        assertTrue(video.getOutput().getFileName().toString().equals("Game Of Thrones"));
     }
 
     @Test
     public void givenMovieVideoInputWhenParsingReturnsCorrectOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolveMovie(video));
 
-        assertTrue(video.getOutput().getFileName().toString().equals("71 (2014)"));
+        assertTrue(video.getOutput().getFileName().toString().equals("The Big Sick (2017)"));
     }
 
     @Test
     public void givenTvShowWhichAlreadyExistsThenSetOutputToExistingTvShowName() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_EXISTING_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);

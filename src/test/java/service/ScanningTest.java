@@ -3,6 +3,7 @@ package service;
 import net.cserny.videosMover2.configuration.ServiceConfig;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.service.ScanService;
+import net.cserny.videosMover2.service.SystemPathsProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class ScanningTest
+public class ScanningTest extends TempVideoInitializer
 {
     @Autowired
     private ScanService scanService;
@@ -30,7 +31,7 @@ public class ScanningTest
     private List<Video> videosScanned;
 
     public ScanningTest() throws IOException {
-        videosScanned = scanService.scan(TestVideosProvider.getSingleMovieDirectoryDirectoryPath());
+        videosScanned = scanService.scan(SystemPathsProvider.getDownloadsPath());
     }
 
     @Test
@@ -42,7 +43,7 @@ public class ScanningTest
     @Test
     public void givenVideoInputWithSubtitlesWhenScanningShouldReturnVideoWithSubtitles() throws Exception {
         for (Video video : videosScanned) {
-            if (video.getInput().toString().contains(TestVideosProvider.getSingleMovieDirectoryMovieFile())) {
+            if (video.getInput().toString().contains(DOWNLOADS_MOVIE_WITH_SUBTITLE)) {
                 List<Path> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());

@@ -11,12 +11,10 @@ import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.SystemPathsProvider;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
+import service.TempVideoInitializer;
 
 import static org.junit.Assert.*;
 
@@ -25,6 +23,7 @@ import static org.junit.Assert.*;
  */
 public class UserInterfaceTest extends ApplicationTest
 {
+    private TempVideoInitializer tempVideoInitializer = new TempVideoInitializer();
     private Scene scene;
 
     @BeforeClass
@@ -32,9 +31,15 @@ public class UserInterfaceTest extends ApplicationTest
         ApplicationTest.launch(MainApplication.class);
     }
 
+    @Before
+    public void setUp() throws Exception {
+        tempVideoInitializer.setUp();
+    }
+
     @After
     public void tearDown() throws Exception {
         FxToolkit.cleanupStages();
+        tempVideoInitializer.tearDown();
     }
 
     @Override

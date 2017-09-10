@@ -8,7 +8,6 @@ import net.cserny.videosMover2.service.VideoMover;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -23,21 +22,19 @@ import static org.junit.Assert.assertTrue;
  * Created by leonardo on 02.09.2017.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {ServiceConfig.class, TestServiceConfig.class})
-public class MovingTest
+@ContextConfiguration(classes = {ServiceConfig.class})
+public class MovingTest extends TempVideoInitializer
 {
     @Autowired
     private OutputNameResolver nameResolver;
 
-    // TODO: might not be needed as in-memory filesystem is created for testing
     @Autowired
-    @Qualifier("testVideoMover")
     private VideoMover videoMover;
 
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video.setInput(Paths.get(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
@@ -50,7 +47,7 @@ public class MovingTest
     @Test
     public void givenMultipleVideoRowsTvShowWhenMovingThenMoveAllToTvShowOutput() throws Exception {
         Video video1 = new Video();
-        video1.setInput(Paths.get(TestVideosProvider.getTvShowFilePath()));
+        video1.setInput(Paths.get(DOWNLOADS_TVSHOW));
 
         VideoRow videoRow1 = new VideoRow();
         videoRow1.setVideo(video1);
@@ -58,7 +55,7 @@ public class MovingTest
         videoRow1.setOutput(nameResolver.resolveTvShow(video1));
 
         Video video2 = new Video();
-        video2.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
+        video2.setInput(Paths.get(DOWNLOADS_EXISTING_TVSHOW));
 
         VideoRow videoRow2 = new VideoRow();
         videoRow2.setVideo(video2);
@@ -73,8 +70,8 @@ public class MovingTest
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
         Video video = new Video();
-        video.setInput(Paths.get(TestVideosProvider.getMovieFilePath()));
-        video.setSubtitles(Collections.singletonList(Paths.get(TestVideosProvider.getMovieSubtitleFilePath())));
+        video.setInput(Paths.get(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        video.setSubtitles(Collections.singletonList(Paths.get(DOWNLOADS_SUBTITLE)));
 
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
