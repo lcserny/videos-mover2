@@ -29,7 +29,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
-        String movieOutputPath = nameResolver.resolveMovie(video);
+        String movieOutputPath = nameResolver.resolve(video);
 
         assertTrue(movieOutputPath.isEmpty());
     }
@@ -42,7 +42,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
-        videoRow.setOutput(nameResolver.resolveTvShow(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(video.getOutput().startsWith(PathsProvider.getTvShowsPath()));
     }
@@ -55,7 +55,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
-        videoRow.setOutput(nameResolver.resolveMovie(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(video.getOutput().startsWith(PathsProvider.getMoviesPath()));
     }
@@ -68,7 +68,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
-        videoRow.setOutput(nameResolver.resolveTvShow(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(video.getOutput().getFileName().toString().equals("Game Of Thrones"));
     }
@@ -81,7 +81,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
-        videoRow.setOutput(nameResolver.resolveMovie(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(video.getOutput().getFileName().toString().equals("The Big Sick (2017)"));
     }
@@ -94,7 +94,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
-        videoRow.setOutput(nameResolver.resolveTvShow(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
     }

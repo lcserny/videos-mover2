@@ -7,7 +7,5 @@ import net.cserny.videosMover2.dto.Video;
  */
 public interface OutputNameResolver
 {
-    String resolveTvShow(Video video);
-
-    String resolveMovie(Video video);
+    String resolve(Video video);
 }

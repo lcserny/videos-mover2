@@ -20,19 +20,14 @@ public class OutputNameResolverImpl implements OutputNameResolver
     }
 
     @Override
-    public String resolveTvShow(Video video) {
+    public String resolve(Video video) {
         String resolvedName = video.getInput().getFileName().toString();
         for (VideoNameParser videoNameParser : nameParserList) {
-            resolvedName = videoNameParser.parseTvShow(resolvedName);
-        }
-        return resolvedName;
-    }
-
-    @Override
-    public String resolveMovie(Video video) {
-        String resolvedName = video.getInput().getFileName().toString();
-        for (VideoNameParser videoNameParser : nameParserList) {
-            resolvedName = videoNameParser.parseMovie(resolvedName);
+            if (video.isMovie()) {
+                resolvedName = videoNameParser.parseMovie(resolvedName);
+            } else if (video.isTvShow()) {
+                resolvedName = videoNameParser.parseTvShow(resolvedName);
+            }
         }
         return resolvedName;
     }

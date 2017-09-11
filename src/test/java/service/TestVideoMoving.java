@@ -39,7 +39,7 @@ public class TestVideoMoving extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsTvShow(true);
-        videoRow.setOutput(nameResolver.resolveTvShow(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(videoMover.move(video));
     }
@@ -52,7 +52,7 @@ public class TestVideoMoving extends TmpVideoInitializer
         VideoRow videoRow1 = new VideoRow();
         videoRow1.setVideo(video1);
         videoRow1.setIsTvShow(true);
-        videoRow1.setOutput(nameResolver.resolveTvShow(video1));
+        videoRow1.setOutput(nameResolver.resolve(video1));
 
         Video video2 = new Video();
         video2.setInput(PathsProvider.getPath(DOWNLOADS_EXISTING_TVSHOW));
@@ -60,7 +60,7 @@ public class TestVideoMoving extends TmpVideoInitializer
         VideoRow videoRow2 = new VideoRow();
         videoRow2.setVideo(video2);
         videoRow2.setIsMovie(true);
-        videoRow2.setOutput(nameResolver.resolveTvShow(video2));
+        videoRow2.setOutput(nameResolver.resolve(video2));
 
         List<Video> videoList = Arrays.asList(videoRow1.getVideo(), videoRow2.getVideo());
 
@@ -76,7 +76,7 @@ public class TestVideoMoving extends TmpVideoInitializer
         VideoRow videoRow = new VideoRow();
         videoRow.setVideo(video);
         videoRow.setIsMovie(true);
-        videoRow.setOutput(nameResolver.resolveMovie(video));
+        videoRow.setOutput(nameResolver.resolve(video));
 
         assertTrue(videoMover.move(video));
     }

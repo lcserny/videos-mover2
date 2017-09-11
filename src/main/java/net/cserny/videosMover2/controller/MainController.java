@@ -145,11 +145,11 @@ public class MainController implements Initializable
         videoRow.setName(video.getInput().getFileName().toString());
         videoRow.isMovieProperty().addListener((observable, oldValue, newValue) -> {
             videoRow.setIsMovie(newValue);
-            videoRow.setOutput(newValue ? nameResolver.resolveMovie(videoRow.getVideo()) : "");
+            videoRow.setOutput(newValue ? nameResolver.resolve(videoRow.getVideo()) : "");
         });
         videoRow.isTvShowProperty().addListener((observable, oldValue, newValue) -> {
             videoRow.setIsTvShow(newValue);
-            videoRow.setOutput(newValue ? nameResolver.resolveTvShow(videoRow.getVideo()) : "");
+            videoRow.setOutput(newValue ? nameResolver.resolve(videoRow.getVideo()) : "");
         });
         return videoRow;
     }
