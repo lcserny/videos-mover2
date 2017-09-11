@@ -19,15 +19,15 @@ public class VideoMoverImpl implements VideoMover
         Path source = video.getInput();
         Path target = video.getOutput();
 
-        if (!Files.exists(target.getParent())) {
-            Files.createDirectory(target.getParent());
+        if (!Files.exists(target)) {
+            Files.createDirectory(target);
         }
 
-        moveInternal(source, target);
+        moveInternal(source, target.resolve(source.getFileName()));
         List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
             for (Path subtitle : subtitles) {
-                moveInternal(subtitle, target.getParent().resolve(subtitle.getFileName()));
+                moveInternal(subtitle, target.resolve(subtitle.getFileName()));
             }
         }
 
@@ -36,14 +36,12 @@ public class VideoMoverImpl implements VideoMover
 
     @Override
     public boolean moveAll(List<Video> videoList) throws IOException {
-        boolean finalResult = true;
         for (Video video : videoList) {
-            boolean videoResult = move(video);
-            if (!videoResult) {
-                finalResult = false;
+            if (!move(video)) {
+                return false;
             }
         }
-        return finalResult;
+        return true;
     }
 
     private void moveInternal(Path source, Path target) throws IOException {

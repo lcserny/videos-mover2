@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,7 +23,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class ScanningTest extends TempVideoInitializer
+public class TestVideoScanning extends TmpVideoInitializer
 {
     @Autowired
     private ScanService scanService;

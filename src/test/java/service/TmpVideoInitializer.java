@@ -14,7 +14,7 @@ import java.nio.file.Path;
 /**
  * Created by leonardo on 09.09.2017.
  */
-public class TempVideoInitializer
+public class TmpVideoInitializer
 {
     public static final String DOWNLOADS_EMPTY_FOLDER = "/Downloads/emptyFolder";
     public static final String DOWNLOADS_REGULAR_FILE = "/Downloads/NonVideoFolder/NonVideo.txt";

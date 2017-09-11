@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.nio.file.Paths;
-
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -20,7 +18,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class OutputNameResolvingTest extends TempVideoInitializer
+public class TestOutputNameRendering extends TmpVideoInitializer
 {
     @Autowired
     private OutputNameResolver nameResolver;

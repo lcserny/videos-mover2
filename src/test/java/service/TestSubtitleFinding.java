@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -22,7 +21,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {ServiceConfig.class})
-public class SubtitleFindingTest extends TempVideoInitializer
+public class TestSubtitleFinding extends TmpVideoInitializer
 {
     @Autowired
     private SubtitlesFinder subtitlesFinder;
