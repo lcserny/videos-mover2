@@ -1,6 +1,6 @@
 package net.cserny.videosMover2.service.parser;
 
-import net.cserny.videosMover2.service.ResourceInitializer;
+import net.cserny.videosMover2.service.AbstractResourceInitializer;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 /**
  * Created by leonardo on 10.09.2017.
  */
-@Component
-public class VideoNameTrimmer extends ResourceInitializer implements VideoNameParser
+public class VideoNameTrimmer extends AbstractResourceInitializer implements VideoNameParser
 {
     public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";
 

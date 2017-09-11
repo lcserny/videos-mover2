@@ -9,7 +9,6 @@ import java.nio.file.Path;
 /**
  * Created by leonardo on 10.09.2017.
  */
-@Component
 public class VideodSizeValidator implements VideoValidator
 {
     public static final long MIN_ALLOWED_VIDEO_SIZE = 50 * 1024 * 1024; //50mb

@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 /**
  * Created by leonardo on 10.09.2017.
  */
-@Component
 public class VideoExistenceChecker implements VideoNameParser
 {
     public static final int SIMILARITY_PERCENT = 80;

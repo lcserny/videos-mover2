@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 /**
  * Created by leonardo on 02.09.2017.
  */
-
-@Service
 public class ScanServiceImpl implements ScanService
 {
     private VideoChecker videoChecker;

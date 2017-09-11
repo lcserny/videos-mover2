@@ -13,7 +13,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 /**
  * Created by leonardo on 02.09.2017.
- * TODO: make app auto scan Beans and Components
  */
 public class MainApplication extends Application
 {

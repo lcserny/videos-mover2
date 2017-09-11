@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResourceInitializer
+public abstract class AbstractResourceInitializer
 {
     protected List<String> fillListFromResource(String resource) {
         List<String> list = new ArrayList<>();
