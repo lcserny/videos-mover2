@@ -59,6 +59,11 @@ public class ServiceConfig
 
     @Bean
     public VideoCleaner videoCleaner() {
-        return new VideoCleanerImpl();
+        return new VideoCleanerImpl(removalRestrictionService());
+    }
+
+    @Bean
+    public RemovalRestrictionService removalRestrictionService() {
+        return new RemovalRestrictionServiceImpl();
     }
 }

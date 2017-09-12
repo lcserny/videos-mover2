@@ -1,6 +1,7 @@
 package net.cserny.videosMover2.service;
 
 import net.cserny.videosMover2.dto.Video;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,10 +11,17 @@ import java.util.stream.Collectors;
 
 public class VideoCleanerImpl implements VideoCleaner
 {
+    private RemovalRestrictionService removalRestrictionService;
+
+    @Autowired
+    public VideoCleanerImpl(RemovalRestrictionService removalRestrictionService) {
+        this.removalRestrictionService = removalRestrictionService;
+    }
+
     @Override
     public void clean(Video video) throws IOException {
         Path sourceParent = video.getInput().getParent();
-        if (!sourceParent.toString().equals(PathsProvider.getDownloadsPath())) {
+        if (removalIsNotRestricted(sourceParent)) {
             recursiveDelete(sourceParent);
         }
     }
@@ -23,6 +31,17 @@ public class VideoCleanerImpl implements VideoCleaner
         for (Video video : videos) {
             clean(video);
         }
+    }
+
+    private boolean removalIsNotRestricted(Path sourceParent) {
+        boolean proceedWithRemoval = true;
+        for (String restrictedFolder : removalRestrictionService.getRestrictedFolders()) {
+            if (sourceParent.getFileName().toString().equals(restrictedFolder)) {
+                proceedWithRemoval = false;
+                break;
+            }
+        }
+        return proceedWithRemoval;
     }
 
     private void recursiveDelete(Path sourceParent) throws IOException {
