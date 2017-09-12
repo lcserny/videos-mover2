@@ -39,8 +39,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));
 
-        VideoRow videoRow = new VideoRow();
-        videoRow.setVideo(video);
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolve(video));
 
@@ -52,8 +51,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
-        VideoRow videoRow = new VideoRow();
-        videoRow.setVideo(video);
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolve(video));
 
@@ -65,8 +63,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));
 
-        VideoRow videoRow = new VideoRow();
-        videoRow.setVideo(video);
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolve(video));
 
@@ -78,8 +75,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
 
-        VideoRow videoRow = new VideoRow();
-        videoRow.setVideo(video);
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setIsMovie(true);
         videoRow.setOutput(nameResolver.resolve(video));
 
@@ -91,8 +87,7 @@ public class TestOutputNameRendering extends TmpVideoInitializer
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_EXISTING_TVSHOW));
 
-        VideoRow videoRow = new VideoRow();
-        videoRow.setVideo(video);
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setIsTvShow(true);
         videoRow.setOutput(nameResolver.resolve(video));
 

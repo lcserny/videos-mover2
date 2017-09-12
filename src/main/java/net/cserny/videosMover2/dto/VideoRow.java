@@ -13,18 +13,18 @@ import java.nio.file.Paths;
  */
 public class VideoRow
 {
-    private Video video;
+    private final Video video;
     private StringProperty name = new SimpleStringProperty();
     private StringProperty output = new SimpleStringProperty();
     private BooleanProperty isMovie = new SimpleBooleanProperty();
     private BooleanProperty isTvShow = new SimpleBooleanProperty();
 
-    public Video getVideo() {
-        return video;
+    public VideoRow(Video video) {
+        this.video = video;
     }
 
-    public void setVideo(Video video) {
-        this.video = video;
+    public Video getVideo() {
+        return video;
     }
 
     public String getName() {

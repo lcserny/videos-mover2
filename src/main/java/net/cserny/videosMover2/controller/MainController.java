@@ -140,8 +140,7 @@ public class MainController implements Initializable
     }
 
     private VideoRow buildVideoRow(Video video) {
-        VideoRow videoRow = new VideoRow();
-        videoRow.setVideo(video);
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setName(video.getInput().getFileName().toString());
         videoRow.isMovieProperty().addListener((observable, oldValue, newValue) -> {
             videoRow.setIsMovie(newValue);

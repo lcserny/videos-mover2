@@ -25,6 +25,9 @@ public class TmpVideoInitializer
     public static final String DOWNLOADS_SUBTITLE = "/Downloads/The.Big.Sick.1080p.[2017].x264/Sub/Subtitle.srt";
     public static final String DOWNLOADS_EXISTING_TVSHOW = "/Downloads/Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
     public static final String DOWNLOADS_TVSHOW = "/Downloads/Game.Of.Thrones.s0e10/game.of.thrones.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
+    public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS = "/Downloads/the.great.gatsby.2015/the.great.gatsby.2015.x264.1080p.avi";
+    public static final String DOWNLOADS_SUBTITLE_IN_SUBS = "/Downloads/the.great.gatsby.2015/Subs/subtitle.srt";
+    public static final String DOWNLOADS_SUBTITLE_IN_SUBS_IDX = "/Downloads/the.great.gatsby.2015/Subs/subtitle.idx";
 
     protected FileSystem inMemoryFilesystem;
     private Path downloadsFolder;
@@ -60,6 +63,10 @@ public class TmpVideoInitializer
 
         createFile(downloadsFolder, "Criminal.Minds.s01e01", "criminil.mids.s01e01.720p.x264.mp4", 60);
         createFolder(tvShowsFolder, "Criminal Minds");
+
+        createFile(downloadsFolder, "the.great.gatsby.2015", "the.great.gatsby.2015.x264.1080p.avi", 60);
+        createFile(downloadsFolder, "the.great.gatsby.2015/Subs", "subtitle.srt", 0);
+        createFile(downloadsFolder, "the.great.gatsby.2015/Subs", "subtitle.idx", 0);
     }
 
     private void setupInMemoryFolders() throws IOException {
