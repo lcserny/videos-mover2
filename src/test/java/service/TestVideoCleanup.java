@@ -66,10 +66,4 @@ public class TestVideoCleanup extends TmpVideoInitializer
 
         assertTrue(!Files.exists(video.getInput().getParent()));
     }
-
-    @Ignore("not yet implemented")
-    @Test
-    public void whenVideoSourceIsInSubFolderOfSubFolderCleanUntilDownloadsParentReached() throws Exception {
-
-    }
 }
