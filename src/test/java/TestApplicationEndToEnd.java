@@ -1,16 +1,21 @@
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import net.cserny.videosMover2.MainApplication;
 import net.cserny.videosMover2.controller.MainController;
+import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.PathsProvider;
 import org.junit.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
 import service.TmpVideoInitializer;
 
+import java.nio.file.Files;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by leonardo on 02.09.2017.
@@ -92,5 +97,22 @@ public class TestApplicationEndToEnd extends ApplicationTest
         clickOn(moveButton);
 
         assertEquals(MainController.MOVE_RESULT, scene.getUserData());
+    }
+
+    @Test
+    public void afterMovingVideoMovieCleanupDownloads() throws Exception {
+        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+
+        clickOn(scanButton);
+        Thread.sleep(500);
+        VideoRow videoRow = tableView.getItems().get(0);
+        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+                .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
+        clickOn(movieCheckOnFirstRow);
+        clickOn(moveButton);
+
+        assertTrue(!Files.exists(videoRow.getVideo().getInput().getParent()));
     }
 }
