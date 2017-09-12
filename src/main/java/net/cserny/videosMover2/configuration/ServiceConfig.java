@@ -56,4 +56,9 @@ public class ServiceConfig
     public OutputNameResolver outputNameResolver() {
         return new OutputNameResolverImpl(videoNameParsers());
     }
+
+    @Bean
+    public VideoCleaner videoCleaner() {
+        return new VideoCleanerImpl();
+    }
 }

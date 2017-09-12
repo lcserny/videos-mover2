@@ -24,17 +24,6 @@ public class TestOutputNameRendering extends TmpVideoInitializer
     private OutputNameResolver nameResolver;
 
     @Test
-    public void givenNoMovieOutputPathWhenResolvingMovieNameThenShowNothing() throws Exception {
-        PathsProvider.setMoviesPath(null);
-        Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
-
-        String movieOutputPath = nameResolver.resolve(video);
-
-        assertTrue(movieOutputPath.isEmpty());
-    }
-
-    @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {
         Video video = new Video();
         video.setInput(PathsProvider.getPath(DOWNLOADS_TVSHOW));

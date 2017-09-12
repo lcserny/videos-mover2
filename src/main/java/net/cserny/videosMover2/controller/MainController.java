@@ -14,10 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
-import net.cserny.videosMover2.service.OutputNameResolver;
-import net.cserny.videosMover2.service.ScanService;
-import net.cserny.videosMover2.service.PathsProvider;
-import net.cserny.videosMover2.service.VideoMover;
+import net.cserny.videosMover2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -56,13 +53,15 @@ public class MainController implements Initializable
     private ScanService scanService;
     private VideoMover videoMover;
     private OutputNameResolver nameResolver;
+    private VideoCleaner videoCleaner;
     private Scene scene;
 
     @Autowired
-    public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver) {
+    public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver, VideoCleaner videoCleaner) {
         this.scanService = scanService;
         this.videoMover = videoMover;
         this.nameResolver = nameResolver;
+        this.videoCleaner = videoCleaner;
     }
 
     @Override
@@ -169,13 +168,15 @@ public class MainController implements Initializable
 
         boolean result = videoMover.moveAll(selectedVideos);
 
-        Alert.AlertType resultType = Alert.AlertType.INFORMATION;
-        String resultMessage = "Selected video files have been moved successfully";
-        String resultTitle = "Move Successful";
-        if (!result) {
-            resultType = Alert.AlertType.WARNING;
-            resultMessage = "Problem occurred while moving, some files might not have been moved, please check";
-            resultTitle = "Move Error Detected";
+        Alert.AlertType resultType = Alert.AlertType.WARNING;
+        String resultMessage = "Problem occurred while moving, some files might not have been moved, please check";
+        String resultTitle = "Move Error Detected";
+
+        if (result) {
+            videoCleaner.cleanAll(selectedVideos);
+            resultType = Alert.AlertType.INFORMATION;
+            resultMessage = "Selected video files have been moved successfully";
+            resultTitle = "Move Successful";
         }
 
         showAlert(resultType, resultMessage, resultTitle, MOVE_RESULT);

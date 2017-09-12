@@ -3,6 +3,7 @@ package net.cserny.videosMover2.configuration;
 import net.cserny.videosMover2.controller.MainController;
 import net.cserny.videosMover2.service.OutputNameResolver;
 import net.cserny.videosMover2.service.ScanService;
+import net.cserny.videosMover2.service.VideoCleaner;
 import net.cserny.videosMover2.service.VideoMover;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,11 @@ public class ControllerConfig
     private VideoMover videoMover;
     @Autowired
     private OutputNameResolver nameResolver;
+    @Autowired
+    private VideoCleaner videoCleaner;
 
     @Bean
     public MainController mainController() {
-        return new MainController(scanService, videoMover, nameResolver);
+        return new MainController(scanService, videoMover, nameResolver, videoCleaner);
     }
 }
