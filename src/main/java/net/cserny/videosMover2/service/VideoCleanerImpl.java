@@ -1,6 +1,7 @@
 package net.cserny.videosMover2.service;
 
 import net.cserny.videosMover2.dto.Video;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,6 +9,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class VideoCleanerImpl implements VideoCleaner
 {
     @Override

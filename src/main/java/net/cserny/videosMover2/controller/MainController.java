@@ -16,7 +16,6 @@ import net.cserny.videosMover2.dto.Video;
 import net.cserny.videosMover2.dto.VideoRow;
 import net.cserny.videosMover2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -30,6 +29,7 @@ import java.util.stream.Collectors;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@Controller
 public class MainController implements Initializable
 {
     public static final String INPUT_MISSING = "inputMissing";

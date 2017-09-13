@@ -1,7 +1,8 @@
 package net.cserny.videosMover2.service.validator;
 
 import net.cserny.videosMover2.service.AbstractResourceInitializer;
-import org.springframework.stereotype.Component;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,8 @@ import java.util.List;
 /**
  * Created by leonardo on 10.09.2017.
  */
+@Service
+@Order(2)
 public class VideoTypeValidator extends AbstractResourceInitializer implements VideoValidator
 {
     public static final String RESOURCE_MIMETYPES = "mime_types.cfg";

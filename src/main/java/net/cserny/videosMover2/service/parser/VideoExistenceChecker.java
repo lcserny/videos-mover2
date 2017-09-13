@@ -2,17 +2,19 @@ package net.cserny.videosMover2.service.parser;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosMover2.service.PathsProvider;
-import org.springframework.stereotype.Component;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Created by leonardo on 10.09.2017.
  */
+@Service
+@Order(2)
 public class VideoExistenceChecker implements VideoNameParser
 {
     public static final int SIMILARITY_PERCENT = 80;

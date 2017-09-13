@@ -6,8 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import net.cserny.videosMover2.service.PathsProvider;
 
-import java.nio.file.Paths;
-
 /**
  * Created by leonardo on 02.09.2017.
  */

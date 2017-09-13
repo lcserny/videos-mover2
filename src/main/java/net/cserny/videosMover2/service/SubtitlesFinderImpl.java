@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Created by leonardo on 02.09.2017.
  */
+@Service
 public class SubtitlesFinderImpl extends AbstractResourceInitializer implements SubtitlesFinder
 {
     public static final String RESOURCE_SUBTITLE_EXTENSIONS = "subtitle_extensions.cfg";

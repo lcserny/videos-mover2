@@ -2,7 +2,10 @@ package net.cserny.videosMover2.service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.file.*;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Created by leonardo on 02.09.2017.
