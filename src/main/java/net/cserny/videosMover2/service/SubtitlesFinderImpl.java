@@ -1,5 +1,6 @@
 package net.cserny.videosMover2.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -13,15 +14,10 @@ import java.util.stream.Collectors;
  * Created by leonardo on 02.09.2017.
  */
 @Service
-public class SubtitlesFinderImpl extends AbstractResourceInitializer implements SubtitlesFinder
+public class SubtitlesFinderImpl implements SubtitlesFinder
 {
-    public static final String RESOURCE_SUBTITLE_EXTENSIONS = "subtitle_extensions.cfg";
-
+    @Value("#{'${video.subtitle.extensions}'.split(',')}")
     private List<String> subtitleExtensions;
-
-    public SubtitlesFinderImpl() {
-        subtitleExtensions = fillListFromResource(RESOURCE_SUBTITLE_EXTENSIONS);
-    }
 
     @Override
     public List<Path> find(Path file) throws IOException {

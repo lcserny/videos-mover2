@@ -24,7 +24,7 @@ public class TmpVideoInitializer
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE = "/Downloads/The.Big.Sick.1080p.[2017].x264/the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_SUBTITLE = "/Downloads/The.Big.Sick.1080p.[2017].x264/Sub/Subtitle.srt";
     public static final String DOWNLOADS_EXISTING_TVSHOW = "/Downloads/Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
-    public static final String DOWNLOADS_TVSHOW = "/Downloads/Game.Of.Thrones.s0e10/game.of.thrones.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
+    public static final String DOWNLOADS_TVSHOW = "/Downloads/Game.Of.Thrones.s0e10/game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS = "/Downloads/the.great.gatsby.2015/the.great.gatsby.2015.x264.1080p.avi";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS = "/Downloads/the.great.gatsby.2015/Subs/subtitle.srt";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS_IDX = "/Downloads/the.great.gatsby.2015/Subs/subtitle.idx";
@@ -50,21 +50,21 @@ public class TmpVideoInitializer
 
         createFile(downloadsFolder, "NonVideoFolder", "NonVideo.txt", 0);
 
-        createFile(downloadsFolder, "Programming Stuff", "illegalVideo.mp4", 60);
+        createFile(downloadsFolder, "Programming Stuff", "illegalVideo.mp4", 2);
 
-        createFile(downloadsFolder, "SmallVideoFolder", "smallVideo.mp4", 5);
+        createFile(downloadsFolder, "SmallVideoFolder", "smallVideo.mp4", 1);
 
-        createFile(downloadsFolder, null, "fromDownloads.mp4", 60);
+        createFile(downloadsFolder, null, "fromDownloads.mp4", 2);
 
-        createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264", "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4", 60);
+        createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264", "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4", 2);
         createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264/Sub", "Subtitle.srt", 0);
 
-        createFile(downloadsFolder, "Game.Of.Thrones.s0e10", "game.of.thrones.720p.A.Song.Of.Ice.And.Fire.x264.mp4", 60);
+        createFile(downloadsFolder, "Game.Of.Thrones.s0e10", "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4", 2);
 
-        createFile(downloadsFolder, "Criminal.Minds.s01e01", "criminil.mids.s01e01.720p.x264.mp4", 60);
+        createFile(downloadsFolder, "Criminal.Minds.s01e01", "criminil.mids.s01e01.720p.x264.mp4", 2);
         createFolder(tvShowsFolder, "Criminal Minds");
 
-        createFile(downloadsFolder, "the.great.gatsby.2015", "the.great.gatsby.2015.x264.1080p.avi", 60);
+        createFile(downloadsFolder, "the.great.gatsby.2015", "the.great.gatsby.2015.x264.1080p.avi", 2);
         createFile(downloadsFolder, "the.great.gatsby.2015/Subs", "subtitle.srt", 0);
         createFile(downloadsFolder, "the.great.gatsby.2015/Subs", "subtitle.idx", 0);
     }

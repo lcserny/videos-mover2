@@ -1,5 +1,6 @@
 package net.cserny.videosMover2.service.validator;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,12 @@ import java.nio.file.Path;
 @Order(3)
 public class VideoSizeValidator implements VideoValidator
 {
-    public static final long MIN_ALLOWED_VIDEO_SIZE = 50 * 1024 * 1024; //50mb
+    @Value("${minimum.video.size}")
+    private Long minimumVideoSize;
 
     @Override
     public boolean isValid(Path file) throws IOException {
         long size = Files.size(file);
-        return size > MIN_ALLOWED_VIDEO_SIZE;
+        return size > minimumVideoSize;
     }
 }

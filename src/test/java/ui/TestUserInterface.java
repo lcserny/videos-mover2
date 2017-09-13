@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 
 /**
  * Created by leonardo on 03.09.2017.
- * FIXME: too many tests gives OutOfMemory error
  */
 public class TestUserInterface extends ApplicationTest
 {
@@ -103,7 +102,7 @@ public class TestUserInterface extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         VideoRow videoRow = tableView.getItems().get(0);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
@@ -121,7 +120,7 @@ public class TestUserInterface extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         VideoRow videoRow = tableView.getItems().get(0);
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
@@ -139,7 +138,7 @@ public class TestUserInterface extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
@@ -156,7 +155,7 @@ public class TestUserInterface extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -176,7 +175,7 @@ public class TestUserInterface extends ApplicationTest
 
         assertFalse(loadingImage.isVisible());
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         // while scanning check that loadingImage is visible
         assertFalse(loadingImage.isVisible());
     }
@@ -187,7 +186,7 @@ public class TestUserInterface extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -203,7 +202,7 @@ public class TestUserInterface extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);

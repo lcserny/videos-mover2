@@ -67,7 +67,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -93,7 +93,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
         Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
@@ -109,7 +109,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
         TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
-        Thread.sleep(500);
+        Thread.sleep(100);
         VideoRow videoRow = tableView.getItems().get(0);
         Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();

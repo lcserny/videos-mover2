@@ -1,6 +1,6 @@
 package net.cserny.videosMover2.service.parser;
 
-import net.cserny.videosMover2.service.AbstractResourceInitializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +13,11 @@ import java.util.regex.Pattern;
  */
 @Service
 @Order(1)
-public class VideoNameTrimmer extends AbstractResourceInitializer implements VideoNameParser
+public class VideoNameTrimmer implements VideoNameParser
 {
-    public static final String RESOURCE_NAME_PARTS = "name_parts.cfg";
-
-    private Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
+    @Value("#{'${video.trim.parts}'.split(';')}")
     private List<String> nameTrimParts;
-
-    public VideoNameTrimmer() {
-        this.nameTrimParts = fillListFromResource(RESOURCE_NAME_PARTS);
-    }
+    private Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
 
     @Override
     public String parseTvShow(String text) {

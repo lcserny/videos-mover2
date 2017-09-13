@@ -1,6 +1,6 @@
 package net.cserny.videosMover2.service.validator;
 
-import net.cserny.videosMover2.service.AbstractResourceInitializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +14,10 @@ import java.util.List;
  */
 @Service
 @Order(2)
-public class VideoTypeValidator extends AbstractResourceInitializer implements VideoValidator
+public class VideoTypeValidator implements VideoValidator
 {
-    public static final String RESOURCE_MIMETYPES = "mime_types.cfg";
-
+    @Value("#{'${video.mime.types}'.split(',')}")
     private List<String> allowedMimeTypes;
-
-    public VideoTypeValidator() {
-        allowedMimeTypes = fillListFromResource(RESOURCE_MIMETYPES);
-    }
 
     @Override
     public boolean isValid(Path file) throws IOException {

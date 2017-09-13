@@ -2,6 +2,7 @@ package net.cserny.videosMover2.service.parser;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosMover2.service.PathsProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,8 @@ import java.nio.file.Path;
 @Order(2)
 public class VideoExistenceChecker implements VideoNameParser
 {
-    public static final int SIMILARITY_PERCENT = 80;
+    @Value("${similarity.percent}")
+    private Integer similarityPercent;
 
     @Override
     public String parseTvShow(String text) {
@@ -46,7 +48,7 @@ public class VideoExistenceChecker implements VideoNameParser
                 }
             }
 
-            if (selectedFolder != null && maxCoefficient >= SIMILARITY_PERCENT) {
+            if (selectedFolder != null && maxCoefficient >= similarityPercent) {
                 return selectedFolder.toString();
             }
         } catch (IOException e) {

@@ -1,5 +1,6 @@
 package net.cserny.videosMover2.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,15 +9,10 @@ import java.util.List;
  * Created by leonardo on 12.09.2017.
  */
 @Service
-public class RemovalRestrictionServiceImpl extends AbstractResourceInitializer implements RemovalRestrictionService
+public class RemovalRestrictionServiceImpl implements RemovalRestrictionService
 {
-    public static final String RESOURCE_REMOVE_RESTRICTIONS = "remove_restrictions.cfg";
-
+    @Value("#{'${restricted.remove.paths}'.split(',')}")
     private List<String> restrictedFolders;
-
-    public RemovalRestrictionServiceImpl() {
-        this.restrictedFolders = fillListFromResource(RESOURCE_REMOVE_RESTRICTIONS);
-    }
 
     @Override
     public List<String> getRestrictedFolders() {

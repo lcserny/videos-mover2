@@ -1,6 +1,6 @@
 package net.cserny.videosMover2.service.validator;
 
-import net.cserny.videosMover2.service.AbstractResourceInitializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +12,10 @@ import java.util.List;
  */
 @Service
 @Order(1)
-public class VideoPathValidator extends AbstractResourceInitializer implements VideoValidator
+public class VideoPathValidator implements VideoValidator
 {
-    public static final String RESOURCE_EXCLUDEPATHS = "excluded_paths.cfg";
-
+    @Value("#{'${video.exclude.paths}'.split(',')}")
     private List<String> excludedVideoPaths;
-
-    public VideoPathValidator() {
-        excludedVideoPaths = fillListFromResource(RESOURCE_EXCLUDEPATHS);
-    }
 
     @Override
     public boolean isValid(Path file) {

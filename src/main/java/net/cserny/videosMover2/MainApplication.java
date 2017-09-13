@@ -10,12 +10,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
 @Configuration
 @ComponentScan
+@PropertySource("classpath:application.properties")
 public class MainApplication extends Application
 {
     public static void main(String[] args) {
