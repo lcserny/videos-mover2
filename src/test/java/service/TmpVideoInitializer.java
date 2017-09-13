@@ -2,9 +2,12 @@ package service;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import net.cserny.videosMover2.dto.Video;
+import net.cserny.videosMover2.service.OutputNameResolver;
 import net.cserny.videosMover2.service.PathsProvider;
 import org.junit.After;
 import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -31,9 +34,13 @@ public class TmpVideoInitializer
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS_IDX = "/Downloads/the.great.gatsby.2015/Subs/subtitle.idx";
 
     protected FileSystem inMemoryFilesystem;
-    private Path downloadsFolder;
-    private Path moviesFolder;
-    private Path tvShowsFolder;
+    private Path downloadsFolder, moviesFolder, tvShowsFolder;
+    private OutputNameResolver nameResolver;
+
+    @Autowired
+    public void setNameResolver(OutputNameResolver nameResolver) {
+        this.nameResolver = nameResolver;
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -44,6 +51,22 @@ public class TmpVideoInitializer
     @After
     public void tearDown() throws Exception {
         inMemoryFilesystem.close();
+    }
+
+    protected Video createTvShow(String input) {
+        Video video = new Video();
+        video.setIsTvShow(true);
+        video.setInput(PathsProvider.getPath(input));
+        video.setOutput(PathsProvider.getPath(nameResolver.resolve(video)));
+        return video;
+    }
+
+    protected Video createMovie(String input) {
+        Video video = new Video();
+        video.setIsMovie(true);
+        video.setInput(PathsProvider.getPath(input));
+        video.setOutput(PathsProvider.getPath(nameResolver.resolve(video)));
+        return video;
     }
 
     private void createTestFiles() throws Exception {

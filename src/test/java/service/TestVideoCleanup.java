@@ -20,16 +20,13 @@ import static org.junit.Assert.assertTrue;
 public class TestVideoCleanup extends TmpVideoInitializer
 {
     @Autowired
-    private OutputNameResolver nameResolver;
-    @Autowired
     private VideoMover videoMover;
     @Autowired
     private VideoCleaner videoCleaner;
 
     @Test
     public void cleaningVideoMeansRemovingSourceParentFolder() throws Exception {
-        Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
 
         videoCleaner.clean(video);
 
@@ -38,8 +35,7 @@ public class TestVideoCleanup extends TmpVideoInitializer
 
     @Test
     public void whenSourceParentFolderIsDownloadsThenDoNotRemoveIt() throws Exception {
-        Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_ROOT_VIDEO));
+        Video video = createMovie(DOWNLOADS_ROOT_VIDEO);
 
         videoCleaner.clean(video);
 
@@ -48,23 +44,18 @@ public class TestVideoCleanup extends TmpVideoInitializer
 
     @Test
     public void afterMovingVideoSourceFolderShouldBeClean() throws Exception {
-        Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
+        Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
 
-        VideoRow videoRow = new VideoRow(video);
-        videoRow.setIsMovie(true);
-        videoRow.setOutput(nameResolver.resolve(video));
-
-        assertTrue(videoMover.move(video));
+        boolean moveSuccessful = videoMover.move(video);
         videoCleaner.clean(video);
 
+        assertTrue(moveSuccessful);
         assertTrue(!Files.exists(video.getInput().getParent()));
     }
 
     @Test
     public void whenCleaningVideoFromRestrictedRemovalPathThenDontRemoveIt() throws Exception {
-        Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_RESTRICTED_MOVIE));
+        Video video = createMovie(DOWNLOADS_RESTRICTED_MOVIE);
 
         videoCleaner.clean(video);
 
