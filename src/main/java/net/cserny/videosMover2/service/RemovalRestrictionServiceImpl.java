@@ -1,10 +1,13 @@
 package net.cserny.videosMover2.service;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 /**
  * Created by leonardo on 12.09.2017.
  */
+@Service
 public class RemovalRestrictionServiceImpl extends AbstractResourceInitializer implements RemovalRestrictionService
 {
     public static final String RESOURCE_REMOVE_RESTRICTIONS = "remove_restrictions.cfg";
