@@ -25,8 +25,6 @@ public class TestVideoCleanup extends TmpVideoInitializer
     private VideoMover videoMover;
     @Autowired
     private VideoCleaner videoCleaner;
-    @Autowired
-    private RemovalRestrictionService removalRestrictionService;
 
     @Test
     public void cleaningVideoMeansRemovingSourceParentFolder() throws Exception {
@@ -66,13 +64,10 @@ public class TestVideoCleanup extends TmpVideoInitializer
     @Test
     public void whenCleaningVideoFromRestrictedRemovalPathThenDontRemoveIt() throws Exception {
         Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_WITH_SUBTITLE));
-        String parentFolderName = video.getInput().getParent().getFileName().toString();
-        removalRestrictionService.addRestriction(parentFolderName);
+        video.setInput(PathsProvider.getPath(DOWNLOADS_RESTRICTED_MOVIE));
 
         videoCleaner.clean(video);
 
-        removalRestrictionService.getRestrictedFolders().remove(parentFolderName);
         Assert.assertTrue(Files.exists(video.getInput().getParent()));
     }
 }

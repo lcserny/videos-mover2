@@ -1,6 +1,7 @@
 package net.cserny.videosMover2.service;
 
 import net.cserny.videosMover2.dto.Video;
+import net.cserny.videosMover2.service.validator.RemovalRestriction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,19 +14,21 @@ import java.util.stream.Collectors;
 @Service
 public class VideoCleanerImpl implements VideoCleaner
 {
-    private RemovalRestrictionService removalRestrictionService;
+    private List<RemovalRestriction> removalRestrictions;
 
     @Autowired
-    public VideoCleanerImpl(RemovalRestrictionService removalRestrictionService) {
-        this.removalRestrictionService = removalRestrictionService;
+    public VideoCleanerImpl(List<RemovalRestriction> removalRestrictions) {
+        this.removalRestrictions = removalRestrictions;
     }
 
     @Override
     public void clean(Video video) throws IOException {
-        Path sourceParent = video.getInput().getParent();
-        if (removalIsNotRestricted(sourceParent)) {
-            recursiveDelete(sourceParent);
+        for (RemovalRestriction restriction : removalRestrictions) {
+            if (restriction.isRestricted(video)) {
+                return;
+            }
         }
+        recursiveDelete(video.getInput().getParent());
     }
 
     @Override
@@ -33,17 +36,6 @@ public class VideoCleanerImpl implements VideoCleaner
         for (Video video : videos) {
             clean(video);
         }
-    }
-
-    private boolean removalIsNotRestricted(Path sourceParent) {
-        boolean proceedWithRemoval = true;
-        for (String restrictedFolder : removalRestrictionService.getRestrictedFolders()) {
-            if (sourceParent.getFileName().toString().equals(restrictedFolder)) {
-                proceedWithRemoval = false;
-                break;
-            }
-        }
-        return proceedWithRemoval;
     }
 
     private void recursiveDelete(Path sourceParent) throws IOException {

@@ -22,6 +22,7 @@ public class TmpVideoInitializer
     public static final String DOWNLOADS_SMALL_VIDEO = "/Downloads/SmallVideoFolder/smallVideo.mp4";
     public static final String DOWNLOADS_ROOT_VIDEO = "/Downloads/fromDownloads.mp4";
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE = "/Downloads/The.Big.Sick.1080p.[2017].x264/the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
+    public static final String DOWNLOADS_RESTRICTED_MOVIE = "/Downloads/The.Hero.1080p.[2017].x264/the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_SUBTITLE = "/Downloads/The.Big.Sick.1080p.[2017].x264/Sub/Subtitle.srt";
     public static final String DOWNLOADS_EXISTING_TVSHOW = "/Downloads/Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
     public static final String DOWNLOADS_TVSHOW = "/Downloads/Game.Of.Thrones.s0e10/game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
@@ -58,6 +59,8 @@ public class TmpVideoInitializer
 
         createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264", "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4", 2);
         createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264/Sub", "Subtitle.srt", 0);
+
+        createFile(downloadsFolder, "The.Hero.1080p.[2017].x264", "the.hero.2017.1080p.BluRay.x264.YIFY.mp4", 2);
 
         createFile(downloadsFolder, "Game.Of.Thrones.s0e10", "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4", 2);
 
