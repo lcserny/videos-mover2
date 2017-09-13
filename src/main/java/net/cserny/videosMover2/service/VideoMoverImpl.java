@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Created by leonardo on 03.09.2017.
  */
+@Service
 public class VideoMoverImpl implements VideoMover
 {
     private static final String SUBTITLE_SUBPATH = "Subs";
