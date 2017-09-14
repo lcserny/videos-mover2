@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.nio.file.Files;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -27,38 +29,36 @@ public class TestVideoCleanup extends TmpVideoInitializer
     @Test
     public void cleaningVideoMeansRemovingSourceParentFolder() throws Exception {
         Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
-
-        videoCleaner.clean(video);
-
-        assertTrue(!Files.exists(video.getInput().getParent()));
+        assertCleaning(video, true);
     }
 
     @Test
     public void whenSourceParentFolderIsDownloadsThenDoNotRemoveIt() throws Exception {
         Video video = createMovie(DOWNLOADS_ROOT_VIDEO);
-
-        videoCleaner.clean(video);
-
-        assertTrue(Files.exists(video.getInput().getParent()));
+        assertCleaning(video, false);
     }
 
     @Test
     public void afterMovingVideoSourceFolderShouldBeClean() throws Exception {
         Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
-
-        boolean moveSuccessful = videoMover.move(video);
-        videoCleaner.clean(video);
-
-        assertTrue(moveSuccessful);
-        assertTrue(!Files.exists(video.getInput().getParent()));
+        assertCleaning(video, true);
     }
 
     @Test
     public void whenCleaningVideoFromRestrictedRemovalPathThenDontRemoveIt() throws Exception {
         Video video = createMovie(DOWNLOADS_RESTRICTED_MOVIE);
+        assertCleaning(video, false);
+    }
 
+    private void assertCleaning(Video video, boolean removeExpected) throws IOException {
+        boolean moveSuccessful = videoMover.move(video);
         videoCleaner.clean(video);
 
-        Assert.assertTrue(Files.exists(video.getInput().getParent()));
+        assertTrue(moveSuccessful);
+        if (removeExpected) {
+            assertFalse(Files.exists(video.getInput().getParent()));
+        } else {
+            assertTrue(Files.exists(video.getInput().getParent()));
+        }
     }
 }
