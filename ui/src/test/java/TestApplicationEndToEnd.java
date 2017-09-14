@@ -1,3 +1,4 @@
+import helper.InMemoryVideoFileSystemInitializer;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,7 +15,6 @@ import org.junit.Test;
 import org.springframework.context.annotation.PropertySource;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
-import service.TmpVideoInitializer;
 
 import java.nio.file.Files;
 
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 @PropertySource("classpath:test-application.properties")
 public class TestApplicationEndToEnd extends ApplicationTest
 {
-    private TmpVideoInitializer tempVideoInitializer = new TmpVideoInitializer();
+    private InMemoryVideoFileSystemInitializer tempVideoInitializer = new InMemoryVideoFileSystemInitializer();
     private Scene scene;
 
     @BeforeClass

@@ -1,10 +1,10 @@
-package service;
-
+import helper.TestHelperConfig;
+import helper.InMemoryVideoFileSystemInitializer;
+import helper.VideoCreationHelper;
 import net.cserny.videosMover.ApplicationConfig;
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.service.VideoCleaner;
 import net.cserny.videosMover.service.VideoMover;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoCleanup extends TmpVideoInitializer
+@ContextConfiguration(classes = {ApplicationConfig.class, TestHelperConfig.class})
+public class TestVideoCleanup extends InMemoryVideoFileSystemInitializer
 {
+    @Autowired
+    private VideoCreationHelper videoHelper;
     @Autowired
     private VideoMover videoMover;
     @Autowired
@@ -28,25 +30,25 @@ public class TestVideoCleanup extends TmpVideoInitializer
 
     @Test
     public void cleaningVideoMeansRemovingSourceParentFolder() throws Exception {
-        Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         assertCleaning(video, true);
     }
 
     @Test
     public void whenSourceParentFolderIsDownloadsThenDoNotRemoveIt() throws Exception {
-        Video video = createMovie(DOWNLOADS_ROOT_VIDEO);
+        Video video = videoHelper.createMovie(DOWNLOADS_ROOT_VIDEO);
         assertCleaning(video, false);
     }
 
     @Test
     public void afterMovingVideoSourceFolderShouldBeClean() throws Exception {
-        Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         assertCleaning(video, true);
     }
 
     @Test
     public void whenCleaningVideoFromRestrictedRemovalPathThenDontRemoveIt() throws Exception {
-        Video video = createMovie(DOWNLOADS_RESTRICTED_MOVIE);
+        Video video = videoHelper.createMovie(DOWNLOADS_RESTRICTED_MOVIE);
         assertCleaning(video, false);
     }
 

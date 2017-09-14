@@ -1,5 +1,4 @@
-package service;
-
+import helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosMover.ApplicationConfig;
 import net.cserny.videosMover.service.PathsProvider;
 import net.cserny.videosMover.service.SubtitlesFinder;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestSubtitleFinding extends TmpVideoInitializer
+public class TestSubtitleFinding extends InMemoryVideoFileSystemInitializer
 {
     @Autowired
     private SubtitlesFinder subtitlesFinder;

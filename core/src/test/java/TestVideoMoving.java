@@ -1,5 +1,6 @@
-package service;
-
+import helper.TestHelperConfig;
+import helper.InMemoryVideoFileSystemInitializer;
+import helper.VideoCreationHelper;
 import net.cserny.videosMover.ApplicationConfig;
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.service.PathsProvider;
@@ -22,22 +23,24 @@ import static org.junit.Assert.assertTrue;
  * Created by leonardo on 02.09.2017.
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoMoving extends TmpVideoInitializer
+@ContextConfiguration(classes = {ApplicationConfig.class, TestHelperConfig.class})
+public class TestVideoMoving extends InMemoryVideoFileSystemInitializer
 {
+    @Autowired
+    private VideoCreationHelper videoHelper;
     @Autowired
     private VideoMover videoMover;
 
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
-        Video video = createTvShow(DOWNLOADS_TVSHOW);
+        Video video = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
         assertTrue(videoMover.move(video));
     }
 
     @Test
     public void givenMultipleVideoRowsTvShowWhenMovingThenMoveAllToTvShowOutput() throws Exception {
-        Video video1 = createTvShow(DOWNLOADS_TVSHOW);
-        Video video2 = createTvShow(DOWNLOADS_EXISTING_TVSHOW);
+        Video video1 = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
+        Video video2 = videoHelper.createTvShow(DOWNLOADS_EXISTING_TVSHOW);
         List<Video> videoList = Arrays.asList(video1, video2);
 
         assertTrue(videoMover.moveAll(videoList));
@@ -45,7 +48,7 @@ public class TestVideoMoving extends TmpVideoInitializer
 
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
-        Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         video.setSubtitles(Collections.singletonList(PathsProvider.getPath(DOWNLOADS_SUBTITLE)));
 
         assertTrue(videoMover.move(video));
@@ -53,7 +56,7 @@ public class TestVideoMoving extends TmpVideoInitializer
 
     @Test
     public void whenSubtitlesAreInSubsFolderMoveThemToSubsFolderInOutputAlso() throws Exception {
-        Video video = createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS);
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS);
         Path subPath1 = PathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS);
         Path subPath2 = PathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS_IDX);
         video.setSubtitles(Arrays.asList(subPath1, subPath2));

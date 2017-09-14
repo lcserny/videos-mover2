@@ -14,7 +14,7 @@ import org.junit.*;
 import org.springframework.context.annotation.PropertySource;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit.ApplicationTest;
-import service.TmpVideoInitializer;
+import helper.InMemoryVideoFileSystemInitializer;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
 @PropertySource("classpath:test-application.properties")
 public class TestUserInterface extends ApplicationTest
 {
-    private TmpVideoInitializer tempVideoInitializer = new TmpVideoInitializer();
+    private InMemoryVideoFileSystemInitializer tempVideoInitializer = new InMemoryVideoFileSystemInitializer();
     private Scene scene;
 
     @BeforeClass

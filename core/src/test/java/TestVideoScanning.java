@@ -1,5 +1,4 @@
-package service;
-
+import helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosMover.ApplicationConfig;
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.service.PathsProvider;
@@ -23,7 +22,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoScanning extends TmpVideoInitializer
+public class TestVideoScanning extends InMemoryVideoFileSystemInitializer
 {
     @Autowired
     private ScanService scanService;
