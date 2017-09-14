@@ -50,6 +50,7 @@ public class TestVideoScanning extends TmpVideoInitializer
                 List<Path> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());
+                assertEquals(1, subtitles.size());
             }
         }
     }

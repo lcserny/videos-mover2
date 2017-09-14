@@ -38,6 +38,7 @@ public class SubtitlesFinderImpl implements SubtitlesFinder
             for (String subtitleExtension : subtitleExtensions) {
                 if (tmpFile.toString().endsWith(subtitleExtension)) {
                     subtitles.add(tmpFile);
+                    break;
                 }
             }
         }
