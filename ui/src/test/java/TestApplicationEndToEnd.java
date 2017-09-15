@@ -1,7 +1,6 @@
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import net.cserny.videosMover.model.Message;
 import net.cserny.videosMover.model.VideoRow;
 import net.cserny.videosMover.service.MessageProvider;
 import net.cserny.videosMover.service.MessageRegistry;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Files;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,8 +24,7 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest
     @After
     public void tearDown() throws Exception {
         super.tearDown();
-        List<Message> messages = messageRegistry.getMessages();
-        messageRegistry.getMessages().removeAll(messages);
+        messageRegistry.getMessages().clear();
     }
 
     @Test
