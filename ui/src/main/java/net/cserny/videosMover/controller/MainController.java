@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,8 +37,6 @@ import java.util.stream.Collectors;
 @Controller
 public class MainController implements Initializable
 {
-    @FXML
-    private Node container;
     @FXML
     private ImageView loadingImage;
     @FXML
