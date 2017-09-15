@@ -8,14 +8,10 @@ import javafx.stage.Stage;
 import net.cserny.videosMover.provider.MainStageProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
-@Configuration
-@ComponentScan
 public class MainApplication extends Application
 {
     public static void main(String[] args) {
