@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface VideoCleaner
 {
-    void clean(Video video) throws IOException;
+    void clean(Video video);
 
-    void cleanAll(List<Video> videos) throws IOException;
+    void cleanAll(List<Video> videos);
 }

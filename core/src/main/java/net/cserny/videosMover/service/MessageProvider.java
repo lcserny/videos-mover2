@@ -27,4 +27,8 @@ public class MessageProvider
     public static Message getMoveSuccessful() {
         return new Message(Alert.AlertType.INFORMATION, "Selected video files have been moved successfully", "Move Successful");
     }
+
+    public static Message getCleanupFailed() {
+        return new Message(Alert.AlertType.WARNING, "Problem occurred while cleaning, probably video parent contains un-removable files, please check", "Clean Error Detected");
+    }
 }

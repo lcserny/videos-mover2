@@ -15,24 +15,31 @@ import java.util.stream.Collectors;
 public class VideoCleanerImpl implements VideoCleaner
 {
     private List<RemovalRestriction> removalRestrictions;
+    private MessageRegistry messageRegistry;
 
     @Autowired
-    public VideoCleanerImpl(List<RemovalRestriction> removalRestrictions) {
+    public VideoCleanerImpl(List<RemovalRestriction> removalRestrictions, MessageRegistry messageRegistry) {
         this.removalRestrictions = removalRestrictions;
+        this.messageRegistry = messageRegistry;
     }
 
     @Override
-    public void clean(Video video) throws IOException {
+    public void clean(Video video) {
         for (RemovalRestriction restriction : removalRestrictions) {
             if (restriction.isRestricted(video)) {
                 return;
             }
         }
-        recursiveDelete(video.getInput().getParent());
+
+        try {
+            recursiveDelete(video.getInput().getParent());
+        } catch (IOException e) {
+            messageRegistry.add(MessageProvider.getCleanupFailed());
+        }
     }
 
     @Override
-    public void cleanAll(List<Video> videos) throws IOException {
+    public void cleanAll(List<Video> videos) {
         for (Video video : videos) {
             clean(video);
         }
