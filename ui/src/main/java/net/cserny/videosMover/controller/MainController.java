@@ -2,6 +2,7 @@ package net.cserny.videosMover.controller;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
+import net.cserny.videosMover.model.Message;
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.model.VideoRow;
 import net.cserny.videosMover.service.*;
@@ -32,11 +34,6 @@ import java.util.stream.Collectors;
 @Controller
 public class MainController implements Initializable
 {
-    public static final String INPUT_MISSING = "inputMissing";
-    public static final String OUTPUT_MISSING = "outputMissing";
-    public static final String NOTHING_SELECTED = "nothingSelected";
-    public static final String MOVE_RESULT = "moveResult";
-
     @FXML
     private ImageView loadingImage;
     @FXML
@@ -49,7 +46,16 @@ public class MainController implements Initializable
     private TextField tvShowPathTextField;
     @FXML
     private Button moveButton;
+    @FXML
+    private Button scanButton;
+    @FXML
+    private Button setDownloadsButton;
+    @FXML
+    private Button setMoviesButton;
+    @FXML
+    private Button setTvShowsButton;
 
+    private MessageRegistry messageRegistry;
     private ScanService scanService;
     private VideoMover videoMover;
     private OutputNameResolver nameResolver;
@@ -57,7 +63,9 @@ public class MainController implements Initializable
     private Scene scene;
 
     @Autowired
-    public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver, VideoCleaner videoCleaner) {
+    public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver,
+                          VideoCleaner videoCleaner, MessageRegistry messageRegistry) {
+        this.messageRegistry = messageRegistry;
         this.scanService = scanService;
         this.videoMover = videoMover;
         this.nameResolver = nameResolver;
@@ -66,12 +74,29 @@ public class MainController implements Initializable
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initButtons();
         initTable();
         initDefaultPaths();
     }
 
     public void setScene(Scene scene) {
         this.scene = scene;
+    }
+
+    private void initButtons() {
+        addPostActionHandler(scanButton);
+        addPostActionHandler(moveButton);
+        addPostActionHandler(setDownloadsButton);
+        addPostActionHandler(setMoviesButton);
+        addPostActionHandler(setTvShowsButton);
+    }
+
+    private void addPostActionHandler(Button button) {
+        EventHandler<ActionEvent> onAction = button.getOnAction();
+        button.setOnAction(event -> {
+            onAction.handle(event);
+            messageRegistry.displayMessages();
+        });
     }
 
     private void initDefaultPaths() {
@@ -115,7 +140,7 @@ public class MainController implements Initializable
 
     public void loadTableView(ActionEvent event) throws IOException {
         if (PathsProvider.getDownloadsPath() == null) {
-            showAlert(Alert.AlertType.ERROR, "Downloads folder doesn't exist, please set correct path and try again.", "Input Path Error", INPUT_MISSING);
+            messageRegistry.add(MessageProvider.getIputMissing());
             return;
         }
 
@@ -154,7 +179,7 @@ public class MainController implements Initializable
 
     public void moveVideos(ActionEvent event) throws IOException {
         if (PathsProvider.getMoviesPath() == null || PathsProvider.getTvShowsPath() == null) {
-            showAlert(Alert.AlertType.ERROR, "Movies or TvShows folder/s not set, please set correct paths and try again.", "Output Path Error", OUTPUT_MISSING);
+            messageRegistry.add(MessageProvider.getOutputMissing());
             return;
         }
 
@@ -162,25 +187,17 @@ public class MainController implements Initializable
                 .filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
                 .map(VideoRow::getVideo).collect(Collectors.toList());
         if (selectedVideos.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "No video files have been selected, nothing was moved...", "No Move Done", NOTHING_SELECTED);
+            messageRegistry.add(MessageProvider.getNothingSelected());
             return;
         }
 
         boolean result = videoMover.moveAll(selectedVideos);
-
-        Alert.AlertType resultType = Alert.AlertType.WARNING;
-        String resultMessage = "Problem occurred while moving, some files might not have been moved, please check";
-        String resultTitle = "Move Error Detected";
-
+        Message message = MessageProvider.getProblemOccurred();
         if (result) {
             videoCleaner.cleanAll(selectedVideos);
-            resultType = Alert.AlertType.INFORMATION;
-            resultMessage = "Selected video files have been moved successfully";
-            resultTitle = "Move Successful";
+            message = MessageProvider.getMoveSuccessful();
         }
-
-        showAlert(resultType, resultMessage, resultTitle, MOVE_RESULT);
-
+        messageRegistry.add(message);
         loadTableView(null);
     }
 
@@ -206,16 +223,6 @@ public class MainController implements Initializable
             tvShowPathTextField.setText(path);
             PathsProvider.setTvShowsPath(path);
         }
-    }
-
-    private void showAlert(Alert.AlertType type, String content, String title, Object userData) {
-        Alert alert = new Alert(type, content);
-        alert.setHeaderText(null);
-        alert.setTitle(title);
-        alert.initOwner(scene.getWindow());
-        alert.setOnShown(e -> { scene.setUserData(userData); });
-        alert.setOnHidden(e -> { scene.setUserData(null); });
-        alert.show();
     }
 
     private String processDirectoryChooserPath(String title, String currentPathString) {

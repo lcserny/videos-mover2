@@ -1,55 +1,33 @@
-import helper.InMemoryVideoFileSystemInitializer;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
-import javafx.stage.Stage;
-import net.cserny.videosMover.MainApplication;
-import net.cserny.videosMover.controller.MainController;
+import net.cserny.videosMover.model.Message;
 import net.cserny.videosMover.model.VideoRow;
+import net.cserny.videosMover.service.MessageProvider;
+import net.cserny.videosMover.service.MessageRegistry;
 import net.cserny.videosMover.service.PathsProvider;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.annotation.PropertySource;
-import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit.ApplicationTest;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Files;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
-@PropertySource("classpath:test-application.properties")
-public class TestApplicationEndToEnd extends ApplicationTest
+public class TestApplicationEndToEnd extends AbstractApplicationTest
 {
-    private InMemoryVideoFileSystemInitializer tempVideoInitializer = new InMemoryVideoFileSystemInitializer();
-    private Scene scene;
-
-    @BeforeClass
-    public static void setupClass() throws Exception {
-        launch(MainApplication.class);
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        tempVideoInitializer.setUp();
-    }
+    @Autowired
+    private MessageRegistry messageRegistry;
 
     @After
     public void tearDown() throws Exception {
-        FxToolkit.cleanupStages();
-        tempVideoInitializer.tearDown();
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.scene = stage.getScene();
-        stage.show();
+        super.tearDown();
+        List<Message> messages = messageRegistry.getMessages();
+        messageRegistry.getMessages().removeAll(messages);
     }
 
     @Test
@@ -59,7 +37,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
 
         clickOn(scanButton);
 
-        assertEquals(MainController.INPUT_MISSING, scene.getUserData());
+        assertTrue(messageRegistry.getMessages().contains(MessageProvider.getIputMissing()));
     }
 
     @Test
@@ -75,7 +53,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
         clickOn(movieCheckOnFirstRow);
         clickOn(moveButton);
 
-        assertEquals(MainController.OUTPUT_MISSING, scene.getUserData());
+        assertTrue(messageRegistry.getMessages().contains(MessageProvider.getOutputMissing()));
     }
 
     @Test
@@ -86,7 +64,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
         clickOn(scanButton);
         clickOn(moveButton);
 
-        assertEquals(MainController.NOTHING_SELECTED, scene.getUserData());
+        assertTrue(messageRegistry.getMessages().contains(MessageProvider.getNothingSelected()));
     }
 
     @Test
@@ -101,7 +79,7 @@ public class TestApplicationEndToEnd extends ApplicationTest
         clickOn(movieCheckOnFirstRow);
         clickOn(moveButton);
 
-        assertEquals(MainController.MOVE_RESULT, scene.getUserData());
+        assertTrue(messageRegistry.getMessages().contains(MessageProvider.getMoveSuccessful()));
     }
 
     @Test

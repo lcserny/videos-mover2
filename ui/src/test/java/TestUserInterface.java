@@ -1,54 +1,20 @@
-package ui;
-
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-import net.cserny.videosMover.MainApplication;
 import net.cserny.videosMover.model.VideoRow;
 import net.cserny.videosMover.service.PathsProvider;
-import org.junit.*;
-import org.springframework.context.annotation.PropertySource;
-import org.testfx.api.FxToolkit;
-import org.testfx.framework.junit.ApplicationTest;
-import helper.InMemoryVideoFileSystemInitializer;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by leonardo on 03.09.2017.
  */
-@PropertySource("classpath:test-application.properties")
-public class TestUserInterface extends ApplicationTest
+public class TestUserInterface extends AbstractApplicationTest
 {
-    private InMemoryVideoFileSystemInitializer tempVideoInitializer = new InMemoryVideoFileSystemInitializer();
-    private Scene scene;
-
-    @BeforeClass
-    public static void setupClass() throws Exception {
-        launch(MainApplication.class);
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        tempVideoInitializer.setUp();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        FxToolkit.cleanupStages();
-        tempVideoInitializer.tearDown();
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        this.scene = stage.getScene();
-        stage.show();
-    }
-
     @Test
     public void givenScanButtonAndMainTableWhenClickedThenAppPopulatesMainTableWithVideosFound() throws Exception {
         Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
