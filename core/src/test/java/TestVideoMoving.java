@@ -1,5 +1,5 @@
-import helper.TestHelperConfig;
 import helper.InMemoryVideoFileSystemInitializer;
+import helper.TestHelperConfig;
 import helper.VideoCreationHelper;
 import net.cserny.videosMover.ApplicationConfig;
 import net.cserny.videosMover.model.Video;

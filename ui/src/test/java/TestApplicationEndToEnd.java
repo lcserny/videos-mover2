@@ -33,7 +33,7 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest
     @Test
     public void givenNoDownloadsLocationWhenScanningThenShowPopup() throws Exception {
         PathsProvider.setDownloadsPath(null);
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
 
         clickOn(scanButton);
 
@@ -43,12 +43,12 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest
     @Test
     public void givenNoTvShowsOrMoviesLocationWhenScanningAndTryingToMoveShowsPopup() throws Exception {
         PathsProvider.setTvShowsPath(null);
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn(moveButton);
@@ -58,8 +58,8 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest
 
     @Test
     public void selectingNoVideoAfterScanningAndTryingToMoveShowsPopup() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
         clickOn(moveButton);
@@ -69,12 +69,12 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest
 
     @Test
     public void whenApplicationScansCheckmarksAVideoAsMovieAndMovesItThenShowPopup() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#moveButton").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn(moveButton);
@@ -84,14 +84,14 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest
 
     @Test
     public void afterMovingVideoMovieCleanupDownloads() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        Button moveButton = from(scene.getRoot()).lookup("#moveButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        Button moveButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#moveButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
         VideoRow videoRow = tableView.getItems().get(0);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn(moveButton);

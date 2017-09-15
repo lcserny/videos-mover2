@@ -17,8 +17,8 @@ public class TestUserInterface extends AbstractApplicationTest
 {
     @Test
     public void givenScanButtonAndMainTableWhenClickedThenAppPopulatesMainTableWithVideosFound() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
 
@@ -28,7 +28,7 @@ public class TestUserInterface extends AbstractApplicationTest
     @Test
     public void givenSetDownloadsPathButtonWhenClickedSetsSystemPathForDownloads() throws Exception {
 //        Button setDownloadsButton = from(scene.getRoot()).lookup("#setDownloadsButton").query();
-        TextField downloadsTextField = from(scene.getRoot()).lookup("#downloadsPathTextField").query();
+        TextField downloadsTextField = from(stageProvider.getStage().getScene().getRoot()).lookup("#downloadsPathTextField").query();
 
 //        clickOn(setDownloadsButton);
 //        push(KeyCode.ENTER);
@@ -41,7 +41,7 @@ public class TestUserInterface extends AbstractApplicationTest
     @Test
     public void givenSetMoviesPathButtonWhenClickedSetsSystemPathForMovies() throws Exception {
 //        Button setMoviesButton = from(scene.getRoot()).lookup("#setMoviesButton").query();
-        TextField moviesTextField = from(scene.getRoot()).lookup("#moviePathTextField").query();
+        TextField moviesTextField = from(stageProvider.getStage().getScene().getRoot()).lookup("#moviePathTextField").query();
 
 //        clickOn(setMoviesButton);
 //        push(KeyCode.ENTER);
@@ -54,7 +54,7 @@ public class TestUserInterface extends AbstractApplicationTest
     @Test
     public void givenSetTvShowsPathButtonWhenClickedSetsSystemPathForTvShows() throws Exception {
 //        Button setTvShowsButton = from(scene.getRoot()).lookup("#setTvShowsButton").query();
-        TextField tvShowsTextField = from(scene.getRoot()).lookup("#tvShowPathTextField").query();
+        TextField tvShowsTextField = from(stageProvider.getStage().getScene().getRoot()).lookup("#tvShowPathTextField").query();
 
 //        clickOn(setTvShowsButton);
 //        push(KeyCode.ENTER);
@@ -66,16 +66,16 @@ public class TestUserInterface extends AbstractApplicationTest
 
     @Test
     public void givenPopulatedMainTableWhenUnCheckingCheckedMovieThenTvShowShouldAlsoBeUnChecked() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
         VideoRow videoRow = tableView.getItems().get(0);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
-        Node movieUnCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieUnCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieUnCheckOnFirstRow);
 
@@ -84,16 +84,16 @@ public class TestUserInterface extends AbstractApplicationTest
 
     @Test
     public void givenPopulatedMainTableWhenUnCheckingCheckedTvShowThenMovieShouldAlsoBeUnChecked() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
         VideoRow videoRow = tableView.getItems().get(0);
-        Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node tvShowCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
-        Node tvShowUnCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node tvShowUnCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowUnCheckOnFirstRow);
 
@@ -102,15 +102,15 @@ public class TestUserInterface extends AbstractApplicationTest
 
     @Test
     public void givenPopulatedMainTableWhenCheckingTvShowCheckedMovieThenUnCheckTvShowForIt() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
-        Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node tvShowCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
 
@@ -119,15 +119,15 @@ public class TestUserInterface extends AbstractApplicationTest
 
     @Test
     public void givenPopulatedMainTableWhenCheckingMovieCheckedTvShowThenUnCheckMovieForIt() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
-        Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node tvShowCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
 
@@ -137,9 +137,9 @@ public class TestUserInterface extends AbstractApplicationTest
     @Ignore("Don't know how to do this..., maybe just check if setVisible(true) was called on image?")
     @Test
     public void whenClickingOnScanButtonShowLoadingImageUntilMainTableIsPopulated() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
-        ImageView loadingImage = from(scene.getRoot()).lookup("#loadingImage").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
+        ImageView loadingImage = from(stageProvider.getStage().getScene().getRoot()).lookup("#loadingImage").query();
 
         assertFalse(loadingImage.isVisible());
         clickOn(scanButton);
@@ -150,12 +150,12 @@ public class TestUserInterface extends AbstractApplicationTest
 
     @Test
     public void whenCheckingMovieInMainTableThenMovieOutputPathShouldNotBeEmpty() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
-        Node movieCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node movieCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
 
@@ -166,12 +166,12 @@ public class TestUserInterface extends AbstractApplicationTest
 
     @Test
     public void whenCheckingTvShowInMainTableThenTvShowOutputPathShouldNotBeEmpty() throws Exception {
-        Button scanButton = from(scene.getRoot()).lookup("#scanButton").query();
-        TableView<VideoRow> tableView = from(scene.getRoot()).lookup("#tableView").query();
+        Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
+        TableView<VideoRow> tableView = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView").query();
 
         clickOn(scanButton);
         Thread.sleep(100);
-        Node tvShowCheckOnFirstRow = from(scene.getRoot()).lookup("#tableView")
+        Node tvShowCheckOnFirstRow = from(stageProvider.getStage().getScene().getRoot()).lookup("#tableView")
                 .lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(2).query();
         clickOn(tvShowCheckOnFirstRow);
 

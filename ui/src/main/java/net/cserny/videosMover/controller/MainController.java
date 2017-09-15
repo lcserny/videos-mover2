@@ -5,8 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -16,6 +19,7 @@ import javafx.stage.DirectoryChooser;
 import net.cserny.videosMover.model.Message;
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.model.VideoRow;
+import net.cserny.videosMover.provider.MainStageProvider;
 import net.cserny.videosMover.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,36 +39,27 @@ import java.util.stream.Collectors;
 public class MainController implements Initializable
 {
     @FXML
+    private Node container;
+    @FXML
     private ImageView loadingImage;
     @FXML
     private TableView<VideoRow> tableView;
     @FXML
-    private TextField downloadsPathTextField;
+    private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField;
     @FXML
-    private TextField moviePathTextField;
-    @FXML
-    private TextField tvShowPathTextField;
-    @FXML
-    private Button moveButton;
-    @FXML
-    private Button scanButton;
-    @FXML
-    private Button setDownloadsButton;
-    @FXML
-    private Button setMoviesButton;
-    @FXML
-    private Button setTvShowsButton;
+    private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
     private MessageRegistry messageRegistry;
     private ScanService scanService;
     private VideoMover videoMover;
     private OutputNameResolver nameResolver;
     private VideoCleaner videoCleaner;
-    private Scene scene;
+    private MainStageProvider stageProvider;
 
     @Autowired
     public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver,
-                          VideoCleaner videoCleaner, MessageRegistry messageRegistry) {
+                          VideoCleaner videoCleaner, MessageRegistry messageRegistry, MainStageProvider stageProvider) {
+        this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
         this.videoMover = videoMover;
@@ -77,10 +72,6 @@ public class MainController implements Initializable
         initButtons();
         initTable();
         initDefaultPaths();
-    }
-
-    public void setScene(Scene scene) {
-        this.scene = scene;
     }
 
     private void initButtons() {
@@ -183,8 +174,7 @@ public class MainController implements Initializable
             return;
         }
 
-        List<Video> selectedVideos = tableView.getItems().stream()
-                .filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
+        List<Video> selectedVideos = tableView.getItems().stream().filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
                 .map(VideoRow::getVideo).collect(Collectors.toList());
         if (selectedVideos.isEmpty()) {
             messageRegistry.add(MessageProvider.getNothingSelected());
@@ -231,7 +221,7 @@ public class MainController implements Initializable
         if (currentPathString != null) {
             chooser.setInitialDirectory(new File(currentPathString));
         }
-        File chosenPath = chooser.showDialog(scene.getWindow());
+        File chosenPath = chooser.showDialog(stageProvider.getStage());
         if (chosenPath != null && chosenPath.exists()) {
             return chosenPath.getAbsolutePath();
         }

@@ -5,13 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import net.cserny.videosMover.controller.MainController;
+import net.cserny.videosMover.provider.MainStageProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
+@Configuration
+@ComponentScan
 public class MainApplication extends Application
 {
     public static void main(String[] args) {
@@ -24,11 +28,10 @@ public class MainApplication extends Application
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setControllerFactory(context::getBean);
 
-        Scene scene = new Scene(loader.load());
-        MainController controller = loader.getController();
-        controller.setScene(scene);
+        MainStageProvider stageProvider = context.getBean(MainStageProvider.class);
+        stageProvider.setStage(primaryStage);
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(new Scene(loader.load()));
         primaryStage.setTitle("Downloads VideoMover");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         primaryStage.centerOnScreen();

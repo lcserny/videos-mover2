@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.cserny.videosMover.ApplicationConfig;
 import net.cserny.videosMover.MainApplication;
-import net.cserny.videosMover.controller.MainController;
+import net.cserny.videosMover.provider.MainStageProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,10 +21,11 @@ import org.testfx.framework.junit.ApplicationTest;
 @ContextConfiguration(classes = ApplicationConfig.class)
 public abstract class AbstractApplicationTest extends ApplicationTest
 {
-    protected Scene scene;
-
     @Autowired
     private ApplicationContext context;
+
+    @Autowired
+    protected MainStageProvider stageProvider;
 
     private InMemoryVideoFileSystemInitializer tempVideoInitializer = new InMemoryVideoFileSystemInitializer();
 
@@ -49,11 +50,9 @@ public abstract class AbstractApplicationTest extends ApplicationTest
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setControllerFactory(context::getBean);
 
-        this.scene = new Scene(loader.load());
-        MainController controller = loader.getController();
-        controller.setScene(scene);
+        stageProvider.setStage(stage);
 
-        stage.setScene(scene);
+        stage.setScene(new Scene(loader.load()));
         stage.setTitle("Downloads VideoMover");
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         stage.centerOnScreen();

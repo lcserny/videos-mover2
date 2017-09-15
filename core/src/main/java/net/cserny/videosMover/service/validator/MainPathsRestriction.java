@@ -2,7 +2,6 @@ package net.cserny.videosMover.service.validator;
 
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.service.PathsProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
