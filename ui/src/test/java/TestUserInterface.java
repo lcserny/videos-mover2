@@ -1,20 +1,28 @@
+import config.TestConfiguration;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import net.cserny.videosMover.controller.MainController;
 import net.cserny.videosMover.model.VideoRow;
 import net.cserny.videosMover.service.PathsProvider;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by leonardo on 03.09.2017.
  */
+@ContextConfiguration(classes = TestConfiguration.class)
 public class TestUserInterface extends AbstractApplicationTest
 {
+    @Autowired
+    private MainController mainController;
+
     @Test
     public void givenScanButtonAndMainTableWhenClickedThenAppPopulatesMainTableWithVideosFound() throws Exception {
         Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
