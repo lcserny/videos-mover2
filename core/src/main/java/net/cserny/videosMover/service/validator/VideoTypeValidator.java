@@ -14,8 +14,7 @@ import java.util.List;
  */
 @Service
 @Order(2)
-public class VideoTypeValidator implements VideoValidator
-{
+public class VideoTypeValidator implements VideoValidator {
     @Value("#{'${video.mime.types}'.split(',')}")
     private List<String> allowedMimeTypes;
 

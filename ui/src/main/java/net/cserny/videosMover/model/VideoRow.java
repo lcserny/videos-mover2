@@ -9,8 +9,7 @@ import net.cserny.videosMover.service.PathsProvider;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class VideoRow
-{
+public class VideoRow {
     private final Video video;
     private StringProperty name = new SimpleStringProperty();
     private StringProperty output = new SimpleStringProperty();

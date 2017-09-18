@@ -15,6 +15,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
+import net.cserny.videosMover.listener.MovieChangeListener;
+import net.cserny.videosMover.listener.TvShowChangeListener;
 import net.cserny.videosMover.model.Message;
 import net.cserny.videosMover.model.Video;
 import net.cserny.videosMover.model.VideoRow;
@@ -35,8 +37,7 @@ import java.util.stream.Collectors;
  * Created by leonardo on 02.09.2017.
  */
 @Controller
-public class MainController implements Initializable
-{
+public class MainController implements Initializable {
     @FXML
     private ImageView loadingImage;
     @FXML
@@ -154,14 +155,8 @@ public class MainController implements Initializable
     private VideoRow buildVideoRow(Video video) {
         VideoRow videoRow = new VideoRow(video);
         videoRow.setName(video.getInput().getFileName().toString());
-        videoRow.isMovieProperty().addListener((observable, oldValue, newValue) -> {
-            videoRow.setIsMovie(newValue);
-            videoRow.setOutput(newValue ? nameResolver.resolve(videoRow.getVideo()) : "");
-        });
-        videoRow.isTvShowProperty().addListener((observable, oldValue, newValue) -> {
-            videoRow.setIsTvShow(newValue);
-            videoRow.setOutput(newValue ? nameResolver.resolve(videoRow.getVideo()) : "");
-        });
+        videoRow.isMovieProperty().addListener(new MovieChangeListener(videoRow, nameResolver));
+        videoRow.isTvShowProperty().addListener(new TvShowChangeListener(videoRow, nameResolver));
         return videoRow;
     }
 

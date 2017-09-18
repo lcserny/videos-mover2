@@ -24,8 +24,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {ApplicationConfig.class, TestHelperConfig.class})
-public class TestVideoMoving extends InMemoryVideoFileSystemInitializer
-{
+public class TestVideoMoving extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private VideoCreationHelper videoHelper;
     @Autowired

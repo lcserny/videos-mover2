@@ -10,8 +10,7 @@ import java.util.List;
  * Created by leonardo on 12.09.2017.
  */
 @Service
-public class CustomPathsRestriction implements RemovalRestriction
-{
+public class CustomPathsRestriction implements RemovalRestriction {
     @Value("#{'${restricted.remove.paths}'.split(',')}")
     private List<String> restrictedFolders;
 

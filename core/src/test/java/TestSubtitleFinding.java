@@ -20,8 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestSubtitleFinding extends InMemoryVideoFileSystemInitializer
-{
+public class TestSubtitleFinding extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private SubtitlesFinder subtitlesFinder;
 

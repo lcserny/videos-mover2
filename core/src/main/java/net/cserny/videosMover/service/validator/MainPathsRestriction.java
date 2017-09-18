@@ -11,13 +11,13 @@ import java.util.List;
  * Created by leonardo on 12.09.2017.
  */
 @Service
-public class MainPathsRestriction implements RemovalRestriction
-{
+public class MainPathsRestriction implements RemovalRestriction {
     private List<String> restrictedFolders;
 
     @Override
     public boolean isRestricted(Video video) {
         refreshRestrictedFolders();
+
         for (String restrictedFolder : restrictedFolders) {
             if (restrictedFolder.endsWith(video.getInput().getParent().getFileName().toString())) {
                 return true;

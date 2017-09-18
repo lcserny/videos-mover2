@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PopupMessageDisplayProvider implements MessageDisplayProvider
-{
-    private MessageRegistry messageRegistry;
-    private MainStageProvider stageProvider;
+public class PopupMessageDisplayProvider implements MessageDisplayProvider {
+    private final MessageRegistry messageRegistry;
+    private final MainStageProvider stageProvider;
 
     @Autowired
     public PopupMessageDisplayProvider(MessageRegistry messageRegistry, MainStageProvider stageProvider) {

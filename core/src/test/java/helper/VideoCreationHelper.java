@@ -7,10 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VideoCreationHelper
-{
+public class VideoCreationHelper {
+    private final OutputNameResolver nameResolver;
+
     @Autowired
-    private OutputNameResolver nameResolver;
+    public VideoCreationHelper(OutputNameResolver nameResolver) {
+        this.nameResolver = nameResolver;
+    }
 
     public Video createTvShow(String input) {
         Video video = new Video();

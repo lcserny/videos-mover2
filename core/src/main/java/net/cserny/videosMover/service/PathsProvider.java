@@ -10,8 +10,7 @@ import java.nio.file.Path;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class PathsProvider
-{
+public class PathsProvider {
     private static FileSystem fileSystem;
     private static String downloadsPath;
     private static String moviesPath;
@@ -97,13 +96,12 @@ public class PathsProvider
         try {
             return hostname.equals(InetAddress.getLocalHost().getHostName());
         } catch (UnknownHostException ignored) { }
+
         return false;
     }
 
     private static boolean isWindowsOs() {
-        String osName = System.getProperty("os.name", "generic").toLowerCase();
-        return osName.contains("win");
+        String osName = System.getProperty("os.name", "generic");
+        return osName.toLowerCase().contains("win");
     }
-
-
 }

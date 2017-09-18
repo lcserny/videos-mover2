@@ -13,11 +13,10 @@ import java.util.regex.Pattern;
  */
 @Service
 @Order(1)
-public class VideoNameTrimmer implements VideoNameParser
-{
+public class VideoNameTrimmer implements VideoNameParser {
     @Value("#{'${video.trim.parts}'.split(';')}")
     private List<String> nameTrimParts;
-    private Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
+    private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
 
     @Override
     public String parseTvShow(String text) {
@@ -47,10 +46,14 @@ public class VideoNameTrimmer implements VideoNameParser
 
     private String toCamelCase(String text) {
         StringBuilder camelCaseString = new StringBuilder();
-        for (String part : stripSpecialChars(text).split("\\s+")) {
-            camelCaseString.append(toProperCase(part)).append(" ");
+        String[] nameParts = stripSpecialChars(text).split("\\s+");
+        for (int i = 0; i < nameParts.length; i++) {
+            camelCaseString.append(toProperCase(nameParts[i]));
+            if (i < nameParts.length - 1) {
+                camelCaseString.append(" ");
+            }
         }
-        return camelCaseString.toString().trim();
+        return camelCaseString.toString();
     }
 
     private String removeExtension(String text) {

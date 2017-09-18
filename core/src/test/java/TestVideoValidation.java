@@ -18,8 +18,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoValidation extends InMemoryVideoFileSystemInitializer
-{
+public class TestVideoValidation extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private VideoChecker videoChecker;
 

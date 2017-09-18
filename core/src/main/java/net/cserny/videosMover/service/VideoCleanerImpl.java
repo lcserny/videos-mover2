@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class VideoCleanerImpl implements VideoCleaner
-{
-    private List<RemovalRestriction> removalRestrictions;
-    private MessageRegistry messageRegistry;
+public class VideoCleanerImpl implements VideoCleaner {
+    private final List<RemovalRestriction> removalRestrictions;
+    private final MessageRegistry messageRegistry;
 
     @Autowired
     public VideoCleanerImpl(List<RemovalRestriction> removalRestrictions, MessageRegistry messageRegistry) {

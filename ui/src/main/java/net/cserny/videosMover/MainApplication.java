@@ -12,8 +12,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class MainApplication extends Application
-{
+public class MainApplication extends Application {
     public static void main(String[] args) {
         launch();
     }

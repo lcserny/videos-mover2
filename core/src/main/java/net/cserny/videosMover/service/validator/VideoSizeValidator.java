@@ -13,8 +13,7 @@ import java.nio.file.Path;
  */
 @Service
 @Order(3)
-public class VideoSizeValidator implements VideoValidator
-{
+public class VideoSizeValidator implements VideoValidator {
     @Value("${minimum.video.size}")
     private Long minimumVideoSize;
 

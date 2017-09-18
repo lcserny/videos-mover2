@@ -11,9 +11,8 @@ import java.util.List;
  * Created by leonardo on 02.09.2017.
  */
 @Service
-public class OutputNameResolverImpl implements OutputNameResolver
-{
-    private List<VideoNameParser> nameParserList;
+public class OutputNameResolverImpl implements OutputNameResolver {
+    private final List<VideoNameParser> nameParserList;
 
     @Autowired
     public OutputNameResolverImpl(List<VideoNameParser> nameParserList) {

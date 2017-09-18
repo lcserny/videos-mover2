@@ -19,8 +19,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public abstract class AbstractApplicationTest extends ApplicationTest
-{
+public abstract class AbstractApplicationTest extends ApplicationTest {
     @Autowired
     private ApplicationContext context;
 

@@ -12,8 +12,7 @@ import java.util.List;
  */
 @Service
 @Order(1)
-public class VideoPathValidator implements VideoValidator
-{
+public class VideoPathValidator implements VideoValidator {
     @Value("#{'${video.exclude.paths}'.split(',')}")
     private List<String> excludedVideoPaths;
 

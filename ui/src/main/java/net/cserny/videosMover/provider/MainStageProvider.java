@@ -4,8 +4,7 @@ import javafx.stage.Stage;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MainStageProvider
-{
+public class MainStageProvider {
     private Stage stage;
 
     public Stage getStage() {

@@ -14,27 +14,28 @@ import java.nio.file.Path;
 /**
  * Created by leonardo on 09.09.2017.
  */
-public class InMemoryVideoFileSystemInitializer
-{
-    private static final String DOWNLOADS = "/Downloads/";
+public class InMemoryVideoFileSystemInitializer {
+    public static final String DOWNLOADS = "/Downloads/";
     public static final String DOWNLOADS_EMPTY_FOLDER = DOWNLOADS + "emptyFolder";
     public static final String DOWNLOADS_REGULAR_FILE = DOWNLOADS + "NonVideoFolder/NonVideo.txt";
     public static final String DOWNLOADS_ILLEGAL_VIDEO = DOWNLOADS + "Programming Stuff/illegalVideo.mp4";
     public static final String DOWNLOADS_SMALL_VIDEO = DOWNLOADS + "SmallVideoFolder/smallVideo.mp4";
     public static final String DOWNLOADS_ROOT_VIDEO = DOWNLOADS + "fromDownloads.mp4";
-    private static final String DOWNLOADS_BIGSICK = DOWNLOADS + "The.Big.Sick.1080p.[2017].x264/";
+    public static final String DOWNLOADS_BIGSICK = DOWNLOADS + "The.Big.Sick.1080p.[2017].x264/";
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE = DOWNLOADS_BIGSICK + "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_SUBTITLE = DOWNLOADS_BIGSICK + "Sub/Subtitle.srt";
     public static final String DOWNLOADS_RESTRICTED_MOVIE = DOWNLOADS + "The.Hero.1080p.[2017].x264/the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_EXISTING_TVSHOW = DOWNLOADS + "Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
     public static final String DOWNLOADS_TVSHOW = DOWNLOADS + "Game.Of.Thrones.s0e10/game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
-    private static final String DOWNLOADS_GATSBY = DOWNLOADS + "the.great.gatsby.2015/";
+    public static final String DOWNLOADS_GATSBY = DOWNLOADS + "the.great.gatsby.2015/";
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "the.great.gatsby.2015.x264.1080p.avi";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "Subs/subtitle.srt";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS_IDX = DOWNLOADS_GATSBY + "Subs/subtitle.idx";
 
     protected FileSystem inMemoryFilesystem;
-    private Path downloadsFolder, moviesFolder, tvShowsFolder;
+    private Path downloadsFolder;
+    private Path moviesFolder;
+    private Path tvShowsFolder;
 
     @Before
     public void setUp() throws Exception {

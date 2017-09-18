@@ -6,8 +6,7 @@ import java.util.List;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class Video
-{
+public class Video {
     private Path input;
     private Path output;
     private List<Path> subtitles;

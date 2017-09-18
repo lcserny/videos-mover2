@@ -22,11 +22,9 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoScanning extends InMemoryVideoFileSystemInitializer
-{
+public class TestVideoScanning extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private ScanService scanService;
-
     private List<Video> videosScanned;
 
     @Override

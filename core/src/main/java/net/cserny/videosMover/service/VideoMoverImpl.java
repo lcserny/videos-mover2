@@ -12,16 +12,15 @@ import java.util.List;
  * Created by leonardo on 03.09.2017.
  */
 @Service
-public class VideoMoverImpl implements VideoMover
-{
+public class VideoMoverImpl implements VideoMover {
     private static final String SUBTITLE_SUBPATH = "Subs";
 
     @Override
     public boolean move(Video video) throws IOException {
-        Path source = video.getInput();
         Path target = video.getOutput();
-
         createDirectoryInternal(target);
+
+        Path source = video.getInput();
         moveInternal(source, target.resolve(source.getFileName()));
 
         List<Path> subtitles = video.getSubtitles();
@@ -47,11 +46,15 @@ public class VideoMoverImpl implements VideoMover
 
     private Path getPartialSubtitleTarget(Path target, Path subtitle) throws IOException {
         Path partialTarget = target;
-        if (subtitle.getParent().getFileName().toString().equals(SUBTITLE_SUBPATH)) {
+        if (getParentFolderName(subtitle).equals(SUBTITLE_SUBPATH)) {
             partialTarget = target.resolve(SUBTITLE_SUBPATH);
             createDirectoryInternal(partialTarget);
         }
         return partialTarget;
+    }
+
+    private String getParentFolderName(Path path) {
+        return path.getParent().getFileName().toString();
     }
 
     private void createDirectoryInternal(Path directory) throws IOException {

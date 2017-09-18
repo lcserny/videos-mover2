@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SimpleMessageRegistry implements MessageRegistry
-{
+public class SimpleMessageRegistry implements MessageRegistry {
     private List<Message> messages;
     private List<MessageDisplayProvider> messageDisplayProviders;
 

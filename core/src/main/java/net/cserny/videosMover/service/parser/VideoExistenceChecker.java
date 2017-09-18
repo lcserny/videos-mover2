@@ -7,17 +7,20 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by leonardo on 10.09.2017.
  */
 @Service
 @Order(2)
-public class VideoExistenceChecker implements VideoNameParser
-{
+public class VideoExistenceChecker implements VideoNameParser {
     @Value("${similarity.percent}")
     private Integer similarityPercent;
 
@@ -35,26 +38,37 @@ public class VideoExistenceChecker implements VideoNameParser
         if (path == null) {
             return "";
         }
+        return probeExistingFolder(PathsProvider.getPath(path), filename)
+                .orElse(path + "/" + filename);
+    }
 
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(PathsProvider.getPath(path), Files::isDirectory)) {
-            int maxCoefficient = 0;
-            Path selectedFolder = null;
-
-            for (Path dirPath : directoryStream) {
-                int currentCoefficient = FuzzySearch.ratio(filename, dirPath.getFileName().toString());
-                if (currentCoefficient > maxCoefficient) {
-                    maxCoefficient = currentCoefficient;
-                    selectedFolder = dirPath;
-                }
+    private Optional<String> probeExistingFolder(Path path, String filename) {
+        int maxCoefficient = 0;
+        Path selectedFolder = null;
+        for (Path dirPath : findDirectories(path)) {
+            int currentCoefficient = FuzzySearch.ratio(filename, dirPath.getFileName().toString());
+            if (currentCoefficient > maxCoefficient) {
+                maxCoefficient = currentCoefficient;
+                selectedFolder = dirPath;
             }
+        }
 
-            if (selectedFolder != null && maxCoefficient >= similarityPercent) {
-                return selectedFolder.toString();
-            }
+        if (selectedFolder != null && maxCoefficient >= similarityPercent) {
+            return Optional.of(selectedFolder.toString());
+        }
+        return Optional.empty();
+    }
+
+    private List<Path> findDirectories(Path path) {
+        List<Path> foundDirectories = new ArrayList<>();
+        try {
+            foundDirectories = Files.walk(path, 1, FileVisitOption.FOLLOW_LINKS)
+                    .filter(Files::isDirectory)
+                    .filter(dir -> !dir.equals(path))
+                    .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return path + "/" + filename;
+        return foundDirectories;
     }
 }

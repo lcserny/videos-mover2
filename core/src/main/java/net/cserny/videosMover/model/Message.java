@@ -2,11 +2,10 @@ package net.cserny.videosMover.model;
 
 import javafx.scene.control.Alert;
 
-public class Message
-{
-    private Alert.AlertType alertType;
-    private String content;
-    private String title;
+public class Message {
+    private final Alert.AlertType alertType;
+    private final String content;
+    private final String title;
 
     public Message(Alert.AlertType alertType, String content, String title) {
         this.alertType = alertType;

@@ -14,25 +14,21 @@ import java.util.stream.Collectors;
  * Created by leonardo on 02.09.2017.
  */
 @Service
-public class SubtitlesFinderImpl implements SubtitlesFinder
-{
+public class SubtitlesFinderImpl implements SubtitlesFinder {
     @Value("#{'${video.subtitle.extensions}'.split(',')}")
     private List<String> subtitleExtensions;
 
     @Override
     public List<Path> find(Path file) throws IOException {
-        List<Path> subtitles = new ArrayList<>();
-
         Path directory = file.getParent();
         if (directory.toString().equals(PathsProvider.getDownloadsPath())) {
-            return subtitles;
+            return new ArrayList<>();
         }
-
-        addSubtitles(subtitles, directory);
-        return subtitles;
+        return collectSubtitles(directory);
     }
 
-    private void addSubtitles(List<Path> subtitles, Path directory) throws IOException {
+    private List<Path> collectSubtitles(Path directory) throws IOException {
+        List<Path> subtitles = new ArrayList<>();
         List<Path> files = Files.walk(directory).filter(Files::isRegularFile).collect(Collectors.toList());
         for (Path tmpFile : files) {
             for (String subtitleExtension : subtitleExtensions) {
@@ -42,5 +38,6 @@ public class SubtitlesFinderImpl implements SubtitlesFinder
                 }
             }
         }
+        return subtitles;
     }
 }

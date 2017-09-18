@@ -4,8 +4,7 @@ import net.cserny.videosMover.model.Message;
 
 import java.util.List;
 
-public interface MessageRegistry
-{
+public interface MessageRegistry {
     void registerDisplayProvider(MessageDisplayProvider messageDisplayProvider);
 
     void displayMessages();

@@ -16,8 +16,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by leonardo on 02.09.2017.
  */
-public class TestApplicationEndToEnd extends AbstractApplicationTest
-{
+public class TestApplicationEndToEnd extends AbstractApplicationTest {
     @Autowired
     private MessageRegistry messageRegistry;
 

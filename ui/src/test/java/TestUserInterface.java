@@ -13,8 +13,7 @@ import static org.junit.Assert.*;
 /**
  * Created by leonardo on 03.09.2017.
  */
-public class TestUserInterface extends AbstractApplicationTest
-{
+public class TestUserInterface extends AbstractApplicationTest {
     @Test
     public void givenScanButtonAndMainTableWhenClickedThenAppPopulatesMainTableWithVideosFound() throws Exception {
         Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
