@@ -4,8 +4,7 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import org.junit.Test;
 
-public class LearnTmdbApiTest
-{
+public class LearnTmdbApiTest {
     @Test
     public void querySomething() throws Exception {
         TmdbApi api = new TmdbApi("c37791bac5bebdfeb3e73db3632b9a13");
