@@ -1,3 +1,3 @@
-TODO:
+V2 Features:
 -------------------------------------------------
-- Change AppTests and/or UI tests to do interaction tests
+- IMDb Integration: After checkmark as movie or tv, after name is populated in table cell, do a background query on IMDb for video name. It should return a list of movies (with their IDs). Add a clickable exclamation sign next to the populated cell, when clicked, show a popup with IMDb list, when clicking on one of them, change name to that provided and save it's data somewhere, so we can show it's thumbnail on hover over table cell.
