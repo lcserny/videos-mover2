@@ -17,6 +17,19 @@
             <artifactId>fuzzywuzzy</artifactId>
             <version>1.1.8</version>
         </dependency>
+
+        <dependency>
+            <groupId>info.movito</groupId>
+            <artifactId>themoviedbapi</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -36,4 +49,26 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>bintray</name>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>bintray-plugins</name>
+            <url>https://jcenter.bintray.com</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
