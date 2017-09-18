@@ -1,3 +1,4 @@
 V2 Features:
 -------------------------------------------------
 - TMDb Integration: After checkmark as movie or tv, after name is populated in table cell, do a background query on TMDb for video name. It should return a list of movies (with their IDs). Add a clickable exclamation sign next to the populated cell, when clicked, show a popup with TMDb list, when clicking on one of them, change name to that provided and save it's data somewhere, so we can show it's thumbnail on hover over table cell.
+- once selected from popup list from TMDb, save it in a map and when you checkmark same TVShow, populate from that cache map
