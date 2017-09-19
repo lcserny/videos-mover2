@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="container" prefHeight="650.0" prefWidth="900.0"
             style="-fx-background-color: #666666;" styleClass="container" stylesheets="@/css/main.css"
-            fx:controller="net.cserny.videosMover.controller.MainController" xmlns="http://javafx.com/javafx/8.0.112">
+            fx:controller="net.cserny.videosmover.controller.MainController" xmlns="http://javafx.com/javafx/8.0.112">
     <top>
         <BorderPane prefHeight="75.0" prefWidth="900.0" styleClass="top-container" BorderPane.alignment="CENTER">
             <left>
