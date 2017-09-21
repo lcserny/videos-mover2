@@ -2,17 +2,19 @@ package net.cserny.videosmover.learn;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.textfield.CustomTextField;
 
 
 public class TestLearnControlsFx extends Application {
@@ -32,11 +34,6 @@ public class TestLearnControlsFx extends Application {
     }
 
     private void addCustomTable() {
-        ObservableList<SomeRowType> list = FXCollections.observableArrayList(
-                new SomeRowType("1", "2"),
-                new SomeRowType("3", "4")
-        );
-
         TableView<SomeRowType> table = new TableView<>();
         table.setPrefWidth(300);
         table.setPrefHeight(150);
@@ -44,33 +41,25 @@ public class TestLearnControlsFx extends Application {
         TableColumn<SomeRowType, String> oneColumn = new TableColumn<>("One");
         oneColumn.setPrefWidth(50);
         oneColumn.setCellValueFactory(new PropertyValueFactory<>("one"));
-
-        // TODO: try to do twoColumn and actionCol as one > a CustomTextField one?
+        oneColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
         TableColumn<SomeRowType, String> twoColumn = new TableColumn<>("Two");
-        twoColumn.setPrefWidth(50);
+        twoColumn.setPrefWidth(248);
         twoColumn.setCellValueFactory(new PropertyValueFactory<>("two"));
+        twoColumn.setCellFactory(param -> new CustomTextFieldCell());
 
-        Image image = new Image(getClass().getResourceAsStream("/images/application.png"));
-        Image altImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
-
-        TableColumn<SomeRowType, String> actionCol = new TableColumn<>();
-        actionCol.setPrefWidth(198);
-        actionCol.setStyle( "-fx-alignment: CENTER-RIGHT;");
-        actionCol.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
-        actionCol.setCellFactory(param -> new ActionColCell(image, altImage));
-
-        table.setItems(list);
+        table.setItems(FXCollections.observableArrayList(
+                new SomeRowType("1", "2"),
+                new SomeRowType("3", "4")));
         table.getColumns().add(oneColumn);
         table.getColumns().add(twoColumn);
-        table.getColumns().add(actionCol);
 
         root.getChildren().add(table);
     }
 
     public static class SomeRowType {
-        private final SimpleStringProperty one;
-        private final SimpleStringProperty two;
+        private SimpleStringProperty one;
+        private SimpleStringProperty two;
 
         public SomeRowType(String one, String two) {
             this.one = new SimpleStringProperty(one);
@@ -81,6 +70,10 @@ public class TestLearnControlsFx extends Application {
             return one.get();
         }
 
+        public SimpleStringProperty oneProperty() {
+            return one;
+        }
+
         public void setOne(String one) {
             this.one.set(one);
         }
@@ -89,38 +82,49 @@ public class TestLearnControlsFx extends Application {
             return two.get();
         }
 
+        public SimpleStringProperty twoProperty() {
+            return two;
+        }
+
         public void setTwo(String two) {
             this.two.set(two);
         }
+
+        @Override
+        public String toString() {
+            return "SomeRowType{" +
+                    "one=" + one +
+                    ", two=" + two +
+                    '}';
+        }
     }
 
-    private class ActionColCell extends TableCell<SomeRowType, String> {
+    private class CustomTextFieldCell extends TableCell<SomeRowType, String> {
+        private final CustomTextField customTextField;
         private final Button button;
         private final Image mainImage;
         private final Image altImage;
+        private final PopOver popOver;
+        private StringProperty boundProperty = null;
 
-        public ActionColCell(Image mainImage, Image altImage) {
-            this.mainImage = mainImage;
-            this.altImage = altImage;
+        public CustomTextFieldCell() {
+            this.mainImage = new Image(getClass().getResourceAsStream("/images/application.png"));
+            this.altImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
 
-            ImageView imageView = new ImageView(mainImage);
-            imageView.setFitHeight(20);
-            imageView.setFitWidth(20);
+            this.button = initButton();
+            this.popOver = initPopOver();
+            this.customTextField = initCustomTextField();
 
-            this.button = new Button("", imageView);
-            this.button.setStyle("-fx-text-fill: white; -fx-background-color: red; -fx-cursor: hand;");
-            Tooltip tooltip = new Tooltip("Some tooltip text");
-            this.button.setTooltip(tooltip);
+            setGraphic(this.customTextField);
         }
 
-        public Button getButton() {
-            return button;
+        private CustomTextField initCustomTextField() {
+            CustomTextField customTextField = new CustomTextField();
+            customTextField.setRight(this.button);
+            return customTextField;
         }
 
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-
+        private PopOver initPopOver() {
             VBox vBox = new VBox();
             Button one = new Button("one");
             one.setPrefWidth(100);
@@ -136,20 +140,47 @@ public class TestLearnControlsFx extends Application {
             popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
             popOver.setOnHidden(event -> ((ImageView) button.getGraphic()).setImage(mainImage));
 
-            if (empty) {
-                setGraphic(null);
-                setText(null);
+            return popOver;
+        }
+
+        private Button initButton() {
+            ImageView imageView = new ImageView(mainImage);
+            imageView.setFitHeight(15);
+            imageView.setFitWidth(15);
+
+            Button button = new Button("", imageView);
+            button.setStyle("-fx-text-fill: white; -fx-background-color: red; -fx-cursor: hand;");
+            button.setTooltip(new Tooltip("Some tooltip text"));
+            button.setOnAction(event -> {
+                if (popOver.isShowing()) {
+                    popOver.hide();
+                } else {
+                    popOver.show(button);
+                    ((ImageView) button.getGraphic()).setImage(altImage);
+                }
+            });
+
+            return button;
+        }
+
+        @Override
+        protected void updateItem(String item, boolean empty) {
+            super.updateItem(item, empty);
+
+            if (!empty) {
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+                SimpleStringProperty value = (SimpleStringProperty) getTableColumn().getCellObservableValue(getIndex());
+                if (boundProperty == null) {
+                    boundProperty = value;
+                    customTextField.textProperty().bindBidirectional(value);
+                } else if (boundProperty != value) {
+                    customTextField.textProperty().unbindBidirectional(boundProperty);
+                    boundProperty = value;
+                    customTextField.textProperty().bindBidirectional(boundProperty);
+                }
             } else {
-                button.setOnAction(event -> {
-                    if (popOver.isShowing()) {
-                        popOver.hide();
-                    } else {
-                        popOver.show(button);
-                        ((ImageView) button.getGraphic()).setImage(altImage);
-                    }
-                });
-                setGraphic(button);
-                setText(null);
+                setContentDisplay(ContentDisplay.TEXT_ONLY);
             }
         }
     }
