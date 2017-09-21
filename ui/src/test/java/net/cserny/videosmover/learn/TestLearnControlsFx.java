@@ -169,14 +169,8 @@ public class TestLearnControlsFx extends Application {
 
             if (!empty) {
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
-                SimpleStringProperty value = (SimpleStringProperty) getTableColumn().getCellObservableValue(getIndex());
                 if (boundProperty == null) {
-                    boundProperty = value;
-                    customTextField.textProperty().bindBidirectional(value);
-                } else if (boundProperty != value) {
-                    customTextField.textProperty().unbindBidirectional(boundProperty);
-                    boundProperty = value;
+                    boundProperty = (SimpleStringProperty) getTableColumn().getCellObservableValue(getIndex());
                     customTextField.textProperty().bindBidirectional(boundProperty);
                 }
             } else {
