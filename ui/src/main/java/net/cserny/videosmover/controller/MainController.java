@@ -15,8 +15,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
-import net.cserny.videosmover.listener.MovieChangeListener;
-import net.cserny.videosmover.listener.TvShowChangeListener;
+import net.cserny.videosmover.listener.ChangeListenerProvider;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
@@ -50,19 +49,19 @@ public class MainController implements Initializable {
     private MessageRegistry messageRegistry;
     private ScanService scanService;
     private VideoMover videoMover;
-    private OutputNameResolver nameResolver;
     private VideoCleaner videoCleaner;
     private MainStageProvider stageProvider;
+    private ChangeListenerProvider changeListenerProvider;
 
     @Autowired
-    public MainController(ScanService scanService, VideoMover videoMover, OutputNameResolver nameResolver,
-                          VideoCleaner videoCleaner, MessageRegistry messageRegistry, MainStageProvider stageProvider) {
+    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, MessageRegistry messageRegistry,
+                          MainStageProvider stageProvider, ChangeListenerProvider changeListenerProvider) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
         this.videoMover = videoMover;
-        this.nameResolver = nameResolver;
         this.videoCleaner = videoCleaner;
+        this.changeListenerProvider = changeListenerProvider;
     }
 
     @Override
@@ -155,8 +154,8 @@ public class MainController implements Initializable {
     private VideoRow buildVideoRow(Video video) {
         VideoRow videoRow = new VideoRow(video);
         videoRow.setName(video.getInput().getFileName().toString());
-        videoRow.isMovieProperty().addListener(new MovieChangeListener(videoRow, nameResolver));
-        videoRow.isTvShowProperty().addListener(new TvShowChangeListener(videoRow, nameResolver));
+        videoRow.isMovieProperty().addListener(changeListenerProvider.getMovieChangeListener(videoRow));
+        videoRow.isTvShowProperty().addListener(changeListenerProvider.getTvShowChangeListener(videoRow));
         return videoRow;
     }
 
