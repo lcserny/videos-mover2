@@ -14,15 +14,14 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.*;
 
-// TODO: show the poster somehow?
 @Service
 public class CachedTmdbService implements VideoMetadataService {
-    public static final String MOVIE = "MOVIE_";
-    public static final String TV_SHOW = "TVSHOW_";
-    public static final String DEFAULT_POSTER_SIZE = "w185";
-    public static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/" + DEFAULT_POSTER_SIZE + "%s";
-    public static final int DEFAULT_CAST_NUMBER = 5;
-    public static final int DEFAULT_VIDEOS_NUMBER = 5;
+    public static final String MOVIE_PREFIX = "MOVIE_";
+    public static final String TVSHOW_PREFIX = "TVSHOW_";
+    public static final String DEFAULT_POSTER_WIDTH = "w185";
+    public static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/" + DEFAULT_POSTER_WIDTH + "%s";
+    public static final int DEFAULT_CAST_SIZE = 5;
+    public static final int DEFAULT_VIDEOS_SIZE = 5;
 
     private Map<String, List<VideoMetadata>> videoCache = Collections.synchronizedMap(new HashMap<>(50));
     private TmdbApi tmdbApi;
@@ -37,9 +36,9 @@ public class CachedTmdbService implements VideoMetadataService {
 
     @Override
     public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) {
-        return searchInternal(movieQuery, MOVIE, metadataList -> {
+        return searchInternal(movieQuery, MOVIE_PREFIX, metadataList -> {
             MovieResultsPage results = searchMovieInternal(movieQuery);
-            int maxIndex = Math.min(DEFAULT_VIDEOS_NUMBER, results.getResults().size());
+            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.getResults().size());
             for (int i = 0; i < maxIndex; i++) {
                 MovieDb movieResult = results.getResults().get(i);
                 VideoMetadata metadata = new VideoMetadata();
@@ -55,9 +54,9 @@ public class CachedTmdbService implements VideoMetadataService {
 
     @Override
     public List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) {
-        return searchInternal(tvShowQuery, TV_SHOW, metadataList -> {
+        return searchInternal(tvShowQuery, TVSHOW_PREFIX, metadataList -> {
             TvResultsPage results = searchTvInternal(tvShowQuery);
-            int maxIndex = Math.min(DEFAULT_VIDEOS_NUMBER, results.getResults().size());
+            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.getResults().size());
             for (int i = 0; i < maxIndex; i++) {
                 TvSeries tvResult = results.getResults().get(i);
                 VideoMetadata metadata = new VideoMetadata();
@@ -132,7 +131,7 @@ public class CachedTmdbService implements VideoMetadataService {
     private List<String> searchForCast(int id, Credits credits) {
         List<String> cast = new ArrayList<>();
         List<PersonCast> personCastList = credits != null ? credits.getCast() : new ArrayList<>();
-        int maxIndex = Math.min(DEFAULT_CAST_NUMBER, personCastList.size());
+        int maxIndex = Math.min(DEFAULT_CAST_SIZE, personCastList.size());
         for (int i = 0; i < maxIndex; i++) {
             PersonCast person = personCastList.get(i);
             cast.add(person.getName());

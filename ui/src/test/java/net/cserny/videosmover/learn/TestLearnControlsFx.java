@@ -26,11 +26,19 @@ public class TestLearnControlsFx extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        addCustomTable();
+//        addCustomTable();
+        addImageFromUrl();
 
         primaryStage.setScene(new Scene(root));
         primaryStage.centerOnScreen();
         primaryStage.show();
+    }
+
+    private void addImageFromUrl() {
+        String imageSource = "http://image.tmdb.org/t/p/w185//adw6Lq9FiC9zjYEpOqfq03ituwp.jpg";
+        ImageView imageView = new ImageView(new Image(imageSource));
+
+        root.getChildren().add(imageView);
     }
 
     private void addCustomTable() {
