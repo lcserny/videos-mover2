@@ -10,14 +10,20 @@ import net.cserny.videosmover.service.PathsProvider;
  * Created by leonardo on 02.09.2017.
  */
 public class VideoRow {
+    private int index;
     private final Video video;
     private StringProperty name = new SimpleStringProperty();
     private StringProperty output = new SimpleStringProperty();
     private BooleanProperty isMovie = new SimpleBooleanProperty();
     private BooleanProperty isTvShow = new SimpleBooleanProperty();
 
-    public VideoRow(Video video) {
+    public VideoRow(int index, Video video) {
+        this.index = index;
         this.video = video;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public Video getVideo() {

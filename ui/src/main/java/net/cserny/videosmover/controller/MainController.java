@@ -15,6 +15,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
+import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.listener.ChangeListenerProvider;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.model.Video;
@@ -98,7 +99,7 @@ public class MainController implements Initializable {
         tableView.setEditable(true);
         tableView.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        for (TableColumn column : tableView.getColumns()) {
+        for (TableColumn<VideoRow, ?> column : tableView.getColumns()) {
             switch (column.getId()) {
                 case "nameCol":
                     TableColumn<VideoRow, String> nameCol = (TableColumn<VideoRow, String>) column;
@@ -118,9 +119,7 @@ public class MainController implements Initializable {
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
                     outputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-                    outputCol.setCellFactory(TextFieldTableCell.forTableColumn());
-                    outputCol.setOnEditCommit(event -> event.getTableView().getItems()
-                            .get(event.getTablePosition().getRow()).setOutput(event.getNewValue()));
+                    outputCol.setCellFactory(param -> new CustomTextFieldCell());
                     break;
             }
         }
@@ -137,8 +136,9 @@ public class MainController implements Initializable {
             try {
                 List<Video> scannedVideos = scanService.scan(PathsProvider.getDownloadsPath());
                 List<VideoRow> videoRowList = new ArrayList<>();
-                for (Video video : scannedVideos) {
-                    VideoRow videoRow = buildVideoRow(video);
+                for (int i = 0; i < scannedVideos.size(); i++) {
+                    Video video = scannedVideos.get(i);
+                    VideoRow videoRow = buildVideoRow(i, video);
                     videoRowList.add(videoRow);
                 }
                 tableView.setItems(FXCollections.observableList(videoRowList));
@@ -151,11 +151,16 @@ public class MainController implements Initializable {
         new Thread(expensiveTask).start();
     }
 
-    private VideoRow buildVideoRow(Video video) {
-        VideoRow videoRow = new VideoRow(video);
+    @SuppressWarnings("unchecked")
+    private VideoRow buildVideoRow(int index, Video video) {
+        VideoRow videoRow = new VideoRow(index, video);
         videoRow.setName(video.getInput().getFileName().toString());
-        videoRow.isMovieProperty().addListener(changeListenerProvider.getMovieChangeListener(videoRow));
-        videoRow.isTvShowProperty().addListener(changeListenerProvider.getTvShowChangeListener(videoRow));
+
+        TableColumn<VideoRow, String> column = (TableColumn<VideoRow, String>) tableView.getColumns().get(3);
+        CustomTextFieldCell outputCell = (CustomTextFieldCell) column.getCellFactory().call(column);
+
+        videoRow.isMovieProperty().addListener(changeListenerProvider.getMovieChangeListener(videoRow, outputCell));
+        videoRow.isTvShowProperty().addListener(changeListenerProvider.getTvShowChangeListener(videoRow, outputCell));
         return videoRow;
     }
 
