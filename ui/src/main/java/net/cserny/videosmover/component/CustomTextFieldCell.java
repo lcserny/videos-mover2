@@ -94,6 +94,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
                 ImageView videoImageView = new ImageView(new Image(videoMetadata.getPosterUrl()));
                 Button videoButton = new Button("", videoImageView);
+                // TODO: add the overview and maybe cast of movie? somewhere and shrink the poster size
                 videoButton.setCursor(Cursor.HAND);
                 videoButton.setOnAction(event1 -> {
                     customTextField.setText(String.format("%s/%s (%s)", videoOutput.getPath(), videoMetadata.getName(), videoMetadata.getReleaseDate()));
