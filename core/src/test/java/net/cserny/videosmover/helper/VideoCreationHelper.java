@@ -19,7 +19,7 @@ public class VideoCreationHelper {
         Video video = new Video();
         video.setIsTvShow(true);
         video.setInput(PathsProvider.getPath(input));
-        video.setOutput(PathsProvider.getPath(outputResolver.resolve(video).getOutput()));
+        video.setOutput(PathsProvider.getPath(outputResolver.resolve(video)));
         return video;
     }
 
@@ -27,7 +27,7 @@ public class VideoCreationHelper {
         Video video = new Video();
         video.setIsMovie(true);
         video.setInput(PathsProvider.getPath(input));
-        video.setOutput(PathsProvider.getPath(outputResolver.resolve(video).getOutput()));
+        video.setOutput(PathsProvider.getPath(outputResolver.resolve(video)));
         return video;
     }
 }

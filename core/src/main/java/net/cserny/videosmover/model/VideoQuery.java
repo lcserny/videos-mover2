@@ -45,17 +45,23 @@ public class VideoQuery {
         private String language;
 
         public Builder withName(String name) {
-            this.name = name;
+            if (name != null && !name.isEmpty()) {
+                this.name = name;
+            }
             return this;
         }
 
         public Builder withYear(Integer year) {
-            this.year = year;
+            if (year != null) {
+                this.year = year;
+            }
             return this;
         }
 
         public Builder withLanguage(String language) {
-            this.language = language;
+            if (language != null && !language.isEmpty()) {
+                this.language = language;
+            }
             return this;
         }
 

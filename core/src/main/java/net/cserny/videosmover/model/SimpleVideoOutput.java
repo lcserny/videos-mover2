@@ -3,12 +3,14 @@ package net.cserny.videosmover.model;
 public class SimpleVideoOutput {
     private String name;
     private Integer year;
-    private String output;
+    private String path;
+    private VideoType videoType;
 
-    public SimpleVideoOutput(String name, Integer year, String output) {
+    public SimpleVideoOutput(String name, Integer year, String path, VideoType videoType) {
         this.name = name;
         this.year = year;
-        this.output = output;
+        this.path = path;
+        this.videoType = videoType;
     }
 
     public String getName() {
@@ -19,7 +21,11 @@ public class SimpleVideoOutput {
         return year;
     }
 
-    public String getOutput() {
-        return output;
+    public String getPath() {
+        return path;
+    }
+
+    public VideoType getVideoType() {
+        return videoType;
     }
 }

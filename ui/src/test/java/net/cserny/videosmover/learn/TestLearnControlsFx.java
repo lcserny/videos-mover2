@@ -26,8 +26,8 @@ public class TestLearnControlsFx extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        addCustomTable();
-        addImageFromUrl();
+        addCustomTable();
+//        addImageFromUrl();
 
         primaryStage.setScene(new Scene(root));
         primaryStage.centerOnScreen();
@@ -56,13 +56,31 @@ public class TestLearnControlsFx extends Application {
         twoColumn.setCellValueFactory(new PropertyValueFactory<>("two"));
         twoColumn.setCellFactory(param -> new CustomTextFieldCell());
 
-        table.setItems(FXCollections.observableArrayList(
-                new SomeRowType("1", "2"),
-                new SomeRowType("3", "4")));
+        SomeRowType row1 = new SomeRowType("1", "2");
+//        row1.twoProperty().addListener((observable, oldValue, newValue) -> {
+//            TableColumn<SomeRowType, String> column = (TableColumn<SomeRowType, String>) table.getColumns().get(1);
+//            CustomTextFieldCell customCell = (CustomTextFieldCell) column.getCellFactory().call(column);
+//            customCell.changeColors();
+//        });
+        SomeRowType row2 = new SomeRowType("3", "4");
+//        row2.twoProperty().addListener((observable, oldValue, newValue) -> {
+//            TableColumn<SomeRowType, String> column = (TableColumn<SomeRowType, String>) table.getColumns().get(1);
+//            CustomTextFieldCell customCell = (CustomTextFieldCell) column.getCellFactory().call(column);
+//            customCell.changeColors();
+//        });
+        table.setItems(FXCollections.observableArrayList(row1, row2));
         table.getColumns().add(oneColumn);
         table.getColumns().add(twoColumn);
 
-        root.getChildren().add(table);
+        Button button = new Button("Change first button color");
+        button.setOnAction(event -> {
+            table.getItems().get(1).setTwo("hello");
+        });
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(table, button);
+
+        root.getChildren().add(vBox);
     }
 
     public static class SomeRowType {
@@ -118,7 +136,6 @@ public class TestLearnControlsFx extends Application {
         public CustomTextFieldCell() {
             this.mainImage = new Image(getClass().getResourceAsStream("/images/application.png"));
             this.altImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
-
             this.button = initButton();
             this.popOver = initPopOver();
             this.customTextField = initCustomTextField();
@@ -126,9 +143,25 @@ public class TestLearnControlsFx extends Application {
             setGraphic(this.customTextField);
         }
 
+        public void changeColors() {
+            if (button.getStyle().equals("-fx-text-fill: white; -fx-background-color: red; -fx-cursor: hand;")) {
+                button.setStyle("-fx-text-fill: white; -fx-background-color: blue; -fx-cursor: hand;");
+            } else {
+                button.setStyle("-fx-text-fill: white; -fx-background-color: red; -fx-cursor: hand;");
+            }
+
+            // TODO: de ce intra twice aici pt primul rand???
+        }
+
         private CustomTextField initCustomTextField() {
             CustomTextField customTextField = new CustomTextField();
-            customTextField.setRight(this.button);
+            customTextField.setRight(button);
+            // this is the important part
+            customTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (!oldValue.equals("") && !oldValue.equals(newValue)) {
+                    changeColors();
+                }
+            });
             return customTextField;
         }
 
@@ -175,15 +208,15 @@ public class TestLearnControlsFx extends Application {
         protected void updateItem(String item, boolean empty) {
             super.updateItem(item, empty);
 
+            ContentDisplay contentDisplay = ContentDisplay.TEXT_ONLY;
             if (!empty) {
-                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                contentDisplay = ContentDisplay.GRAPHIC_ONLY;
                 if (boundProperty == null) {
                     boundProperty = (SimpleStringProperty) getTableColumn().getCellObservableValue(getIndex());
                     customTextField.textProperty().bindBidirectional(boundProperty);
                 }
-            } else {
-                setContentDisplay(ContentDisplay.TEXT_ONLY);
             }
+            setContentDisplay(contentDisplay);
         }
     }
 }

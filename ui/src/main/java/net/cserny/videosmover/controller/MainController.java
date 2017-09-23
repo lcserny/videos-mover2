@@ -16,7 +16,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import net.cserny.videosmover.component.CustomTextFieldCell;
-import net.cserny.videosmover.listener.ChangeListenerProvider;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
@@ -47,22 +46,24 @@ public class MainController implements Initializable {
     @FXML
     private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
-    private MessageRegistry messageRegistry;
-    private ScanService scanService;
-    private VideoMover videoMover;
-    private VideoCleaner videoCleaner;
-    private MainStageProvider stageProvider;
-    private ChangeListenerProvider changeListenerProvider;
+    private final MessageRegistry messageRegistry;
+    private final ScanService scanService;
+    private final VideoMover videoMover;
+    private final VideoCleaner videoCleaner;
+    private final MainStageProvider stageProvider;
+    private final OutputResolver outputResolver;
+    private final VideoMetadataService metadataService;
 
     @Autowired
     public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, MessageRegistry messageRegistry,
-                          MainStageProvider stageProvider, ChangeListenerProvider changeListenerProvider) {
+                          MainStageProvider stageProvider, OutputResolver outputResolver, VideoMetadataService metadataService) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
         this.videoMover = videoMover;
         this.videoCleaner = videoCleaner;
-        this.changeListenerProvider = changeListenerProvider;
+        this.outputResolver = outputResolver;
+        this.metadataService = metadataService;
     }
 
     @Override
@@ -119,7 +120,7 @@ public class MainController implements Initializable {
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
                     outputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-                    outputCol.setCellFactory(param -> new CustomTextFieldCell());
+                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService));
                     break;
             }
         }
@@ -151,16 +152,17 @@ public class MainController implements Initializable {
         new Thread(expensiveTask).start();
     }
 
-    @SuppressWarnings("unchecked")
     private VideoRow buildVideoRow(int index, Video video) {
         VideoRow videoRow = new VideoRow(index, video);
         videoRow.setName(video.getInput().getFileName().toString());
-
-        TableColumn<VideoRow, String> column = (TableColumn<VideoRow, String>) tableView.getColumns().get(3);
-        CustomTextFieldCell outputCell = (CustomTextFieldCell) column.getCellFactory().call(column);
-
-        videoRow.isMovieProperty().addListener(changeListenerProvider.getMovieChangeListener(videoRow, outputCell));
-        videoRow.isTvShowProperty().addListener(changeListenerProvider.getTvShowChangeListener(videoRow, outputCell));
+        videoRow.isMovieProperty().addListener((observable, oldValue, checkmarkValue) -> {
+            videoRow.setIsMovie(checkmarkValue);
+            videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
+        });
+        videoRow.isTvShowProperty().addListener((observable, oldValue, checkmarkValue) -> {
+            videoRow.setIsTvShow(checkmarkValue);
+            videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
+        });
         return videoRow;
     }
 
