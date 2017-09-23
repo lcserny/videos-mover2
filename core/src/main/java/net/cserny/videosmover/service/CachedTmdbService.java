@@ -12,13 +12,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.net.URISyntaxException;
 import java.util.*;
 
 @Service
 public class CachedTmdbService implements VideoMetadataService {
     public static final String MOVIE_PREFIX = "MOVIE_";
     public static final String TVSHOW_PREFIX = "TVSHOW_";
-    public static final String DEFAULT_POSTER_WIDTH = "w185";
+    public static final String DEFAULT_POSTER_WIDTH = "w92";
     public static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/" + DEFAULT_POSTER_WIDTH + "%s";
     public static final int DEFAULT_CAST_SIZE = 5;
     public static final int DEFAULT_VIDEOS_SIZE = 5;
@@ -70,6 +71,10 @@ public class CachedTmdbService implements VideoMetadataService {
         });
     }
 
+    public Map<String, List<VideoMetadata>> getVideoCache() {
+        return videoCache;
+    }
+
     private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix, MetadataSearchCallback callback) {
         List<VideoMetadata> metadataList = new ArrayList<>();
         if (emptyQuery(query)) {
@@ -88,6 +93,13 @@ public class CachedTmdbService implements VideoMetadataService {
     }
 
     private String buildPosterUrl(String posterPath) {
+        if (posterPath == null || posterPath.isEmpty()) {
+            try {
+                return getClass().getResource("/images/no-poster.jpg").toURI().toString();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
         return String.format(POSTER_URL_PATTERN, posterPath);
     }
 
@@ -104,7 +116,7 @@ public class CachedTmdbService implements VideoMetadataService {
                 : search.searchMovie(query.getName(), null, null, false, 1);
     }
 
-    private String keyFormat(String prefix, VideoQuery query) {
+    public String keyFormat(String prefix, VideoQuery query) {
         String formatted = prefix + query.getName();
         formatted = query.getYear() != null ? formatted + "_" + query.getYear() : formatted;
         formatted = formatted.replaceAll(" ", "_");

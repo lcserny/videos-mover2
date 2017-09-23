@@ -155,6 +155,7 @@ public class MainController implements Initializable {
     private VideoRow buildVideoRow(int index, Video video) {
         VideoRow videoRow = new VideoRow(index, video);
         videoRow.setName(video.getInput().getFileName().toString());
+        // TODO: unele videos nu merg cand le bifez?? alea mai jos cu criminal minds
         videoRow.isMovieProperty().addListener((observable, oldValue, checkmarkValue) -> {
             videoRow.setIsMovie(checkmarkValue);
             videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");

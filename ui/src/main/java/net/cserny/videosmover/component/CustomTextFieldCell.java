@@ -9,7 +9,9 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import net.cserny.videosmover.model.*;
 import net.cserny.videosmover.service.PathsProvider;
 import net.cserny.videosmover.service.VideoMetadataService;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: change this to use regular JavaFX (two columns) cause ControlsFX is buggy
+// TODO: change this to use regular JavaFX (two columns) cause ControlsFX is buggy?
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final VideoMetadataService metadataService;
     private final CustomTextField customTextField;
@@ -32,7 +34,6 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     public CustomTextFieldCell(VideoMetadataService metadataService) {
         this.metadataService = metadataService;
-
         this.button = initButton();
         this.customTextField = initCustomTextField();
 
@@ -78,7 +79,6 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         button.setOnAction(event -> {
             // TODO: show loading
 
-            // TODO: does caching really work?
             List<VideoMetadata> videoMetadataList = new ArrayList<>();
             VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
             if (videoOutput.getVideoType() == VideoType.MOVIE) {
@@ -88,22 +88,38 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
             }
 
             PopOver popOver = new PopOver();
-            HBox hBox = new HBox();
+            VBox vboxParent = new VBox();
             for (VideoMetadata videoMetadata : videoMetadataList) {
-                // TODO: why does it show the fifth button empty for criminal minds?
-
-                ImageView videoImageView = new ImageView(new Image(videoMetadata.getPosterUrl()));
-                Button videoButton = new Button("", videoImageView);
-                // TODO: add the overview and maybe cast of movie? somewhere and shrink the poster size
-                videoButton.setCursor(Cursor.HAND);
-                videoButton.setOnAction(event1 -> {
-                    customTextField.setText(String.format("%s/%s (%s)", videoOutput.getPath(), videoMetadata.getName(), videoMetadata.getReleaseDate()));
+                HBox hbox = new HBox();
+                hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+                hbox.setOnMouseClicked(hboxEvent -> {
+                    // FIXME: kind of a duplicate in VideoCacheRetriever
+                    String formattedOutput = String.format("%s/%s (%s)", videoOutput.getPath(), videoMetadata.getName(), videoMetadata.getReleaseDate());
+                    customTextField.setText(formattedOutput);
+                    videoMetadata.setSelected(true);
                     popOver.hide();
                 });
-                hBox.getChildren().add(videoButton);
+                hbox.setCursor(Cursor.HAND);
+
+                hbox.getChildren().add(new ImageView(new Image(videoMetadata.getPosterUrl())));
+
+                VBox vbox = new VBox();
+                String metadataDescription = videoMetadata.getDescription();
+                if (metadataDescription.length() > 500) {
+                    metadataDescription = metadataDescription.substring(0, 500) + "...";
+                }
+                Text description = new Text(metadataDescription);
+                description.setWrappingWidth(500);
+                Text cast = new Text(String.join(", ", videoMetadata.getCast()));
+                cast.setWrappingWidth(500);
+                cast.setFill(Color.RED);
+                vbox.getChildren().addAll(description, cast);
+                hbox.getChildren().add(vbox);
+
+                vboxParent.getChildren().add(hbox);
             }
-            popOver.setContentNode(hBox);
-            popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+            popOver.setContentNode(vboxParent);
+            popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
             popOver.setOnHidden(popEvent -> ((ImageView) button.getGraphic()).setImage(mainImage));
             popOver.setOnShowing(popEvent -> ((ImageView) button.getGraphic()).setImage(altImage));
 
@@ -117,6 +133,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         return button;
     }
 
+    // FIXME: duplicate in VideoCacheRetriever
     private SimpleVideoOutput buildVideoOutput(String output) {
         String path = output.substring(0, output.lastIndexOf('/'));
         String name = output.substring(output.lastIndexOf('/') + 1);

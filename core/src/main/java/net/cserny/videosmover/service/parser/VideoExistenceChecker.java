@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * Created by leonardo on 10.09.2017.
  */
 @Service
-@Order(2)
+@Order(3)
 public class VideoExistenceChecker implements VideoNameParser {
     @Value("${similarity.percent}")
     private Integer similarityPercent;

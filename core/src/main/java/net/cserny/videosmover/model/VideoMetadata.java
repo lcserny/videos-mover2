@@ -8,6 +8,7 @@ public class VideoMetadata {
     private String description;
     private String posterUrl;
     private List<String> cast;
+    private boolean selected;
 
     public String getName() {
         return name;
@@ -49,6 +50,14 @@ public class VideoMetadata {
         this.cast = cast;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     @Override
     public String toString() {
         return "VideoMetadata{" +
@@ -57,6 +66,7 @@ public class VideoMetadata {
                 ", description='" + description + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
                 ", cast=" + cast +
+                ", selected=" + selected +
                 '}';
     }
 }
