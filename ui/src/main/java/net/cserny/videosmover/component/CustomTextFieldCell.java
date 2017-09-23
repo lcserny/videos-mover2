@@ -13,17 +13,15 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import net.cserny.videosmover.model.*;
-import net.cserny.videosmover.service.PathsProvider;
 import net.cserny.videosmover.service.VideoMetadataService;
+import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-// TODO: change this to use regular JavaFX (two columns) cause ControlsFX is buggy?
+// TODO: refactor this and make prettier
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final VideoMetadataService metadataService;
     private final CustomTextField customTextField;
@@ -42,7 +40,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private void processForShow(String output) {
         button.setVisible(true);
-        videoOutput = buildVideoOutput(output);
+        videoOutput = SimpleVideoOutputHelper.buildVideoOutput(output);
     }
 
     private void processForHide() {
@@ -54,19 +52,12 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         CustomTextField customTextField = new CustomTextField();
         customTextField.setStyle("-fx-text-fill: white");
         customTextField.setRight(button);
-        customTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.isEmpty()) {
-                processForHide();
-            } else {
-                processForShow(newValue);
-            }
-        });
         return customTextField;
     }
 
     private Button initButton() {
-        Image mainImage = new Image(getClass().getResourceAsStream("/images/application.png"));
-        Image altImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
+        Image mainImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
+        Image altImage = new Image(getClass().getResourceAsStream("/images/tmdb_logo_small.png"));
 
         ImageView imageView = new ImageView(mainImage);
         imageView.setFitHeight(15);
@@ -74,7 +65,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
         Button button = new Button("", imageView);
         button.setVisible(false);
-        button.setStyle("-fx-text-fill: WHITE; -fx-background-color: red; -fx-cursor: hand;");
+        button.setStyle("-fx-text-fill: WHITE; -fx-background-color: #01d277; -fx-cursor: hand;");
         button.setTooltip(new Tooltip("Some tooltip text"));
         button.setOnAction(event -> {
             // TODO: show loading
@@ -93,9 +84,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
                 HBox hbox = new HBox();
                 hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
                 hbox.setOnMouseClicked(hboxEvent -> {
-                    // FIXME: kind of a duplicate in VideoCacheRetriever
-                    String formattedOutput = String.format("%s/%s (%s)", videoOutput.getPath(), videoMetadata.getName(), videoMetadata.getReleaseDate());
-                    customTextField.setText(formattedOutput);
+                    customTextField.setText(SimpleVideoOutputHelper.formatOutput(videoOutput, videoMetadata));
                     videoMetadata.setSelected(true);
                     popOver.hide();
                 });
@@ -105,15 +94,17 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
                 VBox vbox = new VBox();
                 String metadataDescription = videoMetadata.getDescription();
-                if (metadataDescription.length() > 500) {
-                    metadataDescription = metadataDescription.substring(0, 500) + "...";
+                if (metadataDescription.length() > 450) {
+                    metadataDescription = metadataDescription.substring(0, 450) + "...";
                 }
+                Text title = new Text(videoMetadata.getName());
+                title.setStyle("-fx-font-weight: bold; -fx-fill: #081c24");
                 Text description = new Text(metadataDescription);
                 description.setWrappingWidth(500);
                 Text cast = new Text(String.join(", ", videoMetadata.getCast()));
                 cast.setWrappingWidth(500);
-                cast.setFill(Color.RED);
-                vbox.getChildren().addAll(description, cast);
+                cast.setStyle("-fx-fill: #01d277");
+                vbox.getChildren().addAll(title, description, cast);
                 hbox.getChildren().add(vbox);
 
                 vboxParent.getChildren().add(hbox);
@@ -133,35 +124,26 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         return button;
     }
 
-    // FIXME: duplicate in VideoCacheRetriever
-    private SimpleVideoOutput buildVideoOutput(String output) {
-        String path = output.substring(0, output.lastIndexOf('/'));
-        String name = output.substring(output.lastIndexOf('/') + 1);
-        Matcher matcher = Pattern.compile("(\\d{4})").matcher(name);
-        Integer year = null;
-        if (matcher.find()) {
-            name = name.substring(0, matcher.start() - 2);
-            year = Integer.valueOf(matcher.group());
-        }
-
-        VideoType videoType = null;
-        if (path.equals(PathsProvider.getMoviesPath())) {
-            videoType = VideoType.MOVIE;
-        } else if (path.equals(PathsProvider.getTvShowsPath())) {
-            videoType = VideoType.TVSHOW;
-        }
-
-        return new SimpleVideoOutput(name, year, path, videoType);
-    }
-
     @Override
-    protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
+    protected void updateItem(String output, boolean empty) {
+        super.updateItem(output, empty);
+
+        if (output != null && !output.isEmpty()) {
+            processForShow(output);
+        } else {
+            processForHide();
+        }
+
         ContentDisplay contentDisplay = ContentDisplay.TEXT_ONLY;
         if (!empty) {
             contentDisplay = ContentDisplay.GRAPHIC_ONLY;
+            SimpleStringProperty outputProperty = (SimpleStringProperty) getTableColumn().getCellObservableValue(getIndex());
             if (boundProperty == null) {
-                boundProperty = (SimpleStringProperty) getTableColumn().getCellObservableValue(getIndex());
+                boundProperty = outputProperty;
+                customTextField.textProperty().bindBidirectional(outputProperty);
+            } else if (boundProperty != outputProperty) {
+                customTextField.textProperty().unbindBidirectional(boundProperty);
+                boundProperty = outputProperty;
                 customTextField.textProperty().bindBidirectional(boundProperty);
             }
         }
