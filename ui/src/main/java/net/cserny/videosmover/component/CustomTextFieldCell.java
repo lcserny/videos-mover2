@@ -12,13 +12,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import net.cserny.videosmover.model.*;
+import net.cserny.videosmover.model.SimpleVideoOutput;
+import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.service.VideoMetadataService;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // TODO: refactor this and make prettier
@@ -58,6 +61,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private Button initButton() {
         Image mainImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
         Image altImage = new Image(getClass().getResourceAsStream("/images/tmdb_logo_small.png"));
+        Image loadingImage = new Image(getClass().getResourceAsStream("/images/loading.gif"));
 
         ImageView imageView = new ImageView(mainImage);
         imageView.setFitHeight(15);
@@ -68,15 +72,26 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         button.setStyle("-fx-text-fill: WHITE; -fx-background-color: #01d277; -fx-cursor: hand;");
         button.setTooltip(new Tooltip("Some tooltip text"));
         button.setOnAction(event -> {
-            // TODO: show loading
+            // TODO: make loading work
+            ((ImageView) button.getGraphic()).setImage(loadingImage);
 
-            List<VideoMetadata> videoMetadataList = new ArrayList<>();
-            VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
-            if (videoOutput.getVideoType() == VideoType.MOVIE) {
-                videoMetadataList = metadataService.searchMovieMetadata(videoQuery);
-            } else if (videoOutput.getVideoType() == VideoType.TVSHOW) {
-                videoMetadataList = metadataService.searchTvShowMetadata(videoQuery);
-            }
+            List<VideoMetadata> videoMetadataList = Collections.synchronizedList(new ArrayList<>());
+            Runnable expensiveTask = () -> {
+//                VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
+//                if (videoOutput.getVideoType() == VideoType.MOVIE) {
+//                    videoMetadataList = metadataService.searchMovieMetadata(videoQuery);
+//                } else if (videoOutput.getVideoType() == VideoType.TVSHOW) {
+//                    videoMetadataList = metadataService.searchTvShowMetadata(videoQuery);
+//                }
+                ((ImageView) button.getGraphic()).setImage(altImage);
+            };
+            Thread loadingThread = new Thread(expensiveTask);
+            loadingThread.start();
+//            try {
+//                loadingThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
 
             PopOver popOver = new PopOver();
             VBox vboxParent = new VBox();
