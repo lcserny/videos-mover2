@@ -22,7 +22,7 @@ import org.controlsfx.control.textfield.CustomTextField;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: refactor this and make prettier
+// TODO: make prettier?
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final VideoMetadataService metadataService;
     private final CustomTextField customTextField;
@@ -60,76 +60,105 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         Image mainImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
         Image altImage = new Image(getClass().getResourceAsStream("/images/tmdb_logo_small.png"));
         Image loadingImage = new Image(getClass().getResourceAsStream("/images/loading.gif"));
-
-        ImageView imageView = new ImageView(mainImage);
-        imageView.setFitHeight(15);
-        imageView.setFitWidth(15);
+        ImageView imageView = buildButtonImageView(mainImage);
 
         Button button = new Button("", imageView);
         button.setVisible(false);
         button.setStyle("-fx-text-fill: WHITE; -fx-background-color: #01d277; -fx-cursor: hand;");
         button.setTooltip(new Tooltip("Some tooltip text"));
         button.setOnAction(event -> {
-            ((ImageView) button.getGraphic()).setImage(loadingImage);
-
+            setImageToButton(button, loadingImage);
             Runnable expensiveTask = () -> {
-                List<VideoMetadata> videoMetadataList = new ArrayList<>();
-                VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
-                if (videoOutput.getVideoType() == VideoType.MOVIE) {
-                    videoMetadataList = metadataService.searchMovieMetadata(videoQuery);
-                } else if (videoOutput.getVideoType() == VideoType.TVSHOW) {
-                    videoMetadataList = metadataService.searchTvShowMetadata(videoQuery);
-                }
-                ((ImageView) button.getGraphic()).setImage(altImage);
-
-                PopOver popOver = new PopOver();
-                VBox vboxParent = new VBox();
-                for (VideoMetadata videoMetadata : videoMetadataList) {
-                    HBox hbox = new HBox();
-                    hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-                    hbox.setOnMouseClicked(hboxEvent -> {
-                        customTextField.setText(SimpleVideoOutputHelper.formatOutput(videoOutput, videoMetadata));
-                        videoMetadata.setSelected(true);
-                        popOver.hide();
-                    });
-                    hbox.setCursor(Cursor.HAND);
-
-                    hbox.getChildren().add(new ImageView(new Image(videoMetadata.getPosterUrl())));
-
-                    VBox vbox = new VBox();
-                    String metadataDescription = videoMetadata.getDescription();
-                    if (metadataDescription.length() > 450) {
-                        metadataDescription = metadataDescription.substring(0, 450) + "...";
-                    }
-                    Text title = new Text(videoMetadata.getName());
-                    title.setStyle("-fx-font-weight: bold; -fx-fill: #081c24");
-                    Text description = new Text(metadataDescription);
-                    description.setWrappingWidth(500);
-                    Text cast = new Text(String.join(", ", videoMetadata.getCast()));
-                    cast.setWrappingWidth(500);
-                    cast.setStyle("-fx-fill: #01d277");
-                    vbox.getChildren().addAll(title, description, cast);
-                    hbox.getChildren().add(vbox);
-
-                    vboxParent.getChildren().add(hbox);
-                }
-                popOver.setContentNode(vboxParent);
-                popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-                popOver.setOnHidden(popEvent -> ((ImageView) button.getGraphic()).setImage(mainImage));
-                popOver.setOnShowing(popEvent -> ((ImageView) button.getGraphic()).setImage(altImage));
-
-                Platform.runLater(() -> {
-                    if (popOver.isShowing()) {
-                        popOver.hide();
-                    } else {
-                        popOver.show(button);
-                    }
-                });
+                List<VideoMetadata> videoMetadataList = processVideoMetadataList();
+                setImageToButton(button, altImage);
+                PopOver popOver = buildPopover(videoMetadataList, mainImage, altImage);
+                Platform.runLater(() -> togglePopover(button, popOver));
             };
             new Thread(expensiveTask).start();
         });
 
         return button;
+    }
+
+    private ImageView buildButtonImageView(Image mainImage) {
+        ImageView imageView = new ImageView(mainImage);
+        imageView.setFitHeight(15);
+        imageView.setFitWidth(15);
+        return imageView;
+    }
+
+    private PopOver buildPopover(List<VideoMetadata> videoMetadataList, Image mainImage, Image altImage) {
+        PopOver popOver = new PopOver();
+
+        VBox vboxParent = new VBox();
+        vboxParent.setCursor(Cursor.HAND);
+        for (VideoMetadata videoMetadata : videoMetadataList) {
+            HBox hbox = new HBox();
+            hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            hbox.setOnMouseClicked(event -> handleHboxClick(videoMetadata, popOver));
+
+            ImageView poster = new ImageView(new Image(videoMetadata.getPosterUrl()));
+            VBox vbox = buildVideoInfoVbox(videoMetadata);
+            hbox.getChildren().addAll(poster, vbox);
+
+            vboxParent.getChildren().add(hbox);
+        }
+
+        popOver.setContentNode(vboxParent);
+        popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+        popOver.setOnHidden(event -> setImageToButton(button, mainImage));
+        popOver.setOnShowing(event -> setImageToButton(button, altImage));
+
+        return popOver;
+    }
+
+    private void setImageToButton(Button button, Image image) {
+        ((ImageView) button.getGraphic()).setImage(image);
+    }
+
+    private VBox buildVideoInfoVbox(VideoMetadata videoMetadata) {
+        Text title = new Text(videoMetadata.getName());
+        title.setStyle("-fx-font-weight: bold; -fx-fill: #081c24");
+
+        String metadataDescription = videoMetadata.getDescription();
+        if (metadataDescription.length() > 450) {
+            metadataDescription = metadataDescription.substring(0, 450) + "...";
+        }
+        Text description = new Text(metadataDescription);
+        description.setWrappingWidth(500);
+
+        Text cast = new Text(String.join(", ", videoMetadata.getCast()));
+        cast.setWrappingWidth(500);
+        cast.setStyle("-fx-fill: #01d277");
+
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(title, description, cast);
+        return vbox;
+    }
+
+    private void handleHboxClick(VideoMetadata videoMetadata, PopOver popOver) {
+        customTextField.setText(SimpleVideoOutputHelper.formatOutput(videoOutput, videoMetadata));
+        videoMetadata.setSelected(true);
+        popOver.hide();
+    }
+
+    private List<VideoMetadata> processVideoMetadataList() {
+        List<VideoMetadata> videoMetadataList = new ArrayList<>();
+        VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
+        if (videoOutput.getVideoType() == VideoType.MOVIE) {
+            videoMetadataList = metadataService.searchMovieMetadata(videoQuery);
+        } else if (videoOutput.getVideoType() == VideoType.TVSHOW) {
+            videoMetadataList = metadataService.searchTvShowMetadata(videoQuery);
+        }
+        return videoMetadataList;
+    }
+
+    private void togglePopover(Button button, PopOver popOver) {
+        if (popOver.isShowing()) {
+            popOver.hide();
+        } else {
+            popOver.show(button);
+        }
     }
 
     @Override
