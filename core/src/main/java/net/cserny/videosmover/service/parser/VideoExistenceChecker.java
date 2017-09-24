@@ -35,11 +35,9 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     private String checkExisting(String path, String filename) {
-        if (path == null) {
-            return "";
-        }
-        return probeExistingFolder(PathsProvider.getPath(path), filename)
-                .orElse(path + "/" + filename);
+        return path != null
+                ? probeExistingFolder(PathsProvider.getPath(path), filename).orElse(path + "/" + filename)
+                : "";
     }
 
     private Optional<String> probeExistingFolder(Path path, String filename) {
@@ -53,10 +51,9 @@ public class VideoExistenceChecker implements VideoNameParser {
             }
         }
 
-        if (selectedFolder != null && maxCoefficient >= similarityPercent) {
-            return Optional.of(selectedFolder.toString());
-        }
-        return Optional.empty();
+        return selectedFolder != null && maxCoefficient >= similarityPercent
+                ? Optional.of(selectedFolder.toString())
+                : Optional.empty();
     }
 
     private List<Path> findDirectories(Path path) {
