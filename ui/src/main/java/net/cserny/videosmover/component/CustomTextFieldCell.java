@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: make prettier?
+// TODO: make tooltip
+// TODO: make it all a button
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final VideoMetadataService metadataService;
     private final CustomTextField customTextField;
