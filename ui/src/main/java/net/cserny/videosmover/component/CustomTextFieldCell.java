@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO: make prettier?
-// TODO: make tooltip
-// TODO: make it all a button
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final VideoMetadataService metadataService;
     private final CustomTextField customTextField;
@@ -67,7 +65,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         Button button = new Button("", imageView);
         button.setVisible(false);
         button.setStyle("-fx-text-fill: WHITE; -fx-background-color: #01d277; -fx-cursor: hand;");
-        button.setTooltip(new Tooltip("Some tooltip text"));
+        button.setTooltip(new Tooltip("Search for video metadata online"));
         button.setOnAction(event -> {
             setImageToButton(button, loadingImage);
             Runnable expensiveTask = () -> {
@@ -93,9 +91,9 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         PopOver popOver = new PopOver();
 
         VBox vboxParent = new VBox();
-        vboxParent.setCursor(Cursor.HAND);
         for (VideoMetadata videoMetadata : videoMetadataList) {
             HBox hbox = new HBox();
+            hbox.setCursor(Cursor.HAND);
             hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
             hbox.setOnMouseClicked(event -> handleHboxClick(videoMetadata, popOver));
 
