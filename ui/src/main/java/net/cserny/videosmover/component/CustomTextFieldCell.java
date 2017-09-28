@@ -19,7 +19,7 @@ import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 // TODO: make prettier?
@@ -143,14 +143,13 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     }
 
     private List<VideoMetadata> processVideoMetadataList() {
-        List<VideoMetadata> videoMetadataList = new ArrayList<>();
         VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
         if (videoOutput.getVideoType() == VideoType.MOVIE) {
-            videoMetadataList = metadataService.searchMovieMetadata(videoQuery);
+            return metadataService.searchMovieMetadata(videoQuery);
         } else if (videoOutput.getVideoType() == VideoType.TVSHOW) {
-            videoMetadataList = metadataService.searchTvShowMetadata(videoQuery);
+            return metadataService.searchTvShowMetadata(videoQuery);
         }
-        return videoMetadataList;
+        return Collections.emptyList();
     }
 
     private void togglePopover(Button button, PopOver popOver) {

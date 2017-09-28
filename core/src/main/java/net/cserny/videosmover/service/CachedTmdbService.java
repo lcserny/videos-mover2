@@ -37,38 +37,50 @@ public class CachedTmdbService implements VideoMetadataService {
 
     @Override
     public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) {
-        return searchInternal(movieQuery, MOVIE_PREFIX, metadataList -> {
-            MovieResultsPage results = searchMovieInternal(movieQuery);
-            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.getResults().size());
+        return searchInternal(movieQuery, MOVIE_PREFIX, () -> {
+            List<MovieDb> results = searchMovieInternal(movieQuery).getResults();
+            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
+            List<VideoMetadata> metadataList = new ArrayList<>();
             for (int i = 0; i < maxIndex; i++) {
-                MovieDb movieResult = results.getResults().get(i);
-                VideoMetadata metadata = new VideoMetadata();
-                metadata.setName(movieResult.getTitle());
-                metadata.setReleaseDate(movieResult.getReleaseDate());
-                metadata.setPosterUrl(buildPosterUrl(movieResult.getPosterPath()));
-                metadata.setDescription(movieResult.getOverview());
-                metadata.setCast(getMovieCast(movieResult.getId()));
+                VideoMetadata metadata = buildMovieVideoMetadata(results.get(i));
                 metadataList.add(metadata);
             }
+            return metadataList;
         });
+    }
+
+    private VideoMetadata buildMovieVideoMetadata(MovieDb movieResult) {
+        VideoMetadata metadata = new VideoMetadata();
+        metadata.setName(movieResult.getTitle());
+        metadata.setReleaseDate(movieResult.getReleaseDate());
+        metadata.setPosterUrl(buildPosterUrl(movieResult.getPosterPath()));
+        metadata.setDescription(movieResult.getOverview());
+        metadata.setCast(getMovieCast(movieResult.getId()));
+        return metadata;
     }
 
     @Override
     public List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) {
-        return searchInternal(tvShowQuery, TVSHOW_PREFIX, metadataList -> {
-            TvResultsPage results = searchTvInternal(tvShowQuery);
-            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.getResults().size());
+        return searchInternal(tvShowQuery, TVSHOW_PREFIX, () -> {
+            List<TvSeries> results = searchTvInternal(tvShowQuery).getResults();
+            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
+            List<VideoMetadata> metadataList = new ArrayList<>();
             for (int i = 0; i < maxIndex; i++) {
-                TvSeries tvResult = results.getResults().get(i);
-                VideoMetadata metadata = new VideoMetadata();
-                metadata.setName(tvResult.getName());
-                metadata.setReleaseDate(tvResult.getFirstAirDate());
-                metadata.setPosterUrl(buildPosterUrl(tvResult.getPosterPath()));
-                metadata.setDescription(tvResult.getOverview());
-                metadata.setCast(getTvShowCast(tvResult.getId()));
+                VideoMetadata metadata = buildTvShowVideoMetadata(results.get(i));
                 metadataList.add(metadata);
             }
+            return metadataList;
         });
+    }
+
+    private VideoMetadata buildTvShowVideoMetadata(TvSeries tvResult) {
+        VideoMetadata metadata = new VideoMetadata();
+        metadata.setName(tvResult.getName());
+        metadata.setReleaseDate(tvResult.getFirstAirDate());
+        metadata.setPosterUrl(buildPosterUrl(tvResult.getPosterPath()));
+        metadata.setDescription(tvResult.getOverview());
+        metadata.setCast(getTvShowCast(tvResult.getId()));
+        return metadata;
     }
 
     public Map<String, List<VideoMetadata>> getVideoCache() {
@@ -76,9 +88,8 @@ public class CachedTmdbService implements VideoMetadataService {
     }
 
     private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix, MetadataSearchCallback callback) {
-        List<VideoMetadata> metadataList = new ArrayList<>();
         if (emptyQuery(query)) {
-            return metadataList;
+            return Collections.emptyList();
         }
 
         String cacheKey = keyFormat(keyPrefix, query);
@@ -86,7 +97,7 @@ public class CachedTmdbService implements VideoMetadataService {
             return videoCache.get(cacheKey);
         }
 
-        callback.populateMetadata(metadataList);
+        List<VideoMetadata> metadataList = callback.createMetadataList();
         videoCache.put(cacheKey, metadataList);
 
         return metadataList;
@@ -141,9 +152,13 @@ public class CachedTmdbService implements VideoMetadataService {
     }
 
     private List<String> searchForCast(int id, Credits credits) {
-        List<String> cast = new ArrayList<>();
-        List<PersonCast> personCastList = credits != null ? credits.getCast() : new ArrayList<>();
+        if (credits == null) {
+            return Collections.emptyList();
+        }
+
+        List<PersonCast> personCastList = credits.getCast();
         int maxIndex = Math.min(DEFAULT_CAST_SIZE, personCastList.size());
+        List<String> cast = new ArrayList<>();
         for (int i = 0; i < maxIndex; i++) {
             PersonCast person = personCastList.get(i);
             cast.add(person.getName());
@@ -152,6 +167,6 @@ public class CachedTmdbService implements VideoMetadataService {
     }
 
     private interface MetadataSearchCallback {
-        void populateMetadata(List<VideoMetadata> metadataList);
+        List<VideoMetadata> createMetadataList();
     }
 }
