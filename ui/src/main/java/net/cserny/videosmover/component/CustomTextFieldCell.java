@@ -3,6 +3,7 @@ package net.cserny.videosmover.component;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -22,7 +23,6 @@ import org.controlsfx.control.textfield.CustomTextField;
 import java.util.Collections;
 import java.util.List;
 
-// TODO: make prettier?
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final VideoMetadataService metadataService;
     private final CustomTextField customTextField;
@@ -94,7 +94,10 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         for (VideoMetadata videoMetadata : videoMetadataList) {
             HBox hbox = new HBox();
             hbox.setCursor(Cursor.HAND);
-            hbox.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            hbox.setStyle("-fx-background-color: #081c24");
+            hbox.setBorder(new Border(new BorderStroke(Color.valueOf("#01d277"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+            hbox.setOnMouseEntered(event -> hbox.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
+            hbox.setOnMouseExited(event -> hbox.setBorder(new Border(new BorderStroke(Color.valueOf("#01d277"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
             hbox.setOnMouseClicked(event -> handleHboxClick(videoMetadata, popOver));
 
             ImageView poster = new ImageView(new Image(videoMetadata.getPosterUrl()));
@@ -118,7 +121,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private VBox buildVideoInfoVbox(VideoMetadata videoMetadata) {
         Text title = new Text(videoMetadata.getName());
-        title.setStyle("-fx-font-weight: bold; -fx-fill: #081c24");
+        title.setStyle("-fx-font-weight: bold; -fx-fill: #ffffff");
 
         String metadataDescription = videoMetadata.getDescription();
         if (metadataDescription.length() > 450) {
@@ -126,12 +129,14 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         }
         Text description = new Text(metadataDescription);
         description.setWrappingWidth(500);
+        description.setStyle("-fx-fill: #ffffff");
 
         Text cast = new Text(String.join(", ", videoMetadata.getCast()));
         cast.setWrappingWidth(500);
         cast.setStyle("-fx-fill: #01d277");
 
         VBox vbox = new VBox();
+        vbox.setPadding(new Insets(5));
         vbox.getChildren().addAll(title, description, cast);
         return vbox;
     }
