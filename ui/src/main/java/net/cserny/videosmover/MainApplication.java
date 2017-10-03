@@ -26,15 +26,9 @@ public class MainApplication extends Application {
 
     private Stage mainStage;
     private Parent parent;
-    private Pane splashLayout;
 
     public static void main(String[] args) {
         launch();
-    }
-
-    @Override
-    public void init() {
-        splashLayout = new Pane(new ImageView(new Image(getClass().getResourceAsStream("/images/loading.gif"))));
     }
 
     @Override
@@ -52,14 +46,15 @@ public class MainApplication extends Application {
             }
         };
 
-        showLoadingApplication(primaryStage, loadSpringContextTask);
+        showLoading(primaryStage, loadSpringContextTask);
         new Thread(loadSpringContextTask).start();
     }
 
-    private void showLoadingApplication(final Stage initStage, Task<?> task) {
+    private void showLoading(final Stage initStage, Task<?> task) {
+        Pane splashPane = new Pane(new ImageView(new Image(getClass().getResourceAsStream("/images/loading.gif"))));
         task.stateProperty().addListener((observableValue, oldState, newState) -> {
             if (newState == Worker.State.SUCCEEDED) {
-                FadeTransition fadeSplash = new FadeTransition(Duration.seconds(1), splashLayout);
+                FadeTransition fadeSplash = new FadeTransition(Duration.seconds(1), splashPane);
                 fadeSplash.setFromValue(1.0);
                 fadeSplash.setToValue(0.0);
                 fadeSplash.setOnFinished(actionEvent -> initStage.hide());
@@ -68,8 +63,7 @@ public class MainApplication extends Application {
                 showMainStage();
             }
         });
-
-        initStage.setScene(new Scene(splashLayout, Color.TRANSPARENT));
+        initStage.setScene(new Scene(splashPane, Color.TRANSPARENT));
         initStage.initStyle(StageStyle.TRANSPARENT);
         initStage.setAlwaysOnTop(true);
         initStage.centerOnScreen();
