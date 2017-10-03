@@ -115,7 +115,7 @@ public class CachedTmdbService implements VideoMetadataService {
     }
 
     private boolean emptyQuery(VideoQuery query) {
-        return query == null || query.getName().isEmpty();
+        return query == null || (query.getName() == null || query.getName().isEmpty());
     }
 
     private MovieResultsPage searchMovieInternal(VideoQuery query) {
