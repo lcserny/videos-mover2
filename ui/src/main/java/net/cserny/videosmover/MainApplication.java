@@ -5,12 +5,14 @@ import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -23,6 +25,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class MainApplication extends Application {
     public static final String TITLE = "Downloads VideoMover";
+    public static final int LOADING_SIZE = 120;
 
     private Stage mainStage;
     private Parent parent;
@@ -63,10 +66,13 @@ public class MainApplication extends Application {
                 showMainStage();
             }
         });
+
         initStage.setScene(new Scene(splashPane, Color.TRANSPARENT));
         initStage.initStyle(StageStyle.TRANSPARENT);
         initStage.setAlwaysOnTop(true);
-        initStage.centerOnScreen();
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        initStage.setX(bounds.getMinX() + bounds.getWidth() / 2 - LOADING_SIZE / 2);
+        initStage.setY(bounds.getMinY() + bounds.getHeight() / 2 - LOADING_SIZE / 2);
         initStage.show();
     }
 
