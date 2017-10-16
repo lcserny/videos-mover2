@@ -26,6 +26,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class MainApplication extends Application {
     public static final String TITLE = "Downloads VideoMover";
     public static final int LOADING_SIZE = 120;
+    public static final int WINDOW_WIDTH = 900;
+    public static final int WINDOW_HEIGHT = 650;
 
     private Stage mainStage;
     private Parent parent;
@@ -81,7 +83,9 @@ public class MainApplication extends Application {
         mainStage.setScene(new Scene(parent));
         mainStage.setTitle(TITLE);
         mainStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
-        mainStage.centerOnScreen();
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        mainStage.setX(bounds.getMinX() + bounds.getWidth() / 2 - WINDOW_WIDTH / 2);
+        mainStage.setY(bounds.getMinY() + bounds.getHeight() / 2 - WINDOW_HEIGHT / 2);
         mainStage.show();
     }
 }
