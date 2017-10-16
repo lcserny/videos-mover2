@@ -186,7 +186,16 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
                 boundProperty = outputProperty;
                 customTextField.textProperty().bindBidirectional(boundProperty);
             }
+            updateVideoRowOutput(outputProperty);
         }
         setContentDisplay(contentDisplay);
+    }
+
+    private void updateVideoRowOutput(SimpleStringProperty outputProperty) {
+        VideoRow videoRow = getTableView().getItems().get(getIndex());
+        String value = outputProperty.getValue();
+        if (videoRow != null && value != null) {
+            videoRow.setOutput(value);
+        }
     }
 }
