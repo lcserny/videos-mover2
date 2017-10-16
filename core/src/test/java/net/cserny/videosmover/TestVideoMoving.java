@@ -3,9 +3,16 @@ package net.cserny.videosmover;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.TestHelperConfig;
 import net.cserny.videosmover.helper.VideoCreationHelper;
+import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoQuery;
+import net.cserny.videosmover.service.OutputResolver;
 import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.VideoMetadataService;
 import net.cserny.videosmover.service.VideoMover;
+import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +37,10 @@ public class TestVideoMoving extends InMemoryVideoFileSystemInitializer {
     private VideoCreationHelper videoHelper;
     @Autowired
     private VideoMover videoMover;
+    @Autowired
+    private VideoMetadataService metadataService;
+    @Autowired
+    private OutputResolver outputResolver;
 
     @Test
     public void givenVideoRowTvShowWhenMovingThenMoveToTvShowsOutput() throws Exception {
@@ -64,5 +75,22 @@ public class TestVideoMoving extends InMemoryVideoFileSystemInitializer {
         assertTrue(videoMover.move(video));
         assertTrue(Files.exists(video.getOutput().resolve("Subs").resolve(subPath1.getFileName())));
         assertTrue(Files.exists(video.getOutput().resolve("Subs").resolve(subPath2.getFileName())));
+    }
+
+    @Test
+    public void whenMovieIsChosenFromMetadataServiceOnMovingPlaceMovieInCorrectOutput() throws Exception {
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS);
+        SimpleVideoOutput output = SimpleVideoOutputHelper.buildVideoOutput(outputResolver.resolve(video));
+        List<VideoMetadata> metadataList = metadataService.searchMovieMetadata(VideoQuery.newInstance()
+                .withName(output.getName()).withYear(output.getYear()).build());
+        VideoMetadata videoMetadata = metadataList.get(0);
+        Assert.assertNotNull(videoMetadata);
+
+        String formattedOutput = SimpleVideoOutputHelper.formatOutput(output, videoMetadata);
+        Path outputPath = PathsProvider.getPath(formattedOutput);
+        video.setOutput(outputPath);
+
+        videoMover.move(video);
+        Assert.assertTrue(Files.exists(outputPath));
     }
 }
