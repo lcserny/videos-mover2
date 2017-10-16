@@ -27,8 +27,8 @@ public class InMemoryVideoFileSystemInitializer {
     public static final String DOWNLOADS_RESTRICTED_MOVIE = DOWNLOADS + "The.Hero.1080p.[2017].x264/the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_EXISTING_TVSHOW = DOWNLOADS + "Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
     public static final String DOWNLOADS_TVSHOW = DOWNLOADS + "Game.Of.Thrones.s0e10/game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
-    public static final String DOWNLOADS_GATSBY = DOWNLOADS + "the.great.gatsby.2015/";
-    public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "the.great.gatsby.2015.x264.1080p.avi";
+    public static final String DOWNLOADS_GATSBY = DOWNLOADS + "the.great.gatsby.2013/";
+    public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "the.great.gatsby.2013.x264.1080p.avi";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "Subs/subtitle.srt";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS_IDX = DOWNLOADS_GATSBY + "Subs/subtitle.idx";
 
@@ -60,9 +60,9 @@ public class InMemoryVideoFileSystemInitializer {
         createFile(downloadsFolder, "Game.Of.Thrones.s0e10", "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4", 2);
         createFile(downloadsFolder, "Criminal.Minds.s01e01", "criminil.mids.s01e01.720p.x264.mp4", 2);
         createFolder(tvShowsFolder, "Criminal Minds");
-        createFile(downloadsFolder, "the.great.gatsby.2015", "the.great.gatsby.2015.x264.1080p.avi", 2);
-        createFile(downloadsFolder, "the.great.gatsby.2015/Subs", "subtitle.srt", 0);
-        createFile(downloadsFolder, "the.great.gatsby.2015/Subs", "subtitle.idx", 0);
+        createFile(downloadsFolder, "the.great.gatsby.2013", "the.great.gatsby.2013.x264.1080p.avi", 2);
+        createFile(downloadsFolder, "the.great.gatsby.2013/Subs", "subtitle.srt", 0);
+        createFile(downloadsFolder, "the.great.gatsby.2013/Subs", "subtitle.idx", 0);
     }
 
     private void setupInMemoryFolders() throws IOException {
