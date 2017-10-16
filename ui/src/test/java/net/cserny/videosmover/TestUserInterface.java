@@ -180,4 +180,13 @@ public class TestUserInterface extends AbstractApplicationTest {
         assertNotNull(videoOutput);
         assertNotEquals("", videoOutput);
     }
+
+    @Test
+    public void whenVideoSelectedFromMetadataServiceThenVideoRowShouldHaveCorrectOutput() throws Exception {
+        // scan videos
+        // get list of items from table
+        // for first row in those items, get a reference of the output column = last tableCell
+        // when metadataService is used, preselect first occurrence
+        // check on updateItem of that tableCell that the videoMetadata name matches the videoRow's output fileName
+    }
 }
