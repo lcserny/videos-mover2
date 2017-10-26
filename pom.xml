@@ -82,12 +82,6 @@
 
         <profile>
             <id>desk-windows</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>desk-windows</value>
-                </property>
-            </activation>
             <properties>
                 <path.downloads>D:/Downloads</path.downloads>
                 <path.movies>D:/Movies/Movies</path.movies>
@@ -97,12 +91,6 @@
 
         <profile>
             <id>lap-linux</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>lap-linux</value>
-                </property>
-            </activation>
             <properties>
                 <path.downloads>/home/sabyx/Downloads</path.downloads>
                 <path.movies>/home/sabyx/Videos/Movies</path.movies>
