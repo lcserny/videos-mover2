@@ -5,10 +5,12 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LearnTmdbApiTest {
     @Test
+    @Ignore
     public void queryMovie() throws Exception {
         TmdbApi api = new TmdbApi("c37791bac5bebdfeb3e73db3632b9a13");
         TmdbSearch search = api.getSearch();
@@ -35,6 +37,7 @@ public class LearnTmdbApiTest {
     }
 
     @Test
+    @Ignore
     public void queryTvShow() throws Exception {
         TmdbApi api = new TmdbApi("c37791bac5bebdfeb3e73db3632b9a13");
         TmdbSearch search = api.getSearch();
@@ -58,6 +61,7 @@ public class LearnTmdbApiTest {
     }
 
     @Test
+    @Ignore
     public void findMovieById() throws Exception {
         TmdbApi api = new TmdbApi("c37791bac5bebdfeb3e73db3632b9a13");
         MovieDb movie = api.getMovies().getMovie(550, null);
@@ -80,6 +84,7 @@ public class LearnTmdbApiTest {
     }
 
     @Test
+    @Ignore
     public void findCastByMovie() throws Exception {
         TmdbApi api = new TmdbApi("c37791bac5bebdfeb3e73db3632b9a13");
         MovieDb movie = api.getMovies().getMovie(550, null, TmdbMovies.MovieMethod.credits);
@@ -89,6 +94,7 @@ public class LearnTmdbApiTest {
     }
 
     @Test
+    @Ignore
     public void findCastByTvShow() throws Exception {
         TmdbApi api = new TmdbApi("c37791bac5bebdfeb3e73db3632b9a13");
         TvSeries series = api.getTvSeries().getSeries(1399, null, TmdbTV.TvMethod.credits);

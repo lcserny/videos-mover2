@@ -25,6 +25,7 @@ public class InMemoryVideoFileSystemInitializer {
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE = DOWNLOADS_BIGSICK + "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_SUBTITLE = DOWNLOADS_BIGSICK + "Sub/Subtitle.srt";
     public static final String DOWNLOADS_RESTRICTED_MOVIE = DOWNLOADS + "The.Hero.1080p.[2017].x264/the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
+    public static final String DOWNLOADS_MOVIE_ALL_DIGITS = DOWNLOADS + "1922.1080p.[2017].x264/1922.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_EXISTING_TVSHOW = DOWNLOADS + "Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
     public static final String DOWNLOADS_TVSHOW = DOWNLOADS + "Game.Of.Thrones.s0e10/game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
     public static final String DOWNLOADS_GATSBY = DOWNLOADS + "the.great.gatsby.2013/";
@@ -57,6 +58,7 @@ public class InMemoryVideoFileSystemInitializer {
         createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264", "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4", 2);
         createFile(downloadsFolder, "The.Big.Sick.1080p.[2017].x264/Sub", "Subtitle.srt", 0);
         createFile(downloadsFolder, "The.Hero.1080p.[2017].x264", "the.hero.2017.1080p.BluRay.x264.YIFY.mp4", 2);
+        createFile(downloadsFolder, "1922.1080p.[2017].x264", "1922.2017.1080p.BluRay.x264.YIFY.mp4", 2);
         createFile(downloadsFolder, "Game.Of.Thrones.s0e10", "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4", 2);
         createFile(downloadsFolder, "Criminal.Minds.s01e01", "criminil.mids.s01e01.720p.x264.mp4", 2);
         createFolder(tvShowsFolder, "Criminal Minds");
