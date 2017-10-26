@@ -1,16 +1,22 @@
 package net.cserny.videosmover.service;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Properties;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
 public class PathsProvider {
+    private static final Logger logger = LoggerFactory.getLogger(PathsProvider.class);
+
     private static FileSystem fileSystem;
     private static String downloadsPath;
     private static String moviesPath;
@@ -58,50 +64,26 @@ public class PathsProvider {
     }
 
     private static void initDefaults() {
-        if (isWindowsOs()) {
-            initPaths("D:/");
-        } else {
-            if (isLaptopWithHostname("ubulap")) {
-                initPaths("/home/sabyx/");
-            } else {
-                initPaths("/mnt/Data/");
-            }
-        }
-    }
-
-    private static void initPaths(String osPrefix) {
-        String tmpDownloadsPath = osPrefix + "Downloads";
-        if (Files.exists(getPath(tmpDownloadsPath))) {
-            downloadsPath = tmpDownloadsPath;
+        Properties properties = new Properties();
+        try (InputStream input = PathsProvider.class.getClassLoader().getResourceAsStream("application.properties")) {
+            properties.load(input);
+        } catch (IOException e) {
+            logger.error("Cannot load application.properties");
         }
 
-        String tmpMoviesPath = osPrefix + "Movies/Movies";
-        String tmpAlternateMoviesPath = osPrefix + "Videos/Movies";
-        if (Files.exists(getPath(tmpMoviesPath))) {
-            moviesPath = tmpMoviesPath;
-        } else if (Files.exists(getPath(tmpAlternateMoviesPath))) {
-            moviesPath = tmpAlternateMoviesPath;
+        String pathDownloadsProperty = properties.getProperty("path.downloads");
+        if (pathDownloadsProperty != null && Files.exists(getPath(pathDownloadsProperty))) {
+            downloadsPath = pathDownloadsProperty;
         }
 
-        String tmpTvShowsPath = osPrefix + "Movies/TV";
-        String tmpTlternateTvShowsPath = osPrefix + "Videos/TV";
-        if (Files.exists(getPath(tmpTvShowsPath))) {
-            tvShowsPath = tmpTvShowsPath;
-        } else if (Files.exists(getPath(tmpTlternateTvShowsPath))) {
-            tvShowsPath = tmpTlternateTvShowsPath;
+        String pathMoviesProperty = properties.getProperty("path.movies");
+        if (pathMoviesProperty != null && Files.exists(getPath(pathMoviesProperty))) {
+            moviesPath = pathMoviesProperty;
         }
-    }
 
-    private static boolean isLaptopWithHostname(String hostname) {
-        try {
-            return hostname.equals(InetAddress.getLocalHost().getHostName());
-        } catch (UnknownHostException ignored) { }
-
-        return false;
-    }
-
-    private static boolean isWindowsOs() {
-        String osName = System.getProperty("os.name", "generic");
-        return osName.toLowerCase().contains("win");
+        String pathTvShowsProperty = properties.getProperty("path.tvshows");
+        if (pathTvShowsProperty != null && Files.exists(getPath(pathTvShowsProperty))) {
+            tvShowsPath = pathTvShowsProperty;
+        }
     }
 }
