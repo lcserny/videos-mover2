@@ -67,7 +67,58 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>desk-linux</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <path.downloads>/mnt/Data/Downloads</path.downloads>
+                <path.movies>/mnt/Data/Videos/Movies</path.movies>
+                <path.tvshows>/mnt/Data/Videos/TV</path.tvshows>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>desk-windows</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>desk-windows</value>
+                </property>
+            </activation>
+            <properties>
+                <path.downloads>D:/Downloads</path.downloads>
+                <path.movies>D:/Movies/Movies</path.movies>
+                <path.tvshows>D:/Movies/TV</path.tvshows>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>lap-linux</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>lap-linux</value>
+                </property>
+            </activation>
+            <properties>
+                <path.downloads>/home/sabyx/Downloads</path.downloads>
+                <path.movies>/home/sabyx/Videos/Movies</path.movies>
+                <path.tvshows>/home/sabyx/Videos/TV</path.tvshows>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -8,6 +8,9 @@ Application used for managing downloaded movies and tv series (moving, displayin
 - clone this repository `git clone https://github.com/lcserny/videos-mover2`
 - checkout the master branch (if not already) `git checkout master`
 - run maven `mvn clean compile package -Dskiptests`
+
+_**Note**: you can change default paths by switching the profile `-P desk-windows`
+    Available environments: `desk-linux, desk-windows, lap-linux`_
 - copy the jar created wherever you want `cp ui/target/ui-1.0-SNAPSHOT-jar-with-dependencies.jar /you/path`
 - run it using Oracle Java RE `java -jar app.jar`
 
