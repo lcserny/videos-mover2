@@ -1,15 +1,18 @@
 package net.cserny.videosmover.learning;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LearnCallbacksTest {
     @Test
+    @Ignore
     public void passCallbackToMethod() throws Exception {
         System.out.println(process("hello", new FirstCallback()));
         System.out.println(process("hello 2nd", new SecondCallback()));
     }
 
     @Test
+    @Ignore
     public void passCallbackLambda() throws Exception {
         System.out.println(process("hello", query -> query + " Some text"));
         System.out.println(process("hello", query -> query + " Some other text"));
