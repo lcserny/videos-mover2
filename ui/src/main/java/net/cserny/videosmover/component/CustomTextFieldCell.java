@@ -148,7 +148,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     }
 
     private List<VideoMetadata> processVideoMetadataList() {
-        VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
+        VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).build();
         return videoOutput.getVideoType() == VideoType.MOVIE
                 ? metadataService.searchMovieMetadata(videoQuery)
                 : videoOutput.getVideoType() == VideoType.TVSHOW
