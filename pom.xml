@@ -75,8 +75,8 @@
             </activation>
             <properties>
                 <path.downloads>/mnt/Data/Downloads</path.downloads>
-                <path.movies>/mnt/Data/Videos/Movies</path.movies>
-                <path.tvshows>/mnt/Data/Videos/TV</path.tvshows>
+                <path.movies>/mnt/Data/Movies/Movies</path.movies>
+                <path.tvshows>/mnt/Data/Movies/TV</path.tvshows>
             </properties>
         </profile>
 
