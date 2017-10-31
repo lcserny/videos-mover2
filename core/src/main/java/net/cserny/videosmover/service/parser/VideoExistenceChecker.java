@@ -2,6 +2,7 @@ package net.cserny.videosmover.service.parser;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 /**
@@ -44,7 +46,7 @@ public class VideoExistenceChecker implements VideoNameParser {
         int maxCoefficient = 0;
         Path selectedFolder = null;
         for (Path dirPath : findDirectories(path)) {
-            int currentCoefficient = FuzzySearch.ratio(filename, dirPath.getFileName().toString());
+            int currentCoefficient = FuzzySearch.ratio(trimReleaseDate(filename), trimReleaseDate(dirPath.getFileName().toString()));
             if (currentCoefficient > maxCoefficient) {
                 maxCoefficient = currentCoefficient;
                 selectedFolder = dirPath;
@@ -54,6 +56,14 @@ public class VideoExistenceChecker implements VideoNameParser {
         return selectedFolder != null && maxCoefficient >= similarityPercent
                 ? Optional.of(selectedFolder.toString())
                 : Optional.empty();
+    }
+
+    private String trimReleaseDate(String filename) {
+        Matcher matcher = SimpleVideoOutputHelper.RELEASEDATE_PATTERN.matcher(filename);
+        if (matcher.find()) {
+            filename = filename.substring(0, matcher.start(1) - 2);
+        }
+        return filename;
     }
 
     private List<Path> findDirectories(Path path) {
