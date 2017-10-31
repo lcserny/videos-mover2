@@ -12,12 +12,11 @@ public class SimpleVideoOutputHelper {
     public static SimpleVideoOutput buildVideoOutput(String output) {
         String path = output.substring(0, output.lastIndexOf('/'));
         String name = output.substring(output.lastIndexOf('/') + 1);
-        Matcher matcher = Pattern.compile("\\(\\d{4}\\)").matcher(name);
+        Matcher matcher = Pattern.compile("\\((\\d{4})(-\\d{2}-\\d{2})?\\)").matcher(name);
         Integer year = null;
         if (matcher.find()) {
-            name = name.substring(0, matcher.start() - 2);
-            String yearString = matcher.group();
-            year = Integer.valueOf(yearString.substring(1, yearString.length() - 1));
+            name = name.substring(0, matcher.start() - 1);
+            year = Integer.valueOf(matcher.group(1));
         }
 
         VideoType videoType = null;
