@@ -7,6 +7,7 @@ import net.cserny.videosmover.service.MessageRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Deprecated
 @Service
 public class PopupMessageDisplayProvider implements MessageDisplayProvider {
     private final MessageRegistry messageRegistry;
@@ -16,7 +17,7 @@ public class PopupMessageDisplayProvider implements MessageDisplayProvider {
     public PopupMessageDisplayProvider(MessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
-        this.messageRegistry.registerDisplayProvider(this);
+//        this.messageRegistry.registerDisplayProvider(this);
     }
 
     @Override
