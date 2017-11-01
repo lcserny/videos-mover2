@@ -64,6 +64,7 @@
     -fx-text-fill: white;
     -fx-pref-rows: 2;
     -fx-background-color: transparent;
+    -fx-wrap-text: true;
 }
 
 #messageText .content {
@@ -73,7 +74,11 @@
     -fx-border-width: 1px;
 }
 
-#messageText .scroll-pane .viewport{
+#messageText .scroll-bar {
+    -fx-background-color: #555555;
+}
+
+#messageText .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
