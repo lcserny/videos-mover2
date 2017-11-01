@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service.validator;
 
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,8 +28,8 @@ public class MainPathsRestriction implements RemovalRestriction {
 
     private void refreshRestrictedFolders() {
         restrictedFolders = new ArrayList<>();
-        restrictedFolders.add(PathsProvider.getDownloadsPath());
-        restrictedFolders.add(PathsProvider.getTvShowsPath());
-        restrictedFolders.add(PathsProvider.getMoviesPath());
+        restrictedFolders.add(StaticPathsProvider.getDownloadsPath());
+        restrictedFolders.add(StaticPathsProvider.getTvShowsPath());
+        restrictedFolders.add(StaticPathsProvider.getMoviesPath());
     }
 }

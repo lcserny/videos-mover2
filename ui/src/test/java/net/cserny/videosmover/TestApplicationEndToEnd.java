@@ -6,7 +6,7 @@ import javafx.scene.control.TableView;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.MessageRegistry;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest {
 
     @Test
     public void givenNoDownloadsLocationWhenScanningThenShowPopup() throws Exception {
-        PathsProvider.setDownloadsPath(null);
+        StaticPathsProvider.setDownloadsPath(null);
         Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
 
         clickOn(scanButton);
@@ -40,7 +40,7 @@ public class TestApplicationEndToEnd extends AbstractApplicationTest {
 
     @Test
     public void givenNoTvShowsOrMoviesLocationWhenScanningAndTryingToMoveShowsPopup() throws Exception {
-        PathsProvider.setTvShowsPath(null);
+        StaticPathsProvider.setTvShowsPath(null);
         Button scanButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#scanButton").query();
         Button moveButton = from(stageProvider.getStage().getScene().getRoot()).lookup("#moveButton").query();
 

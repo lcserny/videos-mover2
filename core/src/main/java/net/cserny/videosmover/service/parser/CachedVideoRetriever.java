@@ -4,7 +4,7 @@ import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedTmdbService;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -28,12 +28,12 @@ public class CachedVideoRetriever implements VideoNameParser {
 
     @Override
     public String parseTvShow(String output) {
-        return parseOutputInternal(output, PathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
+        return parseOutputInternal(output, StaticPathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
     }
 
     @Override
     public String parseMovie(String output) {
-        return parseOutputInternal(output, PathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
+        return parseOutputInternal(output, StaticPathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
     }
 
     private String parseOutputInternal(String output, String rootPath, String cachePrefix) {

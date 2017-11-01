@@ -3,7 +3,7 @@ package net.cserny.videosmover.service.helper;
 import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoType;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,9 +22,9 @@ public class SimpleVideoOutputHelper {
         }
 
         VideoType videoType = null;
-        if (path.equals(PathsProvider.getMoviesPath())) {
+        if (path.equals(StaticPathsProvider.getMoviesPath())) {
             videoType = VideoType.MOVIE;
-        } else if (path.equals(PathsProvider.getTvShowsPath())) {
+        } else if (path.equals(StaticPathsProvider.getTvShowsPath())) {
             videoType = VideoType.TVSHOW;
         }
 

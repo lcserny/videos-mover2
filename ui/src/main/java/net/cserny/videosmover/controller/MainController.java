@@ -118,9 +118,9 @@ public class MainController implements Initializable {
     }
 
     private void initDefaultPaths() {
-        downloadsPathTextField.setText(PathsProvider.getDownloadsPath());
-        moviePathTextField.setText(PathsProvider.getMoviesPath());
-        tvShowPathTextField.setText(PathsProvider.getTvShowsPath());
+        downloadsPathTextField.setText(StaticPathsProvider.getDownloadsPath());
+        moviePathTextField.setText(StaticPathsProvider.getMoviesPath());
+        tvShowPathTextField.setText(StaticPathsProvider.getTvShowsPath());
     }
 
     @SuppressWarnings("unchecked")
@@ -155,7 +155,7 @@ public class MainController implements Initializable {
     }
 
     public void loadTableView(ActionEvent event) throws IOException {
-        if (PathsProvider.getDownloadsPath() == null) {
+        if (StaticPathsProvider.getDownloadsPath() == null) {
             messageRegistry.add(MessageProvider.getIputMissing());
             return;
         }
@@ -163,7 +163,7 @@ public class MainController implements Initializable {
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
         Runnable expensiveTask = () -> {
             try {
-                List<Video> scannedVideos = scanService.scan(PathsProvider.getDownloadsPath());
+                List<Video> scannedVideos = scanService.scan(StaticPathsProvider.getDownloadsPath());
                 List<VideoRow> videoRowList = new ArrayList<>();
                 for (int i = 0; i < scannedVideos.size(); i++) {
                     Video video = scannedVideos.get(i);
@@ -195,7 +195,7 @@ public class MainController implements Initializable {
     }
 
     public void moveVideos(ActionEvent event) throws IOException {
-        if (PathsProvider.getMoviesPath() == null || PathsProvider.getTvShowsPath() == null) {
+        if (StaticPathsProvider.getMoviesPath() == null || StaticPathsProvider.getTvShowsPath() == null) {
             messageRegistry.add(MessageProvider.getOutputMissing());
             return;
         }
@@ -218,26 +218,26 @@ public class MainController implements Initializable {
     }
 
     public void setDownloadsPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose Downloads folder", PathsProvider.getDownloadsPath());
+        String path = processDirectoryChooserPath("Choose Downloads folder", StaticPathsProvider.getDownloadsPath());
         if (path != null) {
             downloadsPathTextField.setText(path);
-            PathsProvider.setDownloadsPath(path);
+            StaticPathsProvider.setDownloadsPath(path);
         }
     }
 
     public void setMoviesPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose Movies folder", PathsProvider.getMoviesPath());
+        String path = processDirectoryChooserPath("Choose Movies folder", StaticPathsProvider.getMoviesPath());
         if (path != null) {
             moviePathTextField.setText(path);
-            PathsProvider.setMoviesPath(path);
+            StaticPathsProvider.setMoviesPath(path);
         }
     }
 
     public void setTvShowsPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose TvShows folder", PathsProvider.getTvShowsPath());
+        String path = processDirectoryChooserPath("Choose TvShows folder", StaticPathsProvider.getTvShowsPath());
         if (path != null) {
             tvShowPathTextField.setText(path);
-            PathsProvider.setTvShowsPath(path);
+            StaticPathsProvider.setTvShowsPath(path);
         }
     }
 

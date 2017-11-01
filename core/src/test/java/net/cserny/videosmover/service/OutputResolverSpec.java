@@ -21,7 +21,7 @@ public class OutputResolverSpec extends InMemoryVideoFileSystemInitializer {
     @Test
     public void allDigitsMovieShouldResolvNameCorrectly() throws Exception {
         Video video = new Video();
-        video.setInput(PathsProvider.getPath(DOWNLOADS_MOVIE_ALL_DIGITS));
+        video.setInput(StaticPathsProvider.getPath(DOWNLOADS_MOVIE_ALL_DIGITS));
         video.setIsMovie(true);
         assertThat(outputResolver.resolve(video), containsString("1922 (2017)"));
     }

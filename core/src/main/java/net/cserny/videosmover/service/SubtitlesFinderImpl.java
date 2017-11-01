@@ -22,7 +22,7 @@ public class SubtitlesFinderImpl implements SubtitlesFinder {
     @Override
     public List<Path> find(Path file) throws IOException {
         Path directory = file.getParent();
-        if (directory.toString().equals(PathsProvider.getDownloadsPath())) {
+        if (directory.toString().equals(StaticPathsProvider.getDownloadsPath())) {
             return Collections.emptyList();
         }
         return collectSubtitles(directory);

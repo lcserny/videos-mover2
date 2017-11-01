@@ -1,7 +1,7 @@
 package net.cserny.videosmover;
 
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.VideoChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ public class TestVideoValidation extends InMemoryVideoFileSystemInitializer {
     private VideoChecker videoChecker;
 
     private boolean isVideoResult(String pathString) throws IOException {
-        return videoChecker.isVideo(PathsProvider.getPath(pathString));
+        return videoChecker.isVideo(StaticPathsProvider.getPath(pathString));
     }
 
     @Test

@@ -2,7 +2,7 @@ package net.cserny.videosmover.helper;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import org.junit.After;
 import org.junit.Before;
 
@@ -69,19 +69,19 @@ public class InMemoryVideoFileSystemInitializer {
 
     private void setupInMemoryFolders() throws IOException {
         inMemoryFilesystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
-        PathsProvider.setFileSystem(inMemoryFilesystem);
+        StaticPathsProvider.setFileSystem(inMemoryFilesystem);
 
         downloadsFolder = inMemoryFilesystem.getPath("/Downloads");
         Files.createDirectory(downloadsFolder);
-        PathsProvider.setDownloadsPath(downloadsFolder.toString());
+        StaticPathsProvider.setDownloadsPath(downloadsFolder.toString());
 
         moviesFolder = inMemoryFilesystem.getPath("/Movies");
         Files.createDirectory(moviesFolder);
-        PathsProvider.setMoviesPath(moviesFolder.toString());
+        StaticPathsProvider.setMoviesPath(moviesFolder.toString());
 
         tvShowsFolder = inMemoryFilesystem.getPath("/TvShows");
         Files.createDirectory(tvShowsFolder);
-        PathsProvider.setTvShowsPath(tvShowsFolder.toString());
+        StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
     }
 
     private Path createFolder(Path root, String folderName) throws IOException {

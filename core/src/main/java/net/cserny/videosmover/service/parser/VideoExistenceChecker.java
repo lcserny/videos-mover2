@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service.parser;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
@@ -28,17 +28,17 @@ public class VideoExistenceChecker implements VideoNameParser {
 
     @Override
     public String parseTvShow(String text) {
-        return checkExisting(PathsProvider.getTvShowsPath(), text);
+        return checkExisting(StaticPathsProvider.getTvShowsPath(), text);
     }
 
     @Override
     public String parseMovie(String text) {
-        return checkExisting(PathsProvider.getMoviesPath(), text);
+        return checkExisting(StaticPathsProvider.getMoviesPath(), text);
     }
 
     private String checkExisting(String path, String filename) {
         return path != null
-                ? probeExistingFolder(PathsProvider.getPath(path), filename).orElse(path + "/" + filename)
+                ? probeExistingFolder(StaticPathsProvider.getPath(path), filename).orElse(path + "/" + filename)
                 : "";
     }
 

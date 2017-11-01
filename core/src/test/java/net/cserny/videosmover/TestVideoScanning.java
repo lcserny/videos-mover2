@@ -2,8 +2,8 @@ package net.cserny.videosmover;
 
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.service.PathsProvider;
 import net.cserny.videosmover.service.ScanService;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class TestVideoScanning extends InMemoryVideoFileSystemInitializer {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        videosScanned = scanService.scan(PathsProvider.getDownloadsPath());
+        videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
     }
 
     @Test

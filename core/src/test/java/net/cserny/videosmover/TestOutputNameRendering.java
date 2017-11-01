@@ -4,7 +4,7 @@ import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.TestHelperConfig;
 import net.cserny.videosmover.helper.VideoCreationHelper;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ public class TestOutputNameRendering extends InMemoryVideoFileSystemInitializer 
     @Test
     public void givenTvShowVideoInputWhenParsingShouldReturnTvShowOutput() throws Exception {
         Video video = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
-        assertTrue(video.getOutput().startsWith(PathsProvider.getTvShowsPath()));
+        assertTrue(video.getOutput().startsWith(StaticPathsProvider.getTvShowsPath()));
     }
 
     @Test
     public void givenMovieVideoInputWhenParsingShouldReturnMovieOutput() throws Exception {
         Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
-        assertTrue(video.getOutput().startsWith(PathsProvider.getMoviesPath()));
+        assertTrue(video.getOutput().startsWith(StaticPathsProvider.getMoviesPath()));
     }
 
     @Test

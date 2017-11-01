@@ -6,7 +6,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import net.cserny.videosmover.model.VideoRow;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -33,10 +33,10 @@ public class TestUserInterface extends AbstractApplicationTest {
 
 //        clickOn(setDownloadsButton);
 //        push(KeyCode.ENTER);
-        downloadsTextField.setText(PathsProvider.getDownloadsPath());
-        PathsProvider.setDownloadsPath(PathsProvider.getDownloadsPath());
+        downloadsTextField.setText(StaticPathsProvider.getDownloadsPath());
+        StaticPathsProvider.setDownloadsPath(StaticPathsProvider.getDownloadsPath());
 
-        assertEquals(PathsProvider.getDownloadsPath(), downloadsTextField.getText());
+        assertEquals(StaticPathsProvider.getDownloadsPath(), downloadsTextField.getText());
     }
 
     @Test
@@ -46,10 +46,10 @@ public class TestUserInterface extends AbstractApplicationTest {
 
 //        clickOn(setMoviesButton);
 //        push(KeyCode.ENTER);
-        moviesTextField.setText(PathsProvider.getMoviesPath());
-        PathsProvider.setMoviesPath(PathsProvider.getMoviesPath());
+        moviesTextField.setText(StaticPathsProvider.getMoviesPath());
+        StaticPathsProvider.setMoviesPath(StaticPathsProvider.getMoviesPath());
 
-        assertEquals(PathsProvider.getMoviesPath(), moviesTextField.getText());
+        assertEquals(StaticPathsProvider.getMoviesPath(), moviesTextField.getText());
     }
 
     @Test
@@ -59,10 +59,10 @@ public class TestUserInterface extends AbstractApplicationTest {
 
 //        clickOn(setTvShowsButton);
 //        push(KeyCode.ENTER);
-        tvShowsTextField.setText(PathsProvider.getTvShowsPath());
-        PathsProvider.setTvShowsPath(PathsProvider.getTvShowsPath());
+        tvShowsTextField.setText(StaticPathsProvider.getTvShowsPath());
+        StaticPathsProvider.setTvShowsPath(StaticPathsProvider.getTvShowsPath());
 
-        assertEquals(PathsProvider.getTvShowsPath(), tvShowsTextField.getText());
+        assertEquals(StaticPathsProvider.getTvShowsPath(), tvShowsTextField.getText());
     }
 
     @Test

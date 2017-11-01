@@ -1,7 +1,7 @@
 package net.cserny.videosmover;
 
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.SubtitlesFinder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ public class TestSubtitleFinding extends InMemoryVideoFileSystemInitializer {
     private SubtitlesFinder subtitlesFinder;
 
     private List<Path> processSubtitles(String pathString) throws IOException {
-        Path videoPath = PathsProvider.getPath(pathString);
+        Path videoPath = StaticPathsProvider.getPath(pathString);
         return subtitlesFinder.find(videoPath);
     }
 

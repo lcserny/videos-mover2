@@ -4,7 +4,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 
 /**
  * Created by leonardo on 02.09.2017.
@@ -52,7 +52,7 @@ public class VideoRow {
 
     public void setOutput(String output) {
         this.output.set(output);
-        this.video.setOutput(PathsProvider.getPath(output));
+        this.video.setOutput(StaticPathsProvider.getPath(output));
     }
 
     public boolean isMovie() {

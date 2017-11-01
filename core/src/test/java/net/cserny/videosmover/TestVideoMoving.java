@@ -8,7 +8,7 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.OutputResolver;
-import net.cserny.videosmover.service.PathsProvider;
+import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.VideoMetadataService;
 import net.cserny.videosmover.service.VideoMover;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
@@ -60,7 +60,7 @@ public class TestVideoMoving extends InMemoryVideoFileSystemInitializer {
     @Test
     public void givenVideoRowMovieWithSubtitlesWhenMovingThenMoveToMoviesOutputWithSubtitles() throws Exception {
         Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
-        video.setSubtitles(Collections.singletonList(PathsProvider.getPath(DOWNLOADS_SUBTITLE)));
+        video.setSubtitles(Collections.singletonList(StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE)));
 
         assertTrue(videoMover.move(video));
     }
@@ -68,8 +68,8 @@ public class TestVideoMoving extends InMemoryVideoFileSystemInitializer {
     @Test
     public void whenSubtitlesAreInSubsFolderMoveThemToSubsFolderInOutputAlso() throws Exception {
         Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS);
-        Path subPath1 = PathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS);
-        Path subPath2 = PathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS_IDX);
+        Path subPath1 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS);
+        Path subPath2 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS_IDX);
         video.setSubtitles(Arrays.asList(subPath1, subPath2));
 
         assertTrue(videoMover.move(video));
@@ -87,7 +87,7 @@ public class TestVideoMoving extends InMemoryVideoFileSystemInitializer {
         Assert.assertNotNull(videoMetadata);
 
         String formattedOutput = SimpleVideoOutputHelper.formatOutput(output, videoMetadata);
-        Path outputPath = PathsProvider.getPath(formattedOutput);
+        Path outputPath = StaticPathsProvider.getPath(formattedOutput);
         video.setOutput(outputPath);
 
         videoMover.move(video);
