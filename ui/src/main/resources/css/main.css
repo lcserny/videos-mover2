@@ -4,15 +4,126 @@
     -fx-font-smoothing-type: gray;
 }
 
-.scan-button {
+#container, #settingsPane {
+    -fx-pref-height: 650;
+    -fx-background-color: #666666;
+}
+
+#container {
+    -fx-pref-width: 900;
+}
+
+#settingsPane {
+    -fx-cursor: hand;
+    -fx-pref-width: 500;
+    -fx-border-color: transparent black transparent transparent;
+    -fx-border-width: 2px;
+}
+
+#settingsTitle {
+    -fx-fill: white;
+    -fx-font-size: 14;
+}
+
+#settings-container {
+    -fx-padding: 10 25 0 25;
+}
+
+.set-path-container {
+    -fx-padding: 5 0 0 0;
+}
+
+#main-buttons-container {
+    -fx-padding: 25;
+}
+
+#scanButton {
     -fx-background-color: linear-gradient(to top right, #0094ff, #6a95ab);
     -fx-text-fill: white;
     -fx-border-color: white;
     -fx-border-width: 2px;
+    -fx-alignment: center;
+    -fx-pref-height: 50;
+    -fx-pref-width: 215;
+    -fx-text-alignment: center;
 }
 
-.scan-button:hover {
+#scanButton:hover {
     -fx-background-color: linear-gradient(to top right, #0077cc, #4f6f80);
+}
+
+#moveButton {
+    -fx-text-fill: white;
+    -fx-pref-height: 50;
+    -fx-pref-width: 215;
+}
+
+#messageText {
+    -fx-pref-height: 50;
+    -fx-pref-width: 375;
+    -fx-text-fill: white;
+    -fx-pref-rows: 2;
+    -fx-background-color: transparent;
+}
+
+#messageText .content {
+    -fx-background-color: #5f5f5f;
+    -fx-pref-width: 370;
+    -fx-border-color: #444444;
+    -fx-border-width: 1px;
+}
+
+#messageText .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.set-path-button {
+    -fx-alignment: center;
+    -fx-pref-height: 30;
+    -fx-pref-width: 140;
+    -fx-text-fill: white;
+}
+
+#tvShowPathTextField {
+    -fx-pref-height: 30;
+    -fx-pref-width: 300;
+}
+
+#moviePathTextField {
+    -fx-pref-height: 30;
+    -fx-pref-width: 300;
+}
+
+#move-container {
+    -fx-pref-height: 100;
+    -fx-pref-width: 500;
+    -fx-alignment: center;
+}
+
+#downloadsPathTextField {
+    -fx-pref-height: 30;
+    -fx-pref-width: 300;
+}
+
+#main-container {
+    -fx-pref-width: 880;
+    -fx-translate-x: 20;
+}
+
+#nameCol {
+    -fx-pref-width: 250;
+}
+
+#movieCol {
+    -fx-pref-width: 70;
+}
+
+#tvshowCol {
+    -fx-pref-width: 70;
+}
+
+#outputCol {
+    -fx-pref-width: 494;
 }
 
 .default-button {
@@ -31,7 +142,8 @@
     -fx-border-color: black;
 }
 
-.table-view {
+#tableView {
+    -fx-pref-height: 550;
     -fx-base: #bbbbbb;
     -fx-control-inner-background: #777777;
     -fx-background-color: #777777;
@@ -40,22 +152,22 @@
     -fx-padding: 0;
 }
 
-.table-view .column-header-background {
+#tableView .column-header-background {
     -fx-background-color: #555555;
     -fx-border-color: black;
     -fx-border-width: 2px;
 }
 
-.table-view .column-header .label {
+#tableView .column-header .label {
     -fx-text-fill: white;
 }
 
-.table-view .column-header, .table-view .filler {
+#tableView .column-header, .table-view .filler {
     -fx-size: 30px;
     -fx-border-width: 0 0 1 0;
     -fx-background-color: transparent;
 }
 
-.table-view .table-cell {
+#tableView .table-cell {
     -fx-text-fill: white;
 }
