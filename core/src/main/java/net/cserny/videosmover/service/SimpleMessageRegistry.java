@@ -9,24 +9,21 @@ import java.util.List;
 @Service
 public class SimpleMessageRegistry implements MessageRegistry {
     private List<Message> messages;
-    private List<MessageDisplayProvider> messageDisplayProviders;
+    private MessageDisplayProvider messageDisplayProvider;
 
     public SimpleMessageRegistry() {
         messages = new ArrayList<>();
-        messageDisplayProviders = new ArrayList<>();
     }
 
     @Override
     public void registerDisplayProvider(MessageDisplayProvider messageDisplayProvider) {
-        messageDisplayProviders.add(messageDisplayProvider);
+        this.messageDisplayProvider = messageDisplayProvider;
     }
 
     @Override
     public void displayMessages() {
-        for (Message message : messages) {
-            for (MessageDisplayProvider provider : messageDisplayProviders) {
-                provider.display(message);
-            }
+        for (Message message : new ArrayList<>(messages)) {
+            messageDisplayProvider.display(message);
         }
     }
 
