@@ -4,15 +4,129 @@
     -fx-font-smoothing-type: gray;
 }
 
-.scan-button {
+#container {
+    -fx-background-color: #666666;
+    -fx-pref-height: 650;
+    -fx-pref-width: 900;
+}
+
+#scanButton {
     -fx-background-color: linear-gradient(to top right, #0094ff, #6a95ab);
     -fx-text-fill: white;
     -fx-border-color: white;
     -fx-border-width: 2px;
+    -fx-alignment: center;
+    -fx-pref-height: 50;
+    -fx-pref-width: 215;
+    -fx-text-alignment: center;
 }
 
-.scan-button:hover {
+#scanButton:hover {
     -fx-background-color: linear-gradient(to top right, #0077cc, #4f6f80);
+}
+
+#top-container {
+    -fx-pref-height: 75;
+    -fx-pref-width: 900;
+    -fx-alignment: center;
+}
+
+#bottom-container {
+    -fx-alignment: center;
+    -fx-pref-height: 100;
+    -fx-pref-width: 800;
+}
+
+#paths-container {
+    -fx-alignment: center;
+    -fx-pref-height: 100;
+    -fx-pref-width: 500;
+}
+
+#movie-path-container {
+    -fx-alignment: center;
+}
+
+#setDownloadsButton {
+    -fx-alignment: center;
+    -fx-pref-height: 30;
+    -fx-pref-width: 140;
+    -fx-text-fill: white;
+}
+
+#setMoviesButton {
+    -fx-pref-height: 30;
+    -fx-pref-width: 140;
+    -fx-text-fill: white;
+}
+
+#setTvShowsButton {
+    -fx-pref-height: 30;
+    -fx-pref-width: 140;
+    -fx-text-fill: white;
+}
+
+#tvShowPathTextField {
+    -fx-pref-height: 30;
+    -fx-pref-width: 300;
+}
+
+#moviePathTextField {
+    -fx-pref-height: 30;
+    -fx-pref-width: 300;
+}
+
+#tv-path-container {
+    -fx-alignment: center;
+}
+
+#downloads-path-container {
+    -fx-pref-height: 75;
+    -fx-pref-width: 500;
+    -fx-alignment: center;
+}
+
+#move-container {
+    -fx-pref-height: 100;
+    -fx-pref-width: 500;
+    -fx-alignment: center;
+}
+
+#moveButton {
+    -fx-text-fill: white;
+    -fx-pref-height: 60;
+    -fx-pref-width: 215;
+}
+
+#downloadsPathTextField {
+    -fx-pref-height: 30;
+    -fx-pref-width: 300;
+}
+
+#scan-container {
+    -fx-pref-height: 75;
+    -fx-pref-width: 300;
+    -fx-alignment: center;
+}
+
+#tableView {
+    -fx-alignment: center;
+}
+
+#nameCol {
+    -fx-pref-width: 250;
+}
+
+#movieCol {
+    -fx-pref-width: 70;
+}
+
+#tvshowCol {
+    -fx-pref-width: 70;
+}
+
+#outputCol {
+    -fx-pref-width: 494;
 }
 
 .default-button {
