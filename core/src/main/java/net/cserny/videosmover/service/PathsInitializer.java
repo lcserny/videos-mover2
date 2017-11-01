@@ -3,8 +3,10 @@ package net.cserny.videosmover.service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
@@ -20,6 +22,19 @@ public class PathsInitializer {
 
     public PathsInitializer() {
         fileSystem = FileSystems.getDefault();
+    }
+
+    @PostConstruct
+    private void init() {
+        if (downloadsPath == null || !Files.exists(getPath(downloadsPath))) {
+            downloadsPath = null;
+        }
+        if (moviesPath == null || !Files.exists(getPath(moviesPath))) {
+            moviesPath = null;
+        }
+        if (tvShowsPath == null || !Files.exists(getPath(tvShowsPath))) {
+            tvShowsPath = null;
+        }
     }
 
     public Path getPath(String path) {
