@@ -1,5 +1,6 @@
 package net.cserny.videosmover.controller;
 
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,7 +15,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
+import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.model.Video;
@@ -39,6 +42,8 @@ import java.util.stream.Collectors;
 public class MainController implements Initializable {
     @FXML
     private ImageView loadingImage;
+    @FXML
+    private Pane settingsPane;
     @FXML
     private TableView<VideoRow> tableView;
     @FXML
@@ -71,6 +76,29 @@ public class MainController implements Initializable {
         initButtons();
         initTable();
         initDefaultPaths();
+        initSlidingSettingsPane();
+    }
+
+    private void initSlidingSettingsPane() {
+        int translationValue = -480;
+        settingsPane.setTranslateX(translationValue);
+
+        TranslateTransition slidingSettingsTranslation = new TranslateTransition(Duration.millis(250), settingsPane);
+        slidingSettingsTranslation.setFromX(translationValue);
+        slidingSettingsTranslation.setToX(0);
+
+        settingsPane.setOnMouseClicked(event -> {
+            Boolean open = (Boolean) settingsPane.getUserData();
+            if (open != null && open) {
+                slidingSettingsTranslation.setRate(-1);
+                slidingSettingsTranslation.play();
+                settingsPane.setUserData(false);
+            } else {
+                slidingSettingsTranslation.setRate(1);
+                slidingSettingsTranslation.play();
+                settingsPane.setUserData(true);
+            }
+        });
     }
 
     private void initButtons() {
