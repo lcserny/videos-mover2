@@ -24,7 +24,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class MainApplication extends Application {
     public static final String TITLE = "Downloads VideoMover";
 
-    private Stage mainStage;
+    private ApplicationContext context;
     private Parent parent;
 
     public static void main(String[] args) {
@@ -36,12 +36,10 @@ public class MainApplication extends Application {
         Task<Void> loadSpringContextTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+                context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
                 loader.setControllerFactory(context::getBean);
-                context.getBean(MainStageProvider.class).setStage(mainStage);
                 parent = loader.load();
-
                 return null;
             }
         };
@@ -72,12 +70,14 @@ public class MainApplication extends Application {
     }
 
     private void showMainStage() {
-        mainStage = new Stage();
+        Stage mainStage = new Stage();
         mainStage.setScene(new Scene(parent));
         mainStage.setTitle(TITLE);
         mainStage.setResizable(false);
         mainStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         mainStage.centerOnScreen();
         mainStage.show();
+
+        context.getBean(MainStageProvider.class).setStage(mainStage);
     }
 }
