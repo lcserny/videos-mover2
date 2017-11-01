@@ -4,65 +4,59 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
 <Pane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112" fx:id="container"
       fx:controller="net.cserny.videosmover.controller.MainController" stylesheets="@/css/main.css">
-    <BorderPane>
-        <top>
-            <BorderPane id="top-container">
-                <left>
-                    <HBox id="downloads-path-container">
-                        <Button mnemonicParsing="false" styleClass="default-button" text="Downloads" fx:id="setDownloadsButton" onAction="#setDownloadsPath"/>
-                        <TextField fx:id="downloadsPathTextField" disable="true" styleClass="path-text"/>
-                    </HBox>
-                </left>
+    <VBox id="main-container">
+        <TableView fx:id="tableView">
+            <columns>
+                <TableColumn fx:id="nameCol" text="Name" editable="false"/>
+                <TableColumn fx:id="movieCol" text="Movie"/>
+                <TableColumn fx:id="tvshowCol" text="TVShow"/>
+                <TableColumn fx:id="outputCol" text="Output"/>
+            </columns>
+        </TableView>
 
-                <right>
-                    <HBox id="scan-container">
-                        <Button defaultButton="true" mnemonicParsing="false" fx:id="scanButton" text="Search Downloads" onAction="#loadTableView">
-                            <graphic>
-                                <ImageView fx:id="loadingImage" pickOnBounds="true" fitHeight="30" fitWidth="45" preserveRatio="true">
-                                    <Image url="@/images/scan-button.png"/>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                    </HBox>
-                </right>
-            </BorderPane>
-        </top>
+        <BorderPane id="main-buttons-container">
+            <left>
+                <TextArea fx:id="messageText" editable="false"/>
+            </left>
 
-        <bottom>
-            <BorderPane id="bottom-container">
-                <left>
-                    <VBox id="paths-container">
-                        <HBox id="movie-path-container">
-                            <Button mnemonicParsing="false" fx:id="setMoviesButton" styleClass="default-button" text="Movies" onAction="#setMoviesPath"/>
-                            <TextField fx:id="moviePathTextField" disable="true" styleClass="path-text"/>
-                        </HBox>
+            <right>
+                <HBox>
+                    <Button mnemonicParsing="false" disable="true" fx:id="moveButton" onAction="#moveVideos" styleClass="default-button" text="Move Selected Files"/>
 
-                        <HBox id="tv-path-container">
-                            <Button mnemonicParsing="false" fx:id="setTvShowsButton" styleClass="default-button" text="TV Shows" onAction="#setTvShowsPath"/>
-                            <TextField fx:id="tvShowPathTextField" disable="true" styleClass="path-text"/>
-                        </HBox>
-                    </VBox>
-                </left>
+                    <Button defaultButton="true" mnemonicParsing="false" fx:id="scanButton" text="Search Downloads" onAction="#loadTableView">
+                        <graphic>
+                            <ImageView fx:id="loadingImage" pickOnBounds="true" fitHeight="30" fitWidth="45" preserveRatio="true">
+                                <Image url="@/images/scan-button.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </right>
+        </BorderPane>
+    </VBox>
 
-                <right>
-                    <HBox id="move-container">
-                        <Button mnemonicParsing="false" disable="true" fx:id="moveButton" onAction="#moveVideos" styleClass="default-button" text="Move Selected Files"/>
-                    </HBox>
-                </right>
-            </BorderPane>
-        </bottom>
+    <Pane fx:id="settingsPane">
+        <VBox id="settings-container">
+            <Text id="settingsTitle">Settings</Text>
+            <Separator/>
 
-        <center>
-            <TableView fx:id="tableView">
-                <columns>
-                    <TableColumn fx:id="nameCol" text="Name" editable="false"/>
-                    <TableColumn fx:id="movieCol" text="Movie"/>
-                    <TableColumn fx:id="tvshowCol" text="TVShow"/>
-                    <TableColumn fx:id="outputCol" text="Output"/>
-                </columns>
-            </TableView>
-        </center>
-    </BorderPane>
+            <HBox styleClass="set-path-container">
+                <Button mnemonicParsing="false" styleClass="default-button, set-path-button" text="Downloads" fx:id="setDownloadsButton" onAction="#setDownloadsPath"/>
+                <TextField fx:id="downloadsPathTextField" disable="true" styleClass="path-text"/>
+            </HBox>
+
+            <HBox styleClass="set-path-container">
+                <Button mnemonicParsing="false" fx:id="setMoviesButton" styleClass="default-button, set-path-button" text="Movies" onAction="#setMoviesPath"/>
+                <TextField fx:id="moviePathTextField" disable="true" styleClass="path-text"/>
+            </HBox>
+
+            <HBox styleClass="set-path-container">
+                <Button mnemonicParsing="false" fx:id="setTvShowsButton" styleClass="default-button, set-path-button" text="TV Shows" onAction="#setTvShowsPath"/>
+                <TextField fx:id="tvShowPathTextField" disable="true" styleClass="path-text"/>
+            </HBox>
+        </VBox>
+    </Pane>
 </Pane>
