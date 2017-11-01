@@ -74,17 +74,17 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <path.downloads>/mnt/Data/Downloads</path.downloads>
-                <path.movies>/mnt/Data/Movies/Movies</path.movies>
-                <path.tvshows>/mnt/Data/Movies/TV</path.tvshows>
+                <downloads.path>/mnt/Data/Downloads</downloads.path>
+                <movies.path>/mnt/Data/Movies/Movies</movies.path>
+                <tvshows.path>/mnt/Data/Movies/TV</tvshows.path>
             </properties>
         </profile>
 
         <profile>
             <id>desk-windows</id>
             <properties>
-                <path.downloads>D:/Downloads</path.downloads>
-                <path.movies>D:/Movies/Movies</path.movies>
+                <downloads.path>D:/Downloads</downloads.path>
+                <movies.path>D:/Movies/Movies</movies.path>
                 <path.tvshows>D:/Movies/TV</path.tvshows>
             </properties>
         </profile>
@@ -92,9 +92,9 @@
         <profile>
             <id>lap-linux</id>
             <properties>
-                <path.downloads>/home/sabyx/Downloads</path.downloads>
-                <path.movies>/home/sabyx/Videos/Movies</path.movies>
-                <path.tvshows>/home/sabyx/Videos/TV</path.tvshows>
+                <downloads.path>/home/sabyx/Downloads</downloads.path>
+                <movies.path>/home/sabyx/Videos/Movies</movies.path>
+                <tvshows.path>/home/sabyx/Videos/TV</tvshows.path>
             </properties>
         </profile>
     </profiles>
