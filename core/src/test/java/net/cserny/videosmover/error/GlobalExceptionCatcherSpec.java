@@ -1,0 +1,39 @@
+package net.cserny.videosmover.error;
+
+import net.cserny.videosmover.ApplicationConfig;
+import net.cserny.videosmover.service.MessageRegistry;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.hamcrest.Matchers.containsString;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {ApplicationConfig.class})
+public class GlobalExceptionCatcherSpec {
+    private static String DISPLAYED_MESSAGE;
+
+    @Autowired
+    private GlobalExceptionCatcher globalExceptionCatcher;
+    @Autowired
+    private MessageRegistry messageRegistry;
+
+    @Before
+    public void setUp() throws Exception {
+        messageRegistry.registerDisplayProvider(message -> { DISPLAYED_MESSAGE = message.getContent(); });
+        Thread.setDefaultUncaughtExceptionHandler(globalExceptionCatcher);
+    }
+
+    @Test
+    public void whenExceptionIsThrownAnywhereItIsCaught() throws Exception {
+        String exceptionMessage = "Some exception";
+        Thread testThread = new Thread(() -> { throw new RuntimeException(exceptionMessage); });
+        testThread.start();
+        testThread.join();
+        Assert.assertThat(DISPLAYED_MESSAGE, containsString(exceptionMessage));
+    }
+}
