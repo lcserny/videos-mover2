@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -40,6 +41,7 @@ public class MainApplication extends Application {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
                 loader.setControllerFactory(context::getBean);
                 parent = loader.load();
+                Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
                 return null;
             }
         };
