@@ -3,16 +3,14 @@ package net.cserny.videosmover.component;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import net.cserny.videosmover.model.*;
 import net.cserny.videosmover.service.VideoMetadataService;
@@ -51,7 +49,6 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private CustomTextField initCustomTextField() {
         CustomTextField customTextField = new CustomTextField();
-        customTextField.setStyle("-fx-text-fill: white");
         customTextField.setRight(button);
         return customTextField;
     }
@@ -63,8 +60,8 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         ImageView imageView = buildButtonImageView(mainImage);
 
         Button button = new Button("", imageView);
+        button.getStyleClass().add("video-metadata-search-button");
         button.setVisible(false);
-        button.setStyle("-fx-text-fill: WHITE; -fx-background-color: #01d277; -fx-cursor: hand;");
         button.setTooltip(new Tooltip("Search for video metadata online"));
         button.setOnAction(event -> {
             setImageToButton(button, loadingImage);
@@ -93,11 +90,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         VBox vboxParent = new VBox();
         for (VideoMetadata videoMetadata : videoMetadataList) {
             HBox hbox = new HBox();
-            hbox.setCursor(Cursor.HAND);
-            hbox.setStyle("-fx-background-color: #081c24");
-            hbox.setBorder(new Border(new BorderStroke(Color.valueOf("#01d277"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-            hbox.setOnMouseEntered(event -> hbox.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
-            hbox.setOnMouseExited(event -> hbox.setBorder(new Border(new BorderStroke(Color.valueOf("#01d277"), BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT))));
+            hbox.getStyleClass().add("video-metadata-container");
             hbox.setOnMouseClicked(event -> handleHboxClick(videoMetadata, popOver));
 
             ImageView poster = new ImageView(new Image(videoMetadata.getPosterUrl()));
@@ -121,22 +114,22 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private VBox buildVideoInfoVbox(VideoMetadata videoMetadata) {
         Text title = new Text(videoMetadata.getName());
-        title.setStyle("-fx-font-weight: bold; -fx-fill: #ffffff");
+        title.getStyleClass().add("video-info-title");
 
         String metadataDescription = videoMetadata.getDescription();
         if (metadataDescription.length() > 450) {
             metadataDescription = metadataDescription.substring(0, 450) + "...";
         }
         Text description = new Text(metadataDescription);
+        description.getStyleClass().add("video-info-description");
         description.setWrappingWidth(500);
-        description.setStyle("-fx-fill: #ffffff");
 
         Text cast = new Text(String.join(", ", videoMetadata.getCast()));
+        cast.getStyleClass().add("video-info-cast");
         cast.setWrappingWidth(500);
-        cast.setStyle("-fx-fill: #01d277");
 
         VBox vbox = new VBox();
-        vbox.setPadding(new Insets(5));
+        vbox.getStyleClass().add("video-info-container");
         vbox.getChildren().addAll(title, description, cast);
         return vbox;
     }

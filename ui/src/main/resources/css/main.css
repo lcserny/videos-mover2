@@ -6,7 +6,7 @@
 
 #container, #settingsPane {
     -fx-pref-height: 650;
-    -fx-background-color: #666666;
+    -fx-background-color: #e6e6e6;
 }
 
 #container {
@@ -16,12 +16,11 @@
 #settingsPane {
     -fx-cursor: hand;
     -fx-pref-width: 500;
-    -fx-border-color: transparent black transparent transparent;
-    -fx-border-width: 2px;
+    -fx-border-color: transparent gray transparent transparent;
+    -fx-border-width: 1px;
 }
 
 #settingsTitle {
-    -fx-fill: white;
     -fx-font-size: 14;
 }
 
@@ -53,7 +52,6 @@
 }
 
 #moveButton {
-    -fx-text-fill: white;
     -fx-pref-height: 50;
     -fx-pref-width: 215;
 }
@@ -61,32 +59,20 @@
 #messageText {
     -fx-pref-height: 50;
     -fx-pref-width: 375;
-    -fx-text-fill: white;
     -fx-pref-rows: 2;
-    -fx-background-color: transparent;
     -fx-wrap-text: true;
 }
 
 #messageText .content {
-    -fx-background-color: #5f5f5f;
+    -fx-background-color: #E6E6E6;
     -fx-pref-width: 370;
-    -fx-border-color: #444444;
     -fx-border-width: 1px;
-}
-
-#messageText .scroll-bar {
-    -fx-background-color: #555555;
-}
-
-#messageText .scroll-pane .viewport {
-    -fx-background-color: transparent;
 }
 
 .set-path-button {
     -fx-alignment: center;
     -fx-pref-height: 30;
     -fx-pref-width: 140;
-    -fx-text-fill: white;
 }
 
 #tvShowPathTextField {
@@ -131,48 +117,49 @@
     -fx-pref-width: 480;
 }
 
-.default-button {
-    -fx-border-color: black;
-    -fx-text-fill: white;
-    -fx-background-color: linear-gradient(#666666, #555555);
-}
-
-.default-button:hover {
-    -fx-background-color: #444444;
-}
-
-.path-text {
-    -fx-background-color: #999999;
-    -fx-text-fill: #eeeeee;
-    -fx-border-color: black;
-}
-
 #tableView {
     -fx-pref-height: 550;
-    -fx-base: #bbbbbb;
-    -fx-control-inner-background: #777777;
-    -fx-background-color: #777777;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
     -fx-padding: 0;
 }
 
 #tableView .column-header-background {
-    -fx-background-color: #555555;
-    -fx-border-color: black;
     -fx-border-width: 2px;
-}
-
-#tableView .column-header .label {
-    -fx-text-fill: white;
 }
 
 #tableView .column-header, .table-view .filler {
     -fx-size: 30px;
     -fx-border-width: 0 0 1 0;
-    -fx-background-color: transparent;
 }
 
-#tableView .table-cell {
+.video-metadata-search-button {
     -fx-text-fill: white;
+    -fx-background-color: #01d277;
+    -fx-cursor: hand;
+}
+
+.video-metadata-container {
+    -fx-cursor: hand;
+    -fx-background-color: #081c24;
+    -fx-border-color: #01d277;
+}
+
+.video-metadata-container:hover {
+    -fx-border-color: white;
+}
+
+.video-info-title {
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+.video-info-description {
+    -fx-fill: #ffffff;
+}
+
+.video-info-cast {
+    -fx-fill: #01d277;
+}
+
+.video-info-container {
+    -fx-padding: 5;
 }
