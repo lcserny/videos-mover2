@@ -1,0 +1,70 @@
+package net.cserny.videosmover.service;
+
+import net.cserny.videosmover.ApplicationConfig;
+import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
+import net.cserny.videosmover.helper.TestHelperConfig;
+import net.cserny.videosmover.helper.VideoCreationHelper;
+import net.cserny.videosmover.model.Video;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+
+/**
+ * Created by leonardo on 02.09.2017.
+ */
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = {ApplicationConfig.class, TestHelperConfig.class})
+public class VideoMoverSpec extends InMemoryVideoFileSystemInitializer {
+    @Autowired
+    private VideoMover videoMover;
+    @Autowired
+    private VideoCreationHelper videoHelper;
+
+    @Test
+    public void multiTvShowsMoveToTvShowsPath() throws Exception {
+        Video video1 = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
+        Video video2 = videoHelper.createTvShow(DOWNLOADS_EXISTING_TVSHOW);
+        List<Video> videoList = Arrays.asList(video1, video2);
+
+        assertTrue(videoMover.moveAll(videoList));
+        Path movedTvShowPath1 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath()).resolve(video1.getOutput());
+        assertTrue(Files.exists(movedTvShowPath1));
+        Path movedTvShowPath2 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath()).resolve(video2.getOutput());
+        assertTrue(Files.exists(movedTvShowPath2));
+    }
+
+    @Test
+    public void movieWithSubtitleMoveToMoviesPathRetainingSubtitle() throws Exception {
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Path subtitlePath = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE);
+        video.setSubtitles(Collections.singletonList(subtitlePath));
+
+        assertTrue(videoMover.move(video));
+        Path movedMoviePath = StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath()).resolve(video.getOutput());
+        assertTrue(Files.exists(movedMoviePath));
+        Path movedMovieSubtitlePath = movedMoviePath.resolve(subtitlePath.getFileName());
+        assertTrue(Files.exists(movedMovieSubtitlePath));
+    }
+
+    @Test
+    public void whenSubtitlesAreInSubsFolderMoveThemToSubsFolderInOutputAlso() throws Exception {
+        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS);
+        Path subPath1 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS);
+        Path subPath2 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS_IDX);
+        video.setSubtitles(Arrays.asList(subPath1, subPath2));
+
+        assertTrue(videoMover.move(video));
+        assertTrue(Files.exists(video.getOutput().resolve("Subs").resolve(subPath1.getFileName())));
+        assertTrue(Files.exists(video.getOutput().resolve("Subs").resolve(subPath2.getFileName())));
+    }
+}
