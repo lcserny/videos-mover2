@@ -3,7 +3,7 @@ package net.cserny.videosmover.service;
 import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.TestHelperConfig;
-import net.cserny.videosmover.helper.VideoCreationHelper;
+import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,12 +28,12 @@ public class VideoMoverSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private VideoMover videoMover;
     @Autowired
-    private VideoCreationHelper videoHelper;
+    private OutputResolver outputResolver;
 
     @Test
     public void multiTvShowsMoveToTvShowsPath() throws Exception {
-        Video video1 = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
-        Video video2 = videoHelper.createTvShow(DOWNLOADS_EXISTING_TVSHOW);
+        Video video1 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
+        Video video2 = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
         List<Video> videoList = Arrays.asList(video1, video2);
 
         assertTrue(videoMover.moveAll(videoList));
@@ -45,7 +45,7 @@ public class VideoMoverSpec extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void movieWithSubtitleMoveToMoviesPathRetainingSubtitle() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
         Path subtitlePath = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE);
         video.setSubtitles(Collections.singletonList(subtitlePath));
 
@@ -58,7 +58,7 @@ public class VideoMoverSpec extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void whenSubtitlesAreInSubsFolderMoveThemToSubsFolderInOutputAlso() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS, outputResolver);
         Path subPath1 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS);
         Path subPath2 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS_IDX);
         video.setSubtitles(Arrays.asList(subPath1, subPath2));

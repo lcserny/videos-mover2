@@ -2,7 +2,7 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.helper.VideoCreationHelper;
+import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,41 +18,41 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class OutputResolverSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
-    private VideoCreationHelper videoHelper;
+    private OutputResolver outputResolver;
 
     @Test
     public void allDigitsMovieShouldResolvNameCorrectly() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS, outputResolver);
         assertThat(video.getOutput().getFileName().toString(), containsString("1922 (2017)"));
     }
 
     @Test
     public void tvShowInputReturnsTvShowOutputPath() throws Exception {
-        Video video = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
+        Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
         assertTrue(video.getOutput().startsWith(StaticPathsProvider.getTvShowsPath()));
     }
 
     @Test
     public void movieInputReturnsMovieOutputPath() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
         assertTrue(video.getOutput().startsWith(StaticPathsProvider.getMoviesPath()));
     }
 
     @Test
     public void tvShowInputReturnsCorrectOutput() throws Exception {
-        Video video = videoHelper.createTvShow(DOWNLOADS_TVSHOW);
+        Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
         assertTrue(video.getOutput().getFileName().toString().equals("Game Of Thrones"));
     }
 
     @Test
     public void movieInputReturnsCorrectOutput() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
         assertTrue(video.getOutput().getFileName().toString().equals("The Big Sick (2017)"));
     }
 
     @Test
     public void tvShowInputSetsOutputToExistingTvShowName() throws Exception {
-        Video video = videoHelper.createTvShow(DOWNLOADS_EXISTING_TVSHOW);
+        Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
         assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
     }
 }

@@ -3,7 +3,7 @@ package net.cserny.videosmover.service;
 import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.TestHelperConfig;
-import net.cserny.videosmover.helper.VideoCreationHelper;
+import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 @ContextConfiguration(classes = {ApplicationConfig.class, TestHelperConfig.class})
 public class VideoCleanerSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
-    private VideoCreationHelper videoHelper;
+    private OutputResolver outputResolver;
     @Autowired
     private VideoMover videoMover;
     @Autowired
@@ -29,19 +29,19 @@ public class VideoCleanerSpec extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void cleaningVideoMeansRemovingSourceParentFolder() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
         assertCleaning(video, true);
     }
 
     @Test
     public void whenSourceParentFolderIsDownloadsThenDoNotRemoveIt() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_ROOT_VIDEO);
+        Video video = VideoCreator.createMovie(DOWNLOADS_ROOT_VIDEO, outputResolver);
         assertCleaning(video, false);
     }
 
     @Test
     public void whenCleaningVideoFromRestrictedRemovalPathThenDontRemoveIt() throws Exception {
-        Video video = videoHelper.createMovie(DOWNLOADS_RESTRICTED_MOVIE);
+        Video video = VideoCreator.createMovie(DOWNLOADS_RESTRICTED_MOVIE, outputResolver);
         assertCleaning(video, false);
     }
 
