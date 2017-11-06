@@ -1,10 +1,8 @@
-package net.cserny.videosmover;
+package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.service.ScanService;
-import net.cserny.videosmover.service.StaticPathsProvider;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,27 +21,28 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoScanning extends InMemoryVideoFileSystemInitializer {
+public class ScanServiceSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private ScanService scanService;
-    private List<Video> videosScanned;
 
-    @Override
-    @Before
-    public void setUp() throws Exception {
-        super.setUp();
-        videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
+    @Test
+    public void whenEmptyFolderReturnEmptyList() throws Exception {
+        List<Video> videosScanned = scanService.scan("/empty");
+        assertNotNull(videosScanned);
+        assertTrue(videosScanned.isEmpty());
     }
 
     @Test
-    public void whenScanningReturnVideosFromLocation() throws Exception {
+    public void whenDownloadsReturnVideosList() throws Exception {
+        List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
         assertNotNull(videosScanned);
         assertFalse(videosScanned.isEmpty());
     }
 
     @Test
-    public void givenVideoInputWithSubtitlesWhenScanningShouldReturnVideoWithSubtitles() throws Exception {
-        for (Video video : videosScanned) {
+    public void inputWithSubtitleRetainsTheSubtitle() throws Exception {
+        List<Video> videoWithSubtitle = scanService.scan(DOWNLOADS_BIGSICK);
+        for (Video video : videoWithSubtitle) {
             if (video.getInput().toString().contains(DOWNLOADS_MOVIE_WITH_SUBTITLE)) {
                 List<Path> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
@@ -55,9 +54,9 @@ public class TestVideoScanning extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void scannedVideosShouldBeSortedByInput() throws Exception {
+        List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
         List<Video> sortedVideos = new ArrayList<>(videosScanned);
         sortedVideos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));
-
         for (int i = 0; i < videosScanned.size(); i++) {
             assertEquals(sortedVideos.get(i), videosScanned.get(i));
         }
