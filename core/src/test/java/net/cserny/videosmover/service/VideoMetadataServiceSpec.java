@@ -1,8 +1,8 @@
-package net.cserny.videosmover;
+package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
-import net.cserny.videosmover.service.VideoMetadataService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,19 +14,19 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoMetadataService {
+public class VideoMetadataServiceSpec {
     @Autowired
     private VideoMetadataService metadataService;
 
     @Test
-    public void testSearchMovieByEmptyQuery() throws Exception {
+    public void whenEmptyQueryThenEmpty() throws Exception {
         List<VideoMetadata> videoMetadataList = metadataService.searchMovieMetadata(
                 VideoQuery.newInstance().withName("").build());
         Assert.assertTrue(videoMetadataList.isEmpty());
     }
 
     @Test
-    public void testSearchMovieByName() throws Exception {
+    public void searchMovieByName() throws Exception {
         List<VideoMetadata> videoMetadataList = metadataService.searchMovieMetadata(
                 VideoQuery.newInstance().withName("Fight Club").withYear(1999).withLanguage("en").build());
 
@@ -41,7 +41,7 @@ public class TestVideoMetadataService {
     }
 
     @Test
-    public void testSearchTvShowByName() throws Exception {
+    public void searchTvShowByName() throws Exception {
         List<VideoMetadata> videoMetadataList = metadataService.searchTvShowMetadata(
                 VideoQuery.newInstance().withName("Game of Thrones").build());
 
