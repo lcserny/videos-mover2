@@ -1,8 +1,7 @@
-package net.cserny.videosmover;
+package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.service.StaticPathsProvider;
-import net.cserny.videosmover.service.VideoChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestVideoValidation extends InMemoryVideoFileSystemInitializer {
+public class VideoCheckerSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private VideoChecker videoChecker;
 
@@ -28,27 +27,27 @@ public class TestVideoValidation extends InMemoryVideoFileSystemInitializer {
     }
 
     @Test
-    public void givenDirectoryWhenParsingShouldReturnFalse() throws Exception {
+    public void parsingDirectoryReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_EMPTY_FOLDER));
     }
 
     @Test
-    public void givenRegularNonVideoFileWhenParsingShouldReturnFalse() throws Exception {
+    public void parsingNonVideoFileReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_REGULAR_FILE));
     }
 
     @Test
-    public void givenVideoFileWhenParsingShouldReturnTrue() throws Exception {
+    public void parsingVideoFileReturnsTrue() throws Exception {
         assertTrue(isVideoResult(DOWNLOADS_TVSHOW));
     }
 
     @Test
-    public void givenSmallVideoFileWhenParsingShouldReturnFalse() throws Exception {
+    public void parsingSmallVideoFileReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_SMALL_VIDEO));
     }
 
     @Test
-    public void givenVideoFileFromDisallowedPathWhenParsingShouldReturnFalse() throws Exception {
+    public void parsingVideoFileFromDisallowedPathReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_ILLEGAL_VIDEO));
     }
 }
