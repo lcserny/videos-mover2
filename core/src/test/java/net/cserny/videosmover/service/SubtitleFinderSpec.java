@@ -1,8 +1,7 @@
-package net.cserny.videosmover;
+package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.service.StaticPathsProvider;
-import net.cserny.videosmover.service.SubtitlesFinder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
-public class TestSubtitleFinding extends InMemoryVideoFileSystemInitializer {
+public class SubtitleFinderSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private SubtitlesFinder subtitlesFinder;
 
@@ -31,19 +30,19 @@ public class TestSubtitleFinding extends InMemoryVideoFileSystemInitializer {
     }
 
     @Test
-    public void givenVideoWithoutSubtitlesWhenFindingReturnsEmptyList() throws Exception {
+    public void videoWithoutSubtitlesReturnsEmptyList() throws Exception {
         List<Path> subtitles = processSubtitles(DOWNLOADS_TVSHOW);
         assertTrue(subtitles.isEmpty());
     }
 
     @Test
-    public void givenVideoWithSubtitlesWhenFindingReturnsSubtitlesList() throws Exception {
+    public void videoWithSubtitlesReturnsSubtitlesList() throws Exception {
         List<Path> subtitles = processSubtitles(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         assertFalse(subtitles.isEmpty());
     }
 
     @Test
-    public void givenVideoFromDownloadsRootPathWhenFindingReturnsEmptySubtitlesList() throws Exception {
+    public void videoFromDownloadsRootPathReturnsEmptyList() throws Exception {
         List<Path> subtitles = processSubtitles(DOWNLOADS_ROOT_VIDEO);
         assertTrue(subtitles.isEmpty());
     }
