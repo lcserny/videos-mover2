@@ -16,20 +16,22 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * Created by leonardo on 02.09.2017.
  */
+@SpringBootApplication
 public class MainApplication extends Application {
     public static final String TITLE = "Downloads VideoMover";
 
-    private ApplicationContext context;
+    private ConfigurableApplicationContext context;
     private Parent parent;
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
     @Override
@@ -37,10 +39,14 @@ public class MainApplication extends Application {
         Task<Void> loadSpringContextTask = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+                SpringApplicationBuilder builder = new SpringApplicationBuilder(MainApplication.class);
+                builder.headless(false);
+                context = builder.run();
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
                 loader.setControllerFactory(context::getBean);
                 parent = loader.load();
+
                 Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
                 return null;
             }
@@ -48,6 +54,11 @@ public class MainApplication extends Application {
 
         showLoading(primaryStage, loadSpringContextTask);
         new Thread(loadSpringContextTask).start();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        context.stop();
     }
 
     private void showLoading(final Stage initStage, Task<?> task) {
