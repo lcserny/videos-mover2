@@ -7,14 +7,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class})
-public class GlobalExceptionCatcherSpec {
+@SpringBootTest(classes = {ApplicationConfig.class})
+public class GlobalExceptionCatcherTest {
     private static String DISPLAYED_MESSAGE;
 
     @Autowired

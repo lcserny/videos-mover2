@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 
 @Service
@@ -106,7 +107,10 @@ public class CachedTmdbService implements VideoMetadataService {
     private String buildPosterUrl(String posterPath) {
         if (posterPath == null || posterPath.isEmpty()) {
             try {
-                return getClass().getResource("/images/no-poster.jpg").toURI().toString();
+                URL resource = getClass().getResource("/images/no-poster.jpg");
+                if (resource != null) {
+                  return resource.toURI().toString();
+                }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

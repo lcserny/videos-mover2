@@ -3,19 +3,9 @@ package net.cserny.videosmover.helper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.OutputResolver;
 import net.cserny.videosmover.service.StaticPathsProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
-public class VideoCreationHelper {
-    private final OutputResolver outputResolver;
-
-    @Autowired
-    public VideoCreationHelper(OutputResolver outputResolver) {
-        this.outputResolver = outputResolver;
-    }
-
-    public Video createTvShow(String input) {
+public class VideoCreator {
+    public static Video createTvShow(String input, OutputResolver outputResolver) {
         Video video = new Video();
         video.setIsTvShow(true);
         video.setInput(StaticPathsProvider.getPath(input));
@@ -23,7 +13,7 @@ public class VideoCreationHelper {
         return video;
     }
 
-    public Video createMovie(String input) {
+    public static Video createMovie(String input, OutputResolver outputResolver) {
         Video video = new Video();
         video.setIsMovie(true);
         video.setInput(StaticPathsProvider.getPath(input));

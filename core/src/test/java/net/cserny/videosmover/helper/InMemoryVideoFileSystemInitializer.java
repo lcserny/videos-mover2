@@ -82,6 +82,8 @@ public class InMemoryVideoFileSystemInitializer {
         tvShowsFolder = inMemoryFilesystem.getPath("/TvShows");
         Files.createDirectory(tvShowsFolder);
         StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
+
+        Files.createDirectory(inMemoryFilesystem.getPath("/empty"));
     }
 
     private Path createFolder(Path root, String folderName) throws IOException {
