@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApplicationConfig.class})
-public class VideoCleanerSpec extends InMemoryVideoFileSystemInitializer {
+public class VideoCleanerTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private OutputResolver outputResolver;
     @Autowired

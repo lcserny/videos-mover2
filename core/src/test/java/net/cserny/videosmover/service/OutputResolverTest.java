@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationConfig.class)
-public class OutputResolverSpec extends InMemoryVideoFileSystemInitializer {
+public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private OutputResolver outputResolver;
 

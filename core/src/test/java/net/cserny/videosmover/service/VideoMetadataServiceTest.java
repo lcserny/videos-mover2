@@ -14,7 +14,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationConfig.class)
-public class VideoMetadataServiceSpec {
+public class VideoMetadataServiceTest {
     @Autowired
     private VideoMetadataService metadataService;
 

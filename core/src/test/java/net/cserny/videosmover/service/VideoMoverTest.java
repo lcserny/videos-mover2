@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationConfig.class)
-public class VideoMoverSpec extends InMemoryVideoFileSystemInitializer {
+public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private VideoMover videoMover;
     @Autowired

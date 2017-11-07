@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationConfig.class)
-public class ScanServiceSpec extends InMemoryVideoFileSystemInitializer {
+public class ScanServiceTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private ScanService scanService;
 

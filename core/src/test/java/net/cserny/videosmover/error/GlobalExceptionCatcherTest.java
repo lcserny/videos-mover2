@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {ApplicationConfig.class})
-public class GlobalExceptionCatcherSpec {
+public class GlobalExceptionCatcherTest {
     private static String DISPLAYED_MESSAGE;
 
     @Autowired

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ApplicationConfig.class)
-public class SubtitleFinderSpec extends InMemoryVideoFileSystemInitializer {
+public class SubtitleFinderTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private SubtitlesFinder subtitlesFinder;
 
