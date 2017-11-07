@@ -25,7 +25,7 @@ import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 /**
  * Created by leonardo on 02.09.2017.
  */
-@Controller
+@Component
 public class MainController implements Initializable {
     @FXML
     private ImageView loadingImage;
