@@ -2,13 +2,12 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.helper.TestHelperConfig;
 import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ApplicationConfig.class, TestHelperConfig.class})
+@SpringBootTest(classes = {ApplicationConfig.class})
 public class VideoCleanerSpec extends InMemoryVideoFileSystemInitializer {
     @Autowired
     private OutputResolver outputResolver;
