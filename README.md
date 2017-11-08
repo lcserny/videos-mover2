@@ -7,12 +7,11 @@ Application used for managing downloaded movies and tv series (moving, displayin
 ##### Building and running
 - clone this repository `git clone https://github.com/lcserny/videos-mover2`
 - checkout the master branch (if not already) `git checkout master`
-- run maven `mvn clean compile package -Dskiptests`
+- run gradle `./gradlew clean build`
 
-_**Note**: you can change default paths by switching the profile `-P desk-windows`
-    Available environments: `desk-linux, desk-windows, lap-linux`_
-- copy the jar created wherever you want `cp ui/target/ui-1.0-SNAPSHOT-jar-with-dependencies.jar /you/path`
-- run it using Oracle Java RE `java -jar app.jar`
+**Note**: to change default paths use the following env vars `PATH_DOWNLOADS, PATH_MOVIES` and `PATH_TVSHOWS`
+- copy the jar created wherever you want `cp ui/build/libs/ui-1.0-SNAPSHOT.jar /your/path/app.jar`
+- run it using Oracle Java RE `java -jar /your/path/app.jar`
 
 ##### How to use
 When starting up, the application sets its default paths (based on the config provided) for the following folders:
