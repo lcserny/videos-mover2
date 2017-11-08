@@ -100,7 +100,7 @@ public class MainUserInterfaceTest extends ApplicationTest {
     @Test
     public void whenMoveVideoThenVideoMover() throws Exception {
         clickOn("#scanButton");
-        Thread.sleep(100);
+        Thread.sleep(250);
         Node movieCheckOnFirstRow = lookup("#tableView").lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn("#moveButton");
