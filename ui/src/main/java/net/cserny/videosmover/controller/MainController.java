@@ -80,23 +80,16 @@ public class MainController implements Initializable {
     }
 
     private void initSlidingSettingsPane() {
-        int translationValue = -480;
-        settingsPane.setTranslateX(translationValue);
-
-        TranslateTransition slidingSettingsTranslation = new TranslateTransition(Duration.millis(250), settingsPane);
-        slidingSettingsTranslation.setFromX(translationValue);
-        slidingSettingsTranslation.setToX(0);
+        TranslateTransition openSettings = new TranslateTransition(Duration.millis(250), settingsPane);
+        openSettings.setToX(0);
+        TranslateTransition closeSettings = new TranslateTransition(Duration.millis(250), settingsPane);
 
         settingsPane.setOnMouseClicked(event -> {
-            Boolean open = (Boolean) settingsPane.getUserData();
-            if (open != null && open) {
-                slidingSettingsTranslation.setRate(-1);
-                slidingSettingsTranslation.play();
-                settingsPane.setUserData(false);
+            if (settingsPane.getTranslateX() != 0) {
+                openSettings.play();
             } else {
-                slidingSettingsTranslation.setRate(1);
-                slidingSettingsTranslation.play();
-                settingsPane.setUserData(true);
+                closeSettings.setToX(-(settingsPane.getWidth() - 20));
+                closeSettings.play();
             }
         });
     }

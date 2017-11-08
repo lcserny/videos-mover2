@@ -18,6 +18,7 @@
     -fx-pref-width: 500;
     -fx-border-color: transparent gray transparent transparent;
     -fx-border-width: 1px;
+    -fx-translate-x: -480px;
 }
 
 #settingsTitle {
