@@ -1,0 +1,6 @@
+rootProject.name = 'videos-mover-parent'
+include ':ui'
+include ':core'
+
+project(':ui').projectDir = "$rootDir/ui" as File
+project(':core').projectDir = "$rootDir/core" as File
