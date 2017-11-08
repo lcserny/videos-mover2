@@ -1,0 +1,12 @@
+apply plugin: "application"
+apply plugin: 'org.springframework.boot'
+
+mainClassName = "net.cserny.videosmover.MainApplication"
+
+dependencies {
+    testCompile project(':core').sourceSets.test.output
+    compile project(':core')
+    compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.13'
+    testCompile group: 'org.testfx', name: 'openjfx-monocle', version: '8u76-b04'
+    testCompile group: 'org.testfx', name: 'testfx-junit', version: '4.0.8-alpha'
+}
