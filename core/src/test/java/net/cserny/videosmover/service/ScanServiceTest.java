@@ -26,21 +26,21 @@ public class ScanServiceTest extends InMemoryVideoFileSystemInitializer {
     private ScanService scanService;
 
     @Test
-    public void whenEmptyFolderReturnEmptyList() throws Exception {
+    public void scan_whenEmptyFolderReturnEmptyList() throws Exception {
         List<Video> videosScanned = scanService.scan("/empty");
         assertNotNull(videosScanned);
         assertTrue(videosScanned.isEmpty());
     }
 
     @Test
-    public void whenDownloadsReturnVideosList() throws Exception {
+    public void scan_whenDownloadsReturnVideosList() throws Exception {
         List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
         assertNotNull(videosScanned);
         assertFalse(videosScanned.isEmpty());
     }
 
     @Test
-    public void inputWithSubtitleRetainsTheSubtitle() throws Exception {
+    public void scan_inputWithSubtitleRetainsSubtitle() throws Exception {
         List<Video> videoWithSubtitle = scanService.scan(DOWNLOADS_BIGSICK);
         for (Video video : videoWithSubtitle) {
             if (video.getInput().toString().contains(DOWNLOADS_MOVIE_WITH_SUBTITLE)) {
@@ -53,7 +53,7 @@ public class ScanServiceTest extends InMemoryVideoFileSystemInitializer {
     }
 
     @Test
-    public void scannedVideosShouldBeSortedByInput() throws Exception {
+    public void scan_scannedVideosShouldBeSortedByInput() throws Exception {
         List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
         List<Video> sortedVideos = new ArrayList<>(videosScanned);
         sortedVideos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));

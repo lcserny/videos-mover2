@@ -19,14 +19,14 @@ public class VideoMetadataServiceTest {
     private CachedTmdbService metadataService;
 
     @Test
-    public void whenEmptyQueryThenEmpty() throws Exception {
+    public void searchMovieMetadata_withEmptyQueryReturnEmptyList() throws Exception {
         List<VideoMetadata> videoMetadataList = metadataService.searchMovieMetadata(
                 VideoQuery.newInstance().withName("").build());
         Assert.assertTrue(videoMetadataList.isEmpty());
     }
 
     @Test
-    public void searchMovieByName() throws Exception {
+    public void searchMovieMetadata_byName() throws Exception {
         List<VideoMetadata> videoMetadataList = metadataService.searchMovieMetadata(
                 VideoQuery.newInstance().withName("Fight Club").withYear(1999).withLanguage("en").build());
 
@@ -41,7 +41,7 @@ public class VideoMetadataServiceTest {
     }
 
     @Test
-    public void searchTvShowByName() throws Exception {
+    public void searchTvShowMetadata_byName() throws Exception {
         List<VideoMetadata> videoMetadataList = metadataService.searchTvShowMetadata(
                 VideoQuery.newInstance().withName("Game of Thrones").build());
 

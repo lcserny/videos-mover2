@@ -27,27 +27,27 @@ public class VideoCheckerTest extends InMemoryVideoFileSystemInitializer {
     }
 
     @Test
-    public void parsingDirectoryReturnsFalse() throws Exception {
+    public void isVideo_parsingDirectoryReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_EMPTY_FOLDER));
     }
 
     @Test
-    public void parsingNonVideoFileReturnsFalse() throws Exception {
+    public void isVideo_parsingNonVideoFileReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_REGULAR_FILE));
     }
 
     @Test
-    public void parsingVideoFileReturnsTrue() throws Exception {
+    public void isVideo_parsingVideoFileReturnsTrue() throws Exception {
         assertTrue(isVideoResult(DOWNLOADS_TVSHOW));
     }
 
     @Test
-    public void parsingSmallVideoFileReturnsFalse() throws Exception {
+    public void isVideo_parsingSmallVideoFileReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_SMALL_VIDEO));
     }
 
     @Test
-    public void parsingVideoFileFromDisallowedPathReturnsFalse() throws Exception {
+    public void isVideo_parsingVideoFileFromDisallowedPathReturnsFalse() throws Exception {
         assertFalse(isVideoResult(DOWNLOADS_ILLEGAL_VIDEO));
     }
 }

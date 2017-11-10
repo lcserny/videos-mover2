@@ -29,7 +29,7 @@ public class GlobalExceptionCatcherTest {
     }
 
     @Test
-    public void whenExceptionIsThrownAnywhereItIsCaught() throws Exception {
+    public void uncaughtException_whenExceptionIsThrownAnywhere() throws Exception {
         String exceptionMessage = "Some exception";
         Thread testThread = new Thread(() -> { throw new RuntimeException(exceptionMessage); });
         testThread.start();

@@ -30,19 +30,19 @@ public class SubtitleFinderTest extends InMemoryVideoFileSystemInitializer {
     }
 
     @Test
-    public void videoWithoutSubtitlesReturnsEmptyList() throws Exception {
+    public void find_withoutSubtitlesReturnsEmptyList() throws Exception {
         List<Path> subtitles = processSubtitles(DOWNLOADS_TVSHOW);
         assertTrue(subtitles.isEmpty());
     }
 
     @Test
-    public void videoWithSubtitlesReturnsSubtitlesList() throws Exception {
+    public void find_withSubtitlesReturnsSubtitlesList() throws Exception {
         List<Path> subtitles = processSubtitles(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         assertFalse(subtitles.isEmpty());
     }
 
     @Test
-    public void videoFromDownloadsRootPathReturnsEmptyList() throws Exception {
+    public void find_fromDownloadsRootReturnsEmptyList() throws Exception {
         List<Path> subtitles = processSubtitles(DOWNLOADS_ROOT_VIDEO);
         assertTrue(subtitles.isEmpty());
     }

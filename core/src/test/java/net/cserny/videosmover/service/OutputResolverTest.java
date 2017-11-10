@@ -21,37 +21,27 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
     private OutputResolver outputResolver;
 
     @Test
-    public void allDigitsMovieShouldResolvNameCorrectly() throws Exception {
+    public void resolve_allDigitsMovieResolvesNameCorrectly() throws Exception {
         Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS, outputResolver);
         assertThat(video.getOutput().getFileName().toString(), containsString("1922 (2017)"));
     }
 
     @Test
-    public void tvShowInputReturnsTvShowOutputPath() throws Exception {
+    public void resolve_tvShowInputReturnsCorrectOutput() throws Exception {
         Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
         assertTrue(video.getOutput().startsWith(StaticPathsProvider.getTvShowsPath()));
-    }
-
-    @Test
-    public void movieInputReturnsMovieOutputPath() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
-        assertTrue(video.getOutput().startsWith(StaticPathsProvider.getMoviesPath()));
-    }
-
-    @Test
-    public void tvShowInputReturnsCorrectOutput() throws Exception {
-        Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
         assertTrue(video.getOutput().getFileName().toString().equals("Game Of Thrones"));
     }
 
     @Test
-    public void movieInputReturnsCorrectOutput() throws Exception {
+    public void resolve_movieInputReturnsCorrectOutput() throws Exception {
         Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
+        assertTrue(video.getOutput().startsWith(StaticPathsProvider.getMoviesPath()));
         assertTrue(video.getOutput().getFileName().toString().equals("The Big Sick (2017)"));
     }
 
     @Test
-    public void tvShowInputSetsOutputToExistingTvShowName() throws Exception {
+    public void resolve_tvShowInputSetsOutputToExistingTvShowName() throws Exception {
         Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
         assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
     }
