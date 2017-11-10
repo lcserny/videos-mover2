@@ -104,7 +104,7 @@ public class MainUserInterfaceTest extends ApplicationTest {
         Node movieCheckOnFirstRow = lookup("#tableView").lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn("#moveButton");
-        verify(videoMover).moveAll(anyListOf(Video.class));
+        verify(videoMover).move(anyListOf(Video.class));
     }
 
     @Test

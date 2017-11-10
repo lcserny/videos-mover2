@@ -16,7 +16,7 @@ import java.util.List;
 @SpringBootTest(classes = ApplicationConfig.class)
 public class VideoMetadataServiceTest {
     @Autowired
-    private VideoMetadataService metadataService;
+    private CachedTmdbService metadataService;
 
     @Test
     public void whenEmptyQueryThenEmpty() throws Exception {

@@ -51,17 +51,17 @@ public class MainController implements Initializable {
     @FXML
     private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
-    private final MessageRegistry messageRegistry;
+    private final SimpleMessageRegistry messageRegistry;
     private final ScanService scanService;
     private final VideoMover videoMover;
     private final VideoCleaner videoCleaner;
     private final MainStageProvider stageProvider;
     private final OutputResolver outputResolver;
-    private final VideoMetadataService metadataService;
+    private final CachedTmdbService metadataService;
 
     @Autowired
-    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, MessageRegistry messageRegistry,
-                          MainStageProvider stageProvider, OutputResolver outputResolver, VideoMetadataService metadataService) {
+    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry,
+                          MainStageProvider stageProvider, OutputResolver outputResolver, CachedTmdbService metadataService) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
@@ -200,10 +200,10 @@ public class MainController implements Initializable {
             return;
         }
 
-        boolean result = videoMover.moveAll(selectedVideos);
+        boolean result = videoMover.move(selectedVideos);
         Message message = MessageProvider.getProblemOccurred();
         if (result) {
-            videoCleaner.cleanAll(selectedVideos);
+            videoCleaner.clean(selectedVideos);
             message = MessageProvider.getMoveSuccessful();
         }
         messageRegistry.add(message);

@@ -35,7 +35,7 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
         Video video2 = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
         List<Video> videoList = Arrays.asList(video1, video2);
 
-        assertTrue(videoMover.moveAll(videoList));
+        assertTrue(videoMover.move(videoList));
         Path movedTvShowPath1 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath()).resolve(video1.getOutput());
         assertTrue(Files.exists(movedTvShowPath1));
         Path movedTvShowPath2 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath()).resolve(video2.getOutput());

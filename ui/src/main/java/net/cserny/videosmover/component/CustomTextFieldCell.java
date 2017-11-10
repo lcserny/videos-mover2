@@ -12,8 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import net.cserny.videosmover.model.*;
-import net.cserny.videosmover.service.VideoMetadataService;
+import net.cserny.videosmover.model.SimpleVideoOutput;
+import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoQuery;
+import net.cserny.videosmover.model.VideoRow;
+import net.cserny.videosmover.service.CachedTmdbService;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -22,14 +25,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
-    private final VideoMetadataService metadataService;
+    private final CachedTmdbService metadataService;
     private final CustomTextField customTextField;
     private final Button button;
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
 
-    public CustomTextFieldCell(VideoMetadataService metadataService) {
+    public CustomTextFieldCell(CachedTmdbService metadataService) {
         this.metadataService = metadataService;
         this.button = initButton();
         this.customTextField = initCustomTextField();
@@ -142,11 +145,14 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private List<VideoMetadata> processVideoMetadataList() {
         VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).build();
-        return videoOutput.getVideoType() == VideoType.MOVIE
-                ? metadataService.searchMovieMetadata(videoQuery)
-                : videoOutput.getVideoType() == VideoType.TVSHOW
-                    ? metadataService.searchTvShowMetadata(videoQuery)
-                    : Collections.emptyList();
+        try {
+            switch (videoOutput.getVideoType()) {
+                case MOVIE: return metadataService.searchMovieMetadata(videoQuery);
+                case TVSHOW: return metadataService.searchTvShowMetadata(videoQuery);
+            }
+        } catch (Exception ignored) { }
+
+        return Collections.emptyList();
     }
 
     private void togglePopover(Button button, PopOver popOver) {

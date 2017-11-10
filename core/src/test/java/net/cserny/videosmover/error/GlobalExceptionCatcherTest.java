@@ -1,7 +1,7 @@
 package net.cserny.videosmover.error;
 
 import net.cserny.videosmover.ApplicationConfig;
-import net.cserny.videosmover.service.MessageRegistry;
+import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +20,7 @@ public class GlobalExceptionCatcherTest {
     @Autowired
     private GlobalExceptionCatcher globalExceptionCatcher;
     @Autowired
-    private MessageRegistry messageRegistry;
+    private SimpleMessageRegistry messageRegistry;
 
     @Before
     public void setUp() throws Exception {

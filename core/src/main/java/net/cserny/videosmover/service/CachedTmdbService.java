@@ -15,9 +15,10 @@ import javax.annotation.PostConstruct;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.Callable;
 
 @Service
-public class CachedTmdbService implements VideoMetadataService {
+public class CachedTmdbService {
     public static final String MOVIE_PREFIX = "MOVIE_";
     public static final String TVSHOW_PREFIX = "TVSHOW_";
     public static final String DEFAULT_POSTER_WIDTH = "w92";
@@ -36,8 +37,7 @@ public class CachedTmdbService implements VideoMetadataService {
         this.tmdbApi = new TmdbApi(apiKey);
     }
 
-    @Override
-    public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) {
+    public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) throws Exception {
         return searchInternal(movieQuery, MOVIE_PREFIX, () -> {
             List<MovieDb> results = searchMovieInternal(movieQuery).getResults();
             int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
@@ -60,8 +60,7 @@ public class CachedTmdbService implements VideoMetadataService {
         return metadata;
     }
 
-    @Override
-    public List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) {
+    public List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) throws Exception {
         return searchInternal(tvShowQuery, TVSHOW_PREFIX, () -> {
             List<TvSeries> results = searchTvInternal(tvShowQuery).getResults();
             int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
@@ -88,7 +87,7 @@ public class CachedTmdbService implements VideoMetadataService {
         return videoCache;
     }
 
-    private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix, MetadataSearchCallback callback) {
+    private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix, Callable<List<VideoMetadata>> callback) throws Exception {
         if (emptyQuery(query)) {
             return Collections.emptyList();
         }
@@ -98,7 +97,7 @@ public class CachedTmdbService implements VideoMetadataService {
             return videoCache.get(cacheKey);
         }
 
-        List<VideoMetadata> metadataList = callback.createMetadataList();
+        List<VideoMetadata> metadataList = callback.call();
         videoCache.put(cacheKey, metadataList);
 
         return metadataList;
@@ -168,9 +167,5 @@ public class CachedTmdbService implements VideoMetadataService {
             cast.add(person.getName());
         }
         return cast;
-    }
-
-    private interface MetadataSearchCallback {
-        List<VideoMetadata> createMetadataList();
     }
 }

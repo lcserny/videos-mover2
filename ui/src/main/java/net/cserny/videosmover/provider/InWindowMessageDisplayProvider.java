@@ -12,17 +12,17 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.MessageDisplayProvider;
-import net.cserny.videosmover.service.MessageRegistry;
+import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
-    private final MessageRegistry messageRegistry;
+    private final SimpleMessageRegistry messageRegistry;
     private MainStageProvider stageProvider;
 
     @Autowired
-    public InWindowMessageDisplayProvider(MessageRegistry messageRegistry, MainStageProvider stageProvider) {
+    public InWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.messageRegistry = messageRegistry;
         this.stageProvider = stageProvider;
         this.messageRegistry.registerDisplayProvider(this);
