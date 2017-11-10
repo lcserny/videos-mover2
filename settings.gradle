@@ -1,4 +1,4 @@
-rootProject.name = 'videos-mover-parent'
+rootProject.name = 'videos-mover'
 include ':ui'
 include ':core'
 
