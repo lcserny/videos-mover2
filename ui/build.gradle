@@ -9,4 +9,5 @@ dependencies {
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.13'
     testCompile group: 'org.testfx', name: 'openjfx-monocle', version: '8u76-b04'
     testCompile group: 'org.testfx', name: 'testfx-junit', version: '4.0.8-alpha'
+    testCompile group: 'org.awaitility', name: 'awaitility', version: '3.0.0'
 }
