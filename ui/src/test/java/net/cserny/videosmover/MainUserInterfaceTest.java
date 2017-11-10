@@ -92,13 +92,13 @@ public class MainUserInterfaceTest extends ApplicationTest {
     }
 
     @Test
-    public void whenSearchButtonThenRunScanService() throws Exception {
+    public void searchButton_scanService() throws Exception {
         clickOn("#scanButton");
         verify(scanService).scan(any(String.class));
     }
 
     @Test
-    public void whenMoveVideoThenVideoMover() throws Exception {
+    public void moveVideosButton_videoMover() throws Exception {
         clickOn("#scanButton");
         Thread.sleep(250);
         Node movieCheckOnFirstRow = lookup("#tableView").lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
@@ -108,7 +108,7 @@ public class MainUserInterfaceTest extends ApplicationTest {
     }
 
     @Test
-    public void whenConfigDownloadsButtonThenControllerSetDownloads() throws Exception {
+    public void setDownloadsButton_setDownloads() throws Exception {
         clickOn("#settingsPane");
         Thread.sleep(150);
         clickOn("#setDownloadsButton");
@@ -116,7 +116,7 @@ public class MainUserInterfaceTest extends ApplicationTest {
     }
 
     @Test
-    public void whenConfigMoviesButtonThenControllerSetMovies() throws Exception {
+    public void setMoviesButton_setMovies() throws Exception {
         clickOn("#settingsPane");
         Thread.sleep(150);
         clickOn("#setMoviesButton");
@@ -124,7 +124,7 @@ public class MainUserInterfaceTest extends ApplicationTest {
     }
 
     @Test
-    public void whenConfigTvShowsButtonThenControllerSetTvShows() throws Exception {
+    public void setTvShowsButton_setTvShows() throws Exception {
         clickOn("#settingsPane");
         Thread.sleep(150);
         clickOn("#setTvShowsButton");
