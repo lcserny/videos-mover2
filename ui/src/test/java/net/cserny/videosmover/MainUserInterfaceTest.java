@@ -27,6 +27,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 import javax.annotation.PostConstruct;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.verify;
@@ -100,7 +101,7 @@ public class MainUserInterfaceTest extends ApplicationTest {
     @Test
     public void moveVideosButton_videoMover() throws Exception {
         clickOn("#scanButton");
-        Thread.sleep(250);
+        await().until(() -> lookup("#tableView").lookup(".table-row-cell").query() != null);
         Node movieCheckOnFirstRow = lookup("#tableView").lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn("#moveButton");
