@@ -24,6 +24,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.service.query.NodeQuery;
 
 import javax.annotation.PostConstruct;
 
@@ -101,8 +102,9 @@ public class MainUserInterfaceTest extends ApplicationTest {
     @Test
     public void moveVideosButton_videoMover() throws Exception {
         clickOn("#scanButton");
-        await().until(() -> lookup("#tableView").lookup(".table-row-cell").query() != null);
-        Node movieCheckOnFirstRow = lookup("#tableView").lookup(".table-row-cell").nth(0).lookup(".table-cell").nth(1).query();
+        NodeQuery lookup = lookup("#tableView").lookup(".table-row-cell");
+        await().until(() -> lookup.query() != null);
+        Node movieCheckOnFirstRow = lookup.nth(0).lookup(".table-cell").nth(1).query();
         clickOn(movieCheckOnFirstRow);
         clickOn("#moveButton");
         verify(videoMover).move(anyListOf(Video.class));
