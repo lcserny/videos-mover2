@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by leonardo on 02.09.2017.
@@ -23,42 +22,30 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = ApplicationConfig.class)
 public class ScanServiceTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
-    private ScanService scanService;
+    private ServiceFacade serviceFacade;
 
     @Test
     public void scan_whenEmptyFolderReturnEmptyList() throws Exception {
-        List<Video> videosScanned = scanService.scan("/empty");
-        assertNotNull(videosScanned);
-        assertTrue(videosScanned.isEmpty());
+        serviceFacade.assertScannedVideos("/empty", true, null);
     }
 
     @Test
     public void scan_whenDownloadsReturnVideosList() throws Exception {
-        List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
-        assertNotNull(videosScanned);
-        assertFalse(videosScanned.isEmpty());
+        serviceFacade.assertScannedVideos(StaticPathsProvider.getDownloadsPath(), false, null);
     }
 
     @Test
     public void scan_inputWithSubtitleRetainsSubtitle() throws Exception {
-        List<Video> videoWithSubtitle = scanService.scan(DOWNLOADS_BIGSICK);
-        for (Video video : videoWithSubtitle) {
-            if (video.getInput().toString().contains(DOWNLOADS_MOVIE_WITH_SUBTITLE)) {
-                List<Path> subtitles = video.getSubtitles();
-                assertNotNull(subtitles);
-                assertFalse(subtitles.isEmpty());
-                assertEquals(1, subtitles.size());
-            }
-        }
+        serviceFacade.assertScannedVideos(DOWNLOADS_BIGSICK, false, DOWNLOADS_MOVIE_WITH_SUBTITLE);
     }
 
     @Test
     public void scan_scannedVideosShouldBeSortedByInput() throws Exception {
-        List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
-        List<Video> sortedVideos = new ArrayList<>(videosScanned);
+        List<Video> videos = serviceFacade.assertScannedVideos(StaticPathsProvider.getDownloadsPath(), false, null);
+        List<Video> sortedVideos = new ArrayList<>(videos);
         sortedVideos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));
-        for (int i = 0; i < videosScanned.size(); i++) {
-            assertEquals(sortedVideos.get(i), videosScanned.get(i));
+        for (int i = 0; i < videos.size(); i++) {
+            assertEquals(sortedVideos.get(i), videos.get(i));
         }
     }
 }

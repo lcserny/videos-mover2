@@ -2,7 +2,6 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.ApplicationConfig;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,31 +17,31 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest(classes = ApplicationConfig.class)
 public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
     @Autowired
-    private OutputResolver outputResolver;
+    private ServiceFacade serviceFacade;
 
     @Test
     public void resolve_allDigitsMovieResolvesNameCorrectly() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS, outputResolver);
+        Video video = serviceFacade.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS);
         assertThat(video.getOutput().getFileName().toString(), containsString("1922 (2017)"));
     }
 
     @Test
     public void resolve_tvShowInputReturnsCorrectOutput() throws Exception {
-        Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
+        Video video = serviceFacade.createTvShow(DOWNLOADS_TVSHOW);
         assertTrue(video.getOutput().startsWith(StaticPathsProvider.getTvShowsPath()));
         assertTrue(video.getOutput().getFileName().toString().equals("Game Of Thrones"));
     }
 
     @Test
     public void resolve_movieInputReturnsCorrectOutput() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
+        Video video = serviceFacade.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE);
         assertTrue(video.getOutput().startsWith(StaticPathsProvider.getMoviesPath()));
         assertTrue(video.getOutput().getFileName().toString().equals("The Big Sick (2017)"));
     }
 
     @Test
     public void resolve_tvShowInputSetsOutputToExistingTvShowName() throws Exception {
-        Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
+        Video video = serviceFacade.createTvShow(DOWNLOADS_EXISTING_TVSHOW);
         assertTrue(video.getOutput().getFileName().toString().equals("Criminal Minds"));
     }
 }
