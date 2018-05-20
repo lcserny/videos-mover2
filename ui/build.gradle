@@ -1,7 +1,7 @@
 apply plugin: "application"
 apply plugin: 'org.springframework.boot'
 
-mainClassName = "net.cserny.videosmover.MainApplication"
+mainClassName = "net.cserny.videosmover.Main"
 
 dependencies {
     testCompile project(':core').sourceSets.test.output
