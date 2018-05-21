@@ -6,22 +6,18 @@ import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedTmdbService;
 import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by leonardo on 10.09.2017.
- */
-@Service
-@Order(2)
+@Singleton
 public class CachedVideoRetriever implements VideoNameParser {
+
     private final CachedTmdbService cachedTmdbService;
 
-    @Autowired
+    @Inject
     public CachedVideoRetriever(CachedTmdbService cachedTmdbService) {
         this.cachedTmdbService = cachedTmdbService;
     }

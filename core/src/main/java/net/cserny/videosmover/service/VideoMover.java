@@ -1,18 +1,16 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-/**
- * Created by leonardo on 03.09.2017.
- */
-@Service
+@Singleton
 public class VideoMover {
+
     private static final String SUBTITLE_SUBPATH = "Subs";
 
     public boolean move(Video video) throws IOException {

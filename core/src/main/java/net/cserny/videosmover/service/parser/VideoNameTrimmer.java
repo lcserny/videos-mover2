@@ -1,22 +1,22 @@
 package net.cserny.videosmover.service.parser;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import net.cserny.videosmover.PropertiesLoader;
 
+import javax.inject.Singleton;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by leonardo on 10.09.2017.
- */
-@Service
-@Order(1)
+@Singleton
 public class VideoNameTrimmer implements VideoNameParser {
-    @Value("#{'${video.trim.parts}'.split(';')}")
-    private List<String> nameTrimParts;
+
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
+    private List<String> nameTrimParts;
+
+    public VideoNameTrimmer() {
+        nameTrimParts = PropertiesLoader.getNameTrimParts();
+    }
 
     @Override
     public String parseTvShow(String text) {

@@ -2,21 +2,22 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.validator.RemovalRestriction;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+@Singleton
 public class VideoCleaner {
+
     private final List<RemovalRestriction> removalRestrictions;
     private final SimpleMessageRegistry messageRegistry;
 
-    @Autowired
+    @Inject
     public VideoCleaner(List<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
         this.removalRestrictions = removalRestrictions;
         this.messageRegistry = messageRegistry;

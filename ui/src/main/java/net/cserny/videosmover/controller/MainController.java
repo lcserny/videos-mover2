@@ -24,9 +24,9 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -35,11 +35,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-/**
- * Created by leonardo on 02.09.2017.
- */
-@Component
+@Singleton
 public class MainController implements Initializable {
+
     @FXML
     private ImageView loadingImage;
     @FXML
@@ -58,10 +56,12 @@ public class MainController implements Initializable {
     private final MainStageProvider stageProvider;
     private final OutputResolver outputResolver;
     private final CachedTmdbService metadataService;
+    private final PathsInitializer pathsInitializer;
 
-    @Autowired
+    @Inject
     public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry,
-                          MainStageProvider stageProvider, OutputResolver outputResolver, CachedTmdbService metadataService) {
+                          MainStageProvider stageProvider, OutputResolver outputResolver, CachedTmdbService metadataService,
+                          PathsInitializer pathsInitializer) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
@@ -69,10 +69,12 @@ public class MainController implements Initializable {
         this.videoCleaner = videoCleaner;
         this.outputResolver = outputResolver;
         this.metadataService = metadataService;
+        this.pathsInitializer = pathsInitializer;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        StaticPathsProvider.pathsInitializer = pathsInitializer;
         initButtons();
         initTable();
         initDefaultPaths();
@@ -95,17 +97,36 @@ public class MainController implements Initializable {
     }
 
     private void initButtons() {
-        addPostActionHandler(scanButton);
-        addPostActionHandler(moveButton);
-        addPostActionHandler(setDownloadsButton);
-        addPostActionHandler(setMoviesButton);
-        addPostActionHandler(setTvShowsButton);
-    }
+        scanButton.setOnAction(event -> {
+            try {
+                loadTableView(event);
+                messageRegistry.displayMessages();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
-    private void addPostActionHandler(Button button) {
-        EventHandler<ActionEvent> onAction = button.getOnAction();
-        button.setOnAction(event -> {
-            onAction.handle(event);
+        moveButton.setOnAction(event -> {
+            try {
+                moveVideos(event);
+                messageRegistry.displayMessages();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        setDownloadsButton.setOnAction(event -> {
+            setDownloadsPath(event);
+            messageRegistry.displayMessages();
+        });
+
+        setMoviesButton.setOnAction(event -> {
+            setMoviesPath(event);
+            messageRegistry.displayMessages();
+        });
+
+        setTvShowsButton.setOnAction(event -> {
+            setTvShowsPath(event);
             messageRegistry.displayMessages();
         });
     }

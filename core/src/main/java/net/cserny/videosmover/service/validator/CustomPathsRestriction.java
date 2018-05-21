@@ -1,18 +1,20 @@
 package net.cserny.videosmover.service.validator;
 
+import net.cserny.videosmover.PropertiesLoader;
 import net.cserny.videosmover.model.Video;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Singleton;
+import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by leonardo on 12.09.2017.
- */
-@Service
+@Singleton
 public class CustomPathsRestriction implements RemovalRestriction {
-    @Value("#{'${restricted.remove.paths}'.split(',')}")
+
     private List<String> restrictedFolders;
+
+    public CustomPathsRestriction() {
+        restrictedFolders = PropertiesLoader.getRestrictedFolders();
+    }
 
     @Override
     public boolean isRestricted(Video video) {

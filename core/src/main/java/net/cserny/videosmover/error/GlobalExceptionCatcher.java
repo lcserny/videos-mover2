@@ -3,14 +3,16 @@ package net.cserny.videosmover.error;
 import javafx.scene.control.Alert;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {
+
     private final SimpleMessageRegistry messageRegistry;
 
-    @Autowired
+    @Inject
     public GlobalExceptionCatcher(SimpleMessageRegistry messageRegistry) {
         this.messageRegistry = messageRegistry;
     }

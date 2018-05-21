@@ -1,5 +1,5 @@
 apply plugin: "application"
-apply plugin: 'org.springframework.boot'
+//apply plugin: 'org.springframework.boot'
 
 mainClassName = "net.cserny.videosmover.Main"
 

@@ -1,26 +1,26 @@
 package net.cserny.videosmover.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import net.cserny.videosmover.PropertiesLoader;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+@Singleton
 public class PathsInitializer {
-    @Value("${path.downloads}")
-    private String downloadsPath;
-    @Value("${path.movies}")
-    private String moviesPath;
-    @Value("${path.tvshows}")
-    private String tvShowsPath;
 
+    private String downloadsPath;
+    private String moviesPath;
+    private String tvShowsPath;
     private FileSystem fileSystem;
 
     public PathsInitializer() {
+        downloadsPath = PropertiesLoader.getDownloadsPath();
+        moviesPath = PropertiesLoader.getMoviesPath();
+        tvShowsPath = PropertiesLoader.getTvShowsPath();
         fileSystem = FileSystems.getDefault();
     }
 

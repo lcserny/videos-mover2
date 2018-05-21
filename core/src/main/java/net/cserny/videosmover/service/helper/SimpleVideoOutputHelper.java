@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleVideoOutputHelper {
+
     public static final Pattern RELEASEDATE_PATTERN = Pattern.compile("\\((\\d{4})(-\\d{2}-\\d{2})?\\)");
 
     public static SimpleVideoOutput buildVideoOutput(String output) {

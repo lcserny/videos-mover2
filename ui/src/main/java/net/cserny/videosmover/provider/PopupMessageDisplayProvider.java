@@ -4,14 +4,16 @@ import javafx.scene.control.Alert;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.inject.Inject;
 
 @Deprecated
 public class PopupMessageDisplayProvider implements MessageDisplayProvider {
+
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
 
-    @Autowired
+    @Inject
     public PopupMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;

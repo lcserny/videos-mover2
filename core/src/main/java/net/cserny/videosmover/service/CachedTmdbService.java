@@ -6,18 +6,18 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
+import net.cserny.videosmover.PropertiesLoader;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Singleton;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-@Service
+@Singleton
 public class CachedTmdbService {
     public static final String MOVIE_PREFIX = "MOVIE_";
     public static final String TVSHOW_PREFIX = "TVSHOW_";
@@ -29,12 +29,9 @@ public class CachedTmdbService {
     private Map<String, List<VideoMetadata>> videoCache = Collections.synchronizedMap(new HashMap<>(50));
     private TmdbApi tmdbApi;
 
-    @Value("${tmdb.api.key}")
-    private String apiKey;
-
     @PostConstruct
     public void init() {
-        this.tmdbApi = new TmdbApi(apiKey);
+        this.tmdbApi = new TmdbApi(PropertiesLoader.getTmdbApiKey());
     }
 
     public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) throws Exception {

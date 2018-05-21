@@ -1,23 +1,25 @@
 package net.cserny.videosmover.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import net.cserny.videosmover.PropertiesLoader;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by leonardo on 02.09.2017.
- */
-@Service
+@Singleton
 public class SubtitlesFinder {
-    @Value("#{'${video.subtitle.extensions}'.split(',')}")
+
     private List<String> subtitleExtensions;
+
+    public SubtitlesFinder() {
+        subtitleExtensions = PropertiesLoader.getSubtitleExtensions();
+    }
 
     public List<Path> find(Path file) throws IOException {
         Path directory = file.getParent();

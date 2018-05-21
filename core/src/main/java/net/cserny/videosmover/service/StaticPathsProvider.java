@@ -1,22 +1,11 @@
 package net.cserny.videosmover.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
 
-/**
- * Created by leonardo on 02.09.2017.
- */
-@Service
 public class StaticPathsProvider {
-    private static PathsInitializer pathsInitializer;
 
-    @Autowired
-    public StaticPathsProvider(PathsInitializer pathsInitializer) {
-        StaticPathsProvider.pathsInitializer = pathsInitializer;
-    }
+    public static PathsInitializer pathsInitializer;
 
     public static Path getPath(String path) {
         return pathsInitializer.getPath(path);

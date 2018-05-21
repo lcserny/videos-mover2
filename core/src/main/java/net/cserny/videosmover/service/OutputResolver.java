@@ -2,19 +2,17 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.parser.VideoNameParser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 
-/**
- * Created by leonardo on 02.09.2017.
- */
-@Service
+@Singleton
 public class OutputResolver {
+
     private final List<VideoNameParser> nameParserList;
 
-    @Autowired
+    @Inject
     public OutputResolver(List<VideoNameParser> nameParserList) {
         this.nameParserList = nameParserList;
     }

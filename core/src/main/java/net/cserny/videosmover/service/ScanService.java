@@ -1,9 +1,9 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,15 +12,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by leonardo on 02.09.2017.
- */
-@Service
+@Singleton
 public class ScanService {
+
     private final VideoChecker videoChecker;
     private final SubtitlesFinder subtitlesFinder;
 
-    @Autowired
+    @Inject
     public ScanService(VideoChecker videoChecker, SubtitlesFinder subtitlesFinder) {
         this.videoChecker = videoChecker;
         this.subtitlesFinder = subtitlesFinder;
