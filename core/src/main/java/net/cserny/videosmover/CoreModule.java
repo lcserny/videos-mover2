@@ -12,9 +12,6 @@ import net.cserny.videosmover.service.parser.VideoNameTrimmer;
 import net.cserny.videosmover.service.validator.*;
 
 import javax.inject.Singleton;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Module

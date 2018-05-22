@@ -11,13 +11,11 @@ import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Singleton;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-@Singleton
 public class CachedTmdbService {
     public static final String MOVIE_PREFIX = "MOVIE_";
     public static final String TVSHOW_PREFIX = "TVSHOW_";

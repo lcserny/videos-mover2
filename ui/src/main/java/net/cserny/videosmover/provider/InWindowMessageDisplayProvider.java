@@ -15,9 +15,7 @@ import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
 
     private final SimpleMessageRegistry messageRegistry;

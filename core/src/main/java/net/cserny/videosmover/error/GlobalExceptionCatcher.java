@@ -5,9 +5,7 @@ import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
 public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {
 
     private final SimpleMessageRegistry messageRegistry;

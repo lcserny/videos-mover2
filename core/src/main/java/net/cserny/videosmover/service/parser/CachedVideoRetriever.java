@@ -8,11 +8,9 @@ import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.List;
 import java.util.Map;
 
-@Singleton
 public class CachedVideoRetriever implements VideoNameParser {
 
     private final CachedTmdbService cachedTmdbService;

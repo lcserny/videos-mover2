@@ -2,17 +2,14 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.PropertiesLoader;
 
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Singleton
 public class SubtitlesFinder {
 
     private List<String> subtitleExtensions;

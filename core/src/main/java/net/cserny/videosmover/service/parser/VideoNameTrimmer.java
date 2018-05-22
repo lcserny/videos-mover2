@@ -2,13 +2,10 @@ package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.PropertiesLoader;
 
-import javax.inject.Singleton;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Singleton
 public class VideoNameTrimmer implements VideoNameParser {
 
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
