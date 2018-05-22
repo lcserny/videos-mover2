@@ -3,7 +3,6 @@ package net.cserny.videosmover.controller;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,9 +23,9 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -35,7 +34,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-@Singleton
 public class MainController implements Initializable {
 
     @FXML
@@ -58,7 +56,7 @@ public class MainController implements Initializable {
     private final CachedTmdbService metadataService;
     private final PathsInitializer pathsInitializer;
 
-    @Inject
+    @Autowired
     public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry,
                           MainStageProvider stageProvider, OutputResolver outputResolver, CachedTmdbService metadataService,
                           PathsInitializer pathsInitializer) {

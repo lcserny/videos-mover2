@@ -13,17 +13,15 @@ import javafx.util.Duration;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-@Singleton
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
 
     private final SimpleMessageRegistry messageRegistry;
     private MainStageProvider stageProvider;
 
-    @Inject
+    @Autowired
     public InWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.messageRegistry = messageRegistry;
         this.stageProvider = stageProvider;

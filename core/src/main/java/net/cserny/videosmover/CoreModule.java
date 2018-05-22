@@ -1,8 +1,5 @@
 package net.cserny.videosmover;
 
-import dagger.Module;
-import dagger.Provides;
-import dagger.multibindings.IntoSet;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.service.*;
 import net.cserny.videosmover.service.parser.CachedVideoRetriever;
@@ -10,102 +7,101 @@ import net.cserny.videosmover.service.parser.VideoExistenceChecker;
 import net.cserny.videosmover.service.parser.VideoNameParser;
 import net.cserny.videosmover.service.parser.VideoNameTrimmer;
 import net.cserny.videosmover.service.validator.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-import javax.inject.Singleton;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
-@Module
+@Configuration
 public class CoreModule {
 
-    @Provides @Singleton
+    @Bean
     public GlobalExceptionCatcher globalExceptionCatcher(SimpleMessageRegistry messageRegistry) {
         return new GlobalExceptionCatcher(messageRegistry);
     }
 
-    @Provides @Singleton
+    @Bean
     public SimpleMessageRegistry simpleMessageRegistry() {
         return new SimpleMessageRegistry();
     }
 
-    @Provides @Singleton
+    @Bean
     public CachedTmdbService cachedTmdbService() {
         return new CachedTmdbService();
     }
 
-    @Provides @Singleton
+    @Bean
     public OutputResolver outputResolver(Set<VideoNameParser> nameParsers) {
         return new OutputResolver(nameParsers);
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public VideoNameParser videoNameTrimmer() {
         return new VideoNameTrimmer();
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public VideoNameParser cachedVideoRetriever(CachedTmdbService tmdbService) {
         return new CachedVideoRetriever(tmdbService);
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public VideoNameParser videoExistenceChecker() {
         return new VideoExistenceChecker();
     }
 
-    @Provides @Singleton
+    @Bean
     public PathsInitializer pathsInitializer() {
         return new PathsInitializer();
     }
 
-    @Provides @Singleton
+    @Bean
     public ScanService scanService(VideoChecker videoChecker, SubtitlesFinder subtitlesFinder) {
         return new ScanService(videoChecker, subtitlesFinder);
     }
 
-    @Provides @Singleton
+    @Bean
     public VideoChecker videoChecker(Set<VideoValidator> videoValidators) {
         return new VideoChecker(videoValidators);
     }
 
-    @Provides @Singleton
+    @Bean
     public SubtitlesFinder subtitlesFinder() {
         return new SubtitlesFinder();
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public VideoValidator videoPathValidator() {
         return new VideoPathValidator();
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public VideoValidator videoTypeValidator() {
         return new VideoTypeValidator();
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public VideoValidator videoSizeValidator() {
         return new VideoSizeValidator();
     }
 
-    @Provides @Singleton
+    @Bean
     public VideoCleaner videoCleaner(Set<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
         return new VideoCleaner(removalRestrictions, messageRegistry);
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public RemovalRestriction mainPathsRestriction() {
         return new MainPathsRestriction();
     }
 
-    @Provides @IntoSet @Singleton
+    @Bean
     public RemovalRestriction customPathsRestriction() {
         return new CustomPathsRestriction();
     }
 
-    @Provides @Singleton
+    @Bean
     public VideoMover videoMover() {
         return new VideoMover();
     }

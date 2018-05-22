@@ -1,15 +1,14 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.PropertiesLoader;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Singleton;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Singleton
 public class PathsInitializer {
 
     private String downloadsPath;

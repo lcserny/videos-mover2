@@ -2,12 +2,10 @@ package net.cserny.videosmover.service.validator;
 
 import net.cserny.videosmover.PropertiesLoader;
 import net.cserny.videosmover.model.Video;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Singleton;
-import java.util.Arrays;
 import java.util.List;
 
-@Singleton
 public class CustomPathsRestriction implements RemovalRestriction {
 
     private List<String> restrictedFolders;

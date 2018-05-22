@@ -5,7 +5,6 @@ import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
-import javax.inject.Inject;
 
 @Deprecated
 public class PopupMessageDisplayProvider implements MessageDisplayProvider {
@@ -13,7 +12,6 @@ public class PopupMessageDisplayProvider implements MessageDisplayProvider {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
 
-    @Inject
     public PopupMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;

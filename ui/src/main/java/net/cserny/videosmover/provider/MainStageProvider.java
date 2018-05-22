@@ -1,10 +1,8 @@
 package net.cserny.videosmover.provider;
 
 import javafx.stage.Stage;
+import org.springframework.stereotype.Service;
 
-import javax.inject.Singleton;
-
-@Singleton
 public class MainStageProvider {
 
     private Stage stage;
