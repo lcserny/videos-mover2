@@ -12,26 +12,22 @@ import javax.inject.Singleton;
 @Module
 public class UiModule {
 
-    @Provides
-    @Singleton
-    public MainController provideMainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner,
-                                                SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
-                                                OutputResolver outputResolver, CachedTmdbService metadataService,
-                                                PathsInitializer pathsInitializer) {
+    @Provides @Singleton
+    public MainController mainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner,
+                                         SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
+                                         OutputResolver outputResolver, CachedTmdbService metadataService, PathsInitializer pathsInitializer) {
         return new MainController(scanService, videoMover, videoCleaner, messageRegistry,
                 stageProvider, outputResolver, metadataService, pathsInitializer);
     }
 
-    @Provides
-    @Singleton
-    public InWindowMessageDisplayProvider provideInWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry,
-                                                                                MainStageProvider stageProvider) {
+    @Provides @Singleton
+    public InWindowMessageDisplayProvider inWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry,
+                                                                         MainStageProvider stageProvider) {
         return new InWindowMessageDisplayProvider(messageRegistry, stageProvider);
     }
 
-    @Provides
-    @Singleton
-    public MainStageProvider provideMainStageProvider() {
+    @Provides @Singleton
+    public MainStageProvider mainStageProvider() {
         return new MainStageProvider();
     }
 }

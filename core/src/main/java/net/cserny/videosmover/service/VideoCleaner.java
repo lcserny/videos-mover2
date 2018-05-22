@@ -8,17 +8,19 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Singleton
 public class VideoCleaner {
 
-    private final List<RemovalRestriction> removalRestrictions;
+    private final Set<RemovalRestriction> removalRestrictions;
     private final SimpleMessageRegistry messageRegistry;
 
     @Inject
-    public VideoCleaner(List<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
+    public VideoCleaner(Set<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
         this.removalRestrictions = removalRestrictions;
         this.messageRegistry = messageRegistry;
     }

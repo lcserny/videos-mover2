@@ -5,15 +5,17 @@ import net.cserny.videosmover.service.parser.VideoNameParser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Singleton
 public class OutputResolver {
 
-    private final List<VideoNameParser> nameParserList;
+    private final Set<VideoNameParser> nameParserList;
 
     @Inject
-    public OutputResolver(List<VideoNameParser> nameParserList) {
+    public OutputResolver(Set<VideoNameParser> nameParserList) {
         this.nameParserList = nameParserList;
     }
 
