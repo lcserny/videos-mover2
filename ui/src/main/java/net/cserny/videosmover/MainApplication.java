@@ -19,7 +19,6 @@ public class MainApplication extends Application {
 
     public static final String TITLE = "Downloads VideoMover";
 
-    private MainComponent component;
     private Parent parent;
 
     @Inject
@@ -33,7 +32,7 @@ public class MainApplication extends Application {
 
     @Override
     public void init() throws Exception {
-        component = DaggerMainComponent.create();
+        MainComponent component = DaggerMainComponent.create();
         component.inject(this);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
