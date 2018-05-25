@@ -17,7 +17,9 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+@Service
 public class CachedTmdbService {
+
     public static final String MOVIE_PREFIX = "MOVIE_";
     public static final String TVSHOW_PREFIX = "TVSHOW_";
     public static final String DEFAULT_POSTER_WIDTH = "w92";

@@ -3,6 +3,7 @@ package net.cserny.videosmover.service;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.validator.RemovalRestriction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class VideoCleaner {
 
     private final Set<RemovalRestriction> removalRestrictions;

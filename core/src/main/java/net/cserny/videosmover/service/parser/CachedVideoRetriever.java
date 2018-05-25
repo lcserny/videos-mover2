@@ -7,11 +7,13 @@ import net.cserny.videosmover.service.CachedTmdbService;
 import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class CachedVideoRetriever implements VideoNameParser {
 
     private final CachedTmdbService cachedTmdbService;

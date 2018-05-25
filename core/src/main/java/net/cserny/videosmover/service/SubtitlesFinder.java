@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.PropertiesLoader;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class SubtitlesFinder {
 
     private List<String> subtitleExtensions;

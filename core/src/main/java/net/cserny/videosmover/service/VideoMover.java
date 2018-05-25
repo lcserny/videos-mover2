@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+@Component
 public class VideoMover {
 
     private static final String SUBTITLE_SUBPATH = "Subs";

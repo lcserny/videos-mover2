@@ -4,6 +4,7 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.PropertiesLoader;
 import net.cserny.videosmover.service.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+@Component
 public class VideoExistenceChecker implements VideoNameParser {
 
     private int similarityPercent;

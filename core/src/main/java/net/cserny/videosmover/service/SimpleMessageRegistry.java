@@ -1,11 +1,13 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Message;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class SimpleMessageRegistry {
 
     private List<Message> messages;
