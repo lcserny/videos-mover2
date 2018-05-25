@@ -26,7 +26,7 @@ public class MainApplication extends Application {
     public void init() throws Exception {
         context = new AnnotationConfigApplicationContext("net.cserny.videosmover");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        loader.setController(context.getBean(MainController.class));
+        loader.setControllerFactory(context::getBean);
         parent = loader.load();
     }
 

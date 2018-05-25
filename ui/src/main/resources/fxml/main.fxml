@@ -5,7 +5,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<Pane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112" fx:id="container" stylesheets="@/css/main.css">
+<Pane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112" fx:id="container"
+      fx:controller="net.cserny.videosmover.controller.MainController" stylesheets="@/css/main.css">
     <VBox id="main-container">
         <TableView fx:id="tableView">
             <columns>
@@ -23,9 +24,9 @@
 
             <right>
                 <HBox>
-                    <Button mnemonicParsing="false" disable="true" fx:id="moveButton" styleClass="default-button" text="Move Selected Files"/>
+                    <Button mnemonicParsing="false" disable="true" fx:id="moveButton" onAction="#moveVideos" styleClass="default-button" text="Move Selected Files"/>
 
-                    <Button defaultButton="true" mnemonicParsing="false" fx:id="scanButton" text="Search Downloads">
+                    <Button defaultButton="true" mnemonicParsing="false" fx:id="scanButton" text="Search Downloads" onAction="#loadTableView">
                         <graphic>
                             <ImageView fx:id="loadingImage" pickOnBounds="true" fitHeight="30" fitWidth="45" preserveRatio="true">
                                 <Image url="@/images/scan-button.png"/>
@@ -43,17 +44,17 @@
             <Separator/>
 
             <HBox styleClass="set-path-container">
-                <Button mnemonicParsing="false" styleClass="default-button, set-path-button" text="Downloads" fx:id="setDownloadsButton"/>
+                <Button mnemonicParsing="false" styleClass="default-button, set-path-button" text="Downloads" fx:id="setDownloadsButton" onAction="#setDownloadsPath"/>
                 <TextField fx:id="downloadsPathTextField" disable="true" styleClass="path-text"/>
             </HBox>
 
             <HBox styleClass="set-path-container">
-                <Button mnemonicParsing="false" fx:id="setMoviesButton" styleClass="default-button, set-path-button" text="Movies"/>
+                <Button mnemonicParsing="false" fx:id="setMoviesButton" styleClass="default-button, set-path-button" text="Movies" onAction="#setMoviesPath"/>
                 <TextField fx:id="moviePathTextField" disable="true" styleClass="path-text"/>
             </HBox>
 
             <HBox styleClass="set-path-container">
-                <Button mnemonicParsing="false" fx:id="setTvShowsButton" styleClass="default-button, set-path-button" text="TV Shows"/>
+                <Button mnemonicParsing="false" fx:id="setTvShowsButton" styleClass="default-button, set-path-button" text="TV Shows" onAction="#setTvShowsPath"/>
                 <TextField fx:id="tvShowPathTextField" disable="true" styleClass="path-text"/>
             </HBox>
         </VBox>
