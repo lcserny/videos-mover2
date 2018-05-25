@@ -20,9 +20,10 @@ public class PathsInitializer {
         moviesPath = PropertiesLoader.getMoviesPath();
         tvShowsPath = PropertiesLoader.getTvShowsPath();
         fileSystem = FileSystems.getDefault();
+
+        init();
     }
 
-    @PostConstruct
     private void init() {
         if (downloadsPath == null || !Files.exists(getPath(downloadsPath))) {
             downloadsPath = null;

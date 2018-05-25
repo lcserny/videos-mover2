@@ -24,12 +24,11 @@ public class CachedTmdbService {
     public static final int DEFAULT_CAST_SIZE = 5;
     public static final int DEFAULT_VIDEOS_SIZE = 5;
 
-    private Map<String, List<VideoMetadata>> videoCache = Collections.synchronizedMap(new HashMap<>(50));
+    private Map<String, List<VideoMetadata>> videoCache = new HashMap<>(50);
     private TmdbApi tmdbApi;
 
-    @PostConstruct
-    public void init() {
-        this.tmdbApi = new TmdbApi(PropertiesLoader.getTmdbApiKey());
+    public CachedTmdbService(TmdbApi tmdbApi) {
+        this.tmdbApi = tmdbApi;
     }
 
     public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) throws Exception {

@@ -3,6 +3,7 @@ package net.cserny.videosmover;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoSet;
+import info.movito.themoviedbapi.TmdbApi;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.service.*;
 import net.cserny.videosmover.service.parser.CachedVideoRetriever;
@@ -29,7 +30,7 @@ public class CoreModule {
 
     @Provides @Singleton
     public CachedTmdbService cachedTmdbService() {
-        return new CachedTmdbService();
+        return new CachedTmdbService(new TmdbApi(PropertiesLoader.getTmdbApiKey()));
     }
 
     @Provides @Singleton
