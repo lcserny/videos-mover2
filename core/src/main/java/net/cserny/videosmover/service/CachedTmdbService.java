@@ -30,9 +30,15 @@ public class CachedTmdbService {
     private Map<String, List<VideoMetadata>> videoCache = Collections.synchronizedMap(new HashMap<>(50));
     private TmdbApi tmdbApi;
 
-    @PostConstruct
-    public void init() {
+    private void initApi() {
         this.tmdbApi = new TmdbApi(PropertiesLoader.getTmdbApiKey());
+    }
+
+    private TmdbApi getTmdbApi() {
+        if (tmdbApi == null) {
+            initApi();
+        }
+        return tmdbApi;
     }
 
     public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) throws Exception {
@@ -120,7 +126,7 @@ public class CachedTmdbService {
     }
 
     private MovieResultsPage searchMovieInternal(VideoQuery query) {
-        TmdbSearch search = tmdbApi.getSearch();
+        TmdbSearch search = getTmdbApi().getSearch();
         return query.getYear() != null
                 ? query.getLanguage() != null
                         ? search.searchMovie(query.getName(), query.getYear(), query.getLanguage(), false, 1)
@@ -136,19 +142,19 @@ public class CachedTmdbService {
     }
 
     private TvResultsPage searchTvInternal(VideoQuery query) {
-        TmdbSearch search = tmdbApi.getSearch();
+        TmdbSearch search = getTmdbApi().getSearch();
         return query.getLanguage() != null
                 ? search.searchTv(query.getName(), query.getLanguage(), 1)
                 : search.searchTv(query.getName(), null, 1);
     }
 
     private List<String> getMovieCast(int movieId) {
-        MovieDb movie = tmdbApi.getMovies().getMovie(movieId, null, TmdbMovies.MovieMethod.credits);
+        MovieDb movie = getTmdbApi().getMovies().getMovie(movieId, null, TmdbMovies.MovieMethod.credits);
         return searchForCast(movieId, movie.getCredits());
     }
 
     private List<String> getTvShowCast(int tvShowId) {
-        TvSeries series = tmdbApi.getTvSeries().getSeries(tvShowId, null, TmdbTV.TvMethod.credits);
+        TvSeries series = getTmdbApi().getTvSeries().getSeries(tvShowId, null, TmdbTV.TvMethod.credits);
         return searchForCast(tvShowId, series.getCredits());
     }
 
