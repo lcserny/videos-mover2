@@ -30,7 +30,7 @@ public class CoreModule {
 
     @Provides @Singleton
     public CachedTmdbService cachedTmdbService() {
-        return new CachedTmdbService(new TmdbApi(PropertiesLoader.getTmdbApiKey()));
+        return new CachedTmdbService();
     }
 
     @Provides @Singleton
