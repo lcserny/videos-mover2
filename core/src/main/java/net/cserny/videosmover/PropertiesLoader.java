@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -78,9 +79,9 @@ public class PropertiesLoader {
     }
 
     public static long getMinimumVideoSize() {
-        String envVal = System.getenv(MIN_VIDEO_SIZE_KEY);
-        if (envVal != null && !envVal.isEmpty()) {
-            return Long.valueOf(envVal);
+        Optional<String> fromEnv = getFromEnv(MIN_VIDEO_SIZE_KEY);
+        if (fromEnv.isPresent()) {
+            return Long.valueOf(fromEnv.get());
         }
 
         String propVal = application.getProperty(MIN_VIDEO_SIZE_KEY);
@@ -92,9 +93,9 @@ public class PropertiesLoader {
     }
 
     public static int getSimilarityPercent() {
-        String envVal = System.getenv(SIMILARITY_PERCENT_KEY);
-        if (envVal != null && !envVal.isEmpty()) {
-            return Integer.valueOf(envVal);
+        Optional<String> fromEnv = getFromEnv(SIMILARITY_PERCENT_KEY);
+        if (fromEnv.isPresent()) {
+            return Integer.valueOf(fromEnv.get());
         }
 
         String propVal = application.getProperty(SIMILARITY_PERCENT_KEY);
@@ -106,9 +107,9 @@ public class PropertiesLoader {
     }
 
     private static List<String> getStringList(String key, String splitRegex) {
-        String envVal = System.getenv(key);
-        if (envVal != null && !envVal.isEmpty()) {
-            return Arrays.asList(envVal.split(splitRegex));
+        Optional<String> fromEnv = getFromEnv(key);
+        if (fromEnv.isPresent()) {
+            return Arrays.asList(fromEnv.get().split(splitRegex));
         }
 
         String propVal = application.getProperty(key);
@@ -120,9 +121,9 @@ public class PropertiesLoader {
     }
 
     private static String getString(String key) {
-        String envVal = System.getenv(key);
-        if (envVal != null && !envVal.isEmpty()) {
-            return envVal;
+        Optional<String> fromEnv = getFromEnv(key);
+        if (fromEnv.isPresent()) {
+            return fromEnv.get();
         }
 
         String propVal = application.getProperty(key);
@@ -131,5 +132,19 @@ public class PropertiesLoader {
         }
 
         throw new RuntimeException("Environment does not contain any value for key: " + key);
+    }
+
+    private static Optional<String> getFromEnv(String key) {
+        String envVal = System.getenv(key);
+        if (envVal != null && !envVal.isEmpty()) {
+            return Optional.of(envVal);
+        }
+
+        envVal = System.getenv(key.replaceAll("\\.", "_").toUpperCase());
+        if (envVal != null && !envVal.isEmpty()) {
+            return Optional.of(envVal);
+        }
+
+        return Optional.empty();
     }
 }
