@@ -79,49 +79,46 @@ public class PropertiesLoader {
     }
 
     public static long getMinimumVideoSize() {
-        String processString = processString(SIMILARITY_PERCENT_KEY);
-        if (processString == null) {
+        Optional<String> stringOptional = processString(SIMILARITY_PERCENT_KEY);
+        if (!stringOptional.isPresent()) {
             throw new RuntimeException("Environment does not contain any value for key: " + MIN_VIDEO_SIZE_KEY);
         }
-        return Long.valueOf(processString);
+        return Long.valueOf(stringOptional.get());
     }
 
     public static int getSimilarityPercent() {
-        String processString = processString(SIMILARITY_PERCENT_KEY);
-        if (processString == null) {
+        Optional<String> stringOptional = processString(SIMILARITY_PERCENT_KEY);
+        if (!stringOptional.isPresent()) {
             throw new RuntimeException("Environment does not contain any value for key: " + SIMILARITY_PERCENT_KEY);
         }
-        return Integer.valueOf(processString);
+        return Integer.valueOf(stringOptional.get());
     }
 
     private static List<String> getStringList(String key, String splitRegex) {
-        String processString = processString(key);
-        if (processString == null) {
+        Optional<String> stringOptional = processString(key);
+        if (!stringOptional.isPresent()) {
             throw new RuntimeException("Environment does not contain any value for key: " + key);
         }
-        return Arrays.asList(processString.split(splitRegex));
+        return Arrays.asList(stringOptional.get().split(splitRegex));
     }
 
     private static String getString(String key) {
-        String processString = processString(key);
-        if (processString == null) {
-            throw new RuntimeException("Environment does not contain any value for key: " + key);
-        }
-        return processString;
+        return processString(key).orElseThrow(() -> new RuntimeException(
+                        "Environment does not contain any value for key: " + key));
     }
 
-    private static String processString(String key) {
+    private static Optional<String> processString(String key) {
         Optional<String> fromEnv = getFromEnv(key);
         if (fromEnv.isPresent()) {
-            return fromEnv.get();
+            return fromEnv;
         }
 
         String propVal = application.getProperty(key);
         if (propVal != null && !propVal.isEmpty()) {
-            return propVal;
+            return Optional.of(propVal);
         }
 
-        return null;
+        return Optional.empty();
     }
 
     private static Optional<String> getFromEnv(String key) {
