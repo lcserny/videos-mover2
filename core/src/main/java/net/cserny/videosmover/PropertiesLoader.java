@@ -79,48 +79,38 @@ public class PropertiesLoader {
     }
 
     public static long getMinimumVideoSize() {
-        Optional<String> fromEnv = getFromEnv(MIN_VIDEO_SIZE_KEY);
-        if (fromEnv.isPresent()) {
-            return Long.valueOf(fromEnv.get());
+        String processString = processString(SIMILARITY_PERCENT_KEY);
+        if (processString == null) {
+            throw new RuntimeException("Environment does not contain any value for key: " + MIN_VIDEO_SIZE_KEY);
         }
-
-        String propVal = application.getProperty(MIN_VIDEO_SIZE_KEY);
-        if (propVal != null && !propVal.isEmpty()) {
-            return Long.valueOf(propVal);
-        }
-
-        throw new RuntimeException("Environment does not contain any value for key: " + MIN_VIDEO_SIZE_KEY);
+        return Long.valueOf(processString);
     }
 
     public static int getSimilarityPercent() {
-        Optional<String> fromEnv = getFromEnv(SIMILARITY_PERCENT_KEY);
-        if (fromEnv.isPresent()) {
-            return Integer.valueOf(fromEnv.get());
+        String processString = processString(SIMILARITY_PERCENT_KEY);
+        if (processString == null) {
+            throw new RuntimeException("Environment does not contain any value for key: " + SIMILARITY_PERCENT_KEY);
         }
-
-        String propVal = application.getProperty(SIMILARITY_PERCENT_KEY);
-        if (propVal != null && !propVal.isEmpty()) {
-            return Integer.valueOf(propVal);
-        }
-
-        throw new RuntimeException("Environment does not contain any value for key: " + SIMILARITY_PERCENT_KEY);
+        return Integer.valueOf(processString);
     }
 
     private static List<String> getStringList(String key, String splitRegex) {
-        Optional<String> fromEnv = getFromEnv(key);
-        if (fromEnv.isPresent()) {
-            return Arrays.asList(fromEnv.get().split(splitRegex));
+        String processString = processString(key);
+        if (processString == null) {
+            throw new RuntimeException("Environment does not contain any value for key: " + key);
         }
-
-        String propVal = application.getProperty(key);
-        if (propVal != null && !propVal.isEmpty()) {
-            return Arrays.asList(propVal.split(splitRegex));
-        }
-
-        throw new RuntimeException("Environment does not contain any value for key: " + key);
+        return Arrays.asList(processString.split(splitRegex));
     }
 
     private static String getString(String key) {
+        String processString = processString(key);
+        if (processString == null) {
+            throw new RuntimeException("Environment does not contain any value for key: " + key);
+        }
+        return processString;
+    }
+
+    private static String processString(String key) {
         Optional<String> fromEnv = getFromEnv(key);
         if (fromEnv.isPresent()) {
             return fromEnv.get();
@@ -131,7 +121,7 @@ public class PropertiesLoader {
             return propVal;
         }
 
-        throw new RuntimeException("Environment does not contain any value for key: " + key);
+        return null;
     }
 
     private static Optional<String> getFromEnv(String key) {
