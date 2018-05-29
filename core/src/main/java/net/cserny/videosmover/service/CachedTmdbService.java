@@ -11,12 +11,16 @@ import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 
+@Singleton
 public class CachedTmdbService {
+
     public static final String MOVIE_PREFIX = "MOVIE_";
     public static final String TVSHOW_PREFIX = "TVSHOW_";
     public static final String DEFAULT_POSTER_WIDTH = "w92";
@@ -26,6 +30,9 @@ public class CachedTmdbService {
 
     private Map<String, List<VideoMetadata>> videoCache = new HashMap<>(50);
     private TmdbApi tmdbApi;
+
+    @Inject
+    public CachedTmdbService() { }
 
     private void initApi() {
         this.tmdbApi = new TmdbApi(PropertiesLoader.getTmdbApiKey());

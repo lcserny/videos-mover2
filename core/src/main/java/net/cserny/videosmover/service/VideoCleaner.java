@@ -4,6 +4,7 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.validator.RemovalRestriction;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Singleton
 public class VideoCleaner {
 
     private final Set<RemovalRestriction> removalRestrictions;

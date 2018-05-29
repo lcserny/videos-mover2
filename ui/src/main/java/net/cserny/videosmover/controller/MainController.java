@@ -25,6 +25,7 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.*;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+@Singleton
 public class MainController implements Initializable {
 
     @FXML

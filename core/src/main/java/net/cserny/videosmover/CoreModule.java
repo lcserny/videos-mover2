@@ -18,26 +18,6 @@ import java.util.Set;
 @Module
 public class CoreModule {
 
-    @Provides @Singleton
-    public GlobalExceptionCatcher globalExceptionCatcher(SimpleMessageRegistry messageRegistry) {
-        return new GlobalExceptionCatcher(messageRegistry);
-    }
-
-    @Provides @Singleton
-    public SimpleMessageRegistry simpleMessageRegistry() {
-        return new SimpleMessageRegistry();
-    }
-
-    @Provides @Singleton
-    public CachedTmdbService cachedTmdbService() {
-        return new CachedTmdbService();
-    }
-
-    @Provides @Singleton
-    public OutputResolver outputResolver(Set<VideoNameParser> nameParsers) {
-        return new OutputResolver(nameParsers);
-    }
-
     @Provides @IntoSet @Singleton
     public VideoNameParser videoNameTrimmer() {
         return new VideoNameTrimmer();
@@ -51,26 +31,6 @@ public class CoreModule {
     @Provides @IntoSet @Singleton
     public VideoNameParser videoExistenceChecker() {
         return new VideoExistenceChecker();
-    }
-
-    @Provides @Singleton
-    public PathsInitializer pathsInitializer() {
-        return new PathsInitializer();
-    }
-
-    @Provides @Singleton
-    public ScanService scanService(VideoChecker videoChecker, SubtitlesFinder subtitlesFinder) {
-        return new ScanService(videoChecker, subtitlesFinder);
-    }
-
-    @Provides @Singleton
-    public VideoChecker videoChecker(Set<VideoValidator> videoValidators) {
-        return new VideoChecker(videoValidators);
-    }
-
-    @Provides @Singleton
-    public SubtitlesFinder subtitlesFinder() {
-        return new SubtitlesFinder();
     }
 
     @Provides @IntoSet @Singleton
@@ -88,11 +48,6 @@ public class CoreModule {
         return new VideoSizeValidator();
     }
 
-    @Provides @Singleton
-    public VideoCleaner videoCleaner(Set<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
-        return new VideoCleaner(removalRestrictions, messageRegistry);
-    }
-
     @Provides @IntoSet @Singleton
     public RemovalRestriction mainPathsRestriction() {
         return new MainPathsRestriction();
@@ -101,10 +56,5 @@ public class CoreModule {
     @Provides @IntoSet @Singleton
     public RemovalRestriction customPathsRestriction() {
         return new CustomPathsRestriction();
-    }
-
-    @Provides @Singleton
-    public VideoMover videoMover() {
-        return new VideoMover();
     }
 }

@@ -2,14 +2,20 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+@Singleton
 public class VideoMover {
 
     private static final String SUBTITLE_SUBPATH = "Subs";
+
+    @Inject
+    public VideoMover() { }
 
     public boolean move(Video video) throws IOException {
         Path target = video.getOutput();

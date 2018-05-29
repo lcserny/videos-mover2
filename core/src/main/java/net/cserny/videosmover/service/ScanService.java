@@ -3,6 +3,7 @@ package net.cserny.videosmover.service;
 import net.cserny.videosmover.model.Video;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Singleton
 public class ScanService {
 
     private final VideoChecker videoChecker;

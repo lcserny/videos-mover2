@@ -3,10 +3,12 @@ package net.cserny.videosmover.service;
 import net.cserny.videosmover.service.validator.VideoValidator;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 
+@Singleton
 public class VideoChecker {
 
     private final Set<VideoValidator> videoValidatorList;
