@@ -17,7 +17,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 
-@Service
 public class CachedTmdbService {
 
     public static final String MOVIE_PREFIX = "MOVIE_";

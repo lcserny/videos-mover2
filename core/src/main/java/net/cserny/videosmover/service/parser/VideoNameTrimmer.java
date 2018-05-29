@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
 public class VideoNameTrimmer implements VideoNameParser {
 
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");

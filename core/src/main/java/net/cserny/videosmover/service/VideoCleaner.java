@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
 public class VideoCleaner {
 
     private final Set<RemovalRestriction> removalRestrictions;

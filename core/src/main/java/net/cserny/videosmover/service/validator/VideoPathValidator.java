@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.nio.file.Path;
 import java.util.List;
 
-@Component
 public class VideoPathValidator implements VideoValidator {
 
     private List<String> excludedVideoPaths;

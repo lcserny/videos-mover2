@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
 public class CustomPathsRestriction implements RemovalRestriction {
 
     private List<String> restrictedFolders;

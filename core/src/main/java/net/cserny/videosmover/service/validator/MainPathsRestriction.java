@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class MainPathsRestriction implements RemovalRestriction {
 
     private List<String> restrictedFolders;
