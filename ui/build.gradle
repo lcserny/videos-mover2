@@ -1,7 +1,7 @@
 apply plugin: "application"
-apply plugin: 'com.github.johnrengelman.shadow'
 
 mainClassName = "net.cserny.videosmover.Main"
+apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
     testCompile project(':core').sourceSets.test.output
