@@ -13,7 +13,6 @@ public class PopupMessageDisplayProvider implements MessageDisplayProvider {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
 
-    @Inject
     public PopupMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
