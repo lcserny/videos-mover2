@@ -11,9 +11,11 @@ import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.DaggerMainComponent;
+import net.cserny.videosmover.service.MessageDisplayProvider;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Set;
 
 public class MainApplication extends Application {
 
@@ -29,6 +31,9 @@ public class MainApplication extends Application {
 
     @Inject
     MainController controller;
+
+    @Inject
+    Set<MessageDisplayProvider> messageDisplayProviders;
 
     @Override
     public void init() throws IOException {
@@ -51,5 +56,6 @@ public class MainApplication extends Application {
 
         stageProvider.setStage(primaryStage);
         Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
+        messageDisplayProviders.forEach(MessageDisplayProvider::init);
     }
 }

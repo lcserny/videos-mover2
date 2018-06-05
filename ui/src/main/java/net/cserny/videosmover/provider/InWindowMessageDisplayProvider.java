@@ -15,7 +15,9 @@ import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
 
     private final SimpleMessageRegistry messageRegistry;
@@ -25,7 +27,6 @@ public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
     public InWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.messageRegistry = messageRegistry;
         this.stageProvider = stageProvider;
-        this.messageRegistry.registerDisplayProvider(this);
     }
 
     @Override
@@ -33,6 +34,11 @@ public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
         TextArea messageTextArea = appendText(message);
         flash(messageTextArea, message);
         messageRegistry.remove(message);
+    }
+
+    @Override
+    public void init() {
+        messageRegistry.registerDisplayProvider(this);
     }
 
     private TextArea appendText(Message message) {
