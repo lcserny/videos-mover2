@@ -1,6 +1,7 @@
 package net.cserny.videosmover;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.DaggerMainComponent;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class MainApplication extends Application {
 
@@ -29,7 +31,7 @@ public class MainApplication extends Application {
     MainController controller;
 
     @Override
-    public void init() throws Exception {
+    public void init() throws IOException {
         MainComponent component = DaggerMainComponent.create();
         component.inject(this);
 
@@ -39,7 +41,7 @@ public class MainApplication extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setScene(new Scene(parent));
         primaryStage.setTitle(TITLE);
         primaryStage.setResizable(false);

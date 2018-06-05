@@ -96,22 +96,18 @@ public class MainController implements Initializable {
     }
 
     private void initButtons() {
-        scanButton.setOnAction(event -> {
-            try {
-                loadTableView(event);
-                messageRegistry.displayMessages();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
         moveButton.setOnAction(event -> {
             try {
                 moveVideos(event);
-                messageRegistry.displayMessages();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            messageRegistry.displayMessages();
+        });
+
+        scanButton.setOnAction(event -> {
+            loadTableView(event);
+            messageRegistry.displayMessages();
         });
 
         setDownloadsButton.setOnAction(event -> {
@@ -167,7 +163,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public void loadTableView(ActionEvent event) throws IOException {
+    public void loadTableView(ActionEvent event) {
         if (StaticPathsProvider.getDownloadsPath() == null) {
             messageRegistry.add(MessageProvider.getIputMissing());
             return;
