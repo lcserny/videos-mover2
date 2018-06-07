@@ -31,7 +31,7 @@ public class MainApplication extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setScene(new Scene(parent));
         primaryStage.setTitle(TITLE);
         primaryStage.setResizable(false);
@@ -44,7 +44,7 @@ public class MainApplication extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         context.stop();
     }
 }
