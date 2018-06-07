@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+@Service
 public class VideoExistenceChecker implements VideoNameParser {
 
     private int similarityPercent;

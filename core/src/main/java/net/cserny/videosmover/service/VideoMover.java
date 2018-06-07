@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+@Service
 public class VideoMover {
 
     private static final String SUBTITLE_SUBPATH = "Subs";

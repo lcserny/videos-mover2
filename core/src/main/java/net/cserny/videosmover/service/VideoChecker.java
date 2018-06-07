@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 
+@Service
 public class VideoChecker {
 
     private final Set<VideoValidator> videoValidatorList;
