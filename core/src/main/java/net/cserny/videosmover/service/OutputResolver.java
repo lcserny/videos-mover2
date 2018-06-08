@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.parser.VideoNameParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,9 @@ public class OutputResolver {
     public String resolve(Video video) {
         String resolvedName = video.getInput().getFileName().toString();
         for (VideoNameParser videoNameParser : nameParserList) {
-            resolvedName = video.isMovie()
+            resolvedName = video.getVideoType() == VideoType.MOVIE
                     ? videoNameParser.parseMovie(resolvedName)
-                    : video.isTvShow()
+                    : video.getVideoType() == VideoType.TVSHOW
                         ? videoNameParser.parseTvShow(resolvedName)
                         : resolvedName;
         }

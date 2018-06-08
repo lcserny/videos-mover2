@@ -147,7 +147,7 @@ public class MainController implements Initializable {
         }
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
-        Runnable expensiveTask = () -> {
+        new Thread(() -> {
             try {
                 List<Video> scannedVideos = scanService.scan(StaticPathsProvider.getDownloadsPath());
                 List<VideoRow> videoRowList = new ArrayList<>();
@@ -162,8 +162,7 @@ public class MainController implements Initializable {
                 e.printStackTrace();
             }
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
-        };
-        new Thread(expensiveTask).start();
+        }).start();
     }
 
     private VideoRow buildVideoRow(int index, Video video) {

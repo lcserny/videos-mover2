@@ -69,7 +69,7 @@ public class VideoRow {
         }
 
         this.isMovie.set(isMovie);
-        this.video.setIsMovie(isMovie);
+        this.video.setVideoType(isMovie ? VideoType.MOVIE : VideoType.TVSHOW);
     }
 
     public boolean isTvShow() {
@@ -86,6 +86,6 @@ public class VideoRow {
         }
 
         this.isTvShow.set(isTvShow);
-        this.video.setIsTvShow(isTvShow);
+        this.video.setVideoType(isTvShow ? VideoType.MOVIE : VideoType.TVSHOW);
     }
 }
