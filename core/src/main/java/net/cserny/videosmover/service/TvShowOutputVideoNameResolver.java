@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class TvShowOutputVideoNameResolver extends AbstractOutputVideoNameResolver {
 
     private final Pattern pattern = Pattern.compile(
-            "[.]s(?<season>\\d{1,4})e(?<episodes>\\d{1,3}([e-]\\d{1,3})+)[.]",
+            "(?<start>.*)s(?<season>\\d{1,4})e(?<episodes>\\d{1,3}([eE-]{1,2}\\d{1,3})?)(?<end>.*)",
             Pattern.CASE_INSENSITIVE);
 
     @Override
@@ -23,20 +23,19 @@ public class TvShowOutputVideoNameResolver extends AbstractOutputVideoNameResolv
     @Override
     public String resolve(Video video) {
         if (true) {
-            throw new RuntimeException("test this");
+            throw new RuntimeException("test this!");
         }
 
-        StringBuilder resolvedName = new StringBuilder(video.getOutputFilename());
-        String extension = getExtension(video);
         Matcher matcher = pattern.matcher(video.getOutputFilename());
-
-        while (matcher.find()) {
+        if (matcher.find()) {
+            String first = matcher.group("first");
             String season = matcher.group("season");
             String episodes = matcher.group("episodes");
             String[] singleEpisodes = episodes.split("[e-]");
-            resolvedName.append(String.format("s%se%s", season, Arrays.toString(singleEpisodes)));
+            String end = matcher.group("end");
+            return String.format("%ss%se%s%s", first, season, Arrays.toString(singleEpisodes), end);
         }
 
-        return resolvedName.toString() + "." + extension;
+        return video.getOutputFilename();
     }
 }

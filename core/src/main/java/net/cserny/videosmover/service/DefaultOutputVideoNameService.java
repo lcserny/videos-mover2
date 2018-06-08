@@ -14,13 +14,13 @@ public class DefaultOutputVideoNameService implements OutputVideoNameService {
     List<OutputVideoNameResolver> outputVideoNameResolvers;
 
     @Override
-    public String resolve(Video video) throws IOException {
+    public String resolve(Video video) {
         for (OutputVideoNameResolver resolver : outputVideoNameResolvers) {
             if (resolver.canHandle(video.getVideoType())) {
                 return resolver.resolve(video);
             }
         }
 
-        throw new IOException(String.format("Couldn't resolve video name, no handler found, %s", video));
+        return video.getOutputFilename();
     }
 }

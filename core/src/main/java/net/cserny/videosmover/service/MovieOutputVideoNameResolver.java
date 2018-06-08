@@ -4,7 +4,7 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
 import org.springframework.stereotype.Component;
 
-@Component
+@Deprecated
 public class MovieOutputVideoNameResolver extends AbstractOutputVideoNameResolver {
 
     @Override
@@ -15,6 +15,6 @@ public class MovieOutputVideoNameResolver extends AbstractOutputVideoNameResolve
     @Override
     public String resolve(Video video) {
         String extension = getExtension(video);
-        return video.getOutputPath().getFileName().toString() + "." + extension;
+        return video.getOutputPath().getFileName().toString() + extension;
     }
 }
