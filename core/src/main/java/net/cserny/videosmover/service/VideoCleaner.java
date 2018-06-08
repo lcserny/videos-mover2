@@ -3,7 +3,6 @@ package net.cserny.videosmover.service;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.validator.RemovalRestriction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class VideoCleaner {
         try {
             recursiveDelete(video.getInputPath());
         } catch (IOException e) {
-            messageRegistry.add(MessageProvider.getCleanupFailed());
+            messageRegistry.add(MessageProvider.cleanupFailed());
         }
     }
 

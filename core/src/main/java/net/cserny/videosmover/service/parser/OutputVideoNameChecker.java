@@ -1,10 +1,9 @@
-package net.cserny.videosmover.service;
+package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
 
-public interface OutputVideoNameResolver {
+public interface OutputVideoNameChecker {
     boolean canHandle(VideoType type);
-
-    String resolve(Video video);
+    void check(Video video);
 }

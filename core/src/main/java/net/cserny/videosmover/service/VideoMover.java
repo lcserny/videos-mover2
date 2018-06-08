@@ -18,11 +18,13 @@ public class VideoMover {
     OutputVideoNameService videoNameService;
 
     public boolean move(Video video) throws IOException {
+        videoNameService.check(video);
+
         Path target = video.getOutputPath().resolve(video.getOutputFilename());
         createDirectoryInternal(target);
 
         Path source = video.getInputPath().resolve(video.getInputFilename());
-        moveInternal(source, target.resolve(videoNameService.resolve(video)));
+        moveInternal(source, target.resolve(source.getFileName()));
 
         List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {

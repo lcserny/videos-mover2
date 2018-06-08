@@ -142,7 +142,7 @@ public class MainController implements Initializable {
 
     public void loadTableView(ActionEvent event) {
         if (StaticPathsProvider.getDownloadsPath() == null) {
-            messageRegistry.add(MessageProvider.getIputMissing());
+            messageRegistry.add(MessageProvider.inputMissing());
             return;
         }
 
@@ -181,22 +181,22 @@ public class MainController implements Initializable {
 
     public void moveVideos(ActionEvent event) {
         if (StaticPathsProvider.getMoviesPath() == null || StaticPathsProvider.getTvShowsPath() == null) {
-            messageRegistry.add(MessageProvider.getOutputMissing());
+            messageRegistry.add(MessageProvider.outputMissing());
             return;
         }
 
         List<Video> selectedVideos = tableView.getItems().stream().filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
                 .map(VideoRow::getVideo).collect(Collectors.toList());
         if (selectedVideos.isEmpty()) {
-            messageRegistry.add(MessageProvider.getNothingSelected());
+            messageRegistry.add(MessageProvider.nothingSelected());
             return;
         }
 
         boolean result = videoMover.move(selectedVideos);
-        Message message = MessageProvider.getProblemOccurred();
+        Message message = MessageProvider.problemOccurred();
         if (result) {
             videoCleaner.clean(selectedVideos);
-            message = MessageProvider.getMoveSuccessful();
+            message = MessageProvider.moveSuccessful();
         }
         messageRegistry.add(message);
         loadTableView(null);
