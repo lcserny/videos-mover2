@@ -19,7 +19,7 @@ public class CustomPathsRestriction implements RemovalRestriction {
     @Override
     public boolean isRestricted(Video video) {
         for (String restrictedFolder : restrictedFolders) {
-            if (video.getInput().getParent().getFileName().toString().equals(restrictedFolder)) {
+            if (video.getInputPath().getFileName().toString().equals(restrictedFolder)) {
                 return true;
             }
         }

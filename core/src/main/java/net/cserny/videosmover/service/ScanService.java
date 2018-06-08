@@ -30,12 +30,13 @@ public class ScanService {
         for (Path file : files) {
             if (videoChecker.isVideo(file)) {
                 Video video = new Video();
-                video.setInput(file);
+                video.setInputPath(file.getParent());
+                video.setInputFilename(file.getFileName().toString());
                 video.setSubtitles(subtitlesFinder.find(file));
                 videos.add(video);
             }
         }
-        videos.sort(Comparator.comparing(video -> video.getInput().getFileName().toString().toLowerCase()));
+        videos.sort(Comparator.comparing(video -> video.getInputFilename().toLowerCase()));
         return videos;
     }
 }

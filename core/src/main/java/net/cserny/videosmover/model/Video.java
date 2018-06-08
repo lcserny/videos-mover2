@@ -5,25 +5,43 @@ import java.util.List;
 
 public class Video {
 
-    private Path input;
-    private Path output;
+    private Path inputPath;
+    private String inputFilename;
+    private Path outputPath;
+    private String outputFilename;
     private List<Path> subtitles;
     private VideoType videoType;
 
-    public Path getInput() {
-        return input;
+    public Path getInputPath() {
+        return inputPath;
     }
 
-    public void setInput(Path input) {
-        this.input = input;
+    public void setInputPath(Path inputPath) {
+        this.inputPath = inputPath;
     }
 
-    public Path getOutput() {
-        return output;
+    public String getInputFilename() {
+        return inputFilename;
     }
 
-    public void setOutput(Path output) {
-        this.output = output;
+    public void setInputFilename(String inputFilename) {
+        this.inputFilename = inputFilename;
+    }
+
+    public Path getOutputPath() {
+        return outputPath;
+    }
+
+    public void setOutputPath(Path outputPath) {
+        this.outputPath = outputPath;
+    }
+
+    public String getOutputFilename() {
+        return outputFilename;
+    }
+
+    public void setOutputFilename(String outputFilename) {
+        this.outputFilename = outputFilename;
     }
 
     public VideoType getVideoType() {

@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.Video;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,12 +14,15 @@ public class VideoMover {
 
     private static final String SUBTITLE_SUBPATH = "Subs";
 
+    @Autowired
+    OutputVideoNameService videoNameService;
+
     public boolean move(Video video) throws IOException {
-        Path target = video.getOutput();
+        Path target = video.getOutputPath().resolve(video.getOutputFilename());
         createDirectoryInternal(target);
 
-        Path source = video.getInput();
-        moveInternal(source, target.resolve(source.getFileName()));
+        Path source = video.getInputPath().resolve(video.getInputFilename());
+        moveInternal(source, target.resolve(videoNameService.resolve(video)));
 
         List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {

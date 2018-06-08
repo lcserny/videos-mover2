@@ -33,7 +33,7 @@ public class VideoCleaner {
         }
 
         try {
-            recursiveDelete(video.getInput().getParent());
+            recursiveDelete(video.getInputPath());
         } catch (IOException e) {
             messageRegistry.add(MessageProvider.getCleanupFailed());
         }

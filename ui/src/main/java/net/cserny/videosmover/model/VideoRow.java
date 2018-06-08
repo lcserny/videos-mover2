@@ -6,6 +6,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import net.cserny.videosmover.service.StaticPathsProvider;
 
+import java.nio.file.Path;
+
 /**
  * Created by leonardo on 02.09.2017.
  */
@@ -52,7 +54,9 @@ public class VideoRow {
 
     public void setOutput(String output) {
         this.output.set(output);
-        this.video.setOutput(StaticPathsProvider.getPath(output));
+        Path path = StaticPathsProvider.getPath(output);
+        this.video.setOutputPath(path.getParent());
+        this.video.setOutputFilename(path.getFileName().toString());
     }
 
     public boolean isMovie() {
@@ -86,6 +90,6 @@ public class VideoRow {
         }
 
         this.isTvShow.set(isTvShow);
-        this.video.setVideoType(isTvShow ? VideoType.MOVIE : VideoType.TVSHOW);
+        this.video.setVideoType(isTvShow ? VideoType.TVSHOW : VideoType.MOVIE);
     }
 }

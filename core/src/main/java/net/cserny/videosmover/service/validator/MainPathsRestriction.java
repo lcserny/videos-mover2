@@ -18,7 +18,7 @@ public class MainPathsRestriction implements RemovalRestriction {
         refreshRestrictedFolders();
 
         for (String restrictedFolder : restrictedFolders) {
-            if (restrictedFolder.endsWith(video.getInput().getParent().getFileName().toString())) {
+            if (restrictedFolder.endsWith(video.getInputPath().getFileName().toString())) {
                 return true;
             }
         }
