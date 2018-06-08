@@ -96,34 +96,11 @@ public class MainController implements Initializable {
     }
 
     private void initButtons() {
-        moveButton.setOnAction(event -> {
-            try {
-                moveVideos(event);
-                messageRegistry.displayMessages();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        scanButton.setOnAction(event -> {
-            loadTableView(event);
-            messageRegistry.displayMessages();
-        });
-
-        setDownloadsButton.setOnAction(event -> {
-            setDownloadsPath(event);
-            messageRegistry.displayMessages();
-        });
-
-        setMoviesButton.setOnAction(event -> {
-            setMoviesPath(event);
-            messageRegistry.displayMessages();
-        });
-
-        setTvShowsButton.setOnAction(event -> {
-            setTvShowsPath(event);
-            messageRegistry.displayMessages();
-        });
+        moveButton.setOnAction(new MessageRegistryButtonAction(this::moveVideos, messageRegistry));
+        scanButton.setOnAction(new MessageRegistryButtonAction(this::loadTableView, messageRegistry));
+        setDownloadsButton.setOnAction(new MessageRegistryButtonAction(this::setDownloadsPath, messageRegistry));
+        setMoviesButton.setOnAction(new MessageRegistryButtonAction(this::setMoviesPath, messageRegistry));
+        setTvShowsButton.setOnAction(new MessageRegistryButtonAction(this::setTvShowsPath, messageRegistry));
     }
 
     private void initDefaultPaths() {
@@ -203,7 +180,7 @@ public class MainController implements Initializable {
         return videoRow;
     }
 
-    public void moveVideos(ActionEvent event) throws IOException {
+    public void moveVideos(ActionEvent event) {
         if (StaticPathsProvider.getMoviesPath() == null || StaticPathsProvider.getTvShowsPath() == null) {
             messageRegistry.add(MessageProvider.getOutputMissing());
             return;

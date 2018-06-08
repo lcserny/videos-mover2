@@ -32,9 +32,13 @@ public class VideoMover {
         return Files.exists(target);
     }
 
-    public boolean move(List<Video> videoList) throws IOException {
+    public boolean move(List<Video> videoList) {
         for (Video video : videoList) {
-            if (!move(video)) {
+            try {
+                if (!move(video)) {
+                    return false;
+                }
+            } catch (IOException e) {
                 return false;
             }
         }
