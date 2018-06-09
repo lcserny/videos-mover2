@@ -16,6 +16,7 @@ public class PopupMessageDisplayProvider implements MessageDisplayProvider {
     public PopupMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
+        this.messageRegistry.registerDisplayProvider(this);
     }
 
     @Override
@@ -26,10 +27,5 @@ public class PopupMessageDisplayProvider implements MessageDisplayProvider {
         alert.initOwner(stageProvider.getStage());
         alert.setOnHidden(event -> { messageRegistry.remove(message); });
         alert.show();
-    }
-
-    @Override
-    public void init() {
-        messageRegistry.registerDisplayProvider(this);
     }
 }

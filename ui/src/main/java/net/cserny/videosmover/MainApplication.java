@@ -12,6 +12,8 @@ import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.DaggerMainComponent;
 import net.cserny.videosmover.service.MessageDisplayProvider;
+import net.cserny.videosmover.service.PathsInitializer;
+import net.cserny.videosmover.service.StaticPathsProvider;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -20,8 +22,6 @@ import java.util.Set;
 public class MainApplication extends Application {
 
     public static final String TITLE = "Downloads VideoMover";
-
-    private Parent parent;
 
     @Inject
     GlobalExceptionCatcher exceptionCatcher;
@@ -35,14 +35,26 @@ public class MainApplication extends Application {
     @Inject
     Set<MessageDisplayProvider> messageDisplayProviders;
 
+    @Inject
+    PathsInitializer pathsInitializer;
+
+    private Parent parent;
+
     @Override
     public void init() throws IOException {
-        MainComponent component = DaggerMainComponent.create();
-        component.inject(this);
+        initContext();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setController(controller);
         parent = loader.load();
+    }
+
+    private void initContext() {
+        MainComponent component = DaggerMainComponent.create();
+        component.inject(this);
+
+        Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
+        StaticPathsProvider.pathsInitializer = pathsInitializer;
     }
 
     @Override
@@ -55,7 +67,5 @@ public class MainApplication extends Application {
         primaryStage.show();
 
         stageProvider.setStage(primaryStage);
-        Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
-        messageDisplayProviders.forEach(MessageDisplayProvider::init);
     }
 }

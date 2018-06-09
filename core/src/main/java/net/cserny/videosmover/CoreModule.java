@@ -6,10 +6,7 @@ import dagger.multibindings.IntoSet;
 import info.movito.themoviedbapi.TmdbApi;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.service.*;
-import net.cserny.videosmover.service.parser.CachedVideoRetriever;
-import net.cserny.videosmover.service.parser.VideoExistenceChecker;
-import net.cserny.videosmover.service.parser.VideoNameParser;
-import net.cserny.videosmover.service.parser.VideoNameTrimmer;
+import net.cserny.videosmover.service.parser.*;
 import net.cserny.videosmover.service.validator.*;
 
 import javax.inject.Singleton;
@@ -56,5 +53,15 @@ public class CoreModule {
     @Provides @IntoSet @Singleton
     public RemovalRestriction customPathsRestriction() {
         return new CustomPathsRestriction();
+    }
+
+    @Provides @IntoSet @Singleton
+    public OutputVideoNameChecker outputVideoNameChecker(SimpleMessageRegistry messageRegistry) {
+        return new TvShowOutputVideoNameChecker(messageRegistry);
+    }
+
+    @Provides @Singleton
+    public OutputVideoNameService outputVideoNameService(Set<OutputVideoNameChecker> videoNameCheckers) {
+        return new DefaultOutputVideoNameService(videoNameCheckers);
     }
 }

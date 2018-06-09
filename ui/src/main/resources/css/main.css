@@ -106,16 +106,12 @@
     -fx-pref-width: 250;
 }
 
-#movieCol {
-    -fx-pref-width: 70;
-}
-
-#tvshowCol {
-    -fx-pref-width: 70;
+#typeCol {
+    -fx-pref-width: 200;
 }
 
 #outputCol {
-    -fx-pref-width: 480;
+    -fx-pref-width: 410;
 }
 
 #tableView {

@@ -1,29 +1,19 @@
 package net.cserny.videosmover.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import net.cserny.videosmover.service.StaticPathsProvider;
 
-/**
- * Created by leonardo on 02.09.2017.
- */
+import java.nio.file.Path;
+
 public class VideoRow {
-    private int index;
+
     private final Video video;
     private StringProperty name = new SimpleStringProperty();
     private StringProperty output = new SimpleStringProperty();
-    private BooleanProperty isMovie = new SimpleBooleanProperty();
-    private BooleanProperty isTvShow = new SimpleBooleanProperty();
+    private SimpleObjectProperty<VideoType> videoType = new SimpleObjectProperty<>();
 
-    public VideoRow(int index, Video video) {
-        this.index = index;
+    public VideoRow(Video video) {
         this.video = video;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public Video getVideo() {
@@ -52,40 +42,17 @@ public class VideoRow {
 
     public void setOutput(String output) {
         this.output.set(output);
-        this.video.setOutput(StaticPathsProvider.getPath(output));
     }
 
-    public boolean isMovie() {
-        return isMovie.get();
+    public VideoType getVideoType() {
+        return videoType.get();
     }
 
-    public BooleanProperty isMovieProperty() {
-        return isMovie;
+    public SimpleObjectProperty<VideoType> videoTypeProperty() {
+        return videoType;
     }
 
-    public void setIsMovie(boolean isMovie) {
-        if (isMovie) {
-            setIsTvShow(false);
-        }
-
-        this.isMovie.set(isMovie);
-        this.video.setIsMovie(isMovie);
-    }
-
-    public boolean isTvShow() {
-        return isTvShow.get();
-    }
-
-    public BooleanProperty isTvShowProperty() {
-        return isTvShow;
-    }
-
-    public void setIsTvShow(boolean isTvShow) {
-        if (isTvShow) {
-            setIsMovie(false);
-        }
-
-        this.isTvShow.set(isTvShow);
-        this.video.setIsTvShow(isTvShow);
+    public void setVideoType(VideoType videoType) {
+        this.videoType.set(videoType);
     }
 }

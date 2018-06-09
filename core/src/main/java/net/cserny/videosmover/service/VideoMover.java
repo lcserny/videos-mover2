@@ -14,15 +14,22 @@ public class VideoMover {
 
     private static final String SUBTITLE_SUBPATH = "Subs";
 
+    private final OutputVideoNameService videoNameService;
+
     @Inject
-    public VideoMover() { }
+    public VideoMover(OutputVideoNameService videoNameService) {
+        this.videoNameService = videoNameService;
+    }
 
     public boolean move(Video video) throws IOException {
-        Path target = video.getOutput();
-        createDirectoryInternal(target);
+        videoNameService.check(video);
 
-        Path source = video.getInput();
-        moveInternal(source, target.resolve(source.getFileName()));
+        Path target = video.getOutputPath();
+        Path sourceFile = video.getInputPath().resolve(video.getInputFilename());
+        Path targetFile = target.resolve(video.getOutputFilename());
+
+        createDirectoryInternal(target);
+        moveInternal(sourceFile, targetFile);
 
         List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
@@ -32,12 +39,16 @@ public class VideoMover {
             }
         }
 
-        return Files.exists(target);
+        return Files.exists(targetFile);
     }
 
-    public boolean move(List<Video> videoList) throws IOException {
+    public boolean move(List<Video> videoList) {
         for (Video video : videoList) {
-            if (!move(video)) {
+            try {
+                if (!move(video)) {
+                    return false;
+                }
+            } catch (IOException e) {
                 return false;
             }
         }

@@ -18,9 +18,11 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
-import net.cserny.videosmover.model.Message;
+import net.cserny.videosmover.component.MessageRegistryButtonAction;
+import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
+import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.*;
 
@@ -29,9 +31,11 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.nio.file.Path;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -55,12 +59,11 @@ public class MainController implements Initializable {
     private final MainStageProvider stageProvider;
     private final OutputResolver outputResolver;
     private final CachedTmdbService metadataService;
-    private final PathsInitializer pathsInitializer;
 
     @Inject
-    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry,
-                          MainStageProvider stageProvider, OutputResolver outputResolver, CachedTmdbService metadataService,
-                          PathsInitializer pathsInitializer) {
+    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner,
+                          SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider, OutputResolver outputResolver,
+                          CachedTmdbService metadataService) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
@@ -68,12 +71,10 @@ public class MainController implements Initializable {
         this.videoCleaner = videoCleaner;
         this.outputResolver = outputResolver;
         this.metadataService = metadataService;
-        this.pathsInitializer = pathsInitializer;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        StaticPathsProvider.pathsInitializer = pathsInitializer;
         initButtons();
         initTable();
         initDefaultPaths();
@@ -96,34 +97,11 @@ public class MainController implements Initializable {
     }
 
     private void initButtons() {
-        moveButton.setOnAction(event -> {
-            try {
-                moveVideos(event);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            messageRegistry.displayMessages();
-        });
-
-        scanButton.setOnAction(event -> {
-            loadTableView(event);
-            messageRegistry.displayMessages();
-        });
-
-        setDownloadsButton.setOnAction(event -> {
-            setDownloadsPath(event);
-            messageRegistry.displayMessages();
-        });
-
-        setMoviesButton.setOnAction(event -> {
-            setMoviesPath(event);
-            messageRegistry.displayMessages();
-        });
-
-        setTvShowsButton.setOnAction(event -> {
-            setTvShowsPath(event);
-            messageRegistry.displayMessages();
-        });
+        moveButton.setOnAction(new MessageRegistryButtonAction(this::moveVideos, messageRegistry));
+        scanButton.setOnAction(new MessageRegistryButtonAction(this::loadTableView, messageRegistry));
+        setDownloadsButton.setOnAction(new MessageRegistryButtonAction(this::setDownloadsPath, messageRegistry));
+        setMoviesButton.setOnAction(new MessageRegistryButtonAction(this::setMoviesPath, messageRegistry));
+        setTvShowsButton.setOnAction(new MessageRegistryButtonAction(this::setTvShowsPath, messageRegistry));
     }
 
     private void initDefaultPaths() {
@@ -144,15 +122,13 @@ public class MainController implements Initializable {
                     nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
                     nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
                     break;
-                case "movieCol":
-                    TableColumn<VideoRow, Boolean> movieCol = (TableColumn<VideoRow, Boolean>) column;
-                    movieCol.setCellValueFactory(new PropertyValueFactory<>("isMovie"));
-                    movieCol.setCellFactory(param -> new CheckBoxTableCell<>());
-                    break;
-                case "tvshowCol":
-                    TableColumn<VideoRow, Boolean> tvShowCol = (TableColumn<VideoRow, Boolean>) column;
-                    tvShowCol.setCellValueFactory(new PropertyValueFactory<>("isTvShow"));
-                    tvShowCol.setCellFactory(param -> new CheckBoxTableCell<>());
+                case "typeCol":
+                    TableColumn<VideoRow, VideoType> typeCol = (TableColumn<VideoRow, VideoType>) column;
+                    typeCol.setCellValueFactory(new PropertyValueFactory<>("videoType"));
+                    typeCol.setCellFactory(param -> new RadioButtonTableCell());
+                    typeCol.setOnEditCommit(event -> event.getTableView().getItems()
+                            .get(event.getTablePosition().getRow())
+                            .setVideoType(event.getNewValue()));
                     break;
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
@@ -165,65 +141,69 @@ public class MainController implements Initializable {
 
     public void loadTableView(ActionEvent event) {
         if (StaticPathsProvider.getDownloadsPath() == null) {
-            messageRegistry.add(MessageProvider.getIputMissing());
+            messageRegistry.add(MessageProvider.inputMissing());
             return;
         }
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
-        Runnable expensiveTask = () -> {
-            try {
-                List<Video> scannedVideos = scanService.scan(StaticPathsProvider.getDownloadsPath());
-                List<VideoRow> videoRowList = new ArrayList<>();
-                for (int i = 0; i < scannedVideos.size(); i++) {
-                    Video video = scannedVideos.get(i);
-                    VideoRow videoRow = buildVideoRow(i, video);
-                    videoRowList.add(videoRow);
-                }
-                tableView.setItems(FXCollections.observableList(videoRowList));
-                moveButton.setDisable(videoRowList.isEmpty());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        new Thread(() -> {
+            List<VideoRow> videoRowList = processVideoRows();
+            tableView.setItems(FXCollections.observableList(videoRowList));
+            moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
-        };
-        new Thread(expensiveTask).start();
+        }).start();
     }
 
-    private VideoRow buildVideoRow(int index, Video video) {
-        VideoRow videoRow = new VideoRow(index, video);
-        videoRow.setName(video.getInput().getFileName().toString());
-        videoRow.isMovieProperty().addListener((observable, oldValue, checkmarkValue) -> {
-            videoRow.setIsMovie(checkmarkValue);
-            videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
-        });
-        videoRow.isTvShowProperty().addListener((observable, oldValue, checkmarkValue) -> {
-            videoRow.setIsTvShow(checkmarkValue);
-            videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
+    private List<VideoRow> processVideoRows() {
+        return scanService.scan(StaticPathsProvider.getDownloadsPath()).stream()
+                .map(this::buildVideoRow)
+                .collect(Collectors.toList());
+    }
+
+    private VideoRow buildVideoRow(Video video) {
+        VideoRow videoRow = new VideoRow(video);
+        videoRow.setName(video.getInputFilename());
+        videoRow.videoTypeProperty().addListener((observable, oldValue, newValue) -> {
+            handleCheckmark(video, newValue, videoRow);
         });
         return videoRow;
     }
 
-    public void moveVideos(ActionEvent event) throws IOException {
+    private void handleCheckmark(Video video, VideoType videoType, VideoRow videoRow) {
+        video.setVideoType(videoType);
+        videoRow.setVideoType(videoType);
+
+        String output = videoType != VideoType.NONE ? outputResolver.resolve(videoRow.getVideo()) : "";
+        videoRow.setOutput(output);
+
+        Path path = StaticPathsProvider.getPath(output);
+        video.setOutputPath(path);
+        video.setOutputFilename(video.getInputFilename());
+    }
+
+    public void moveVideos(ActionEvent event) {
         if (StaticPathsProvider.getMoviesPath() == null || StaticPathsProvider.getTvShowsPath() == null) {
-            messageRegistry.add(MessageProvider.getOutputMissing());
+            messageRegistry.add(MessageProvider.outputMissing());
             return;
         }
 
-        List<Video> selectedVideos = tableView.getItems().stream().filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
-                .map(VideoRow::getVideo).collect(Collectors.toList());
+        List<Video> selectedVideos = tableView.getItems().stream()
+                .filter(videoRow -> videoRow.getVideoType() != VideoType.NONE && videoRow.getVideoType() != null)
+                .map(VideoRow::getVideo)
+                .collect(Collectors.toList());
+
         if (selectedVideos.isEmpty()) {
-            messageRegistry.add(MessageProvider.getNothingSelected());
+            messageRegistry.add(MessageProvider.nothingSelected());
             return;
         }
 
         boolean result = videoMover.move(selectedVideos);
-        Message message = MessageProvider.getProblemOccurred();
         if (result) {
             videoCleaner.clean(selectedVideos);
-            message = MessageProvider.getMoveSuccessful();
         }
-        messageRegistry.add(message);
-        loadTableView(null);
+        messageRegistry.add(result ? MessageProvider.moveSuccessful() : MessageProvider.problemOccurred());
+
+        loadTableView(event);
     }
 
     public void setDownloadsPath(ActionEvent event) {

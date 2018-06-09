@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class VideoCleaner {
 
-    private final Set<RemovalRestriction> removalRestrictions;
+    private Set<RemovalRestriction> removalRestrictions;
     private final SimpleMessageRegistry messageRegistry;
 
     @Inject
@@ -32,9 +32,9 @@ public class VideoCleaner {
         }
 
         try {
-            recursiveDelete(video.getInput().getParent());
+            recursiveDelete(video.getInputPath());
         } catch (IOException e) {
-            messageRegistry.add(MessageProvider.getCleanupFailed());
+            messageRegistry.add(MessageProvider.cleanupFailed());
         }
     }
 
