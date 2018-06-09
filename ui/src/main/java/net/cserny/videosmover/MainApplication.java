@@ -19,15 +19,24 @@ public class MainApplication extends Application {
 
     public static final String TITLE = "Downloads VideoMover";
 
+    private MainStageProvider stageProvider;
     private Parent parent;
     private AnnotationConfigApplicationContext context;
 
     @Override
     public void init() throws Exception {
-        context = new AnnotationConfigApplicationContext("net.cserny.videosmover");
+        initContext();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setControllerFactory(context::getBean);
         parent = loader.load();
+    }
+
+    private void initContext() {
+        context = new AnnotationConfigApplicationContext("net.cserny.videosmover");
+        stageProvider = context.getBean(MainStageProvider.class);
+        Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
+        StaticPathsProvider.pathsInitializer = context.getBean(PathsInitializer.class);
     }
 
     @Override
@@ -39,8 +48,7 @@ public class MainApplication extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        context.getBean(MainStageProvider.class).setStage(primaryStage);
-        Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
+        stageProvider.setStage(primaryStage);
     }
 
     @Override

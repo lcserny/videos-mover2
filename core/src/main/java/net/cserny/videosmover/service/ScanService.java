@@ -24,19 +24,25 @@ public class ScanService {
         this.subtitlesFinder = subtitlesFinder;
     }
 
-    public List<Video> scan(String location) throws IOException {
-        List<Path> files = Files.walk(StaticPathsProvider.getPath(location)).filter(Files::isRegularFile).collect(Collectors.toList());
+    public List<Video> scan(String location) {
         List<Video> videos = new ArrayList<>();
-        for (Path file : files) {
-            if (videoChecker.isVideo(file)) {
-                Video video = new Video();
-                video.setInputPath(file.getParent());
-                video.setInputFilename(file.getFileName().toString());
-                video.setSubtitles(subtitlesFinder.find(file));
-                videos.add(video);
+
+        try {
+            List<Path> files = Files.walk(StaticPathsProvider.getPath(location)).filter(Files::isRegularFile).collect(Collectors.toList());
+            for (Path file : files) {
+                if (videoChecker.isVideo(file)) {
+                    Video video = new Video();
+                    video.setInputPath(file.getParent());
+                    video.setInputFilename(file.getFileName().toString());
+                    video.setSubtitles(subtitlesFinder.find(file));
+                    videos.add(video);
+                }
             }
+            videos.sort(Comparator.comparing(video -> video.getInputFilename().toLowerCase()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        videos.sort(Comparator.comparing(video -> video.getInputFilename().toLowerCase()));
+
         return videos;
     }
 }

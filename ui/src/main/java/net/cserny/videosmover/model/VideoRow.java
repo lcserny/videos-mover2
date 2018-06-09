@@ -12,20 +12,15 @@ import java.nio.file.Path;
  * Created by leonardo on 02.09.2017.
  */
 public class VideoRow {
-    private int index;
+
     private final Video video;
     private StringProperty name = new SimpleStringProperty();
     private StringProperty output = new SimpleStringProperty();
     private BooleanProperty isMovie = new SimpleBooleanProperty();
     private BooleanProperty isTvShow = new SimpleBooleanProperty();
 
-    public VideoRow(int index, Video video) {
-        this.index = index;
+    public VideoRow(Video video) {
         this.video = video;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public Video getVideo() {
@@ -68,12 +63,7 @@ public class VideoRow {
     }
 
     public void setIsMovie(boolean isMovie) {
-        if (isMovie) {
-            setIsTvShow(false);
-        }
-
         this.isMovie.set(isMovie);
-        this.video.setVideoType(isMovie ? VideoType.MOVIE : VideoType.TVSHOW);
     }
 
     public boolean isTvShow() {

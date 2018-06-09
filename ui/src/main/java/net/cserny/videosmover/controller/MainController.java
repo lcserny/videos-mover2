@@ -21,6 +21,7 @@ import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
+import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +56,11 @@ public class MainController implements Initializable {
     private final MainStageProvider stageProvider;
     private final OutputResolver outputResolver;
     private final CachedTmdbService metadataService;
-    private final PathsInitializer pathsInitializer;
 
     @Autowired
-    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry,
-                          MainStageProvider stageProvider, OutputResolver outputResolver, CachedTmdbService metadataService,
-                          PathsInitializer pathsInitializer) {
+    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner,
+                          SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider, OutputResolver outputResolver,
+                          CachedTmdbService metadataService) {
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.scanService = scanService;
@@ -68,12 +68,10 @@ public class MainController implements Initializable {
         this.videoCleaner = videoCleaner;
         this.outputResolver = outputResolver;
         this.metadataService = metadataService;
-        this.pathsInitializer = pathsInitializer;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        StaticPathsProvider.pathsInitializer = pathsInitializer;
         initButtons();
         initTable();
         initDefaultPaths();
@@ -148,35 +146,48 @@ public class MainController implements Initializable {
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
         new Thread(() -> {
-            try {
-                List<Video> scannedVideos = scanService.scan(StaticPathsProvider.getDownloadsPath());
-                List<VideoRow> videoRowList = new ArrayList<>();
-                for (int i = 0; i < scannedVideos.size(); i++) {
-                    Video video = scannedVideos.get(i);
-                    VideoRow videoRow = buildVideoRow(i, video);
-                    videoRowList.add(videoRow);
-                }
-                tableView.setItems(FXCollections.observableList(videoRowList));
-                moveButton.setDisable(videoRowList.isEmpty());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            List<VideoRow> videoRowList = processVideoRows();
+            tableView.setItems(FXCollections.observableList(videoRowList));
+            moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
         }).start();
     }
 
-    private VideoRow buildVideoRow(int index, Video video) {
-        VideoRow videoRow = new VideoRow(index, video);
+    private List<VideoRow> processVideoRows() {
+        return scanService.scan(StaticPathsProvider.getDownloadsPath()).stream()
+                .map(this::buildVideoRow)
+                .collect(Collectors.toList());
+    }
+
+    private VideoRow buildVideoRow(Video video) {
+        VideoRow videoRow = new VideoRow(video);
         videoRow.setName(video.getInputFilename());
         videoRow.isMovieProperty().addListener((observable, oldValue, checkmarkValue) -> {
-            videoRow.setIsMovie(checkmarkValue);
-            videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
+            handleCheckmark(video, VideoType.MOVIE, videoRow, checkmarkValue);
         });
         videoRow.isTvShowProperty().addListener((observable, oldValue, checkmarkValue) -> {
-            videoRow.setIsTvShow(checkmarkValue);
-            videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
+            handleCheckmark(video, VideoType.TVSHOW, videoRow, checkmarkValue);
         });
         return videoRow;
+    }
+
+    private void handleCheckmark(Video video, VideoType videoType, VideoRow videoRow, Boolean checkmarkValue) {
+        video.setVideoType(videoType);
+        switch (videoType) {
+            case MOVIE:
+                videoRow.setIsMovie(checkmarkValue);
+                if (checkmarkValue) {
+                    videoRow.setIsTvShow(false);
+                }
+                break;
+            case TVSHOW:
+                videoRow.setIsTvShow(checkmarkValue);
+                if (checkmarkValue) {
+                    videoRow.setIsMovie(false);
+                }
+                break;
+        }
+        videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
     }
 
     public void moveVideos(ActionEvent event) {
@@ -185,21 +196,23 @@ public class MainController implements Initializable {
             return;
         }
 
-        List<Video> selectedVideos = tableView.getItems().stream().filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
-                .map(VideoRow::getVideo).collect(Collectors.toList());
+        List<Video> selectedVideos = tableView.getItems().stream()
+                .filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
+                .map(VideoRow::getVideo)
+                .collect(Collectors.toList());
+
         if (selectedVideos.isEmpty()) {
             messageRegistry.add(MessageProvider.nothingSelected());
             return;
         }
 
         boolean result = videoMover.move(selectedVideos);
-        Message message = MessageProvider.problemOccurred();
         if (result) {
             videoCleaner.clean(selectedVideos);
-            message = MessageProvider.moveSuccessful();
         }
-        messageRegistry.add(message);
-        loadTableView(null);
+        messageRegistry.add(result ? MessageProvider.moveSuccessful() : MessageProvider.problemOccurred());
+
+        loadTableView(event);
     }
 
     public void setDownloadsPath(ActionEvent event) {
