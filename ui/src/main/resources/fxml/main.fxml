@@ -11,8 +11,7 @@
         <TableView fx:id="tableView">
             <columns>
                 <TableColumn fx:id="nameCol" text="Name" editable="false"/>
-                <TableColumn fx:id="movieCol" text="Movie"/>
-                <TableColumn fx:id="tvshowCol" text="TVShow"/>
+                <TableColumn fx:id="typeCol" text="Type"/>
                 <TableColumn fx:id="outputCol" text="Output"/>
             </columns>
         </TableView>

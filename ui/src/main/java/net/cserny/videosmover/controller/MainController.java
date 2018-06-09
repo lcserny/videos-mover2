@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -19,6 +18,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.MessageRegistryButtonAction;
+import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
@@ -30,6 +30,7 @@ import org.springframework.stereotype.Controller;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Path;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -118,15 +119,13 @@ public class MainController implements Initializable {
                     nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
                     nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
                     break;
-                case "movieCol":
-                    TableColumn<VideoRow, Boolean> movieCol = (TableColumn<VideoRow, Boolean>) column;
-                    movieCol.setCellValueFactory(new PropertyValueFactory<>("isMovie"));
-                    movieCol.setCellFactory(param -> new CheckBoxTableCell<>());
-                    break;
-                case "tvshowCol":
-                    TableColumn<VideoRow, Boolean> tvShowCol = (TableColumn<VideoRow, Boolean>) column;
-                    tvShowCol.setCellValueFactory(new PropertyValueFactory<>("isTvShow"));
-                    tvShowCol.setCellFactory(param -> new CheckBoxTableCell<>());
+                case "typeCol":
+                    TableColumn<VideoRow, VideoType> typeCol = (TableColumn<VideoRow, VideoType>) column;
+                    typeCol.setCellValueFactory(new PropertyValueFactory<>("videoType"));
+                    typeCol.setCellFactory(param -> new RadioButtonTableCell<>(EnumSet.allOf(VideoType.class)));
+                    typeCol.setOnEditCommit(event -> event.getTableView().getItems()
+                            .get(event.getTablePosition().getRow())
+                            .setVideoType(event.getNewValue()));
                     break;
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
@@ -161,33 +160,17 @@ public class MainController implements Initializable {
     private VideoRow buildVideoRow(Video video) {
         VideoRow videoRow = new VideoRow(video);
         videoRow.setName(video.getInputFilename());
-        videoRow.isMovieProperty().addListener((observable, oldValue, checkmarkValue) -> {
-            handleCheckmark(video, VideoType.MOVIE, videoRow, checkmarkValue);
-        });
-        videoRow.isTvShowProperty().addListener((observable, oldValue, checkmarkValue) -> {
-            handleCheckmark(video, VideoType.TVSHOW, videoRow, checkmarkValue);
+        videoRow.videoTypeProperty().addListener((observable, oldValue, newValue) -> {
+            handleCheckmark(video, newValue, videoRow);
         });
         return videoRow;
     }
 
-    private void handleCheckmark(Video video, VideoType videoType, VideoRow videoRow, Boolean checkmarkValue) {
+    private void handleCheckmark(Video video, VideoType videoType, VideoRow videoRow) {
         video.setVideoType(videoType);
-        switch (videoType) {
-            case MOVIE:
-                videoRow.setIsMovie(checkmarkValue);
-                if (checkmarkValue) {
-                    videoRow.setIsTvShow(false);
-                }
-                break;
-            case TVSHOW:
-                videoRow.setIsTvShow(checkmarkValue);
-                if (checkmarkValue) {
-                    videoRow.setIsMovie(false);
-                }
-                break;
-        }
+        videoRow.setVideoType(videoType);
 
-        String output = checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "";
+        String output = videoType != VideoType.NONE ? outputResolver.resolve(videoRow.getVideo()) : "";
         videoRow.setOutput(output);
 
         Path path = StaticPathsProvider.getPath(output);
@@ -202,7 +185,7 @@ public class MainController implements Initializable {
         }
 
         List<Video> selectedVideos = tableView.getItems().stream()
-                .filter(videoRow -> videoRow.isTvShow() || videoRow.isMovie())
+                .filter(videoRow -> videoRow.getVideoType() != VideoType.NONE)
                 .map(VideoRow::getVideo)
                 .collect(Collectors.toList());
 
