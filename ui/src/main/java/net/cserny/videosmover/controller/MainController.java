@@ -185,7 +185,7 @@ public class MainController implements Initializable {
         }
 
         List<Video> selectedVideos = tableView.getItems().stream()
-                .filter(videoRow -> videoRow.getVideoType() != VideoType.NONE)
+                .filter(videoRow -> videoRow.getVideoType() != VideoType.NONE && videoRow.getVideoType() != null)
                 .map(VideoRow::getVideo)
                 .collect(Collectors.toList());
 
