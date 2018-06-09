@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Controller
@@ -122,7 +123,7 @@ public class MainController implements Initializable {
                 case "typeCol":
                     TableColumn<VideoRow, VideoType> typeCol = (TableColumn<VideoRow, VideoType>) column;
                     typeCol.setCellValueFactory(new PropertyValueFactory<>("videoType"));
-                    typeCol.setCellFactory(param -> new RadioButtonTableCell<>(EnumSet.allOf(VideoType.class)));
+                    typeCol.setCellFactory(param -> new RadioButtonTableCell());
                     typeCol.setOnEditCommit(event -> event.getTableView().getItems()
                             .get(event.getTablePosition().getRow())
                             .setVideoType(event.getNewValue()));

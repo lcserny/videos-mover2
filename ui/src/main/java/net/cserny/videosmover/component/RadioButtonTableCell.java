@@ -5,20 +5,13 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import net.cserny.videosmover.model.VideoRow;
+import net.cserny.videosmover.model.VideoType;
 
-import java.util.EnumSet;
+public class RadioButtonTableCell extends TableCell<VideoRow,VideoType> {
 
-public class RadioButtonTableCell<S,T extends Enum<T>> extends TableCell<S,T> {
-
-    private EnumSet<T> enumeration;
-
-    public RadioButtonTableCell(EnumSet<T> enumeration) {
-        this.enumeration = enumeration;
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
-    protected void updateItem(T item, boolean empty) {
+    protected void updateItem(VideoType item, boolean empty) {
         super.updateItem(item, empty);
 
         if (!empty) {
@@ -26,7 +19,7 @@ public class RadioButtonTableCell<S,T extends Enum<T>> extends TableCell<S,T> {
             hb.setAlignment(Pos.CENTER);
             final ToggleGroup group = new ToggleGroup();
 
-            for (Enum<T> enumElement : enumeration) {
+            for (VideoType enumElement : VideoType.values()) {
                 RadioButton radioButton = new RadioButton(enumElement.toString());
                 radioButton.setUserData(enumElement);
                 radioButton.setToggleGroup(group);
@@ -38,10 +31,12 @@ public class RadioButtonTableCell<S,T extends Enum<T>> extends TableCell<S,T> {
 
             group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
                 getTableView().edit(getIndex(), getTableColumn());
-                RadioButtonTableCell.this.commitEdit((T) newValue.getUserData());
+                RadioButtonTableCell.this.commitEdit((VideoType) newValue.getUserData());
             });
 
             setGraphic(hb);
+        } else {
+            setGraphic(null);
         }
     }
 }

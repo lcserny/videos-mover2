@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
+
     private final CachedTmdbService metadataService;
     private final CustomTextField customTextField;
     private final Button button;
@@ -34,10 +35,10 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     public CustomTextFieldCell(CachedTmdbService metadataService) {
         this.metadataService = metadataService;
-        this.button = initButton();
-        this.customTextField = initCustomTextField();
+        button = initButton();
+        customTextField = initCustomTextField();
 
-        setGraphic(this.customTextField);
+        setGraphic(customTextField);
     }
 
     private void processForShow(String output) {
@@ -68,13 +69,12 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         button.setTooltip(new Tooltip("Search for video metadata online"));
         button.setOnAction(event -> {
             setImageToButton(button, loadingImage);
-            Runnable expensiveTask = () -> {
+            new Thread(() -> {
                 List<VideoMetadata> videoMetadataList = processVideoMetadataList();
                 setImageToButton(button, altImage);
                 PopOver popOver = buildPopover(videoMetadataList, mainImage, altImage);
                 Platform.runLater(() -> togglePopover(button, popOver));
-            };
-            new Thread(expensiveTask).start();
+            }).start();
         });
 
         return button;
