@@ -49,9 +49,6 @@ public class VideoRow {
 
     public void setOutput(String output) {
         this.output.set(output);
-        Path path = StaticPathsProvider.getPath(output);
-        this.video.setOutputPath(path.getParent());
-        this.video.setOutputFilename(path.getFileName().toString());
     }
 
     public boolean isMovie() {
@@ -75,11 +72,6 @@ public class VideoRow {
     }
 
     public void setIsTvShow(boolean isTvShow) {
-        if (isTvShow) {
-            setIsMovie(false);
-        }
-
         this.isTvShow.set(isTvShow);
-        this.video.setVideoType(isTvShow ? VideoType.TVSHOW : VideoType.MOVIE);
     }
 }

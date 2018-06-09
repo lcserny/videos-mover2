@@ -18,7 +18,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
-import net.cserny.videosmover.model.Message;
+import net.cserny.videosmover.component.MessageRegistryButtonAction;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
@@ -28,9 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -187,7 +186,13 @@ public class MainController implements Initializable {
                 }
                 break;
         }
-        videoRow.setOutput(checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "");
+
+        String output = checkmarkValue ? outputResolver.resolve(videoRow.getVideo()) : "";
+        videoRow.setOutput(output);
+
+        Path path = StaticPathsProvider.getPath(output);
+        video.setOutputPath(path);
+        video.setOutputFilename(video.getInputFilename());
     }
 
     public void moveVideos(ActionEvent event) {
