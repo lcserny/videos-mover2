@@ -1,4 +1,6 @@
-package net.cserny.videosmover.service;
+package net.cserny.videosmover.helper;
+
+import net.cserny.videosmover.helper.PathsInitializer;
 
 import java.nio.file.FileSystem;
 import java.nio.file.Path;

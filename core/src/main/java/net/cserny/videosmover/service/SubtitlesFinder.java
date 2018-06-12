@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.PropertiesLoader;
+import net.cserny.videosmover.helper.PropertiesLoader;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

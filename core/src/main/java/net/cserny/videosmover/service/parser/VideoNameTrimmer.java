@@ -1,6 +1,6 @@
 package net.cserny.videosmover.service.parser;
 
-import net.cserny.videosmover.PropertiesLoader;
+import net.cserny.videosmover.helper.PropertiesLoader;
 
 import java.util.List;
 import java.util.regex.Matcher;

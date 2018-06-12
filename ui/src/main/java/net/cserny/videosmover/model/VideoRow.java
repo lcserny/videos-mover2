@@ -1,9 +1,6 @@
 package net.cserny.videosmover.model;
 
 import javafx.beans.property.*;
-import net.cserny.videosmover.service.StaticPathsProvider;
-
-import java.nio.file.Path;
 
 public class VideoRow {
 

@@ -1,8 +1,8 @@
 package net.cserny.videosmover.service.parser;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
-import net.cserny.videosmover.PropertiesLoader;
-import net.cserny.videosmover.service.StaticPathsProvider;
+import net.cserny.videosmover.helper.PropertiesLoader;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
 import java.io.IOException;

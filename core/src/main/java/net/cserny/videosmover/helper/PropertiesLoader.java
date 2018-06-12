@@ -1,4 +1,4 @@
-package net.cserny.videosmover;
+package net.cserny.videosmover.helper;
 
 import com.google.common.io.Resources;
 
@@ -15,9 +15,10 @@ public class PropertiesLoader {
 
     private static final Logger LOGGER = Logger.getLogger(PropertiesLoader.class.getName());
 
-    private static final String PATH_DOWNLOADS_KEY = "path.downloads";
-    private static final String PATH_MOVIES_KEY = "path.movies";
-    private static final String PATH_TVSHOWS_KEY = "path.tvshows";
+    public static final String PATH_DOWNLOADS_KEY = "path.downloads";
+    public static final String PATH_MOVIES_KEY = "path.movies";
+    public static final String PATH_TVSHOWS_KEY = "path.tvshows";
+
     private static final String TMDB_API_KEY = "tmdb.api.key";
     private static final String SIMILARITY_PERCENT_KEY = "similarity.percent";
     private static final String MIN_VIDEO_SIZE_KEY = "minimum.video.size";

@@ -4,7 +4,7 @@ import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedTmdbService;
-import net.cserny.videosmover.service.StaticPathsProvider;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
 import javax.inject.Inject;

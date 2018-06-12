@@ -1,6 +1,6 @@
 package net.cserny.videosmover.service.validator;
 
-import net.cserny.videosmover.PropertiesLoader;
+import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.model.Video;
 
 import java.util.List;

@@ -13,7 +13,7 @@ import javax.inject.Singleton;
 @Module
 public class UiModule {
 
-    @Provides @Singleton @IntoSet
+    @Provides @Singleton
     public MessageDisplayProvider messageDisplayProvider(SimpleMessageRegistry messageRegistry,
                                                          MainStageProvider stageProvider) {
         return new InWindowMessageDisplayProvider(messageRegistry, stageProvider);

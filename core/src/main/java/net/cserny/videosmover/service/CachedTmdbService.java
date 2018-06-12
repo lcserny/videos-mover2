@@ -6,11 +6,10 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
-import net.cserny.videosmover.PropertiesLoader;
+import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.net.URISyntaxException;

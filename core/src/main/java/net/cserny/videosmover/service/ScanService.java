@@ -1,5 +1,6 @@
 package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 
 import javax.inject.Inject;

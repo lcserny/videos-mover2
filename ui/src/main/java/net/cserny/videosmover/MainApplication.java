@@ -1,7 +1,6 @@
 package net.cserny.videosmover;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,10 +9,9 @@ import javafx.stage.Stage;
 import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
-import net.cserny.videosmover.DaggerMainComponent;
 import net.cserny.videosmover.service.MessageDisplayProvider;
-import net.cserny.videosmover.service.PathsInitializer;
-import net.cserny.videosmover.service.StaticPathsProvider;
+import net.cserny.videosmover.helper.PathsInitializer;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -33,7 +31,7 @@ public class MainApplication extends Application {
     MainController controller;
 
     @Inject
-    Set<MessageDisplayProvider> messageDisplayProviders;
+    MessageDisplayProvider messageDisplayProvider;
 
     @Inject
     PathsInitializer pathsInitializer;

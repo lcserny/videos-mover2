@@ -1,8 +1,5 @@
-package net.cserny.videosmover.service;
+package net.cserny.videosmover.helper;
 
-import net.cserny.videosmover.PropertiesLoader;
-
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.nio.file.FileSystem;
@@ -13,29 +10,33 @@ import java.nio.file.Path;
 @Singleton
 public class PathsInitializer {
 
+    private final PreferencesLoader preferencesLoader;
+
     private String downloadsPath;
     private String moviesPath;
     private String tvShowsPath;
     private FileSystem fileSystem;
 
     @Inject
-    public PathsInitializer() {
-        downloadsPath = PropertiesLoader.getDownloadsPath();
-        moviesPath = PropertiesLoader.getMoviesPath();
-        tvShowsPath = PropertiesLoader.getTvShowsPath();
+    public PathsInitializer(PreferencesLoader preferencesLoader) {
+        this.preferencesLoader = preferencesLoader;
+
+        downloadsPath = preferencesLoader.getDownloadsPath();
+        moviesPath = preferencesLoader.getMoviesPath();
+        tvShowsPath = preferencesLoader.getTvShowsPath();
         fileSystem = FileSystems.getDefault();
 
         init();
     }
 
     private void init() {
-        if (downloadsPath == null || !Files.exists(getPath(downloadsPath))) {
+        if (!Files.exists(getPath(downloadsPath))) {
             downloadsPath = null;
         }
-        if (moviesPath == null || !Files.exists(getPath(moviesPath))) {
+        if (!Files.exists(getPath(moviesPath))) {
             moviesPath = null;
         }
-        if (tvShowsPath == null || !Files.exists(getPath(tvShowsPath))) {
+        if (!Files.exists(getPath(tvShowsPath))) {
             tvShowsPath = null;
         }
     }
@@ -58,6 +59,7 @@ public class PathsInitializer {
 
     public void setDownloadsPath(String downloadsPath) {
         this.downloadsPath = downloadsPath;
+        preferencesLoader.setDownloadsPath(downloadsPath);
     }
 
     public String getMoviesPath() {
@@ -66,6 +68,7 @@ public class PathsInitializer {
 
     public void setMoviesPath(String moviesPath) {
         this.moviesPath = moviesPath;
+        preferencesLoader.setMoviesPath(moviesPath);
     }
 
     public String getTvShowsPath() {
@@ -74,5 +77,6 @@ public class PathsInitializer {
 
     public void setTvShowsPath(String tvShowsPath) {
         this.tvShowsPath = tvShowsPath;
+        preferencesLoader.setTvShowsPath(tvShowsPath);
     }
 }

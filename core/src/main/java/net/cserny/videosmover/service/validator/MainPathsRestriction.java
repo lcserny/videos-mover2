@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service.validator;
 
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.service.StaticPathsProvider;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 
 import java.util.ArrayList;
 import java.util.List;

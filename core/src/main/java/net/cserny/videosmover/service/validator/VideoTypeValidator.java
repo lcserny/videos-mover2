@@ -1,6 +1,6 @@
 package net.cserny.videosmover.service.validator;
 
-import net.cserny.videosmover.PropertiesLoader;
+import net.cserny.videosmover.helper.PropertiesLoader;
 
 import java.io.IOException;
 import java.nio.file.Files;

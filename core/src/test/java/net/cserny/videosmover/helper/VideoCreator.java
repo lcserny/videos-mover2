@@ -3,7 +3,6 @@ package net.cserny.videosmover.helper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.OutputResolver;
-import net.cserny.videosmover.service.StaticPathsProvider;
 
 import java.nio.file.Path;
 
