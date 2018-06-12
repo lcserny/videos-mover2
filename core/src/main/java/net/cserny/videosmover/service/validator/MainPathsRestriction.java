@@ -3,12 +3,18 @@ package net.cserny.videosmover.service.validator;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 
+@Singleton
 public class MainPathsRestriction implements RemovalRestriction {
 
     private List<String> restrictedFolders;
+
+    @Inject
+    public MainPathsRestriction() { }
 
     @Override
     public boolean isRestricted(Video video) {

@@ -2,15 +2,19 @@ package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.helper.PropertiesLoader;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Singleton
 public class VideoNameTrimmer implements VideoNameParser {
 
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
     private List<String> nameTrimParts;
 
+    @Inject
     public VideoNameTrimmer() {
         nameTrimParts = PropertiesLoader.getNameTrimParts();
     }

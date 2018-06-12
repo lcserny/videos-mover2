@@ -15,53 +15,53 @@ import java.util.Set;
 @Module
 public class CoreModule {
 
-    @Provides @IntoSet @Singleton
-    public VideoNameParser videoNameTrimmer() {
-        return new VideoNameTrimmer();
+    @Provides @IntoSet
+    public VideoNameParser videoNameTrimmer(VideoNameTrimmer nameTrimmer) {
+        return nameTrimmer;
     }
 
-    @Provides @IntoSet @Singleton
-    public VideoNameParser cachedVideoRetriever(CachedTmdbService tmdbService) {
-        return new CachedVideoRetriever(tmdbService);
+    @Provides @IntoSet
+    public VideoNameParser cachedVideoRetriever(CachedVideoRetriever videoRetriever) {
+        return videoRetriever;
     }
 
-    @Provides @IntoSet @Singleton
-    public VideoNameParser videoExistenceChecker() {
-        return new VideoExistenceChecker();
+    @Provides @IntoSet
+    public VideoNameParser videoExistenceChecker(VideoExistenceChecker existenceChecker) {
+        return existenceChecker;
     }
 
-    @Provides @IntoSet @Singleton
-    public VideoValidator videoPathValidator() {
-        return new VideoPathValidator();
+    @Provides @IntoSet
+    public VideoValidator videoPathValidator(VideoPathValidator pathValidator) {
+        return pathValidator;
     }
 
-    @Provides @IntoSet @Singleton
-    public VideoValidator videoTypeValidator() {
-        return new VideoTypeValidator();
+    @Provides @IntoSet
+    public VideoValidator videoTypeValidator(VideoTypeValidator typeValidator) {
+        return typeValidator;
     }
 
-    @Provides @IntoSet @Singleton
-    public VideoValidator videoSizeValidator() {
-        return new VideoSizeValidator();
+    @Provides @IntoSet
+    public VideoValidator videoSizeValidator(VideoSizeValidator sizeValidator) {
+        return sizeValidator;
     }
 
-    @Provides @IntoSet @Singleton
-    public RemovalRestriction mainPathsRestriction() {
-        return new MainPathsRestriction();
+    @Provides @IntoSet
+    public RemovalRestriction mainPathsRestriction(MainPathsRestriction mainPathsRestriction) {
+        return mainPathsRestriction;
     }
 
-    @Provides @IntoSet @Singleton
-    public RemovalRestriction customPathsRestriction() {
-        return new CustomPathsRestriction();
+    @Provides @IntoSet
+    public RemovalRestriction customPathsRestriction(CustomPathsRestriction customPathsRestriction) {
+        return customPathsRestriction;
     }
 
-    @Provides @IntoSet @Singleton
-    public OutputVideoNameChecker outputVideoNameChecker(SimpleMessageRegistry messageRegistry) {
-        return new TvShowOutputVideoNameChecker(messageRegistry);
+    @Provides @IntoSet
+    public OutputVideoNameChecker outputVideoNameChecker(TvShowOutputVideoNameChecker tvShowOutputVideoNameChecker) {
+        return tvShowOutputVideoNameChecker;
     }
 
-    @Provides @Singleton
-    public OutputVideoNameService outputVideoNameService(Set<OutputVideoNameChecker> videoNameCheckers) {
-        return new DefaultOutputVideoNameService(videoNameCheckers);
+    @Provides
+    public OutputVideoNameService outputVideoNameService(DefaultOutputVideoNameService outputVideoNameService) {
+        return outputVideoNameService;
     }
 }

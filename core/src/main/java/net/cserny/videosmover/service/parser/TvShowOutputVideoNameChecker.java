@@ -6,9 +6,11 @@ import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Singleton
 public class TvShowOutputVideoNameChecker implements OutputVideoNameChecker {
 
     private final SimpleMessageRegistry messageRegistry;

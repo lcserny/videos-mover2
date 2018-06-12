@@ -4,8 +4,10 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.parser.OutputVideoNameChecker;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.Set;
 
+@Singleton
 public class DefaultOutputVideoNameService implements OutputVideoNameService {
 
     private Set<OutputVideoNameChecker> outputVideoNameCheckers;

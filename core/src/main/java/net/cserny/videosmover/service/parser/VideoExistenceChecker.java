@@ -5,6 +5,8 @@ import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
@@ -15,10 +17,12 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
+@Singleton
 public class VideoExistenceChecker implements VideoNameParser {
 
     private int similarityPercent;
 
+    @Inject
     public VideoExistenceChecker() {
         similarityPercent = PropertiesLoader.getSimilarityPercent();
     }
