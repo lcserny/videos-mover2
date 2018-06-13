@@ -1,40 +1,36 @@
 package net.cserny.videosmover.helper;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.prefs.Preferences;
 
-@Singleton
 public class PreferencesLoader {
 
-    private final Preferences preferences;
+    private static final Preferences preferences;
 
-    @Inject
-    public PreferencesLoader() {
-        this.preferences = Preferences.userNodeForPackage(PreferencesLoader.class);
+    static {
+        preferences = Preferences.userNodeForPackage(PreferencesLoader.class);
     }
 
-    public String getDownloadsPath() {
+    public static String getDownloadsPath() {
         return preferences.get(PropertiesLoader.PATH_DOWNLOADS_KEY, PropertiesLoader.getDownloadsPath());
     }
 
-    public void setDownloadsPath(String downloadsPath) {
+    public static void setDownloadsPath(String downloadsPath) {
         preferences.put(PropertiesLoader.PATH_DOWNLOADS_KEY, downloadsPath);
     }
 
-    public String getMoviesPath() {
+    public static String getMoviesPath() {
         return preferences.get(PropertiesLoader.PATH_MOVIES_KEY, PropertiesLoader.getMoviesPath());
     }
 
-    public void setMoviesPath(String moviesPath) {
+    public static void setMoviesPath(String moviesPath) {
         preferences.put(PropertiesLoader.PATH_MOVIES_KEY, moviesPath);
     }
 
-    public String getTvShowsPath() {
+    public static String getTvShowsPath() {
         return preferences.get(PropertiesLoader.PATH_TVSHOWS_KEY, PropertiesLoader.getTvShowsPath());
     }
 
-    public void setTvShowsPath(String tvShowsPath) {
+    public static void setTvShowsPath(String tvShowsPath) {
         preferences.put(PropertiesLoader.PATH_TVSHOWS_KEY, tvShowsPath);
     }
 }

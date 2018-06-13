@@ -10,12 +10,9 @@ import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.MessageDisplayProvider;
-import net.cserny.videosmover.helper.PathsInitializer;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Set;
 
 public class MainApplication extends Application {
 
@@ -33,9 +30,6 @@ public class MainApplication extends Application {
     @Inject
     MessageDisplayProvider messageDisplayProvider;
 
-    @Inject
-    PathsInitializer pathsInitializer;
-
     private Parent parent;
 
     @Override
@@ -52,7 +46,6 @@ public class MainApplication extends Application {
         component.inject(this);
 
         Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
-        StaticPathsProvider.pathsInitializer = pathsInitializer;
     }
 
     @Override
