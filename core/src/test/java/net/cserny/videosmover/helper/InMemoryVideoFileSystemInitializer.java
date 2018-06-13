@@ -33,12 +33,12 @@ public class InMemoryVideoFileSystemInitializer {
     private Path moviesFolder;
     private Path tvShowsFolder;
 
-    public void setUp() throws IOException {
+    public void setUp() throws Exception {
         setupInMemoryFolders();
         createTestFiles();
     }
 
-    public void tearDown() throws IOException {
+    public void tearDown() throws Exception {
         inMemoryFilesystem.close();
     }
 

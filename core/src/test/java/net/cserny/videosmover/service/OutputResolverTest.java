@@ -23,14 +23,14 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
     OutputResolver outputResolver;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws Exception {
         super.setUp();
         TestCoreComponent component = DaggerTestCoreComponent.create();
         component.inject(this);
     }
 
     @After
-    public void tearDown() throws IOException {
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 
