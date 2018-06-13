@@ -16,7 +16,6 @@ import java.io.IOException;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 
-@Ignore
 public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject

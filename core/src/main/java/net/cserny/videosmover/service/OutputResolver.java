@@ -19,7 +19,7 @@ public class OutputResolver {
     }
 
     public String resolve(Video video) {
-        String resolvedName = video.getInputFilename();
+        String resolvedName = video.getInputPath().toString();
         for (VideoNameParser videoNameParser : nameParserList) {
             resolvedName = video.getVideoType() == VideoType.MOVIE
                     ? videoNameParser.parseMovie(resolvedName)

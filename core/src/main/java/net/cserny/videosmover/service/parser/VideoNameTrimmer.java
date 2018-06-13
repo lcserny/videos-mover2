@@ -4,6 +4,8 @@ import net.cserny.videosmover.helper.PropertiesLoader;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,33 +41,38 @@ public class VideoNameTrimmer implements VideoNameParser {
             Pattern compile = Pattern.compile("(?i)(" + part + ")");
             Matcher matcher = compile.matcher(filename);
             if (!part.isEmpty() && matcher.find()) {
-                filename = filename.substring(0, matcher.start());
+                filename = filename.substring(0, matcher.start()) + filename.substring(matcher.end());
             }
         }
         return filename;
     }
 
     private String toCamelCase(String text) {
-        StringBuilder camelCaseString = new StringBuilder();
-        String[] nameParts = stripSpecialChars(text).split("\\s+");
-        for (int i = 0; i < nameParts.length; i++) {
-            camelCaseString.append(toProperCase(nameParts[i]));
-            if (i < nameParts.length - 1) {
+        int splitIndex = text.lastIndexOf('/') + 1;
+        String path = text.substring(0, splitIndex);
+        String name = text.substring(splitIndex);
+        StringBuilder camelCaseString = new StringBuilder(path);
+
+        List<String> nameParts = Arrays.asList(stripSpecialChars(name).split("\\s+"));
+        for (int i = 0; i < nameParts.size(); i++) {
+            if (i != 0 && i != nameParts.size()) {
                 camelCaseString.append(" ");
             }
+            camelCaseString.append(toProperCase(nameParts.get(i)));
         }
+
         return camelCaseString.toString();
     }
 
     private String removeExtension(String text) {
         if (text.charAt(text.length() - 4) == '.') {
-            return text.substring(0, text.length() - 4);
+            return text.substring(0, text.length() - 5);
         }
         return text;
     }
 
     private String stripSpecialChars(String videoName) {
-        return videoName.replaceAll("([._])", " ").trim();
+        return videoName.replaceAll("([\\[._\\]])", " ").trim();
     }
 
     private String toProperCase(String text) {
