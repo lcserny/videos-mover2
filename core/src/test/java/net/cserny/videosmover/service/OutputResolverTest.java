@@ -6,6 +6,7 @@ import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -26,6 +27,11 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
         super.setUp();
         TestCoreComponent component = DaggerTestCoreComponent.create();
         component.inject(this);
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        super.tearDown();
     }
 
     @Test

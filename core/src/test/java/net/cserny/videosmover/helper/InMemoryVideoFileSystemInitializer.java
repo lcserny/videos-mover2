@@ -2,8 +2,6 @@ package net.cserny.videosmover.helper;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import org.junit.After;
-import org.junit.Before;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -35,13 +33,11 @@ public class InMemoryVideoFileSystemInitializer {
     private Path moviesFolder;
     private Path tvShowsFolder;
 
-    @Before
     public void setUp() throws IOException {
         setupInMemoryFolders();
         createTestFiles();
     }
 
-    @After
     public void tearDown() throws IOException {
         inMemoryFilesystem.close();
     }
