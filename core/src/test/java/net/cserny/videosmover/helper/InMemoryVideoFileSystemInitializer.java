@@ -23,6 +23,8 @@ public class InMemoryVideoFileSystemInitializer {
     public static final String DOWNLOADS_MOVIE_ALL_DIGITS = DOWNLOADS + "1922.1080p.[2017].x264/1922.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_EXISTING_TVSHOW = DOWNLOADS + "Criminal.Minds.s01e01/criminil.mids.s01e01.720p.x264.mp4";
     public static final String DOWNLOADS_TVSHOW = DOWNLOADS + "Game.Of.Thrones.s0e10/game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
+    public static final String DOWNLOADS_TVSHOW2 = DOWNLOADS + "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS[rarbg]/Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS.mkv";
+    public static final String DOWNLOADS_TVSHOW3 = DOWNLOADS + "Chicago.Med.S03E14.HDTV.x264-KILLERS[eztv].mkv";
     public static final String DOWNLOADS_GATSBY = DOWNLOADS + "the.great.gatsby.2013/";
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "the.great.gatsby.2013.x264.1080p.avi";
     public static final String DOWNLOADS_SUBTITLE_IN_SUBS = DOWNLOADS_GATSBY + "Subs/subtitle.srt";
@@ -58,6 +60,10 @@ public class InMemoryVideoFileSystemInitializer {
         createFile(downloadsFolder, "the.great.gatsby.2013", "the.great.gatsby.2013.x264.1080p.avi", 2);
         createFile(downloadsFolder, "the.great.gatsby.2013/Subs", "subtitle.srt", 0);
         createFile(downloadsFolder, "the.great.gatsby.2013/Subs", "subtitle.idx", 0);
+        createFile(downloadsFolder, null, "Chicago.Med.S03E14.HDTV.x264-KILLERS[eztv].mkv", 2);
+        createFolder(downloadsFolder, "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS[rarbg]");
+        createFile(downloadsFolder, "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS[rarbg]",
+                "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS.mkv", 2);
     }
 
     private void setupInMemoryFolders() throws IOException {

@@ -57,6 +57,16 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
     @Test
     public void resolve_tvShowInputSetsOutputToExistingTvShowName() throws Exception {
         Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
+        assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
         assertEquals("Criminal Minds", video.getOutputFilename());
+
+        // NOT OK out path
+        Video video2 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW2, outputResolver);
+        assertTrue(video2.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
+        assertEquals("Chicago PD", video2.getOutputFilename());
+
+        Video video3 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW3, outputResolver);
+        assertTrue(video3.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
+        assertEquals("Chicago Med", video3.getOutputFilename());
     }
 }

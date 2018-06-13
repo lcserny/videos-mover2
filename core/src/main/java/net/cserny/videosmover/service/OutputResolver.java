@@ -1,5 +1,6 @@
 package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.parser.VideoNameParser;
@@ -20,6 +21,10 @@ public class OutputResolver {
 
     public String resolve(Video video) {
         String resolvedName = video.getInputPath().toString();
+        if (resolvedName.equals(StaticPathsProvider.getDownloadsPath())) {
+            resolvedName = video.getInputFilename();
+        }
+
         for (VideoNameParser videoNameParser : nameParserList) {
             resolvedName = video.getVideoType() == VideoType.MOVIE
                     ? videoNameParser.parseMovie(resolvedName)
