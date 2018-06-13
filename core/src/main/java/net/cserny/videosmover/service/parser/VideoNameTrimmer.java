@@ -22,15 +22,15 @@ public class VideoNameTrimmer implements VideoNameParser {
     }
 
     @Override
-    public String parseTvShow(String text) {
-        String trimmed = trim(text);
+    public String parseTvShow(String resolvedName) {
+        String trimmed = trim(resolvedName);
         String withoutExtension = removeExtension(trimmed);
         return toCamelCase(withoutExtension);
     }
 
     @Override
-    public String parseMovie(String text) {
-        String trimmed = trim(text);
+    public String parseMovie(String resolvedName) {
+        String trimmed = trim(resolvedName);
         String withoutExtension = removeExtension(trimmed);
         String camelCased = toCamelCase(withoutExtension);
         return appendYear(camelCased);
@@ -47,12 +47,8 @@ public class VideoNameTrimmer implements VideoNameParser {
         return filename;
     }
 
-    private String toCamelCase(String text) {
-        int splitIndex = text.lastIndexOf('/') + 1;
-        String path = text.substring(0, splitIndex);
-        String name = text.substring(splitIndex);
-        StringBuilder camelCaseString = new StringBuilder(path);
-
+    private String toCamelCase(String name) {
+        StringBuilder camelCaseString = new StringBuilder();
         List<String> nameParts = Arrays.asList(stripSpecialChars(name).split("\\s+"));
         for (int i = 0; i < nameParts.size(); i++) {
             if (i != 0 && i != nameParts.size()) {
@@ -60,7 +56,6 @@ public class VideoNameTrimmer implements VideoNameParser {
             }
             camelCaseString.append(toProperCase(nameParts.get(i)));
         }
-
         return camelCaseString.toString();
     }
 

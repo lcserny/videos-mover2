@@ -6,11 +6,13 @@ import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
 import java.util.List;
 
+@Ignore
 public class VideoMetadataServiceTest {
 
     @Inject

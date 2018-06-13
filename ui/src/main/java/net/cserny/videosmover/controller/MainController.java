@@ -170,12 +170,12 @@ public class MainController implements Initializable {
         video.setVideoType(videoType);
         videoRow.setVideoType(videoType);
 
-        String output = videoType != VideoType.NONE ? outputResolver.resolve(videoRow.getVideo()) : "";
+        String output = outputResolver.resolve(videoRow.getVideo());
         videoRow.setOutput(output);
 
         Path path = StaticPathsProvider.getPath(output);
-        video.setOutputPath(path);
-        video.setOutputFilename(video.getInputFilename());
+        video.setOutputPath(path.getParent());
+        video.setOutputFilename(path.getFileName().toString());
     }
 
     public void moveVideos(ActionEvent event) {

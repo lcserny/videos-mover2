@@ -28,13 +28,13 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     @Override
-    public String parseTvShow(String text) {
-        return checkExisting(StaticPathsProvider.getTvShowsPath(), text);
+    public String parseTvShow(String resolvedName) {
+        return checkExisting(StaticPathsProvider.getTvShowsPath(), resolvedName);
     }
 
     @Override
-    public String parseMovie(String text) {
-        return checkExisting(StaticPathsProvider.getMoviesPath(), text);
+    public String parseMovie(String resolvedName) {
+        return checkExisting(StaticPathsProvider.getMoviesPath(), resolvedName);
     }
 
     private String checkExisting(String path, String filename) {

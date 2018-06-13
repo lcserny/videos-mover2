@@ -6,6 +6,7 @@ import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class SubtitleFinderTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject

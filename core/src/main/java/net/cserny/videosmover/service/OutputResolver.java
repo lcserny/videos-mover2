@@ -7,6 +7,7 @@ import net.cserny.videosmover.service.parser.VideoNameParser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.nio.file.Path;
 import java.util.Set;
 
 @Singleton
@@ -19,19 +20,23 @@ public class OutputResolver {
         this.nameParserList = nameParserList;
     }
 
-    public String resolve(Video video) {
-        String resolvedName = video.getInputPath().toString();
-        if (resolvedName.equals(StaticPathsProvider.getDownloadsPath())) {
-            resolvedName = video.getInputFilename();
-        }
+    public Path resolve(Video video) {
+        String resolvedName = video.getInputFilename();
+        String resolvedPath = video.getVideoType() == VideoType.MOVIE
+                ? StaticPathsProvider.getMoviesPath()
+                : StaticPathsProvider.getTvShowsPath();
 
         for (VideoNameParser videoNameParser : nameParserList) {
-            resolvedName = video.getVideoType() == VideoType.MOVIE
-                    ? videoNameParser.parseMovie(resolvedName)
-                    : video.getVideoType() == VideoType.TVSHOW
-                        ? videoNameParser.parseTvShow(resolvedName)
-                        : resolvedName;
+            switch (video.getVideoType()) {
+                case MOVIE:
+                    resolvedName = videoNameParser.parseMovie(resolvedName);
+                    break;
+                case TVSHOW:
+                    resolvedName = videoNameParser.parseTvShow(resolvedName);
+                    break;
+            }
         }
-        return resolvedName;
+
+        return StaticPathsProvider.getPath(resolvedPath).resolve(resolvedName);
     }
 }

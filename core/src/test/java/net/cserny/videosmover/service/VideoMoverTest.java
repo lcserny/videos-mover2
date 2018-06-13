@@ -8,6 +8,7 @@ import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
+@Ignore
 public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject

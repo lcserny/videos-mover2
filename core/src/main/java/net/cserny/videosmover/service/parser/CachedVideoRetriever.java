@@ -23,13 +23,13 @@ public class CachedVideoRetriever implements VideoNameParser {
     }
 
     @Override
-    public String parseTvShow(String output) {
-        return parseOutputInternal(output, StaticPathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
+    public String parseTvShow(String resolvedName) {
+        return parseOutputInternal(resolvedName, StaticPathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
     }
 
     @Override
-    public String parseMovie(String output) {
-        return parseOutputInternal(output, StaticPathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
+    public String parseMovie(String resolvedName) {
+        return parseOutputInternal(resolvedName, StaticPathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
     }
 
     private String parseOutputInternal(String output, String rootPath, String cachePrefix) {
