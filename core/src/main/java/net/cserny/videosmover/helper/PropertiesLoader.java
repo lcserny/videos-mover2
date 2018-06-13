@@ -80,7 +80,7 @@ public class PropertiesLoader {
     }
 
     public static long getMinimumVideoSize() {
-        Optional<String> stringOptional = processString(SIMILARITY_PERCENT_KEY);
+        Optional<String> stringOptional = processString(MIN_VIDEO_SIZE_KEY);
         if (!stringOptional.isPresent()) {
             throw new RuntimeException("Environment does not contain any value for key: " + MIN_VIDEO_SIZE_KEY);
         }

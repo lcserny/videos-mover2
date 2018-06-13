@@ -1,43 +1,5 @@
 //package net.cserny.videosmover;
 //
-//import javafx.event.ActionEvent;
-//import javafx.fxml.FXMLLoader;
-//import javafx.scene.Node;
-//import javafx.scene.Scene;
-//import javafx.scene.image.Image;
-//import javafx.stage.Stage;
-//import net.cserny.videosmover.controller.MainController;
-//import net.cserny.videosmover.error.GlobalExceptionCatcher;
-//import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
-//import net.cserny.videosmover.model.Video;
-//import net.cserny.videosmover.provider.MainStageProvider;
-//import net.cserny.videosmover.service.ScanService;
-//import net.cserny.videosmover.service.VideoMover;
-//import org.junit.After;
-//import org.junit.Before;
-//import org.junit.BeforeClass;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.SpyBean;
-//import org.springframework.context.ConfigurableApplicationContext;
-//import org.springframework.test.context.junit4.SpringRunner;
-//import org.testfx.framework.junit.ApplicationTest;
-//import org.testfx.service.query.NodeQuery;
-//
-//import javax.annotation.PostConstruct;
-//
-//import static org.awaitility.Awaitility.await;
-//import static org.mockito.Matchers.any;
-//import static org.mockito.Matchers.anyListOf;
-//import static org.mockito.Mockito.verify;
-//
-///**
-// * Created by leonardo on 02.09.2017.
-// */
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(classes = ApplicationConfig.class)
 //public class MainUserInterfaceTest extends ApplicationTest {
 //    private InMemoryVideoFileSystemInitializer videoFileSystemInitializer;
 //
