@@ -9,16 +9,17 @@ import java.nio.file.Path;
 public class VideoCreator {
 
     public static Video createTvShow(String input, OutputResolver outputResolver) {
-        Video video = new Video();
-        video.setVideoType(VideoType.TVSHOW);
-        setPathsToVideo(video, input, outputResolver);
-        return video;
+        return create(VideoType.TVSHOW, input, outputResolver);
     }
 
     public static Video createMovie(String input, OutputResolver outputResolver) {
+        return create(VideoType.MOVIE, input, outputResolver);
+    }
+
+    private static Video create(VideoType type, String input, OutputResolver resolver) {
         Video video = new Video();
-        video.setVideoType(VideoType.MOVIE);
-        setPathsToVideo(video, input, outputResolver);
+        video.setVideoType(type);
+        setPathsToVideo(video, input, resolver);
         return video;
     }
 
