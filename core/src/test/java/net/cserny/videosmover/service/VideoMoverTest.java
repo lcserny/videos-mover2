@@ -20,7 +20,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-@Ignore
 public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject
@@ -48,9 +47,11 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
         List<Video> videoList = Arrays.asList(video1, video2);
 
         assertTrue(videoMover.move(videoList));
-        Path movedTvShowPath1 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath()).resolve(video1.getOutputPath());
+        Path movedTvShowPath1 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath())
+                .resolve(video1.getOutputPath()).resolve(video1.getOutputFolderName());
         assertTrue(Files.exists(movedTvShowPath1));
-        Path movedTvShowPath2 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath()).resolve(video2.getOutputPath());
+        Path movedTvShowPath2 = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath())
+                .resolve(video2.getOutputPath()).resolve(video2.getOutputFolderName());
         assertTrue(Files.exists(movedTvShowPath2));
     }
 
@@ -61,7 +62,8 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
         video.setSubtitles(Collections.singletonList(subtitlePath));
 
         assertTrue(videoMover.move(video));
-        Path movedMoviePath = StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath()).resolve(video.getOutputPath());
+        Path movedMoviePath = StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath())
+                .resolve(video.getOutputPath()).resolve(video.getOutputFolderName());
         assertTrue(Files.exists(movedMoviePath));
         Path movedMovieSubtitlePath = movedMoviePath.resolve(subtitlePath.getFileName());
         assertTrue(Files.exists(movedMovieSubtitlePath));
@@ -75,7 +77,9 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
         video.setSubtitles(Arrays.asList(subPath1, subPath2));
 
         assertTrue(videoMover.move(video));
-        assertTrue(Files.exists(video.getOutputPath().resolve("Subs").resolve(subPath1.getFileName())));
-        assertTrue(Files.exists(video.getOutputPath().resolve("Subs").resolve(subPath2.getFileName())));
+        assertTrue(Files.exists(video.getOutputPath().resolve(video.getOutputFolderName())
+                .resolve("Subs").resolve(subPath1.getFileName())));
+        assertTrue(Files.exists(video.getOutputPath().resolve(video.getOutputFolderName())
+                .resolve("Subs").resolve(subPath2.getFileName())));
     }
 }

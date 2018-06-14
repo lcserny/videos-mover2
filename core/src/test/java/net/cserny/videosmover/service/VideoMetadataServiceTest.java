@@ -12,7 +12,6 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.util.List;
 
-@Ignore
 public class VideoMetadataServiceTest {
 
     @Inject

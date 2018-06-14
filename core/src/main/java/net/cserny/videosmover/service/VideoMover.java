@@ -24,17 +24,17 @@ public class VideoMover {
     public boolean move(Video video) throws IOException {
         videoNameService.check(video);
 
-        Path target = video.getOutputPath();
         Path sourceFile = video.getInputPath().resolve(video.getInputFilename());
-        Path targetFile = target.resolve(video.getOutputFolderName());
+        Path targetFolder = video.getOutputPath().resolve(video.getOutputFolderName());
+        Path targetFile = targetFolder.resolve(video.getInputFilename());
 
-        createDirectoryInternal(target);
+        createDirectoryInternal(targetFolder);
         moveInternal(sourceFile, targetFile);
 
         List<Path> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
             for (Path subtitle : subtitles) {
-                Path partialTarget = getPartialSubtitleTarget(target, subtitle);
+                Path partialTarget = getPartialSubtitleTarget(targetFolder, subtitle);
                 moveInternal(subtitle, partialTarget.resolve(subtitle.getFileName()));
             }
         }

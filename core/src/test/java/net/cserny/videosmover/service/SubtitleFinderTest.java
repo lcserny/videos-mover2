@@ -17,7 +17,6 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-@Ignore
 public class SubtitleFinderTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject
