@@ -60,7 +60,12 @@ public class VideoNameTrimmer implements VideoNameParser {
     }
 
     private String removeExtension(String text) {
-        if (text.charAt(text.length() - 4) == '.') {
+        boolean extensionPeriodExists = text.charAt(text.length() - 4) == '.';
+        boolean extensionFirstLetter = Character.isLetter(text.charAt(text.length() - 3));
+        boolean extensionSecondLetter = Character.isLetter(text.charAt(text.length() - 2));
+        boolean extensionThirdLetter = Character.isLetter(text.charAt(text.length() - 1));
+
+        if (extensionPeriodExists && extensionFirstLetter && extensionSecondLetter && extensionThirdLetter) {
             return text.substring(0, text.length() - 5);
         }
         return text;
