@@ -171,7 +171,11 @@ public class MainController implements Initializable {
         video.setVideoType(videoType);
         videoRow.setVideoType(videoType);
 
-        VideoPath videoPath = outputResolver.resolve(videoRow.getVideo());
+        VideoPath videoPath = VideoPath.emptyVideoPath;
+        if (videoType != VideoType.NONE) {
+            videoPath = outputResolver.resolve(videoRow.getVideo());
+        }
+
         videoRow.setOutput(StaticPathsProvider.getPath(videoPath).toString());
         video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
         video.setOutputFolderName(videoPath.getOutputFolder());

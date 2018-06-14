@@ -2,6 +2,8 @@ package net.cserny.videosmover.model;
 
 public class VideoPath {
 
+    public static final VideoPath emptyVideoPath = new VideoPath("", "");
+
     private String outputPath;
     private String outputFolder;
 
