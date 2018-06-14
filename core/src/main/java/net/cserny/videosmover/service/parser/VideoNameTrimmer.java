@@ -49,12 +49,12 @@ public class VideoNameTrimmer implements VideoNameParser {
 
     private String toCamelCase(String name) {
         StringBuilder camelCaseString = new StringBuilder();
-        List<String> nameParts = Arrays.asList(stripSpecialChars(name).split("\\s+"));
-        for (int i = 0; i < nameParts.size(); i++) {
-            if (i != 0 && i != nameParts.size()) {
+        String[] nameParts = stripSpecialChars(name).split("\\s+");
+        for (int i = 0; i < nameParts.length; i++) {
+            if (i != 0 && i != nameParts.length - 1) {
                 camelCaseString.append(" ");
             }
-            camelCaseString.append(toProperCase(nameParts.get(i)));
+            camelCaseString.append(toProperCase(nameParts[i]));
         }
         return camelCaseString.toString();
     }
