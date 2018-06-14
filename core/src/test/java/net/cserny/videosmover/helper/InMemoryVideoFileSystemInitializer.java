@@ -18,6 +18,7 @@ public class InMemoryVideoFileSystemInitializer {
     public static final String DOWNLOADS_ROOT_VIDEO = DOWNLOADS + "fromDownloads.mp4";
     public static final String DOWNLOADS_BIGSICK = DOWNLOADS + "The.Big.Sick.1080p.[2017].x264/";
     public static final String DOWNLOADS_MOVIE_WITH_SUBTITLE = DOWNLOADS_BIGSICK + "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
+    public static final String DOWNLOADS_MOVIE_ACRIMONY = DOWNLOADS + "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT/Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT.mkv";
     public static final String DOWNLOADS_SUBTITLE = DOWNLOADS_BIGSICK + "Sub/Subtitle.srt";
     public static final String DOWNLOADS_RESTRICTED_MOVIE = DOWNLOADS + "The.Hero.1080p.[2017].x264/the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
     public static final String DOWNLOADS_MOVIE_ALL_DIGITS = DOWNLOADS + "1922.1080p.[2017].x264/1922.2017.1080p.BluRay.x264.YIFY.mp4";
@@ -64,6 +65,9 @@ public class InMemoryVideoFileSystemInitializer {
         createFolder(downloadsFolder, "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS[rarbg]");
         createFile(downloadsFolder, "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS[rarbg]",
                 "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS.mkv", 2);
+        createFolder(downloadsFolder, "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT");
+        createFile(downloadsFolder, "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT",
+                "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT.mkv", 2);
     }
 
     private void setupInMemoryFolders() throws IOException {

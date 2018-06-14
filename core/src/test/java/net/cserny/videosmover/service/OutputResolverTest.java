@@ -50,6 +50,10 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
         Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getMoviesPath()));
         assertEquals("The Big Sick (2017)", video.getOutputFolderName());
+
+        Video video2 = VideoCreator.createMovie(DOWNLOADS_MOVIE_ACRIMONY, outputResolver);
+        assertTrue(video2.getOutputPath().startsWith(StaticPathsProvider.getMoviesPath()));
+        assertEquals("Acrimony (2018)", video2.getOutputFolderName());
     }
 
     @Test
