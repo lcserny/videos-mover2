@@ -1,5 +1,7 @@
 package net.cserny.videosmover.helper;
 
+import net.cserny.videosmover.model.VideoPath;
+
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -35,6 +37,10 @@ public class StaticPathsProvider {
 
     public static Path getPath(String path) {
         return fileSystem.getPath(path);
+    }
+
+    public static Path getPath(VideoPath videoPath) {
+        return fileSystem.getPath(videoPath.getOutputPath()).resolve(videoPath.getOutputFolder());
     }
 
     public static FileSystem getFileSystem() {

@@ -8,11 +8,9 @@ import net.cserny.videosmover.helper.VideoCreator;
 import net.cserny.videosmover.model.Video;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import java.io.IOException;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
@@ -37,36 +35,35 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
     @Test
     public void resolve_allDigitsMovieResolvesNameCorrectly() throws Exception {
         Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS, outputResolver);
-        assertThat(video.getOutputFilename(), containsString("1922 (2017)"));
+        assertThat(video.getOutputFolderName(), containsString("1922 (2017)"));
     }
 
     @Test
     public void resolve_tvShowInputReturnsCorrectOutput() throws Exception {
         Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Game Of Thrones", video.getOutputFilename());
+        assertEquals("Game Of Thrones", video.getOutputFolderName());
     }
 
     @Test
     public void resolve_movieInputReturnsCorrectOutput() throws Exception {
         Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getMoviesPath()));
-        assertEquals("The Big Sick (2017)", video.getOutputFilename());
+        assertEquals("The Big Sick (2017)", video.getOutputFolderName());
     }
 
     @Test
     public void resolve_tvShowInputSetsOutputToExistingTvShowName() throws Exception {
         Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Criminal Minds", video.getOutputFilename());
+        assertEquals("Criminal Minds", video.getOutputFolderName());
 
-        // NOT OK out path
         Video video2 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW2, outputResolver);
         assertTrue(video2.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Chicago PD", video2.getOutputFilename());
+        assertEquals("Chicago PD", video2.getOutputFolderName());
 
         Video video3 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW3, outputResolver);
         assertTrue(video3.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Chicago Med", video3.getOutputFilename());
+        assertEquals("Chicago Med", video3.getOutputFolderName());
     }
 }

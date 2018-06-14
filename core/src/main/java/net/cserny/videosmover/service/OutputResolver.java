@@ -2,6 +2,7 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.parser.VideoNameParser;
 
@@ -20,8 +21,17 @@ public class OutputResolver {
         this.nameParserList = nameParserList;
     }
 
-    public String resolve(Video video) {
-        String resolvedName = video.getInputFilename();
+    public VideoPath resolve(Video video) {
+        VideoPath videoPath = new VideoPath();
+        videoPath.setOutputPath(video.getVideoType() == VideoType.MOVIE
+                ? StaticPathsProvider.getMoviesPath()
+                : StaticPathsProvider.getTvShowsPath());
+
+        String resolvedName = video.getInputPath().getFileName().toString();
+        if (StaticPathsProvider.getDownloadsPath().equals("/" + resolvedName)) {
+            resolvedName = video.getInputFilename();
+        }
+
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
                 case MOVIE:
@@ -32,6 +42,8 @@ public class OutputResolver {
                     break;
             }
         }
-        return resolvedName;
+        videoPath.setOutputFolder(resolvedName);
+
+        return videoPath;
     }
 }

@@ -8,7 +8,7 @@ public class Video {
     private Path inputPath;
     private String inputFilename;
     private Path outputPath;
-    private String outputFilename;
+    private String outputFolderName;
     private List<Path> subtitles;
     private VideoType videoType;
 
@@ -36,12 +36,12 @@ public class Video {
         this.outputPath = outputPath;
     }
 
-    public String getOutputFilename() {
-        return outputFilename;
+    public String getOutputFolderName() {
+        return outputFolderName;
     }
 
-    public void setOutputFilename(String outputFilename) {
-        this.outputFilename = outputFilename;
+    public void setOutputFolderName(String outputFolderName) {
+        this.outputFolderName = outputFolderName;
     }
 
     public VideoType getVideoType() {

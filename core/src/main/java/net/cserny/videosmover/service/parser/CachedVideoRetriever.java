@@ -44,8 +44,7 @@ public class CachedVideoRetriever implements VideoNameParser {
     private String checkVideoCache(String key) {
         Map<String, List<VideoMetadata>> videoCache = cachedTmdbService.getVideoCache();
         if (videoCache.containsKey(key)) {
-            List<VideoMetadata> videoMetadataList = videoCache.get(key);
-            for (VideoMetadata videoMetadata : videoMetadataList) {
+            for (VideoMetadata videoMetadata : videoCache.get(key)) {
                 if (videoMetadata.isSelected()) {
                     return SimpleVideoOutputHelper.formatOutputWithoutPath(videoMetadata);
                 }

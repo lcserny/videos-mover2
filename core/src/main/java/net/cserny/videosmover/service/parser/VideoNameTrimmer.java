@@ -51,7 +51,7 @@ public class VideoNameTrimmer implements VideoNameParser {
         StringBuilder camelCaseString = new StringBuilder();
         String[] nameParts = stripSpecialChars(name).split("\\s+");
         for (int i = 0; i < nameParts.length; i++) {
-            if (i != 0 && i != nameParts.length - 1) {
+            if (i != 0) {
                 camelCaseString.append(" ");
             }
             camelCaseString.append(toProperCase(nameParts[i]));

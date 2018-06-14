@@ -48,7 +48,7 @@ public class VideoExistenceChecker implements VideoNameParser {
             int currentCoefficient = FuzzySearch.ratio(trimReleaseDate(filename), trimReleaseDate(dirPath.getFileName().toString()));
             if (currentCoefficient > maxCoefficient) {
                 maxCoefficient = currentCoefficient;
-                selectedFolder = dirPath;
+                selectedFolder = dirPath.getFileName();
             }
         }
 

@@ -21,6 +21,7 @@ import net.cserny.videosmover.component.MessageRegistryButtonAction;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.provider.MainStageProvider;
@@ -170,12 +171,10 @@ public class MainController implements Initializable {
         video.setVideoType(videoType);
         videoRow.setVideoType(videoType);
 
-        String output = outputResolver.resolve(videoRow.getVideo());
-        videoRow.setOutput(output);
-
-        Path path = StaticPathsProvider.getPath(output);
-        video.setOutputPath(path.getParent());
-        video.setOutputFilename(path.getFileName().toString());
+        VideoPath videoPath = outputResolver.resolve(videoRow.getVideo());
+        videoRow.setOutput(StaticPathsProvider.getPath(videoPath).toString());
+        video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
+        video.setOutputFolderName(videoPath.getOutputFolder());
     }
 
     public void moveVideos(ActionEvent event) {

@@ -11,6 +11,7 @@ import net.cserny.videosmover.service.parser.*;
 import net.cserny.videosmover.service.validator.*;
 
 import javax.inject.Singleton;
+import java.util.HashSet;
 import java.util.Set;
 
 @Module
@@ -20,14 +21,22 @@ public class CoreModule {
     public Set<VideoNameParser> videoNameParsers(VideoNameTrimmer trimmer,
                                                  CachedVideoRetriever retriever,
                                                  VideoExistenceChecker checker) {
-        return Sets.newHashSet(trimmer, retriever, checker);
+        Set<VideoNameParser> parsers = new HashSet<>();
+        parsers.add(trimmer);
+        parsers.add(retriever);
+        parsers.add(checker);
+        return parsers;
     }
 
     @Provides
     public Set<VideoValidator> videoValidators(VideoPathValidator pathValidator,
                                                VideoTypeValidator typeValidator,
                                                VideoSizeValidator sizeValidator) {
-        return Sets.newHashSet(pathValidator, typeValidator, sizeValidator);
+        Set<VideoValidator> validators = new HashSet<>();
+        validators.add(pathValidator);
+        validators.add(typeValidator);
+        validators.add(sizeValidator);
+        return validators;
     }
 
     @Provides @IntoSet

@@ -26,7 +26,7 @@ public class VideoMover {
 
         Path target = video.getOutputPath();
         Path sourceFile = video.getInputPath().resolve(video.getInputFilename());
-        Path targetFile = target.resolve(video.getOutputFilename());
+        Path targetFile = target.resolve(video.getOutputFolderName());
 
         createDirectoryInternal(target);
         moveInternal(sourceFile, targetFile);
