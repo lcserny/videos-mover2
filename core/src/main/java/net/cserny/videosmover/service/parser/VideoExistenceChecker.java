@@ -37,10 +37,8 @@ public class VideoExistenceChecker implements VideoNameParser {
         return checkExisting(StaticPathsProvider.getMoviesPath(), resolvedName);
     }
 
-    private String checkExisting(String path, String filename) {
-        return path != null
-                ? probeExistingFolder(StaticPathsProvider.getPath(path), filename).orElse(path + "/" + filename)
-                : "";
+    private String checkExisting(String path, String fileName) {
+        return probeExistingFolder(StaticPathsProvider.getPath(path), fileName).orElse(fileName);
     }
 
     private Optional<String> probeExistingFolder(Path path, String filename) {

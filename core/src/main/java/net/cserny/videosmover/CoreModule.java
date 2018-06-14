@@ -1,5 +1,6 @@
 package net.cserny.videosmover;
 
+import com.google.common.collect.Sets;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoSet;
@@ -15,19 +16,11 @@ import java.util.Set;
 @Module
 public class CoreModule {
 
-    @Provides @IntoSet
-    public VideoNameParser videoNameTrimmer(VideoNameTrimmer nameTrimmer) {
-        return nameTrimmer;
-    }
-
-    @Provides @IntoSet
-    public VideoNameParser cachedVideoRetriever(CachedVideoRetriever videoRetriever) {
-        return videoRetriever;
-    }
-
-    @Provides @IntoSet
-    public VideoNameParser videoExistenceChecker(VideoExistenceChecker existenceChecker) {
-        return existenceChecker;
+    @Provides
+    public Set<VideoNameParser> videoNameParsers(VideoNameTrimmer trimmer,
+                                                 CachedVideoRetriever retriever,
+                                                 VideoExistenceChecker checker) {
+        return Sets.newHashSet(trimmer, retriever, checker);
     }
 
     @Provides @IntoSet
