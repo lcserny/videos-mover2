@@ -38,7 +38,7 @@ public class VideoNameTrimmer implements VideoNameParser {
 
     private String trim(String filename) {
         for (String part : nameTrimParts) {
-            Pattern compile = Pattern.compile("(?i)(" + part + ")");
+            Pattern compile = Pattern.compile("(?i)(-?" + part + ")");
             Matcher matcher = compile.matcher(filename);
             if (!part.isEmpty() && matcher.find()) {
                 filename = filename.substring(0, matcher.start()) + filename.substring(matcher.end());
