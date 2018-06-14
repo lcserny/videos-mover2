@@ -4,8 +4,6 @@ import net.cserny.videosmover.helper.PropertiesLoader;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +39,7 @@ public class VideoNameTrimmer implements VideoNameParser {
             Pattern compile = Pattern.compile("(?i)(-?" + part + ")");
             Matcher matcher = compile.matcher(filename);
             if (!part.isEmpty() && matcher.find()) {
-                filename = filename.substring(0, matcher.start()) + filename.substring(matcher.end());
+                filename = filename.substring(0, matcher.start());
             }
         }
         return filename;
@@ -61,9 +59,12 @@ public class VideoNameTrimmer implements VideoNameParser {
 
     private String removeExtension(String text) {
         boolean extensionPeriodExists = text.charAt(text.length() - 4) == '.';
-        boolean extensionFirstLetter = Character.isLetter(text.charAt(text.length() - 3));
-        boolean extensionSecondLetter = Character.isLetter(text.charAt(text.length() - 2));
-        boolean extensionThirdLetter = Character.isLetter(text.charAt(text.length() - 1));
+        char firstChar = text.charAt(text.length() - 3);
+        boolean extensionFirstLetter = Character.isLetter(firstChar) && Character.isLowerCase(firstChar);
+        char secondChar = text.charAt(text.length() - 2);
+        boolean extensionSecondLetter = Character.isLetter(secondChar) && Character.isLowerCase(secondChar);
+        char thirdChar = text.charAt(text.length() - 1);
+        boolean extensionThirdLetter = Character.isLetter(thirdChar) && Character.isLowerCase(thirdChar);
 
         if (extensionPeriodExists && extensionFirstLetter && extensionSecondLetter && extensionThirdLetter) {
             return text.substring(0, text.length() - 5);
@@ -82,10 +83,12 @@ public class VideoNameTrimmer implements VideoNameParser {
     private String appendYear(String videoName) {
         Matcher matcher = videoPattern.matcher(videoName);
         if (matcher.find()) {
-            videoName = matcher.group(1).trim();
-            String yearString = matcher.group(2);
-            if (yearString != null) {
-                videoName = String.format("%s (%s)", videoName, yearString);
+            if (matcher.start(2) != 0) {
+                videoName = matcher.group(1).trim();
+                String yearString = matcher.group(2);
+                if (yearString != null) {
+                    videoName = String.format("%s (%s)", videoName, yearString);
+                }
             }
         }
         return videoName;

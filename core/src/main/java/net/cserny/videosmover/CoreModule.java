@@ -24,8 +24,8 @@ public class CoreModule {
                                                  VideoExistenceChecker checker) {
         Set<VideoNameParser> parsers = new LinkedHashSet<>();
         parsers.add(trimmer);
-        parsers.add(retriever);
         parsers.add(checker);
+        parsers.add(retriever);
         return parsers;
     }
 

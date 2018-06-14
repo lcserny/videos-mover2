@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
-
+@Ignore
 public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject

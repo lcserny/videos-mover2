@@ -33,6 +33,7 @@ public class CachedTmdbService {
     @Inject
     public CachedTmdbService() { }
 
+    // TODO: is this really a singlleton? change this to something faster
     private void initApi() {
         this.tmdbApi = new TmdbApi(PropertiesLoader.getTmdbApiKey());
     }
