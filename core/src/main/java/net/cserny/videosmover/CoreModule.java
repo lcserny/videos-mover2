@@ -23,19 +23,11 @@ public class CoreModule {
         return Sets.newHashSet(trimmer, retriever, checker);
     }
 
-    @Provides @IntoSet
-    public VideoValidator videoPathValidator(VideoPathValidator pathValidator) {
-        return pathValidator;
-    }
-
-    @Provides @IntoSet
-    public VideoValidator videoTypeValidator(VideoTypeValidator typeValidator) {
-        return typeValidator;
-    }
-
-    @Provides @IntoSet
-    public VideoValidator videoSizeValidator(VideoSizeValidator sizeValidator) {
-        return sizeValidator;
+    @Provides
+    public Set<VideoValidator> videoValidators(VideoPathValidator pathValidator,
+                                               VideoTypeValidator typeValidator,
+                                               VideoSizeValidator sizeValidator) {
+        return Sets.newHashSet(pathValidator, typeValidator, sizeValidator);
     }
 
     @Provides @IntoSet

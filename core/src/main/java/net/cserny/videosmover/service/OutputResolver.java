@@ -20,12 +20,8 @@ public class OutputResolver {
         this.nameParserList = nameParserList;
     }
 
-    public Path resolve(Video video) {
+    public String resolve(Video video) {
         String resolvedName = video.getInputFilename();
-        String resolvedPath = video.getVideoType() == VideoType.MOVIE
-                ? StaticPathsProvider.getMoviesPath()
-                : StaticPathsProvider.getTvShowsPath();
-
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
                 case MOVIE:
@@ -36,7 +32,6 @@ public class OutputResolver {
                     break;
             }
         }
-
-        return StaticPathsProvider.getPath(resolvedPath).resolve(resolvedName);
+        return resolvedName;
     }
 }
