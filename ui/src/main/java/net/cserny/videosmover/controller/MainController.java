@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+// TODO: create a Facade in core for most of the stuff here
 @Singleton
 public class MainController implements Initializable {
 
@@ -174,6 +175,7 @@ public class MainController implements Initializable {
         VideoPath videoPath = VideoPath.emptyVideoPath;
         if (videoType != VideoType.NONE) {
             videoPath = outputResolver.resolve(videoRow.getVideo());
+            // TODO: (using the facade) also search tmdb after resolving name
         }
 
         videoRow.setOutput(StaticPathsProvider.getPath(videoPath).toString());
