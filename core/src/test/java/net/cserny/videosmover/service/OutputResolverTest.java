@@ -123,6 +123,7 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
         assertTrue(video2.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
         assertEquals("Chicago P.D. (2014-01-08)", video2.getOutputFolderName());
         assertTrue(video3.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
+        // TODO: running from app, this still resolves into Downloads???
         assertEquals("Chicago Med (2015-11-17)", video3.getOutputFolderName());
     }
 }
