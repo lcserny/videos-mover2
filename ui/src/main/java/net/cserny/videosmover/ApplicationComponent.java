@@ -8,5 +8,5 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = {UiModule.class, CoreModule.class})
 public interface ApplicationComponent {
-    void inject(Application application);
+    void inject(MainApplication application);
 }
