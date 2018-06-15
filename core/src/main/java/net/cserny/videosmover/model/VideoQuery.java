@@ -1,6 +1,9 @@
 package net.cserny.videosmover.model;
 
+import java.util.Objects;
+
 public class VideoQuery {
+
     private String name;
     private Integer year;
     private String language;
@@ -37,6 +40,22 @@ public class VideoQuery {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VideoQuery that = (VideoQuery) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(year, that.year) &&
+                Objects.equals(language, that.language);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, year, language);
     }
 
     public static class Builder {
