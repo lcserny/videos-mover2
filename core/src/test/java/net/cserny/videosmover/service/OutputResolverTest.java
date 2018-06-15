@@ -16,6 +16,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 
 // TODO: remember to unignore rest of tests
+// TODO: mock tmdb service?
 public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject
