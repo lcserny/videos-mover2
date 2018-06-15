@@ -17,6 +17,4 @@ public interface CoreTestComponent {
     void inject(VideoCleanerTest test);
     void inject(VideoMetadataServiceTest test);
     void inject(VideoMoverTest test);
-
-    void cachedTmdbService(CachedTmdbService cachedTmdbService);
 }

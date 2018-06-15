@@ -59,4 +59,9 @@ public class CoreModule {
     public OutputVideoNameService outputVideoNameService(DefaultOutputVideoNameService outputVideoNameService) {
         return outputVideoNameService;
     }
+
+    @Provides
+    public CachedTmdbService cachedTmdbService() {
+        return new DefaultCachedTmdbService();
+    }
 }
