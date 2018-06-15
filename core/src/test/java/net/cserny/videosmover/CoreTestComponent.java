@@ -7,8 +7,8 @@ import net.cserny.videosmover.service.*;
 import javax.inject.Singleton;
 
 @Singleton
-@Component(modules = TestCoreModule.class)
-public interface TestCoreComponent {
+@Component(modules = CoreModule.class)
+public interface CoreTestComponent {
     void inject(GlobalExceptionCatcherTest test);
     void inject(OutputResolverTest test);
     void inject(ScanServiceTest test);
@@ -17,4 +17,6 @@ public interface TestCoreComponent {
     void inject(VideoCleanerTest test);
     void inject(VideoMetadataServiceTest test);
     void inject(VideoMoverTest test);
+
+    void cachedTmdbService(CachedTmdbService cachedTmdbService);
 }

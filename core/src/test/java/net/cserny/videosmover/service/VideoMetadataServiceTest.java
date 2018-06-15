@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.DaggerTestCoreComponent;
-import net.cserny.videosmover.TestCoreComponent;
+import net.cserny.videosmover.CoreTestComponent;
+import net.cserny.videosmover.DaggerCoreTestComponent;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import org.junit.Assert;
@@ -19,7 +19,7 @@ public class VideoMetadataServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        TestCoreComponent component = DaggerTestCoreComponent.create();
+        CoreTestComponent component = DaggerCoreTestComponent.create();
         component.inject(this);
     }
 

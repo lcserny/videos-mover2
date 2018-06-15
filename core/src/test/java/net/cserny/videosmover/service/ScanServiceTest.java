@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.DaggerTestCoreComponent;
-import net.cserny.videosmover.TestCoreComponent;
+import net.cserny.videosmover.CoreTestComponent;
+import net.cserny.videosmover.DaggerCoreTestComponent;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
@@ -11,16 +11,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 @Ignore
 public class ScanServiceTest extends InMemoryVideoFileSystemInitializer {
 
@@ -30,7 +27,7 @@ public class ScanServiceTest extends InMemoryVideoFileSystemInitializer {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        TestCoreComponent component = DaggerTestCoreComponent.create();
+        CoreTestComponent component = DaggerCoreTestComponent.create();
         component.inject(this);
     }
 

@@ -42,7 +42,7 @@ public class MainApplication extends Application {
     }
 
     private void initContext() {
-        MainComponent component = DaggerMainComponent.create();
+        ApplicationComponent component = DaggerApplicationComponent.create();
         component.inject(this);
 
         Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);

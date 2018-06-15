@@ -1,12 +1,10 @@
 package net.cserny.videosmover.error;
 
-import net.cserny.videosmover.DaggerTestCoreComponent;
-import net.cserny.videosmover.TestCoreComponent;
-
+import net.cserny.videosmover.CoreTestComponent;
+import net.cserny.videosmover.DaggerCoreTestComponent;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -25,7 +23,7 @@ public class GlobalExceptionCatcherTest {
 
     @Before
     public void setUp() {
-        TestCoreComponent component = DaggerTestCoreComponent.create();
+        CoreTestComponent component = DaggerCoreTestComponent.create();
         component.inject(this);
 
         messageRegistry.registerDisplayProvider(message -> { DISPLAYED_MESSAGE = message.getContent(); });

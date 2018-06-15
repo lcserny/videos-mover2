@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.DaggerTestCoreComponent;
-import net.cserny.videosmover.TestCoreComponent;
+import net.cserny.videosmover.CoreTestComponent;
+import net.cserny.videosmover.DaggerCoreTestComponent;
 import net.cserny.videosmover.helper.InMemoryVideoFileSystemInitializer;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import org.junit.After;
@@ -23,7 +23,7 @@ public class VideoCheckerTest extends InMemoryVideoFileSystemInitializer {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        TestCoreComponent component = DaggerTestCoreComponent.create();
+        CoreTestComponent component = DaggerCoreTestComponent.create();
         component.inject(this);
     }
 

@@ -1,11 +1,12 @@
 package net.cserny.videosmover;
 
 import dagger.Component;
+import javafx.application.Application;
 
 import javax.inject.Singleton;
 
 @Singleton
 @Component(modules = {UiModule.class, CoreModule.class})
-public interface MainComponent {
-    void inject(MainApplication application);
+public interface ApplicationComponent {
+    void inject(Application application);
 }
