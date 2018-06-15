@@ -1,7 +1,9 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
+import net.cserny.videosmover.model.VideoType;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ public interface CachedTmdbService {
     List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) throws Exception;
 
     Map<String, List<VideoMetadata>> getVideoCache();
+
+    VideoPath searchTMDBInfo(VideoPath videoPath, VideoType videoType) throws Exception;
 
     String keyFormat(String prefix, VideoQuery query);
 }

@@ -8,7 +8,9 @@ import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
+import net.cserny.videosmover.model.VideoType;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +28,7 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
     @Inject
     public DefaultCachedTmdbService() { }
 
-    // TODO: is this really a singlleton? change this to something faster
+    // TODO: change this to something faster?
     private void initApi() {
         this.tmdbApi = new TmdbApi(PropertiesLoader.getTmdbApiKey());
     }
@@ -89,6 +91,39 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
     @Override
     public Map<String, List<VideoMetadata>> getVideoCache() {
         return videoCache;
+    }
+
+    @Override
+    public VideoPath searchTMDBInfo(VideoPath videoPath, VideoType videoType) throws Exception {
+        Integer year = videoPath.getYear() != null
+                ? videoPath.getYear().length() == 4
+                ? Integer.valueOf(videoPath.getYear())
+                : Integer.valueOf(videoPath.getYear().substring(0, 4))
+                : null;
+
+        VideoQuery.Builder queryBuilder = VideoQuery.newInstance().withName(videoPath.getOutputFolder());
+        if (year != null) {
+            queryBuilder.withYear(year);
+        }
+        VideoQuery query = queryBuilder.build();
+
+        List<VideoMetadata> metadataList = Collections.emptyList();
+        switch (videoType) {
+            case MOVIE:
+                metadataList = searchMovieMetadata(query);
+                break;
+            case TVSHOW:
+                metadataList = searchTvShowMetadata(query);
+                break;
+        }
+
+        if (!metadataList.isEmpty()) {
+            VideoMetadata metadata = metadataList.get(0);
+            videoPath.setOutputFolder(metadata.getName());
+            videoPath.setYear(metadata.getReleaseDate());
+        }
+
+        return videoPath;
     }
 
     private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix, Callable<List<VideoMetadata>> callback) throws Exception {

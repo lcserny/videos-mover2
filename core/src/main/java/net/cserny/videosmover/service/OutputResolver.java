@@ -22,27 +22,27 @@ public class OutputResolver {
     }
 
     public VideoPath resolve(Video video) {
-        VideoPath videoPath = new VideoPath();
-        videoPath.setOutputPath(video.getVideoType() == VideoType.MOVIE
-                ? StaticPathsProvider.getMoviesPath()
-                : StaticPathsProvider.getTvShowsPath());
-
         String resolvedName = video.getInputPath().getFileName().toString();
         if (StaticPathsProvider.getDownloadsPath().equals("/" + resolvedName)) {
             resolvedName = video.getInputFilename();
         }
 
+        VideoPath videoPath = new VideoPath();
+        videoPath.setOutputPath(video.getVideoType() == VideoType.MOVIE
+                ? StaticPathsProvider.getMoviesPath()
+                : StaticPathsProvider.getTvShowsPath());
+        videoPath.setOutputFolder(resolvedName);
+
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
                 case MOVIE:
-                    resolvedName = videoNameParser.parseMovie(resolvedName);
+                    videoNameParser.parseMovie(videoPath);
                     break;
                 case TVSHOW:
-                    resolvedName = videoNameParser.parseTvShow(resolvedName);
+                    videoNameParser.parseTvShow(videoPath);
                     break;
             }
         }
-        videoPath.setOutputFolder(resolvedName);
 
         return videoPath;
     }

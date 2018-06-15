@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.helper.PropertiesLoader;
+import net.cserny.videosmover.model.VideoPath;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,18 +21,25 @@ public class VideoNameTrimmer implements VideoNameParser {
     }
 
     @Override
-    public String parseTvShow(String resolvedName) {
-        String trimmed = trim(resolvedName);
+    public void parseTvShow(VideoPath videoPath) {
+        String trimmed = trim(videoPath.getOutputFolder());
         String withoutExtension = removeExtension(trimmed);
-        return toCamelCase(withoutExtension);
+        String camelCase = toCamelCase(withoutExtension);
+
+        videoPath.setOutputFolder(camelCase);
     }
 
     @Override
-    public String parseMovie(String resolvedName) {
-        String trimmed = trim(resolvedName);
+    public void parseMovie(VideoPath videoPath) {
+        String trimmed = trim(videoPath.getOutputFolder());
         String withoutExtension = removeExtension(trimmed);
         String camelCased = toCamelCase(withoutExtension);
-        return appendYear(camelCased);
+        String appendYear = appendYear(camelCased);
+
+        videoPath.setOutputFolder(appendYear);
+        if (appendYear.matches(".*\\(\\d{4}\\)")) {
+            videoPath.setYear(appendYear.substring(appendYear.indexOf('(') + 1, appendYear.length() - 1));
+        }
     }
 
     private String trim(String filename) {

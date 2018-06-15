@@ -2,6 +2,7 @@ package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedTmdbService;
 import net.cserny.videosmover.helper.StaticPathsProvider;
@@ -9,10 +10,8 @@ import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Singleton
 public class CachedVideoRetriever implements VideoNameParser {
@@ -25,13 +24,17 @@ public class CachedVideoRetriever implements VideoNameParser {
     }
 
     @Override
-    public String parseTvShow(String resolvedName) {
-        return parseOutputInternal(resolvedName, StaticPathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
+    public void parseTvShow(VideoPath videoPath) {
+        String internal = parseOutputInternal(videoPath.getOutputFolder(),
+                StaticPathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
+        videoPath.setOutputFolder(internal);
     }
 
     @Override
-    public String parseMovie(String resolvedName) {
-        return parseOutputInternal(resolvedName, StaticPathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
+    public void parseMovie(VideoPath videoPath) {
+        String internal = parseOutputInternal(videoPath.getOutputFolder(),
+                StaticPathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
+        videoPath.setOutputFolder(internal);
     }
 
     private String parseOutputInternal(String output, String rootPath, String cachePrefix) {

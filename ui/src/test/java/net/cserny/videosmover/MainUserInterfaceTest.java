@@ -58,7 +58,7 @@
 //    @Test
 //    public void searchButton_scanService() throws Exception {
 //        clickOn("#scanButton");
-//        verify(scanService).scan(any(String.class));
+//        verify(scanService).scanVideos(any(String.class));
 //    }
 //
 //    @Test

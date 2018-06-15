@@ -19,9 +19,9 @@ import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.MessageRegistryButtonAction;
 import net.cserny.videosmover.component.RadioButtonTableCell;
+import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.provider.MainStageProvider;
@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -51,24 +50,22 @@ public class MainController implements Initializable {
     @FXML
     private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
+    private final MainFacade facade;
     private final SimpleMessageRegistry messageRegistry;
-    private final ScanService scanService;
     private final VideoMover videoMover;
     private final VideoCleaner videoCleaner;
     private final MainStageProvider stageProvider;
-    private final OutputResolver outputResolver;
     private final CachedTmdbService metadataService;
 
     @Inject
-    public MainController(ScanService scanService, VideoMover videoMover, VideoCleaner videoCleaner,
-                          SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider, OutputResolver outputResolver,
+    public MainController(MainFacade facade, VideoMover videoMover, VideoCleaner videoCleaner,
+                          SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
                           CachedTmdbService metadataService) {
+        this.facade = facade;
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
-        this.scanService = scanService;
         this.videoMover = videoMover;
         this.videoCleaner = videoCleaner;
-        this.outputResolver = outputResolver;
         this.metadataService = metadataService;
     }
 
@@ -146,41 +143,11 @@ public class MainController implements Initializable {
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
         new Thread(() -> {
-            List<VideoRow> videoRowList = processVideoRows();
+            List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
         }).start();
-    }
-
-    private List<VideoRow> processVideoRows() {
-        return scanService.scan(StaticPathsProvider.getDownloadsPath()).stream()
-                .map(this::buildVideoRow)
-                .collect(Collectors.toList());
-    }
-
-    private VideoRow buildVideoRow(Video video) {
-        VideoRow videoRow = new VideoRow(video);
-        videoRow.setName(video.getInputFilename());
-        videoRow.videoTypeProperty().addListener((observable, oldValue, newValue) -> {
-            handleCheckmark(video, newValue, videoRow);
-        });
-        return videoRow;
-    }
-
-    private void handleCheckmark(Video video, VideoType videoType, VideoRow videoRow) {
-        video.setVideoType(videoType);
-        videoRow.setVideoType(videoType);
-
-        VideoPath videoPath = VideoPath.emptyVideoPath;
-        if (videoType != VideoType.NONE) {
-            videoPath = outputResolver.resolve(videoRow.getVideo());
-            // TODO: (using the facade) also search tmdb after resolving name
-        }
-
-        videoRow.setOutput(StaticPathsProvider.getPath(videoPath).toString());
-        video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
-        video.setOutputFolderName(videoPath.getOutputFolder());
     }
 
     public void moveVideos(ActionEvent event) {

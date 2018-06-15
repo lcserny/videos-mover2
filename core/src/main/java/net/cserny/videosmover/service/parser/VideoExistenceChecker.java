@@ -3,6 +3,7 @@ package net.cserny.videosmover.service.parser;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
 import javax.inject.Inject;
@@ -28,13 +29,15 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     @Override
-    public String parseTvShow(String resolvedName) {
-        return checkExisting(StaticPathsProvider.getTvShowsPath(), resolvedName);
+    public void parseTvShow(VideoPath videoPath) {
+        String existing = checkExisting(StaticPathsProvider.getTvShowsPath(), videoPath.getOutputFolder());
+        videoPath.setOutputFolder(existing);
     }
 
     @Override
-    public String parseMovie(String resolvedName) {
-        return checkExisting(StaticPathsProvider.getMoviesPath(), resolvedName);
+    public void parseMovie(VideoPath videoPath) {
+        String existing = checkExisting(StaticPathsProvider.getMoviesPath(), videoPath.getOutputFolder());
+        videoPath.setOutputFolder(existing);
     }
 
     private String checkExisting(String path, String fileName) {

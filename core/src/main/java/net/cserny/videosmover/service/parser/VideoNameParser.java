@@ -1,10 +1,9 @@
 package net.cserny.videosmover.service.parser;
 
-/**
- * Created by leonardo on 10.09.2017.
- */
-public interface VideoNameParser {
-    String parseTvShow(String text);
+import net.cserny.videosmover.model.VideoPath;
 
-    String parseMovie(String text);
+public interface VideoNameParser {
+    void parseTvShow(VideoPath text);
+
+    void parseMovie(VideoPath text);
 }
