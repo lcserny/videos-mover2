@@ -23,7 +23,7 @@ public interface CachedTmdbService {
 
     Map<String, List<VideoMetadata>> getVideoCache();
 
-    VideoPath searchTMDBInfo(VideoPath videoPath, VideoType videoType) throws Exception;
+    VideoPath adjustVideoPath(VideoPath videoPath, VideoType videoType) throws Exception;
 
     String keyFormat(String prefix, VideoQuery query);
 }

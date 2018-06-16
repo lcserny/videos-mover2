@@ -94,7 +94,7 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
     }
 
     @Override
-    public VideoPath searchTMDBInfo(VideoPath videoPath, VideoType videoType) throws Exception {
+    public VideoPath adjustVideoPath(VideoPath videoPath, VideoType videoType) throws Exception {
         Integer year = videoPath.getYear() != null && !videoPath.getYear().isEmpty()
                 ? Integer.valueOf(videoPath.getYear().substring(0, 4))
                 : null;

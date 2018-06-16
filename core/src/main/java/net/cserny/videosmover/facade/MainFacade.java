@@ -56,7 +56,7 @@ public class MainFacade {
         if (videoType != VideoType.NONE) {
             videoPath = outputResolver.resolve(videoRow.getVideo());
             try {
-                videoPath = cachedTmdbService.searchTMDBInfo(videoPath, videoType);
+                videoPath = cachedTmdbService.adjustVideoPath(videoPath, videoType);
             } catch (Exception ignored) { }
         }
 
