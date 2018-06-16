@@ -32,9 +32,11 @@ public class SubtitlesFinder {
     }
 
     private List<Path> collectSubtitles(Path directory) throws IOException {
-        List<Path> files = Files.walk(directory).filter(Files::isRegularFile).collect(Collectors.toList());
         List<Path> subtitles = new ArrayList<>();
-        for (Path tmpFile : files) {
+        for (Path tmpFile : Files.walk(directory)
+                .filter(Files::isRegularFile)
+                .collect(Collectors.toList())) {
+
             for (String subtitleExtension : subtitleExtensions) {
                 if (tmpFile.toString().endsWith(subtitleExtension)) {
                     subtitles.add(tmpFile);

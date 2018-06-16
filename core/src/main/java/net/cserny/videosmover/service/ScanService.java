@@ -29,8 +29,10 @@ public class ScanService {
         List<Video> videos = new ArrayList<>();
 
         try {
-            List<Path> files = Files.walk(StaticPathsProvider.getPath(location)).filter(Files::isRegularFile).collect(Collectors.toList());
-            for (Path file : files) {
+            for (Path file : Files.walk(StaticPathsProvider.getPath(location))
+                    .filter(Files::isRegularFile)
+                    .collect(Collectors.toList())) {
+
                 if (videoChecker.isVideo(file)) {
                     Video video = new Video();
                     video.setInputPath(file.getParent());
