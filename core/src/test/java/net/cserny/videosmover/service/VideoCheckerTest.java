@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-@Ignore
+
 public class VideoCheckerTest extends InMemoryVideoFileSystemInitializer {
 
     @Inject
