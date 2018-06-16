@@ -41,7 +41,7 @@ public class ScanService {
                     videos.add(video);
                 }
             }
-            videos.sort(Comparator.comparing(video -> video.getInputFilename().toLowerCase()));
+            videos.sort(Comparator.comparing(video -> video.getInputPath().toString().toLowerCase()));
         } catch (IOException e) {
             e.printStackTrace();
         }

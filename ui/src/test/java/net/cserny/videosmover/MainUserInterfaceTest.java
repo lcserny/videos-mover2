@@ -1,7 +1,7 @@
 //package net.cserny.videosmover;
 //
 //public class MainUserInterfaceTest extends ApplicationTest {
-//    private InMemoryVideoFileSystemInitializer videoFileSystemInitializer;
+//    private InMemoryFileSystem videoFileSystemInitializer;
 //
 //    @Autowired
 //    private ConfigurableApplicationContext context;
@@ -15,7 +15,7 @@
 //
 //    @PostConstruct
 //    public void initFilesystem() {
-//        videoFileSystemInitializer = new InMemoryVideoFileSystemInitializer();
+//        videoFileSystemInitializer = new InMemoryFileSystem();
 //    }
 //
 //    @Override

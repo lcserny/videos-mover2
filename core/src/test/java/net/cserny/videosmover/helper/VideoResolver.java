@@ -8,17 +8,17 @@ import net.cserny.videosmover.model.VideoType;
 import java.nio.file.Path;
 import java.util.function.Function;
 
-public class VideoCreator {
+public class VideoResolver {
 
-    public static Video createTvShow(String input, Function<Video, VideoPath> func) {
-        return create(VideoType.TVSHOW, input, func);
+    public static Video resolveTvShow(String input, Function<Video, VideoPath> func) {
+        return resolve(VideoType.TVSHOW, input, func);
     }
 
-    public static Video createMovie(String input, Function<Video, VideoPath> func) {
-        return create(VideoType.MOVIE, input, func);
+    public static Video resolveMovie(String input, Function<Video, VideoPath> func) {
+        return resolve(VideoType.MOVIE, input, func);
     }
 
-    private static Video create(VideoType type, String input, Function<Video, VideoPath> func) {
+    private static Video resolve(VideoType type, String input, Function<Video, VideoPath> func) {
         Video video = new Video();
         video.setVideoType(type);
         setPathsToVideo(video, input, func);
