@@ -62,6 +62,11 @@ public class MainFacade {
 
         videoRow.setOutput(StaticPathsProvider.getPath(videoPath).toString());
         video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
-        video.setOutputFolderName(videoPath.getOutputFolder());
+        video.setOutputFolderName(combineOutputFolderAndYear(videoPath));
+    }
+
+    public static String combineOutputFolderAndYear(VideoPath videoPath) {
+        String year = videoPath.getYear() != null && !videoPath.getYear().isEmpty() ? " (" + videoPath.getYear() + ")" : "";
+        return videoPath.getOutputFolder() + year;
     }
 }
