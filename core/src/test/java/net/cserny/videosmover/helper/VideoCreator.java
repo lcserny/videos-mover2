@@ -1,5 +1,6 @@
 package net.cserny.videosmover.helper;
 
+import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoType;
@@ -31,6 +32,6 @@ public class VideoCreator {
 
         VideoPath videoPath = resolver.resolve(video);
         video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
-        video.setOutputFolderName(videoPath.getOutputFolder());
+        video.setOutputFolderName(MainFacade.combineOutputFolderAndYear(videoPath));
     }
 }

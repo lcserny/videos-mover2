@@ -25,21 +25,13 @@ public class VideoNameTrimmer implements VideoNameParser {
         String trimmed = trim(videoPath.getOutputFolder());
         String withoutExtension = removeExtension(trimmed);
         String camelCase = toCamelCase(withoutExtension);
-
         videoPath.setOutputFolder(camelCase);
     }
 
     @Override
     public void parseMovie(VideoPath videoPath) {
-        String trimmed = trim(videoPath.getOutputFolder());
-        String withoutExtension = removeExtension(trimmed);
-        String camelCased = toCamelCase(withoutExtension);
-        String appendYear = appendYear(camelCased);
-
-        videoPath.setOutputFolder(appendYear);
-        if (appendYear.matches(".*\\(\\d{4}\\)")) {
-            videoPath.setYear(appendYear.substring(appendYear.indexOf('(') + 1, appendYear.length() - 1));
-        }
+        parseTvShow(videoPath);
+        appendYear(videoPath);
     }
 
     private String trim(String filename) {
@@ -88,17 +80,16 @@ public class VideoNameTrimmer implements VideoNameParser {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
-    private String appendYear(String videoName) {
-        Matcher matcher = videoPattern.matcher(videoName);
+    private void appendYear(VideoPath videoPath) {
+        Matcher matcher = videoPattern.matcher(videoPath.getOutputFolder());
         if (matcher.find()) {
             if (matcher.start(2) != 0) {
-                videoName = matcher.group(1).trim();
+                videoPath.setOutputFolder(matcher.group(1).trim());
                 String yearString = matcher.group(2);
                 if (yearString != null) {
-                    videoName = String.format("%s (%s)", videoName, yearString);
+                    videoPath.setYear(yearString);
                 }
             }
         }
-        return videoName;
     }
 }
