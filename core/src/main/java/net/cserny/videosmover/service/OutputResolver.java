@@ -23,7 +23,7 @@ public class OutputResolver {
 
     public VideoPath resolve(Video video) {
         String resolvedName = video.getInputPath().getFileName().toString();
-        if (StaticPathsProvider.getDownloadsPath().endsWith("/" + resolvedName)) {
+        if (video.getInputPath().toString().equals(StaticPathsProvider.getDownloadsPath())) {
             resolvedName = video.getInputFilename();
         }
 
