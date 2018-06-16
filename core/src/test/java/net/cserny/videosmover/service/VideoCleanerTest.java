@@ -42,19 +42,19 @@ public class VideoCleanerTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void clean_removesSourceParentFolder() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver::resolve);
         assertCleaning(video, true);
     }
 
     @Test
     public void clean_whenDownloadsRootThenDoNotClean() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_ROOT_VIDEO, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_ROOT_VIDEO, outputResolver::resolve);
         assertCleaning(video, false);
     }
 
     @Test
     public void clean_whenRestrictedPathThenDoNotClean() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_RESTRICTED_MOVIE, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_RESTRICTED_MOVIE, outputResolver::resolve);
         assertCleaning(video, false);
     }
 

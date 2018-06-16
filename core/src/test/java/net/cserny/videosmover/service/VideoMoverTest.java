@@ -42,8 +42,8 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void move_multiTvShowsToCorrectPath() throws Exception {
-        Video video1 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
-        Video video2 = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
+        Video video1 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver::resolve);
+        Video video2 = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver::resolve);
         List<Video> videoList = Arrays.asList(video1, video2);
 
         assertTrue(videoMover.move(videoList));
@@ -57,7 +57,7 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void move_movieWithSubtitleToCorrectPathRetainingSubtitle() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver::resolve);
         Path subtitlePath = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE);
         video.setSubtitles(Collections.singletonList(subtitlePath));
 
@@ -71,7 +71,7 @@ public class VideoMoverTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void move_subtitlesInSubsFolderThemToSubsFolderInOutputAlso() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE_IN_SUBS, outputResolver::resolve);
         Path subPath1 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS);
         Path subPath2 = StaticPathsProvider.getPath(DOWNLOADS_SUBTITLE_IN_SUBS_IDX);
         video.setSubtitles(Arrays.asList(subPath1, subPath2));

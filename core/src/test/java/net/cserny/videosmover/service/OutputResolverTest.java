@@ -35,14 +35,14 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void resolve_allDigitsMovieResolvesNameCorrectly() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_ALL_DIGITS, outputResolver::resolve);
 
         assertThat(video.getOutputFolderName(), containsString("1922"));
     }
 
     @Test
     public void resolve_tvShowInputReturnsCorrectOutput() throws Exception {
-        Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver);
+        Video video = VideoCreator.createTvShow(DOWNLOADS_TVSHOW, outputResolver::resolve);
 
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
         assertEquals("Game Of Thrones", video.getOutputFolderName());
@@ -50,8 +50,8 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void resolve_movieInputReturnsCorrectOutput() throws Exception {
-        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver);
-        Video video2 = VideoCreator.createMovie(DOWNLOADS_MOVIE_ACRIMONY, outputResolver);
+        Video video = VideoCreator.createMovie(DOWNLOADS_MOVIE_WITH_SUBTITLE, outputResolver::resolve);
+        Video video2 = VideoCreator.createMovie(DOWNLOADS_MOVIE_ACRIMONY, outputResolver::resolve);
 
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getMoviesPath()));
         assertEquals("The Big Sick", video.getOutputFolderName());
@@ -61,9 +61,9 @@ public class OutputResolverTest extends InMemoryVideoFileSystemInitializer {
 
     @Test
     public void resolve_tvShowInputSetsOutputToExistingTvShowName() throws Exception {
-        Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver);
-        Video video2 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW2, outputResolver);
-        Video video3 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW3, outputResolver);
+        Video video = VideoCreator.createTvShow(DOWNLOADS_EXISTING_TVSHOW, outputResolver::resolve);
+        Video video2 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW2, outputResolver::resolve);
+        Video video3 = VideoCreator.createTvShow(DOWNLOADS_TVSHOW3, outputResolver::resolve);
 
         assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
         assertEquals("Criminal Minds", video.getOutputFolderName());
