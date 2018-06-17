@@ -41,28 +41,20 @@ public class MainFacade {
 
     private VideoRow buildVideoRow(Video video) {
         VideoRow videoRow = new VideoRow(video);
-        videoRow.setName(video.getInputFilename());
         videoRow.videoTypeProperty().addListener((observable, oldValue, newValue) -> {
-            handleToggleVideoType(video, newValue, videoRow);
+            handleToggleVideoType(newValue, videoRow);
         });
         return videoRow;
     }
 
-    private void handleToggleVideoType(Video video, VideoType videoType, VideoRow videoRow) {
-        video.setVideoType(videoType);
+    private void handleToggleVideoType(VideoType videoType, VideoRow videoRow) {
         videoRow.setVideoType(videoType);
-
         VideoPath videoPath = VideoPath.emptyVideoPath;
         if (videoType != VideoType.NONE) {
             videoPath = outputResolver.resolve(videoRow.getVideo());
-            try {
-                videoPath = cachedTmdbService.adjustVideoPath(videoPath, videoType);
-            } catch (Exception ignored) { }
+            videoPath = cachedTmdbService.adjustVideoPath(videoPath, videoType);
         }
-
-        videoRow.setOutput(StaticPathsProvider.getPath(videoPath).toString());
-        video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
-        video.setOutputFolderName(combineOutputFolderAndYear(videoPath));
+        videoRow.setOutput(videoPath);
     }
 
     public static String combineOutputFolderAndYear(VideoPath videoPath) {

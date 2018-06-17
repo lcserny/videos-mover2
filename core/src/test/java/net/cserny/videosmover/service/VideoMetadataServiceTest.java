@@ -29,15 +29,15 @@ public class VideoMetadataServiceTest {
 
     @Test
     public void searchMovieMetadata_withEmptyQueryReturnEmptyList() throws Exception {
-        List<VideoMetadata> videoMetadataList = metadataService.searchMovieMetadata(
-                VideoQuery.newInstance().withName("").build());
+        List<VideoMetadata> videoMetadataList = metadataService.searchMetadata(
+                VideoQuery.newInstance().withName("").build(), VideoType.MOVIE);
         assertTrue(videoMetadataList.isEmpty());
     }
 
     @Test
     public void searchMovieMetadata_byName() throws Exception {
-        List<VideoMetadata> videoMetadataList = metadataService.searchMovieMetadata(
-                VideoQuery.newInstance().withName("Fight Club").withYear(1999).withLanguage("en").build());
+        List<VideoMetadata> videoMetadataList = metadataService.searchMetadata(
+                VideoQuery.newInstance().withName("Fight Club").withYear(1999).withLanguage("en").build(), VideoType.MOVIE);
 
         assertFalse(videoMetadataList.isEmpty());
         VideoMetadata metadata = videoMetadataList.get(0);
@@ -51,8 +51,8 @@ public class VideoMetadataServiceTest {
 
     @Test
     public void searchTvShowMetadata_byName() throws Exception {
-        List<VideoMetadata> videoMetadataList = metadataService.searchTvShowMetadata(
-                VideoQuery.newInstance().withName("Game of Thrones").build());
+        List<VideoMetadata> videoMetadataList = metadataService.searchMetadata(
+                VideoQuery.newInstance().withName("Game of Thrones").build(), VideoType.TVSHOW);
 
         assertFalse(videoMetadataList.isEmpty());
         VideoMetadata metadata = videoMetadataList.get(0);

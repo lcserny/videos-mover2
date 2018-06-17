@@ -12,11 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import net.cserny.videosmover.model.SimpleVideoOutput;
-import net.cserny.videosmover.model.VideoMetadata;
-import net.cserny.videosmover.model.VideoQuery;
-import net.cserny.videosmover.model.VideoRow;
+import net.cserny.videosmover.model.*;
 import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.OutputResolver;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -27,14 +25,17 @@ import java.util.List;
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private final CachedTmdbService metadataService;
+    private final OutputResolver outputResolver;
     private final CustomTextField customTextField;
     private final Button button;
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
 
-    public CustomTextFieldCell(CachedTmdbService metadataService) {
+    public CustomTextFieldCell(CachedTmdbService metadataService, OutputResolver outputResolver) {
         this.metadataService = metadataService;
+        this.outputResolver = outputResolver;
+
         button = initButton();
         customTextField = initCustomTextField();
 
@@ -145,14 +146,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private List<VideoMetadata> processVideoMetadataList() {
         VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).build();
-        try {
-            switch (videoOutput.getVideoType()) {
-                case MOVIE: return metadataService.searchMovieMetadata(videoQuery);
-                case TVSHOW: return metadataService.searchTvShowMetadata(videoQuery);
-            }
-        } catch (Exception ignored) { }
-
-        return Collections.emptyList();
+        return metadataService.searchMetadata(videoQuery, videoOutput.getVideoType());
     }
 
     private void togglePopover(Button button, PopOver popOver) {
@@ -193,8 +187,8 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private void updateVideoRowOutput(SimpleStringProperty outputProperty) {
         VideoRow videoRow = getTableView().getItems().get(getIndex());
         String value = outputProperty.getValue();
-        if (videoRow != null && value != null) {
-            videoRow.setOutput(value);
+        if (videoRow != null && value != null && !value.isEmpty()) {
+            videoRow.setOutput(outputResolver.resolveSimple(videoRow.getVideo()));
         }
     }
 }

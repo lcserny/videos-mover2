@@ -22,16 +22,7 @@ public class OutputResolver {
     }
 
     public VideoPath resolve(Video video) {
-        String resolvedName = video.getInputPath().getFileName().toString();
-        if (video.getInputPath().toString().equals(StaticPathsProvider.getDownloadsPath())) {
-            resolvedName = video.getInputFilename();
-        }
-
-        VideoPath videoPath = new VideoPath();
-        videoPath.setOutputPath(video.getVideoType() == VideoType.MOVIE
-                ? StaticPathsProvider.getMoviesPath()
-                : StaticPathsProvider.getTvShowsPath());
-        videoPath.setOutputFolder(resolvedName);
+        VideoPath videoPath = resolveSimple(video);
 
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
@@ -42,6 +33,30 @@ public class OutputResolver {
                     videoNameParser.parseTvShow(videoPath);
                     break;
             }
+        }
+
+        return videoPath;
+    }
+
+    public VideoPath resolveSimple(Video video) {
+        String resolvedName = video.getInputPath().getFileName().toString();
+        if (video.getInputPath().toString().equals(StaticPathsProvider.getDownloadsPath())) {
+            resolvedName = video.getInputFilename();
+        }
+
+        VideoPath videoPath = new VideoPath();
+        if (video.getOutputPath() != null) {
+            videoPath.setOutputPath(video.getOutputPath().toString());
+        } else {
+            videoPath.setOutputPath(video.getVideoType() == VideoType.MOVIE
+                    ? StaticPathsProvider.getMoviesPath()
+                    : StaticPathsProvider.getTvShowsPath());
+        }
+
+        if (video.getOutputFolderName() != null) {
+            videoPath.setOutputFolder(video.getOutputFolderName());
+        } else {
+            videoPath.setOutputFolder(resolvedName);
         }
 
         return videoPath;

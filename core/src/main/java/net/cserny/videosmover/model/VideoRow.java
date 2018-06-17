@@ -1,6 +1,8 @@
 package net.cserny.videosmover.model;
 
 import javafx.beans.property.*;
+import net.cserny.videosmover.facade.MainFacade;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 
 public class VideoRow {
 
@@ -11,6 +13,7 @@ public class VideoRow {
 
     public VideoRow(Video video) {
         this.video = video;
+        setName(video.getInputFilename());
     }
 
     public Video getVideo() {
@@ -37,8 +40,12 @@ public class VideoRow {
         return output;
     }
 
-    public void setOutput(String output) {
-        this.output.set(output);
+    public void setOutput(VideoPath videoPath) {
+        this.output.set(StaticPathsProvider.getPath(videoPath).toString());
+        if (!videoPath.isEmpty()) {
+            video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
+            video.setOutputFolderName(MainFacade.combineOutputFolderAndYear(videoPath));
+        }
     }
 
     public VideoType getVideoType() {
@@ -51,5 +58,6 @@ public class VideoRow {
 
     public void setVideoType(VideoType videoType) {
         this.videoType.set(videoType);
+        this.video.setVideoType(videoType);
     }
 }

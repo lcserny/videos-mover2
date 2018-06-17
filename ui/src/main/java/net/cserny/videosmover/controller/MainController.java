@@ -56,17 +56,19 @@ public class MainController implements Initializable {
     private final VideoCleaner videoCleaner;
     private final MainStageProvider stageProvider;
     private final CachedTmdbService metadataService;
+    private final OutputResolver outputResolver;
 
     @Inject
     public MainController(MainFacade facade, VideoMover videoMover, VideoCleaner videoCleaner,
                           SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
-                          CachedTmdbService metadataService) {
+                          CachedTmdbService metadataService, OutputResolver outputResolver) {
         this.facade = facade;
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.videoMover = videoMover;
         this.videoCleaner = videoCleaner;
         this.metadataService = metadataService;
+        this.outputResolver = outputResolver;
     }
 
     @Override
@@ -129,7 +131,7 @@ public class MainController implements Initializable {
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
                     outputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService));
+                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService, outputResolver));
                     break;
             }
         }

@@ -18,9 +18,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Singleton
 public class DefaultCachedTmdbService implements CachedTmdbService {
+
+    private static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/w92%s";
 
     private Map<String, List<VideoMetadata>> videoCache = new HashMap<>(50);
     private TmdbApi tmdbApi;
@@ -41,51 +45,12 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
     }
 
     @Override
-    public List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) throws Exception {
-        return searchInternal(movieQuery, MOVIE_PREFIX, () -> {
-            List<MovieDb> results = searchMovieInternal(movieQuery).getResults();
-            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
-            List<VideoMetadata> metadataList = new ArrayList<>();
-            for (int i = 0; i < maxIndex; i++) {
-                VideoMetadata metadata = buildMovieVideoMetadata(results.get(i));
-                metadataList.add(metadata);
-            }
-            return metadataList;
-        });
-    }
-
-    private VideoMetadata buildMovieVideoMetadata(MovieDb movieResult) {
-        VideoMetadata metadata = new VideoMetadata();
-        metadata.setName(movieResult.getTitle());
-        metadata.setReleaseDate(movieResult.getReleaseDate());
-        metadata.setPosterUrl(buildPosterUrl(movieResult.getPosterPath()));
-        metadata.setDescription(movieResult.getOverview());
-        metadata.setCast(getMovieCast(movieResult.getId()));
-        return metadata;
-    }
-
-    @Override
-    public List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) throws Exception {
-        return searchInternal(tvShowQuery, TVSHOW_PREFIX, () -> {
-            List<TvSeries> results = searchTvInternal(tvShowQuery).getResults();
-            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
-            List<VideoMetadata> metadataList = new ArrayList<>();
-            for (int i = 0; i < maxIndex; i++) {
-                VideoMetadata metadata = buildTvShowVideoMetadata(results.get(i));
-                metadataList.add(metadata);
-            }
-            return metadataList;
-        });
-    }
-
-    private VideoMetadata buildTvShowVideoMetadata(TvSeries tvResult) {
-        VideoMetadata metadata = new VideoMetadata();
-        metadata.setName(tvResult.getName());
-        metadata.setReleaseDate(tvResult.getFirstAirDate());
-        metadata.setPosterUrl(buildPosterUrl(tvResult.getPosterPath()));
-        metadata.setDescription(tvResult.getOverview());
-        metadata.setCast(getTvShowCast(tvResult.getId()));
-        return metadata;
+    public List<VideoMetadata> searchMetadata(VideoQuery query, VideoType type) {
+        switch (type) {
+            case MOVIE: return searchMovieMetadata(query);
+            case TVSHOW: return searchTvShowMetadata(query);
+            default: return Collections.emptyList();
+        }
     }
 
     @Override
@@ -94,7 +59,7 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
     }
 
     @Override
-    public VideoPath adjustVideoPath(VideoPath videoPath, VideoType videoType) throws Exception {
+    public VideoPath adjustVideoPath(VideoPath videoPath, VideoType videoType) {
         Integer year = videoPath.getYear() != null && !videoPath.getYear().isEmpty()
                 ? Integer.valueOf(videoPath.getYear().substring(0, 4))
                 : null;
@@ -124,7 +89,62 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
         return videoPath;
     }
 
-    private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix, Callable<List<VideoMetadata>> callback) throws Exception {
+    @Override
+    public String keyFormat(String prefix, VideoQuery query) {
+        String formatted = prefix + query.getName();
+        formatted = query.getYear() != null ? formatted + "_" + query.getYear() : formatted;
+        formatted = formatted.replaceAll(" ", "_");
+        return formatted.toLowerCase();
+    }
+
+    private List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) {
+        return searchInternal(movieQuery, MOVIE_PREFIX, () -> {
+            List<MovieDb> results = searchMovieInternal(movieQuery).getResults();
+            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
+            List<VideoMetadata> metadataList = new ArrayList<>();
+            for (int i = 0; i < maxIndex; i++) {
+                VideoMetadata metadata = buildMovieVideoMetadata(results.get(i));
+                metadataList.add(metadata);
+            }
+            return metadataList;
+        });
+    }
+
+    private VideoMetadata buildMovieVideoMetadata(MovieDb movieResult) {
+        VideoMetadata metadata = new VideoMetadata();
+        metadata.setName(movieResult.getTitle());
+        metadata.setReleaseDate(movieResult.getReleaseDate());
+        metadata.setPosterUrl(buildPosterUrl(movieResult.getPosterPath()));
+        metadata.setDescription(movieResult.getOverview());
+        metadata.setCast(getMovieCast(movieResult.getId()));
+        return metadata;
+    }
+
+    private List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) {
+        return searchInternal(tvShowQuery, TVSHOW_PREFIX, () -> {
+            List<TvSeries> results = searchTvInternal(tvShowQuery).getResults();
+            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
+            List<VideoMetadata> metadataList = new ArrayList<>();
+            for (int i = 0; i < maxIndex; i++) {
+                VideoMetadata metadata = buildTvShowVideoMetadata(results.get(i));
+                metadataList.add(metadata);
+            }
+            return metadataList;
+        });
+    }
+
+    private VideoMetadata buildTvShowVideoMetadata(TvSeries tvResult) {
+        VideoMetadata metadata = new VideoMetadata();
+        metadata.setName(tvResult.getName());
+        metadata.setReleaseDate(tvResult.getFirstAirDate());
+        metadata.setPosterUrl(buildPosterUrl(tvResult.getPosterPath()));
+        metadata.setDescription(tvResult.getOverview());
+        metadata.setCast(getTvShowCast(tvResult.getId()));
+        return metadata;
+    }
+
+    private List<VideoMetadata> searchInternal(VideoQuery query, String keyPrefix,
+                                               Supplier<List<VideoMetadata>> callback) {
         if (emptyQuery(query)) {
             return Collections.emptyList();
         }
@@ -134,7 +154,7 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
             return videoCache.get(cacheKey);
         }
 
-        List<VideoMetadata> metadataList = callback.call();
+        List<VideoMetadata> metadataList = callback.get();
         videoCache.put(cacheKey, metadataList);
 
         return metadataList;
@@ -165,14 +185,6 @@ public class DefaultCachedTmdbService implements CachedTmdbService {
                         ? search.searchMovie(query.getName(), query.getYear(), query.getLanguage(), false, 1)
                         : search.searchMovie(query.getName(), query.getYear(), null, false, 1)
                 : search.searchMovie(query.getName(), null, null, false, 1);
-    }
-
-    @Override
-    public String keyFormat(String prefix, VideoQuery query) {
-        String formatted = prefix + query.getName();
-        formatted = query.getYear() != null ? formatted + "_" + query.getYear() : formatted;
-        formatted = formatted.replaceAll(" ", "_");
-        return formatted.toLowerCase();
     }
 
     private TvResultsPage searchTvInternal(VideoQuery query) {
