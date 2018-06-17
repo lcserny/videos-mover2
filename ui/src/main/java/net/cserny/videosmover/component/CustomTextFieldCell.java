@@ -188,6 +188,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         VideoRow videoRow = getTableView().getItems().get(getIndex());
         String value = outputProperty.getValue();
         if (videoRow != null && value != null && !value.isEmpty()) {
+            // FIXME: this doesn't allow me to change to any path I want
             videoRow.setOutput(outputResolver.resolveSimple(videoRow.getVideo()));
         }
     }

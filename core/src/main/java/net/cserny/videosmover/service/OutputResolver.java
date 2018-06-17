@@ -39,6 +39,7 @@ public class OutputResolver {
     }
 
     public VideoPath resolveSimple(Video video) {
+        // FIXME: sometimes you need to clear video
         String resolvedName = video.getInputPath().getFileName().toString();
         if (video.getInputPath().toString().equals(StaticPathsProvider.getDownloadsPath())) {
             resolvedName = video.getInputFilename();
