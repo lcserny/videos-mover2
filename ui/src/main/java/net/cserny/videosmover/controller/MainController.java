@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-// TODO: create a Facade in core for most of the stuff here
 @Singleton
 public class MainController implements Initializable {
 

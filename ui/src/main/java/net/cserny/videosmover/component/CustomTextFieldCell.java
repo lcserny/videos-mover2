@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.*;
 import net.cserny.videosmover.service.CachedTmdbService;
 import net.cserny.videosmover.service.OutputResolver;
@@ -19,8 +20,10 @@ import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
-import java.util.Collections;
+import java.nio.file.Path;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
@@ -31,6 +34,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
+    private Pattern valuePattern = Pattern.compile("(.*) \\((.*)\\)");
 
     public CustomTextFieldCell(CachedTmdbService metadataService, OutputResolver outputResolver) {
         this.metadataService = metadataService;
@@ -188,8 +192,22 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         VideoRow videoRow = getTableView().getItems().get(getIndex());
         String value = outputProperty.getValue();
         if (videoRow != null && value != null && !value.isEmpty()) {
-            // FIXME: this doesn't allow me to change to any path I want
-            videoRow.setOutput(outputResolver.resolveSimple(videoRow.getVideo()));
+            videoRow.setOutput(convertToPath(value));
         }
+    }
+
+    private VideoPath convertToPath(String manualPath) {
+        Path path = StaticPathsProvider.getPath(manualPath);
+        String outputPath = path.getParent().toString();
+        String outputFolder = path.getFileName().toString();
+        String year = "";
+
+        Matcher matcher = valuePattern.matcher(outputFolder);
+        if (matcher.find()) {
+            outputFolder = matcher.group(1);
+            year = matcher.group(2);
+        }
+
+        return new VideoPath(outputPath, outputFolder, year);
     }
 }
