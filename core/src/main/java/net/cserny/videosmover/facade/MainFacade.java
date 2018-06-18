@@ -15,23 +15,23 @@ import java.util.stream.Collectors;
 @Singleton
 public class MainFacade {
 
-    @Inject
-    ScanService scanService;
+    private final ScanService scanService;
+    private final OutputResolver outputResolver;
+    private final CachedMetadataService cachedTmdbService;
+    private final VideoMover videoMover;
+    private final VideoCleaner videoCleaner;
+    private final SimpleMessageRegistry messageRegistry;
 
     @Inject
-    OutputResolver outputResolver;
-
-    @Inject
-    CachedMetadataService cachedTmdbService;
-
-    @Inject
-    VideoMover videoMover;
-
-    @Inject
-    VideoCleaner videoCleaner;
-
-    @Inject
-    SimpleMessageRegistry messageRegistry;
+    public MainFacade(ScanService scanService, OutputResolver outputResolver, CachedMetadataService cachedTmdbService,
+                      VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry) {
+        this.scanService = scanService;
+        this.outputResolver = outputResolver;
+        this.cachedTmdbService = cachedTmdbService;
+        this.videoMover = videoMover;
+        this.videoCleaner = videoCleaner;
+        this.messageRegistry = messageRegistry;
+    }
 
     public List<VideoRow> scanVideos() {
         return scanService.scan(StaticPathsProvider.getDownloadsPath()).stream()
