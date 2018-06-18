@@ -4,7 +4,7 @@ import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
-import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
@@ -16,24 +16,24 @@ import java.util.Map;
 @Singleton
 public class CachedVideoRetriever implements VideoNameParser {
 
-    private final CachedTmdbService cachedTmdbService;
+    private final CachedMetadataService cachedTmdbService;
 
     @Inject
-    public CachedVideoRetriever(CachedTmdbService cachedTmdbService) {
+    public CachedVideoRetriever(CachedMetadataService cachedTmdbService) {
         this.cachedTmdbService = cachedTmdbService;
     }
 
     @Override
     public void parseTvShow(VideoPath videoPath) {
         String internal = parseOutputInternal(videoPath.getOutputFolder(),
-                StaticPathsProvider.getTvShowsPath(), CachedTmdbService.TVSHOW_PREFIX);
+                StaticPathsProvider.getTvShowsPath(), CachedMetadataService.TVSHOW_PREFIX);
         videoPath.setOutputFolder(internal);
     }
 
     @Override
     public void parseMovie(VideoPath videoPath) {
         String internal = parseOutputInternal(videoPath.getOutputFolder(),
-                StaticPathsProvider.getMoviesPath(), CachedTmdbService.MOVIE_PREFIX);
+                StaticPathsProvider.getMoviesPath(), CachedMetadataService.MOVIE_PREFIX);
         videoPath.setOutputFolder(internal);
     }
 

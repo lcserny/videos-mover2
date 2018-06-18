@@ -1,17 +1,12 @@
 package net.cserny.videosmover;
 
-import com.google.common.collect.Sets;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.IntoSet;
-import info.movito.themoviedbapi.TmdbApi;
-import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.service.*;
 import net.cserny.videosmover.service.parser.*;
 import net.cserny.videosmover.service.validator.*;
 
-import javax.inject.Singleton;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -61,7 +56,7 @@ public class CoreModule {
     }
 
     @Provides
-    public CachedTmdbService cachedTmdbService() {
-        return new DefaultCachedTmdbService();
+    public CachedMetadataService cachedMetadataService(SimpleMessageRegistry messageRegistry) {
+        return new CachedTmdbService(messageRegistry);
     }
 }

@@ -1,20 +1,19 @@
 package net.cserny.videosmover;
 
-import dagger.Module;
-import dagger.Provides;
-import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.CachedMetadataService;
+import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.mockito.Mockito;
 
 public class CoreTestModule extends CoreModule {
 
-    private CachedTmdbService cachedTmdbService;
+    private CachedMetadataService cachedTmdbService;
 
     public CoreTestModule() {
-        cachedTmdbService = Mockito.mock(CachedTmdbService.class);
+        cachedTmdbService = Mockito.mock(CachedMetadataService.class);
     }
 
     @Override
-    public CachedTmdbService cachedTmdbService() {
+    public CachedMetadataService cachedMetadataService(SimpleMessageRegistry messageRegistry) {
         return cachedTmdbService;
     }
 }

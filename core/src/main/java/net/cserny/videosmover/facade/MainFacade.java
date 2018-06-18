@@ -5,16 +5,13 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
-import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.OutputResolver;
 import net.cserny.videosmover.service.ScanService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -27,10 +24,10 @@ public class MainFacade {
     OutputResolver outputResolver;
 
     @Inject
-    CachedTmdbService cachedTmdbService;
+    CachedMetadataService cachedTmdbService;
 
     @Inject
-    public MainFacade(ScanService scanService, OutputResolver outputResolver, CachedTmdbService cachedTmdbService) {
+    public MainFacade(ScanService scanService, OutputResolver outputResolver, CachedMetadataService cachedTmdbService) {
         this.scanService = scanService;
         this.outputResolver = outputResolver;
         this.cachedTmdbService = cachedTmdbService;

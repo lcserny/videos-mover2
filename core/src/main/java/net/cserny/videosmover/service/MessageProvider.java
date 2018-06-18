@@ -46,4 +46,10 @@ public class MessageProvider {
                 "Problem occurred while cleaning, probably video parent contains un-removable files, please check",
                 "Clean Error Detected");
     }
+
+    public static Message noMetadataServiceApiKey() {
+        return new Message(Alert.AlertType.INFORMATION,
+                "No API key provided for the metadataService implementation, please specify one in properties or environment",
+                "No API key found");
+    }
 }

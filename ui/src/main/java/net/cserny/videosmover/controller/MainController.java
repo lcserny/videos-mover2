@@ -54,13 +54,13 @@ public class MainController implements Initializable {
     private final VideoMover videoMover;
     private final VideoCleaner videoCleaner;
     private final MainStageProvider stageProvider;
-    private final CachedTmdbService metadataService;
+    private final CachedMetadataService metadataService;
     private final OutputResolver outputResolver;
 
     @Inject
     public MainController(MainFacade facade, VideoMover videoMover, VideoCleaner videoCleaner,
                           SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
-                          CachedTmdbService metadataService, OutputResolver outputResolver) {
+                          CachedMetadataService metadataService, OutputResolver outputResolver) {
         this.facade = facade;
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;

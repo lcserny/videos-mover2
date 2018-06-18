@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 public class VideoMetadataServiceTest {
 
     @Inject
-    CachedTmdbService metadataService;
+    CachedMetadataService metadataService;
 
     @Before
     public void setUp() throws Exception {

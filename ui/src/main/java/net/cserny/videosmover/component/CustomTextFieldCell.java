@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.*;
-import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.OutputResolver;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.controlsfx.control.PopOver;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
-    private final CachedTmdbService metadataService;
+    private final CachedMetadataService metadataService;
     private final OutputResolver outputResolver;
     private final CustomTextField customTextField;
     private final Button button;
@@ -36,7 +36,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private SimpleVideoOutput videoOutput;
     private Pattern valuePattern = Pattern.compile("(.*) \\((.*)\\)");
 
-    public CustomTextFieldCell(CachedTmdbService metadataService, OutputResolver outputResolver) {
+    public CustomTextFieldCell(CachedMetadataService metadataService, OutputResolver outputResolver) {
         this.metadataService = metadataService;
         this.outputResolver = outputResolver;
 
