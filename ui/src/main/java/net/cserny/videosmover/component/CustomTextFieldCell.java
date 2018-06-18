@@ -21,6 +21,8 @@ import org.controlsfx.control.textfield.CustomTextField;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,10 +31,11 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final CachedMetadataService metadataService;
     private final CustomTextField customTextField;
     private final Button button;
+    private final Pattern valuePattern = Pattern.compile("(.*) \\((.*)\\)");
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
-    private Pattern valuePattern = Pattern.compile("(.*) \\((.*)\\)");
 
     public CustomTextFieldCell(CachedMetadataService metadataService) {
         this.metadataService = metadataService;
@@ -71,12 +74,12 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         button.setTooltip(new Tooltip("Search for video metadata online"));
         button.setOnAction(event -> {
             setImageToButton(button, loadingImage);
-            new Thread(() -> {
+            executor.execute(() -> {
                 List<VideoMetadata> videoMetadataList = processVideoMetadataList();
                 setImageToButton(button, altImage);
                 PopOver popOver = buildPopover(videoMetadataList, mainImage, altImage);
                 Platform.runLater(() -> togglePopover(button, popOver));
-            }).start();
+            });
         });
 
         return button;

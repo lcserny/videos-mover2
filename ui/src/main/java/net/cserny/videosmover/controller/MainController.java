@@ -33,6 +33,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -48,6 +50,7 @@ public class MainController implements Initializable {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Inject
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
@@ -131,12 +134,12 @@ public class MainController implements Initializable {
         }
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
-        new Thread(() -> {
+        executor.execute(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
-        }).start();
+        });
     }
 
     public void moveVideos(ActionEvent event) {
