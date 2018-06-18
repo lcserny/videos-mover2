@@ -17,7 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
-import net.cserny.videosmover.component.MessageRegistryButtonAction;
+import net.cserny.videosmover.component.CallbackButtonAction;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.helper.StaticPathsProvider;
@@ -38,34 +38,24 @@ import java.util.stream.Collectors;
 @Singleton
 public class MainController implements Initializable {
 
-    @FXML
-    private ImageView loadingImage;
-    @FXML
-    private Pane settingsPane;
-    @FXML
-    private TableView<VideoRow> tableView;
-    @FXML
-    private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField;
-    @FXML
-    private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
+    @FXML private ImageView loadingImage;
+    @FXML private Pane settingsPane;
+    @FXML private TableView<VideoRow> tableView;
+    @FXML private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField;
+    @FXML private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
     private final MainFacade facade;
     private final SimpleMessageRegistry messageRegistry;
-    private final VideoMover videoMover;
-    private final VideoCleaner videoCleaner;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
     private final OutputResolver outputResolver;
 
     @Inject
-    public MainController(MainFacade facade, VideoMover videoMover, VideoCleaner videoCleaner,
-                          SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
+    public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
                           CachedMetadataService metadataService, OutputResolver outputResolver) {
         this.facade = facade;
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
-        this.videoMover = videoMover;
-        this.videoCleaner = videoCleaner;
         this.metadataService = metadataService;
         this.outputResolver = outputResolver;
     }
@@ -94,11 +84,11 @@ public class MainController implements Initializable {
     }
 
     private void initButtons() {
-        moveButton.setOnAction(new MessageRegistryButtonAction(this::moveVideos, messageRegistry));
-        scanButton.setOnAction(new MessageRegistryButtonAction(this::loadTableView, messageRegistry));
-        setDownloadsButton.setOnAction(new MessageRegistryButtonAction(this::setDownloadsPath, messageRegistry));
-        setMoviesButton.setOnAction(new MessageRegistryButtonAction(this::setMoviesPath, messageRegistry));
-        setTvShowsButton.setOnAction(new MessageRegistryButtonAction(this::setTvShowsPath, messageRegistry));
+        moveButton.setOnAction(new CallbackButtonAction(this::moveVideos, messageRegistry::displayMessages));
+        scanButton.setOnAction(new CallbackButtonAction(this::loadTableView, messageRegistry::displayMessages));
+        setDownloadsButton.setOnAction(new CallbackButtonAction(this::setDownloadsPath, messageRegistry::displayMessages));
+        setMoviesButton.setOnAction(new CallbackButtonAction(this::setMoviesPath, messageRegistry::displayMessages));
+        setTvShowsButton.setOnAction(new CallbackButtonAction(this::setTvShowsPath, messageRegistry::displayMessages));
     }
 
     private void initDefaultPaths() {
@@ -167,11 +157,7 @@ public class MainController implements Initializable {
             return;
         }
 
-        boolean result = videoMover.move(selectedVideos);
-        if (result) {
-            videoCleaner.clean(selectedVideos);
-        }
-        messageRegistry.add(result ? MessageProvider.moveSuccessful() : MessageProvider.problemOccurred());
+        facade.moveVideos(selectedVideos);
 
         loadTableView(event);
     }

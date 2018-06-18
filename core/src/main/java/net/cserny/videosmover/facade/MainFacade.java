@@ -5,9 +5,7 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
-import net.cserny.videosmover.service.CachedMetadataService;
-import net.cserny.videosmover.service.OutputResolver;
-import net.cserny.videosmover.service.ScanService;
+import net.cserny.videosmover.service.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,11 +25,13 @@ public class MainFacade {
     CachedMetadataService cachedTmdbService;
 
     @Inject
-    public MainFacade(ScanService scanService, OutputResolver outputResolver, CachedMetadataService cachedTmdbService) {
-        this.scanService = scanService;
-        this.outputResolver = outputResolver;
-        this.cachedTmdbService = cachedTmdbService;
-    }
+    VideoMover videoMover;
+
+    @Inject
+    VideoCleaner videoCleaner;
+
+    @Inject
+    SimpleMessageRegistry messageRegistry;
 
     public List<VideoRow> scanVideos() {
         return scanService.scan(StaticPathsProvider.getDownloadsPath()).stream()
@@ -60,5 +60,13 @@ public class MainFacade {
     public static String combineOutputFolderAndYear(VideoPath videoPath) {
         String year = videoPath.getYear() != null && !videoPath.getYear().isEmpty() ? " (" + videoPath.getYear() + ")" : "";
         return videoPath.getOutputFolder() + year;
+    }
+
+    public void moveVideos(List<Video> videos) {
+        boolean result = videoMover.move(videos);
+        if (result) {
+            videoCleaner.clean(videos);
+        }
+        messageRegistry.add(result ? MessageProvider.moveSuccessful() : MessageProvider.problemOccurred());
     }
 }

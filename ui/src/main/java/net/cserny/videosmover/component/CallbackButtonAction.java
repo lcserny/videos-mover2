@@ -4,19 +4,19 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
-public class MessageRegistryButtonAction implements EventHandler<ActionEvent> {
+public class CallbackButtonAction implements EventHandler<ActionEvent> {
 
     private final EventHandler<ActionEvent> eventHandler;
-    private final SimpleMessageRegistry messageRegistry;
+    private final Runnable callback;
 
-    public MessageRegistryButtonAction(EventHandler<ActionEvent> eventHandler, SimpleMessageRegistry messageRegistry) {
+    public CallbackButtonAction(EventHandler<ActionEvent> eventHandler, Runnable callback) {
         this.eventHandler = eventHandler;
-        this.messageRegistry = messageRegistry;
+        this.callback = callback;
     }
 
     @Override
     public void handle(ActionEvent event) {
         eventHandler.handle(event);
-        messageRegistry.displayMessages();
+        callback.run();
     }
 }
