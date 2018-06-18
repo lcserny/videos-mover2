@@ -48,16 +48,14 @@ public class MainController implements Initializable {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
-    private final OutputResolver outputResolver;
 
     @Inject
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
-                          CachedMetadataService metadataService, OutputResolver outputResolver) {
+                          CachedMetadataService metadataService) {
         this.facade = facade;
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.metadataService = metadataService;
-        this.outputResolver = outputResolver;
     }
 
     @Override
@@ -120,7 +118,7 @@ public class MainController implements Initializable {
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
                     outputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService, outputResolver));
+                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService));
                     break;
             }
         }
