@@ -52,4 +52,10 @@ public class MessageProvider {
                 "No API key provided for the metadataService implementation, please specify one in properties or environment",
                 "No API key found");
     }
+
+    public static Message existingFolderFound(String existingFolder) {
+        return new Message(Alert.AlertType.INFORMATION,
+                String.format("Video folder %s already exists, are you sure you want to move the video?", existingFolder),
+                "Video folder already exists");
+    }
 }

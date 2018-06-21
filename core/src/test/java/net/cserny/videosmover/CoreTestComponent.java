@@ -3,6 +3,7 @@ package net.cserny.videosmover;
 import dagger.Component;
 import net.cserny.videosmover.error.GlobalExceptionCatcherTest;
 import net.cserny.videosmover.service.*;
+import net.cserny.videosmover.service.parser.VideoExistenceCheckerTest;
 
 import javax.inject.Singleton;
 
@@ -17,4 +18,5 @@ public interface CoreTestComponent {
     void inject(VideoCleanerTest test);
     void inject(VideoMetadataServiceTest test);
     void inject(VideoMoverTest test);
+    void inject(VideoExistenceCheckerTest test);
 }

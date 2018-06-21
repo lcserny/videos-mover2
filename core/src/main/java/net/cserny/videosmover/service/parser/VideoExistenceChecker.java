@@ -4,6 +4,8 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.VideoPath;
+import net.cserny.videosmover.service.MessageProvider;
+import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 
 import javax.inject.Inject;
@@ -21,10 +23,12 @@ import java.util.stream.Collectors;
 @Singleton
 public class VideoExistenceChecker implements VideoNameParser {
 
+    private final SimpleMessageRegistry messageRegistry;
     private int similarityPercent;
 
     @Inject
-    public VideoExistenceChecker() {
+    public VideoExistenceChecker(SimpleMessageRegistry messageRegistry) {
+        this.messageRegistry = messageRegistry;
         similarityPercent = PropertiesLoader.getSimilarityPercent();
     }
 
@@ -41,7 +45,12 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     private String checkExisting(String path, String fileName) {
-        return probeExistingFolder(StaticPathsProvider.getPath(path), fileName).orElse(fileName);
+        Optional<String> existingFolder = probeExistingFolder(StaticPathsProvider.getPath(path), fileName);
+        if (existingFolder.isPresent()) {
+            messageRegistry.add(MessageProvider.existingFolderFound(existingFolder.get()));
+            return existingFolder.get();
+        }
+        return fileName;
     }
 
     private Optional<String> probeExistingFolder(Path path, String filename) {
