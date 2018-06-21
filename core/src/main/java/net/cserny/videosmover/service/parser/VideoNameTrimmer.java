@@ -59,17 +59,21 @@ public class VideoNameTrimmer implements VideoNameParser {
 
     private String removeExtension(String text) {
         boolean extensionPeriodExists = text.charAt(text.length() - 4) == '.';
-        char firstChar = text.charAt(text.length() - 3);
-        boolean extensionFirstLetter = Character.isLetter(firstChar) && Character.isLowerCase(firstChar);
-        char secondChar = text.charAt(text.length() - 2);
-        boolean extensionSecondLetter = Character.isLetter(secondChar) && Character.isLowerCase(secondChar);
-        char thirdChar = text.charAt(text.length() - 1);
-        boolean extensionThirdLetter = Character.isLetter(thirdChar) && Character.isLowerCase(thirdChar);
+        boolean extensionFirstLetter = isExtensionLetterOrDigit(text.charAt(text.length() - 3));
+        boolean extensionSecondLetter = isExtensionLetterOrDigit(text.charAt(text.length() - 2));
+        boolean extensionThirdLetter = isExtensionLetterOrDigit(text.charAt(text.length() - 1));
 
         if (extensionPeriodExists && extensionFirstLetter && extensionSecondLetter && extensionThirdLetter) {
-            return text.substring(0, text.length() - 5);
+            return text.substring(0, text.length() - 4);
         }
         return text;
+    }
+
+    private boolean isExtensionLetterOrDigit(char a) {
+        boolean letter = Character.isLetter(a);
+        boolean digit = Character.isDigit(a);
+
+        return (letter && Character.isLowerCase(a)) || digit;
     }
 
     private String stripSpecialChars(String videoName) {
