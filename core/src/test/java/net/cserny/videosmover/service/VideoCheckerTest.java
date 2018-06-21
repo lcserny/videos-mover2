@@ -21,11 +21,14 @@ public class VideoCheckerTest {
 
     private InMemoryFileSystem inMemoryFileSystem;
 
+    public VideoCheckerTest() {
+        CoreTestComponent component = DaggerCoreTestComponent.create();
+        component.inject(this);
+    }
+
     @Before
     public void setUp() throws Exception {
         inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
-        CoreTestComponent component = DaggerCoreTestComponent.create();
-        component.inject(this);
     }
 
     @After

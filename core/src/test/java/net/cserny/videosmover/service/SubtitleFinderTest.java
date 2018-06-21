@@ -23,11 +23,14 @@ public class SubtitleFinderTest {
 
     private InMemoryFileSystem inMemoryFileSystem;
 
+    public SubtitleFinderTest() {
+        CoreTestComponent component = DaggerCoreTestComponent.create();
+        component.inject(this);
+    }
+
     @Before
     public void setUp() throws Exception {
         inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
-        CoreTestComponent component = DaggerCoreTestComponent.create();
-        component.inject(this);
     }
 
     @After

@@ -21,8 +21,7 @@ public class VideoMetadataServiceTest {
     @Inject
     CachedMetadataService metadataService;
 
-    @Before
-    public void setUp() throws Exception {
+    public VideoMetadataServiceTest() {
         CoreTestComponent component = DaggerCoreTestComponent.create();
         component.inject(this);
     }

@@ -21,11 +21,13 @@ public class GlobalExceptionCatcherTest {
     @Inject
     SimpleMessageRegistry messageRegistry;
 
-    @Before
-    public void setUp() {
+    public GlobalExceptionCatcherTest() {
         CoreTestComponent component = DaggerCoreTestComponent.create();
         component.inject(this);
+    }
 
+    @Before
+    public void setUp() {
         messageRegistry.registerDisplayProvider(message -> { DISPLAYED_MESSAGE = message.getContent(); });
         Thread.setDefaultUncaughtExceptionHandler(globalExceptionCatcher);
     }
