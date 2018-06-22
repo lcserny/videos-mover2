@@ -16,8 +16,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
-import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.CallbackButtonAction;
+import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.helper.StaticPathsProvider;
@@ -25,7 +25,9 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.provider.MainStageProvider;
-import net.cserny.videosmover.service.*;
+import net.cserny.videosmover.service.CachedMetadataService;
+import net.cserny.videosmover.service.MessageProvider;
+import net.cserny.videosmover.service.SimpleMessageRegistry;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,8 +35,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -50,7 +50,6 @@ public class MainController implements Initializable {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     @Inject
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
@@ -134,12 +133,12 @@ public class MainController implements Initializable {
         }
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
-        executor.execute(() -> {
+        new Thread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
-        });
+        }).start();
     }
 
     public void moveVideos(ActionEvent event) {
