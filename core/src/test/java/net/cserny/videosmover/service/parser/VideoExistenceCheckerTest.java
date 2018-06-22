@@ -4,7 +4,6 @@ import net.cserny.videosmover.CoreTestComponent;
 import net.cserny.videosmover.DaggerCoreTestComponent;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
-import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
@@ -15,6 +14,7 @@ import org.junit.Test;
 import javax.inject.Inject;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static org.junit.Assert.*;
 
@@ -50,7 +50,7 @@ public class VideoExistenceCheckerTest {
         inMemoryFileSystem.create(existingPath, existingFolder, null, 0);
 
         VideoPath videoPath = new VideoPath(StaticPathsProvider.getMoviesPath(), "The Big Sick", "2017");
-        existenceChecker.parseMovie(videoPath);
+        existenceChecker.parseMovie(videoPath, Collections.emptyList());
 
         assertTrue(messageRegistry.getMessages().contains(MessageProvider.existingFolderFound(existingFolder)));
     }
