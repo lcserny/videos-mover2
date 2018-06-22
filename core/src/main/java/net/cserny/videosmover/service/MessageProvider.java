@@ -55,7 +55,7 @@ public class MessageProvider {
 
     public static Message existingFolderFound(String existingFolder) {
         return new Message(Alert.AlertType.INFORMATION,
-                String.format("Video folder %s already exists, are you sure you want to move the video?", existingFolder),
+                String.format("Video folder '%s' already exists, are you sure you want to move the video?", existingFolder),
                 "Video folder already exists");
     }
 }
