@@ -4,11 +4,12 @@ import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoType;
+import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 import net.cserny.videosmover.service.parser.VideoNameParser;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 
 @Singleton
@@ -21,7 +22,7 @@ public class OutputResolver {
         this.nameParserList = nameParserList;
     }
 
-    public VideoPath resolve(Video video) {
+    public VideoPath resolve(Video video, List<VideoAdjustmentObserver> observers) {
         String resolvedName = video.getInputPath().getFileName().toString();
         if (video.getInputPath().toString().equals(StaticPathsProvider.getDownloadsPath())) {
             resolvedName = video.getInputFilename();
@@ -36,10 +37,10 @@ public class OutputResolver {
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
                 case MOVIE:
-                    videoNameParser.parseMovie(videoPath);
+                    videoNameParser.parseMovie(videoPath, observers);
                     break;
                 case TVSHOW:
-                    videoNameParser.parseTvShow(videoPath);
+                    videoNameParser.parseTvShow(videoPath, observers);
                     break;
             }
         }

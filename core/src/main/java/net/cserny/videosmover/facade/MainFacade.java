@@ -6,9 +6,11 @@ import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.*;
+import net.cserny.videosmover.service.observer.VideoExistenceObserver;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,8 +54,11 @@ public class MainFacade {
         videoRow.setVideoType(videoType);
         VideoPath videoPath = VideoPath.emptyVideoPath;
         if (videoType != VideoType.NONE) {
-            videoPath = outputResolver.resolve(videoRow.getVideo());
-            videoPath = cachedTmdbService.adjustVideoPath(videoPath, videoType);
+            VideoExistenceObserver observer = new VideoExistenceObserver();
+            videoPath = outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
+            if (observer.shouldAdjustPath()) {
+                videoPath = cachedTmdbService.adjustVideoPath(videoPath, videoType);
+            }
         }
         videoRow.setOutput(videoPath);
     }

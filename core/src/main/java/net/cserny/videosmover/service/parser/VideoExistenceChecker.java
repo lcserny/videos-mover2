@@ -7,6 +7,7 @@ import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
+import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -33,20 +34,23 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     @Override
-    public void parseTvShow(VideoPath videoPath) {
-        String existing = checkExisting(StaticPathsProvider.getTvShowsPath(), videoPath.getOutputFolder());
+    public void parseTvShow(VideoPath videoPath, List<VideoAdjustmentObserver> observers) {
+        String existing = checkExisting(StaticPathsProvider.getTvShowsPath(), videoPath.getOutputFolder(), observers);
         videoPath.setOutputFolder(existing);
     }
 
     @Override
-    public void parseMovie(VideoPath videoPath) {
-        String existing = checkExisting(StaticPathsProvider.getMoviesPath(), videoPath.getOutputFolder());
+    public void parseMovie(VideoPath videoPath, List<VideoAdjustmentObserver> observers) {
+        String existing = checkExisting(StaticPathsProvider.getMoviesPath(), videoPath.getOutputFolder(), observers);
         videoPath.setOutputFolder(existing);
     }
 
-    private String checkExisting(String path, String fileName) {
+    private String checkExisting(String path, String fileName, List<VideoAdjustmentObserver> observers) {
         Optional<String> existingFolder = probeExistingFolder(StaticPathsProvider.getPath(path), fileName);
         if (existingFolder.isPresent()) {
+            for (VideoAdjustmentObserver observer : observers) {
+                observer.dontAdjustPath();
+            }
             messageRegistry.add(MessageProvider.existingFolderFound(existingFolder.get()));
             return existingFolder.get();
         }
