@@ -7,6 +7,7 @@ import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
+import net.cserny.videosmover.service.observer.VideoExistenceObserver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,5 +54,18 @@ public class VideoExistenceCheckerTest {
         existenceChecker.parseMovie(videoPath, Collections.emptyList());
 
         assertTrue(messageRegistry.getMessages().contains(MessageProvider.existingFolderFound(existingFolder)));
+    }
+
+    @Test
+    public void checkingWithExistenceObserverUpdatesObserver() throws IOException {
+        String existingPath = StaticPathsProvider.getMoviesPath();
+        String existingFolder = "I Am Batman (2099)";
+        inMemoryFileSystem.create(existingPath, existingFolder, null, 0);
+
+        VideoExistenceObserver observer = new VideoExistenceObserver();
+        VideoPath videoPath = new VideoPath(StaticPathsProvider.getMoviesPath(), "I Am Batman", "2099");
+        existenceChecker.parseMovie(videoPath, Collections.singletonList(observer));
+
+        assertFalse(observer.shouldAdjustPath());
     }
 }
