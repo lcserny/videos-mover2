@@ -73,6 +73,6 @@ public class MainFacade {
         if (result) {
             videoCleaner.clean(videos);
         }
-        messageRegistry.add(result ? MessageProvider.moveSuccessful() : MessageProvider.problemOccurred());
+        messageRegistry.displayMessage(result ? MessageProvider.moveSuccessful() : MessageProvider.problemOccurred());
     }
 }

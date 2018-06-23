@@ -26,8 +26,7 @@ public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {
         String content = e.toString();
         String title = e.getMessage() != null ? e.getMessage() : "Exception thrown";
         Message message = new Message(Alert.AlertType.ERROR, content, title);
-        messageRegistry.add(message);
-        messageRegistry.displayMessages();
+        messageRegistry.displayMessage(message);
 
         LOGGER.error(message.getTitle(), e);
     }

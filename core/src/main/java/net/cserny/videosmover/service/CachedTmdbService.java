@@ -40,7 +40,7 @@ public class CachedTmdbService implements CachedMetadataService {
     private void initApi() {
         String apiKey = PropertiesLoader.getTmdbApiKey();
         if (apiKey.equals(NO_API_KEY)) {
-            messageRegistry.add(MessageProvider.noMetadataServiceApiKey());
+            messageRegistry.displayMessage(MessageProvider.noMetadataServiceApiKey());
         }
         this.tmdbApi = new TmdbApi(apiKey);
     }

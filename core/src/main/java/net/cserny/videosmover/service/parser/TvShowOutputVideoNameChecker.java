@@ -32,7 +32,7 @@ public class TvShowOutputVideoNameChecker implements OutputVideoNameChecker {
     public void check(Video video) {
         Matcher matcher = pattern.matcher(video.getInputFilename());
         if (!matcher.find()) {
-            messageRegistry.add(MessageProvider.incorrectTvShowFileName(video.getInputFilename()));
+            messageRegistry.displayMessage(MessageProvider.incorrectTvShowFileName(video.getInputFilename()));
         }
     }
 }

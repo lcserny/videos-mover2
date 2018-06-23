@@ -51,7 +51,7 @@ public class VideoExistenceChecker implements VideoNameParser {
             for (VideoAdjustmentObserver observer : observers) {
                 observer.dontAdjustPath();
             }
-            messageRegistry.add(MessageProvider.existingFolderFound(existingFolder.get()));
+            messageRegistry.displayMessage(MessageProvider.existingFolderFound(existingFolder.get()));
             return existingFolder.get();
         }
         return fileName;

@@ -32,6 +32,10 @@ public class SimpleMessageRegistry {
         return messages;
     }
 
+    public void displayMessage(Message message) {
+        messageDisplayProvider.display(message);
+    }
+
     public void add(Message message) {
         messages.add(message);
     }
