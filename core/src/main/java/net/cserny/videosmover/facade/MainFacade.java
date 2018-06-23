@@ -45,7 +45,6 @@ public class MainFacade {
         VideoRow videoRow = new VideoRow(video);
         videoRow.videoTypeProperty().addListener((observable, oldValue, newValue) -> {
             handleToggleVideoType(newValue, videoRow);
-            messageRegistry.displayMessages();
         });
         return videoRow;
     }
