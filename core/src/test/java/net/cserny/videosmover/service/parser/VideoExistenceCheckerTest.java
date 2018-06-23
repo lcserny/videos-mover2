@@ -27,6 +27,7 @@ public class VideoExistenceCheckerTest {
     @Inject
     SimpleMessageRegistry messageRegistry;
 
+    private String cachedMessage;
     private InMemoryFileSystem inMemoryFileSystem;
 
     public VideoExistenceCheckerTest() {
@@ -37,6 +38,7 @@ public class VideoExistenceCheckerTest {
     @Before
     public void setUp() throws Exception {
         inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
+        messageRegistry.registerDisplayProvider(message -> { cachedMessage = message.getContent(); });
     }
 
     @After
@@ -53,7 +55,7 @@ public class VideoExistenceCheckerTest {
         VideoPath videoPath = new VideoPath(StaticPathsProvider.getMoviesPath(), "The Big Sick", "2017");
         existenceChecker.parseMovie(videoPath, Collections.emptyList());
 
-        assertTrue(messageRegistry.getMessages().contains(MessageProvider.existingFolderFound(existingFolder)));
+        assertEquals(MessageProvider.existingFolderFound(existingFolder).getContent(), cachedMessage);
     }
 
     @Test
