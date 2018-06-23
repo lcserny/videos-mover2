@@ -10,30 +10,24 @@ import java.util.List;
 @Singleton
 public class SimpleMessageRegistry {
 
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
     private MessageDisplayProvider messageDisplayProvider;
 
     @Inject
-    public SimpleMessageRegistry() {
-        messages = new ArrayList<>();
-    }
+    public SimpleMessageRegistry() { }
 
     public void registerDisplayProvider(MessageDisplayProvider messageDisplayProvider) {
         this.messageDisplayProvider = messageDisplayProvider;
     }
 
-    public void displayMessages() {
-        for (Message message : new ArrayList<>(messages)) {
+    public void displayMessage(Message message) {
+        if (messageDisplayProvider != null) {
             messageDisplayProvider.display(message);
         }
     }
 
     public List<Message> getMessages() {
         return messages;
-    }
-
-    public void displayMessage(Message message) {
-        messageDisplayProvider.display(message);
     }
 
     public void add(Message message) {
