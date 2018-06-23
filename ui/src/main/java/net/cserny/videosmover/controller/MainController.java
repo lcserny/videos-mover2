@@ -2,18 +2,18 @@ package net.cserny.videosmover.controller;
 
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import net.cserny.videosmover.component.CallbackButtonAction;
@@ -62,7 +62,6 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initButtons();
         initTable();
         initDefaultPaths();
         initSlidingSettingsPane();
@@ -81,14 +80,6 @@ public class MainController implements Initializable {
                 closeSettings.play();
             }
         });
-    }
-
-    private void initButtons() {
-        moveButton.setOnAction(new CallbackButtonAction(this::moveVideos, messageRegistry::displayMessages));
-        scanButton.setOnAction(new CallbackButtonAction(this::loadTableView, messageRegistry::displayMessages));
-        setDownloadsButton.setOnAction(new CallbackButtonAction(this::setDownloadsPath, messageRegistry::displayMessages));
-        setMoviesButton.setOnAction(new CallbackButtonAction(this::setMoviesPath, messageRegistry::displayMessages));
-        setTvShowsButton.setOnAction(new CallbackButtonAction(this::setTvShowsPath, messageRegistry::displayMessages));
     }
 
     private void initDefaultPaths() {
@@ -128,7 +119,7 @@ public class MainController implements Initializable {
 
     public void loadTableView(ActionEvent event) {
         if (StaticPathsProvider.getDownloadsPath() == null) {
-            messageRegistry.add(MessageProvider.inputMissing());
+            messageRegistry.displayMessage(MessageProvider.inputMissing());
             return;
         }
 
@@ -143,7 +134,7 @@ public class MainController implements Initializable {
 
     public void moveVideos(ActionEvent event) {
         if (StaticPathsProvider.getMoviesPath() == null || StaticPathsProvider.getTvShowsPath() == null) {
-            messageRegistry.add(MessageProvider.outputMissing());
+            messageRegistry.displayMessage(MessageProvider.outputMissing());
             return;
         }
 
@@ -153,13 +144,21 @@ public class MainController implements Initializable {
                 .collect(Collectors.toList());
 
         if (selectedVideos.isEmpty()) {
-            messageRegistry.add(MessageProvider.nothingSelected());
+            messageRegistry.displayMessage(MessageProvider.nothingSelected());
             return;
         }
 
-        facade.moveVideos(selectedVideos);
-
-        loadTableView(event);
+        Region region = (Region) stageProvider.getStage().getScene().lookup("#opaqueRegion");
+        region.setVisible(true);
+        ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene().lookup("#moveProgress");
+        progressIndicator.setVisible(true);
+        progressIndicator.setProgress(-1.0f);
+        new Thread(() -> {
+            facade.moveVideos(selectedVideos);
+            region.setVisible(false);
+            progressIndicator.setVisible(false);
+            loadTableView(event);
+        }).start();
     }
 
     public void setDownloadsPath(ActionEvent event) {
