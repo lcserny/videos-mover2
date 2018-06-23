@@ -160,3 +160,14 @@
 .video-info-container {
     -fx-padding: 5;
 }
+
+#opaqueRegion {
+    -fx-background-color: #00000099;
+    visibility: hidden;
+}
+
+#moveProgress {
+    visibility: hidden;
+    -fx-max-height: 300;
+    -fx-max-width: 300;
+}
