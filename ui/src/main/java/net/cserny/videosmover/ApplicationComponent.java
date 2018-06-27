@@ -9,4 +9,6 @@ import javax.inject.Singleton;
 @Component(modules = {UiModule.class, CoreModule.class})
 public interface ApplicationComponent {
     void inject(MainApplication application);
+
+    void inject(MainApplicationKt applicationKt);
 }

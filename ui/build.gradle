@@ -1,6 +1,6 @@
 apply plugin: "application"
 
-mainClassName = "net.cserny.videosmover.Main"
+mainClassName = "net.cserny.videosmover.MainKt"
 apply plugin: 'com.github.johnrengelman.shadow'
 
 dependencies {
