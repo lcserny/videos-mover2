@@ -6,6 +6,7 @@ import net.cserny.videosmover.service.validator.RemovalRestriction;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -45,7 +46,8 @@ public class VideoCleaner {
     }
 
     private void recursiveDelete(Path sourceParent) throws IOException {
-        List<Path> sourceParentContentPaths = Files.walk(sourceParent).collect(Collectors.toList());
+        List<Path> sourceParentContentPaths = Files.walk(sourceParent, Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
+                .collect(Collectors.toList());
         for (Path path : sourceParentContentPaths) {
             if (path != sourceParent) {
                 if (Files.isRegularFile(path)) {

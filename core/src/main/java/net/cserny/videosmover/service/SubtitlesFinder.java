@@ -6,6 +6,7 @@ import net.cserny.videosmover.helper.StaticPathsProvider;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class SubtitlesFinder {
 
     private List<Path> collectSubtitles(Path directory) throws IOException {
         List<Path> subtitles = new ArrayList<>();
-        for (Path tmpFile : Files.walk(directory)
+        for (Path tmpFile : Files.walk(directory, Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
                 .filter(Files::isRegularFile)
                 .collect(Collectors.toList())) {
 

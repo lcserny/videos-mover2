@@ -6,6 +6,7 @@ import net.cserny.videosmover.model.Video;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ScanService {
         List<Video> videos = new ArrayList<>();
 
         try {
-            for (Path file : Files.walk(StaticPathsProvider.getPath(location))
+            for (Path file : Files.walk(StaticPathsProvider.getPath(location), Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
                     .filter(Files::isRegularFile)
                     .collect(Collectors.toList())) {
 
