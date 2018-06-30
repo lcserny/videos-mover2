@@ -19,8 +19,12 @@ public class VideoSizeValidator implements VideoValidator {
     }
 
     @Override
-    public boolean isValid(Path file) throws IOException {
-        long size = Files.size(file);
-        return size > minimumVideoSize;
+    public boolean isValid(Path file) {
+        try {
+            long size = Files.size(file);
+            return size > minimumVideoSize;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

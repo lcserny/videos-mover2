@@ -18,7 +18,7 @@ public class VideoChecker {
         this.videoValidatorList = videoValidators;
     }
 
-    public boolean isVideo(Path file) throws IOException {
+    public boolean isVideo(Path file) {
         for (VideoValidator videoValidator : videoValidatorList) {
             if (!videoValidator.isValid(file)) {
                 return false;

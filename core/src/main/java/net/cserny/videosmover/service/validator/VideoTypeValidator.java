@@ -20,9 +20,13 @@ public class VideoTypeValidator implements VideoValidator {
     }
 
     @Override
-    public boolean isValid(Path file) throws IOException {
-        String mimeType = Files.probeContentType(file);
-        return mimeTypeIsAllowed(mimeType);
+    public boolean isValid(Path file) {
+        try {
+            String mimeType = Files.probeContentType(file);
+            return mimeTypeIsAllowed(mimeType);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     private boolean mimeTypeIsAllowed(String mimeType) {

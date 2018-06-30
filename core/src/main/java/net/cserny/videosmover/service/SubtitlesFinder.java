@@ -24,7 +24,7 @@ public class SubtitlesFinder {
         subtitleExtensions = PropertiesLoader.getSubtitleExtensions();
     }
 
-    public List<Path> find(Path file) throws IOException {
+    public List<Path> find(Path file) {
         Path directory = file.getParent();
         if (directory.toString().equals(StaticPathsProvider.getDownloadsPath())) {
             return Collections.emptyList();
@@ -32,19 +32,25 @@ public class SubtitlesFinder {
         return collectSubtitles(directory);
     }
 
-    private List<Path> collectSubtitles(Path directory) throws IOException {
-        List<Path> subtitles = new ArrayList<>();
-        for (Path tmpFile : Files.walk(directory, Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
-                .filter(Files::isRegularFile)
-                .collect(Collectors.toList())) {
+    private List<Path> collectSubtitles(Path directory) {
+        try {
+            return Files.walk(directory, Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
+                    .filter(Files::isRegularFile)
+                    .filter(this::filterSubtitles)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return Collections.emptyList();
+        }
+    }
 
-            for (String subtitleExtension : subtitleExtensions) {
-                if (tmpFile.toString().endsWith(subtitleExtension)) {
-                    subtitles.add(tmpFile);
-                    break;
-                }
+    private boolean filterSubtitles(Path subtitle) {
+        boolean ok = false;
+        for (String subtitleExtension : subtitleExtensions) {
+            if (subtitle.toString().endsWith(subtitleExtension)) {
+                ok = true;
+                break;
             }
         }
-        return subtitles;
+        return ok;
     }
 }
