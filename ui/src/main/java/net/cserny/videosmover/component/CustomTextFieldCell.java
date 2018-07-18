@@ -29,7 +29,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final CachedMetadataService metadataService;
     private final CustomTextField customTextField;
     private final Button button;
-    private final Pattern valuePattern = Pattern.compile("(.*) \\((.*)\\)");
+    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)");
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
@@ -201,8 +201,8 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
         Matcher matcher = valuePattern.matcher(outputFolder);
         if (matcher.find()) {
-            outputFolder = matcher.group(1);
-            year = matcher.group(2);
+            outputFolder = matcher.group("outFolder");
+            year = matcher.group("year");
         }
 
         return new VideoPath(outputPath, outputFolder, year);
