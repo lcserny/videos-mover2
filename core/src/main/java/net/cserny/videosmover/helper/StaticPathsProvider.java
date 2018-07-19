@@ -10,27 +10,29 @@ import java.nio.file.Path;
 
 public class StaticPathsProvider {
 
+    private static FileSystem fileSystem;
     private static String downloadsPath;
     private static String moviesPath;
     private static String tvShowsPath;
-    private static FileSystem fileSystem;
 
     static {
-        downloadsPath = PreferencesLoader.getDownloadsPath();
-        moviesPath = PreferencesLoader.getMoviesPath();
-        tvShowsPath = PreferencesLoader.getTvShowsPath();
-        fileSystem = FileSystems.getDefault();
-
-        init();
+        initPaths();
     }
 
-    private static void init() {
+    private static void initPaths() {
+        fileSystem = FileSystems.getDefault();
+
+        downloadsPath = PreferencesLoader.getDownloadsPath();
         if (!Files.exists(getPath(downloadsPath))) {
             downloadsPath = null;
         }
+
+        moviesPath = PreferencesLoader.getMoviesPath();
         if (!Files.exists(getPath(moviesPath))) {
             moviesPath = null;
         }
+
+        tvShowsPath = PreferencesLoader.getTvShowsPath();
         if (!Files.exists(getPath(tvShowsPath))) {
             tvShowsPath = null;
         }
