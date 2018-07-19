@@ -34,6 +34,7 @@ import javax.inject.Singleton;
 import java.io.File;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -162,30 +163,30 @@ public class MainController implements Initializable {
     }
 
     public void setDownloadsPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose Downloads folder", StaticPathsProvider.getDownloadsPath());
-        if (path != null) {
-            downloadsPathTextField.setText(path);
-            StaticPathsProvider.setDownloadsPath(path);
-        }
+        processDirectoryChooserPath("Choose Downloads folder", StaticPathsProvider.getDownloadsPath())
+                .ifPresent(path -> {
+                    downloadsPathTextField.setText(path);
+                    StaticPathsProvider.setDownloadsPath(path);
+                });
     }
 
     public void setMoviesPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose Movies folder", StaticPathsProvider.getMoviesPath());
-        if (path != null) {
-            moviePathTextField.setText(path);
-            StaticPathsProvider.setMoviesPath(path);
-        }
+        processDirectoryChooserPath("Choose Movies folder", StaticPathsProvider.getMoviesPath())
+                .ifPresent(path -> {
+                    moviePathTextField.setText(path);
+                    StaticPathsProvider.setMoviesPath(path);
+                });
     }
 
     public void setTvShowsPath(ActionEvent event) {
-        String path = processDirectoryChooserPath("Choose TvShows folder", StaticPathsProvider.getTvShowsPath());
-        if (path != null) {
-            tvShowPathTextField.setText(path);
-            StaticPathsProvider.setTvShowsPath(path);
-        }
+        processDirectoryChooserPath("Choose TvShows folder", StaticPathsProvider.getTvShowsPath())
+                .ifPresent(path -> {
+                    tvShowPathTextField.setText(path);
+                    StaticPathsProvider.setTvShowsPath(path);
+                });
     }
 
-    private String processDirectoryChooserPath(String title, String currentPathString) {
+    private Optional<String> processDirectoryChooserPath(String title, String currentPathString) {
         DirectoryChooser chooser = new DirectoryChooser();
         chooser.setTitle(title);
         if (currentPathString != null) {
@@ -193,8 +194,8 @@ public class MainController implements Initializable {
         }
         File chosenPath = chooser.showDialog(stageProvider.getStage());
         if (chosenPath != null && chosenPath.exists()) {
-            return chosenPath.getAbsolutePath();
+            return Optional.of(chosenPath.getAbsolutePath());
         }
-        return null;
+        return Optional.empty();
     }
 }
