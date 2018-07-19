@@ -29,7 +29,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final CachedMetadataService metadataService;
     private final CustomTextField customTextField;
     private final Button button;
-    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)");
+    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)$");
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
