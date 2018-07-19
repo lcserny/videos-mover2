@@ -1,25 +1,28 @@
 package net.cserny.videosmover.service.helper;
 
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.SimpleVideoOutput;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoType;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 
+import java.nio.file.Path;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleVideoOutputHelper {
 
-    public static final Pattern RELEASEDATE_PATTERN = Pattern.compile("\\((\\d{4})(-\\d{2}-\\d{2})?\\)");
+    public static final Pattern RELEASE_DATE_PATTERN = Pattern.compile("(?<name>.*) \\((?<year>\\d{4})(-\\d{2}-\\d{2})?\\)$");
 
     public static SimpleVideoOutput buildVideoOutput(String output) {
-        String path = output.substring(0, output.lastIndexOf('/'));
-        String name = output.substring(output.lastIndexOf('/') + 1);
-        Matcher matcher = RELEASEDATE_PATTERN.matcher(name);
+        Path outputPath = StaticPathsProvider.getPath(output);
+        String path = outputPath.getParent().toString();
+        String name = outputPath.getFileName().toString().trim();
+
+        Matcher matcher = RELEASE_DATE_PATTERN.matcher(name);
         Integer year = null;
         if (matcher.find()) {
-            name = name.substring(0, matcher.start() - 1);
-            year = Integer.valueOf(matcher.group(1));
+            name = matcher.group("name");
+            year = Integer.valueOf(matcher.group("year"));
         }
 
         VideoType videoType = null;
@@ -33,7 +36,7 @@ public class SimpleVideoOutputHelper {
     }
 
     public static String formatOutput(SimpleVideoOutput videoOutput, VideoMetadata videoMetadata) {
-        return String.format("%s/%s (%s)", videoOutput.getPath(), videoMetadata.getName(), videoMetadata.getReleaseDate());
+        return StaticPathsProvider.getPath(videoOutput.getPath(), formatOutputWithoutPath(videoMetadata)).toString();
     }
 
     public static String formatOutputWithoutPath(VideoMetadata videoMetadata) {

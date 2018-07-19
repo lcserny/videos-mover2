@@ -38,8 +38,8 @@ public class StaticPathsProvider {
         }
     }
 
-    public static Path getPath(String path) {
-        return fileSystem.getPath(path);
+    public static Path getPath(String path, String... parts) {
+        return fileSystem.getPath(path, parts);
     }
 
     public static Path getPath(VideoPath videoPath) {

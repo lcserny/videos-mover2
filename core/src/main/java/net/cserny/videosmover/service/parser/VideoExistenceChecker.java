@@ -76,9 +76,9 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     private String trimReleaseDate(String filename) {
-        Matcher matcher = SimpleVideoOutputHelper.RELEASEDATE_PATTERN.matcher(filename);
+        Matcher matcher = SimpleVideoOutputHelper.RELEASE_DATE_PATTERN.matcher(filename);
         if (matcher.find()) {
-            filename = filename.substring(0, matcher.start(1) - 2);
+            filename = matcher.group("name");
         }
         return filename;
     }
