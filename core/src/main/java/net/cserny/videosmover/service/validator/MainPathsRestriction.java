@@ -1,10 +1,10 @@
 package net.cserny.videosmover.service.validator;
 
-import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +17,11 @@ public class MainPathsRestriction implements RemovalRestriction {
     public MainPathsRestriction() { }
 
     @Override
-    public boolean isRestricted(Video video) {
+    public boolean isRestricted(Path inputPath) {
         refreshRestrictedFolders();
 
         for (String restrictedFolder : restrictedFolders) {
-            if (restrictedFolder.endsWith(video.getInputPath().getFileName().toString())) {
+            if (restrictedFolder.endsWith(inputPath.getFileName().toString())) {
                 return true;
             }
         }

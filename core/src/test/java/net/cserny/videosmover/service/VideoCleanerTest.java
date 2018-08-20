@@ -13,6 +13,7 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -85,13 +86,14 @@ public class VideoCleanerTest {
 
     private void assertCleaning(Video video, boolean removeExpected) throws IOException {
         boolean moveSuccessful = videoMover.move(video);
-        videoCleaner.clean(video);
+        Path inputPath = video.getInputPath();
+        videoCleaner.clean(inputPath);
 
         assertTrue(moveSuccessful);
         if (removeExpected) {
-            assertFalse(Files.exists(video.getInputPath()));
+            assertFalse(Files.exists(inputPath));
         } else {
-            assertTrue(Files.exists(video.getInputPath()));
+            assertTrue(Files.exists(inputPath));
         }
     }
 }

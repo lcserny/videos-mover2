@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,24 +26,24 @@ public class VideoCleaner {
         this.messageRegistry = messageRegistry;
     }
 
-    public void clean(Video video) {
+    public void clean(Path inputPath) {
         for (RemovalRestriction restriction : removalRestrictions) {
-            if (restriction.isRestricted(video)) {
+            if (restriction.isRestricted(inputPath)) {
                 return;
             }
         }
 
         try {
-            recursiveDelete(video.getInputPath());
+            recursiveDelete(inputPath);
         } catch (IOException e) {
             messageRegistry.displayMessage(MessageProvider.cleanupFailed());
         }
     }
 
     public void clean(List<Video> videos) {
-        for (Video video : videos) {
-            clean(video);
-        }
+        videos.stream().map(Video::getInputPath)
+                .collect(Collectors.toSet())
+                .forEach(this::clean);
     }
 
     private void recursiveDelete(Path sourceParent) throws IOException {
