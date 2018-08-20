@@ -2,6 +2,7 @@ package net.cserny.videosmover.model;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 public class Video {
 
@@ -58,5 +59,35 @@ public class Video {
 
     public void setSubtitles(List<Path> subtitles) {
         this.subtitles = subtitles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Video video = (Video) o;
+        return Objects.equals(inputPath, video.inputPath) &&
+                Objects.equals(inputFilename, video.inputFilename) &&
+                Objects.equals(outputPath, video.outputPath) &&
+                Objects.equals(outputFolderName, video.outputFolderName) &&
+                Objects.equals(subtitles, video.subtitles) &&
+                videoType == video.videoType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inputPath, inputFilename, outputPath, outputFolderName, subtitles, videoType);
+    }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "inputPath=" + inputPath +
+                ", inputFilename='" + inputFilename + '\'' +
+                ", outputPath=" + outputPath +
+                ", outputFolderName='" + outputFolderName + '\'' +
+                ", subtitles=" + subtitles +
+                ", videoType=" + videoType +
+                '}';
     }
 }
