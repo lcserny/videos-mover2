@@ -9,16 +9,20 @@ import javax.inject.Singleton;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Singleton
 public class VideoNameTrimmer implements VideoNameParser {
 
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
-    private List<String> nameTrimParts;
+    private List<Pattern> nameTrimPartPatterns;
 
     @Inject
     public VideoNameTrimmer() {
-        nameTrimParts = PropertiesLoader.getNameTrimParts();
+        nameTrimPartPatterns = PropertiesLoader.getNameTrimParts().stream()
+                .filter(part -> !part.isEmpty())
+                .map(part -> Pattern.compile("(?i)(-?" + part + ")"))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -36,10 +40,9 @@ public class VideoNameTrimmer implements VideoNameParser {
     }
 
     private String trim(String filename) {
-        for (String part : nameTrimParts) {
-            Pattern compile = Pattern.compile("(?i)(-?" + part + ")");
-            Matcher matcher = compile.matcher(filename);
-            if (!part.isEmpty() && matcher.find()) {
+        for (Pattern part : nameTrimPartPatterns) {
+            Matcher matcher = part.matcher(filename);
+            if (matcher.find()) {
                 filename = filename.substring(0, matcher.start());
             }
         }
