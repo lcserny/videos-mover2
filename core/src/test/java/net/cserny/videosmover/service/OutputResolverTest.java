@@ -124,4 +124,18 @@ public class OutputResolverTest {
         assertTrue(chicagoMed.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
         assertEquals("Chicago Med", chicagoMed.getOutputFolderName());
     }
+
+    @Test
+    public void resolve_tvShowWithSeasonInName() throws Exception {
+        String houseOfCardsPath = StaticPathsProvider.getDownloadsPath();
+        String houseOfCardsFolder = "House.of.Cards.S06.1080p.NF.WEBRip.DD5.1.x264-NTG[rartv]";
+        String houseOfCardsFile = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
+
+        inMemoryFileSystem.create(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile, 2);
+        Video criminalMinds = VideoResolver.resolveTvShow(String.join("/",
+                houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile), outputResolver::resolve);
+
+        assertTrue(criminalMinds.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
+        assertEquals("House Of Cards", criminalMinds.getOutputFolderName());
+    }
 }
