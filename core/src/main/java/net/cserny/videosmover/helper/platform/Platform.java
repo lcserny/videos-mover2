@@ -6,15 +6,20 @@ public abstract class Platform {
     static final String MAC = "mac";
     static final String LINUX = "linux";
 
+    private static Platform instance;
+
     public static Platform initPlatform() {
-        String os = System.getProperty("os.name");
-        if (os.contains("Windows")) {
-            return new WindowsPlatform();
-        } else if (os.contains("OS X")) {
-            return new MacPlatform();
-        } else {
-            return new LinuxPlatform();
+        if (instance == null) {
+            String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                instance = new WindowsPlatform();
+            } else if (os.contains("OS X")) {
+                instance = new MacPlatform();
+            } else {
+                instance = new LinuxPlatform();
+            }
         }
+        return instance;
     }
 
     public abstract String getPathPrefix();
