@@ -3,10 +3,7 @@ package net.cserny.videosmover.helper;
 import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.model.VideoPath;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 
 public class StaticPathsProvider {
 
@@ -39,6 +36,19 @@ public class StaticPathsProvider {
     }
 
     public static Path getPath(String path, String... parts) {
+        path = path.trim();
+        boolean invalidParts = false;
+        if (parts != null) {
+            for (String part : parts) {
+                if (part.isEmpty()) {
+                    invalidParts = true;
+                    break;
+                }
+            }
+        }
+        if (invalidParts) {
+            return fileSystem.getPath(path);
+        }
         return fileSystem.getPath(path, parts);
     }
 
