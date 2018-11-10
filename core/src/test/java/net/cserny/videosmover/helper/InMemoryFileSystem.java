@@ -2,6 +2,7 @@ package net.cserny.videosmover.helper;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import net.cserny.videosmover.helper.platform.Platform;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -10,14 +11,28 @@ import java.nio.file.Path;
 
 public class InMemoryFileSystem {
 
-    private static final String DOWNLOADS = "/Downloads";
-    private static final String MOVIES = "/Movies";
-    private static final String TV_SHOWS = "/TvShows";
-    private static final String EMPTY = "/empty";
-
+    private static final Platform platform;
     private FileSystem fileSystem;
 
-    private InMemoryFileSystem() { }
+    static {
+        platform = Platform.initPlatform();
+    }
+
+    public static String getDownloads() {
+        return platform.getPathPrefix() + "/Downloads";
+    }
+
+    public static String getMovies() {
+        return platform.getPathPrefix() + "/Movies";
+    }
+
+    public static String getTvShows() {
+        return platform.getPathPrefix() + "/TvShows";
+    }
+
+    public static String getEmpty() {
+        return platform.getPathPrefix() + "/empty";
+    }
 
     public static InMemoryFileSystem initFileSystem() throws IOException {
         InMemoryFileSystem inMemoryFileSystem = new InMemoryFileSystem();
@@ -25,19 +40,19 @@ public class InMemoryFileSystem {
         inMemoryFileSystem.fileSystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
         StaticPathsProvider.setFileSystem(inMemoryFileSystem.fileSystem);
 
-        Path downloadsFolder = inMemoryFileSystem.fileSystem.getPath(DOWNLOADS);
+        Path downloadsFolder = inMemoryFileSystem.fileSystem.getPath(getDownloads());
         Files.createDirectory(downloadsFolder);
         StaticPathsProvider.setDownloadsPath(downloadsFolder.toString());
 
-        Path moviesFolder = inMemoryFileSystem.fileSystem.getPath(MOVIES);
+        Path moviesFolder = inMemoryFileSystem.fileSystem.getPath(getMovies());
         Files.createDirectory(moviesFolder);
         StaticPathsProvider.setMoviesPath(moviesFolder.toString());
 
-        Path tvShowsFolder = inMemoryFileSystem.fileSystem.getPath(TV_SHOWS);
+        Path tvShowsFolder = inMemoryFileSystem.fileSystem.getPath(getTvShows());
         Files.createDirectory(tvShowsFolder);
         StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
 
-        Files.createDirectory(inMemoryFileSystem.fileSystem.getPath(EMPTY));
+        Files.createDirectory(inMemoryFileSystem.fileSystem.getPath(getEmpty()));
 
         return inMemoryFileSystem;
     }
