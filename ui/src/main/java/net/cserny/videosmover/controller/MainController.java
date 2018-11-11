@@ -124,12 +124,15 @@ public class MainController implements Initializable {
             return;
         }
 
-        loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
+
+        loadingImage.setImage(new Image(getClass().getResourceAsStream(
+                StaticPathsProvider.getPathString(true, "images", "loading.gif"))));
         new Thread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
-            loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
+            loadingImage.setImage(new Image(getClass().getResourceAsStream(
+                    StaticPathsProvider.getPathString(true, "images", "scan-button.png"))));
         }).start();
     }
 
