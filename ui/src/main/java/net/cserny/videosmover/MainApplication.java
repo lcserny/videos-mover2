@@ -8,12 +8,10 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 
 public class MainApplication extends Application {
@@ -38,8 +36,7 @@ public class MainApplication extends Application {
     public void init() throws IOException {
         initContext();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                StaticPathsProvider.getPathString(true,  "fxml", "main.fxml")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setController(controller);
         parent = loader.load();
     }
@@ -56,8 +53,7 @@ public class MainApplication extends Application {
         primaryStage.setScene(new Scene(parent));
         primaryStage.setTitle(TITLE);
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getPathString(true, "images", "application.png"))));
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/application.png")));
         primaryStage.centerOnScreen();
         primaryStage.show();
 

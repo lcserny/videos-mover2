@@ -11,7 +11,6 @@ import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +39,7 @@ public class CachedVideoRetriever implements VideoNameParser {
     }
 
     private String parseOutputInternal(String output, String rootPath, String cachePrefix) {
-        SimpleVideoOutput videoOutput = SimpleVideoOutputHelper.buildVideoOutput(rootPath + File.separator + output);
+        SimpleVideoOutput videoOutput = SimpleVideoOutputHelper.buildVideoOutput(rootPath + "/" + output);
         VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
         String formattedKey = cachedTmdbService.keyFormat(cachePrefix, videoQuery);
         String foundOutput = checkVideoCache(formattedKey);

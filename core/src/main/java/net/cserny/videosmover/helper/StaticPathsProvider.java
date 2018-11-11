@@ -3,7 +3,6 @@ package net.cserny.videosmover.helper;
 import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.model.VideoPath;
 
-import java.io.File;
 import java.nio.file.*;
 
 public class StaticPathsProvider {
@@ -51,14 +50,6 @@ public class StaticPathsProvider {
             return fileSystem.getPath(path);
         }
         return fileSystem.getPath(path, parts);
-    }
-
-    public static String getPathString(boolean appendRootSlash, String... paths) {
-        String fullPath = String.join(File.separator, paths);
-        if (appendRootSlash) {
-            fullPath = File.separator + fullPath;
-        }
-        return fullPath;
     }
 
     public static Path getPath(VideoPath videoPath) {

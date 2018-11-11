@@ -4,7 +4,6 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import net.cserny.videosmover.helper.platform.Platform;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -20,19 +19,19 @@ public class InMemoryFileSystem {
     }
 
     public static String getDownloads() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "Downloads");
+        return platform.getPathPrefix() + "/Downloads";
     }
 
     public static String getMovies() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "Movies");
+        return platform.getPathPrefix() + "/Movies";
     }
 
     public static String getTvShows() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "TvShows");
+        return platform.getPathPrefix() + "/TvShows";
     }
 
     public static String getEmpty() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "empty");
+        return platform.getPathPrefix() + "/empty";
     }
 
     public static InMemoryFileSystem initFileSystem() throws IOException {

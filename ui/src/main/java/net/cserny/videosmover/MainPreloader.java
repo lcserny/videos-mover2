@@ -8,7 +8,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 
 public class MainPreloader extends Preloader {
 
@@ -18,8 +17,7 @@ public class MainPreloader extends Preloader {
     public void start(Stage primaryStage) {
         stage = primaryStage;
 
-        Pane splashPane = new Pane(new ImageView(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getPathString(true, "images", "loading.gif")))));
+        Pane splashPane = new Pane(new ImageView(new Image(getClass().getResourceAsStream("/images/loading.gif"))));
         stage.setScene(new Scene(splashPane, Color.TRANSPARENT));
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setAlwaysOnTop(true);

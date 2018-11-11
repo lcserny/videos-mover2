@@ -22,7 +22,7 @@ public abstract class Platform {
         return instance;
     }
 
-    public abstract String getRootPathPrefix();
+    public abstract String getPathPrefix();
 
     public abstract String getName();
 }

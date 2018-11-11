@@ -5,7 +5,7 @@ public class MacPlatform extends Platform {
     MacPlatform() { }
 
     @Override
-    public String getRootPathPrefix() {
+    public String getPathPrefix() {
         return "";
     }
 

@@ -5,7 +5,7 @@ public class WindowsPlatform extends Platform {
     WindowsPlatform() { }
 
     @Override
-    public String getRootPathPrefix() {
+    public String getPathPrefix() {
         return "c:";
     }
 

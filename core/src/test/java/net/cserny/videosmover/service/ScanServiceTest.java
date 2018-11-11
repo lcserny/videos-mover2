@@ -67,12 +67,10 @@ public class ScanServiceTest {
         String bigSickSubFile = "Subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, bigSickFolder +
-                StaticPathsProvider.getPathString(true, "Sub"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, bigSickFolder + "/Sub", bigSickSubFile, 0);
 
-        for (Video video : scanService.scan(StaticPathsProvider.getPathString(false, bigSickPath, bigSickFolder))) {
-            if (video.getInputPath().toString().contains(
-                    StaticPathsProvider.getPathString(false, bigSickPath, bigSickFolder))) {
+        for (Video video : scanService.scan(String.join("/", bigSickPath, bigSickFolder))) {
+            if (video.getInputPath().toString().contains(String.join("/", bigSickPath, bigSickFolder))) {
                 List<Path> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());
