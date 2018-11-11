@@ -132,10 +132,21 @@ public class OutputResolverTest {
         String houseOfCardsFile = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
 
         inMemoryFileSystem.create(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile, 2);
-        Video criminalMinds = VideoResolver.resolveTvShow(String.join("/",
+        Video houseOfCards = VideoResolver.resolveTvShow(String.join("/",
                 houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile), outputResolver::resolve);
 
-        assertTrue(criminalMinds.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("House Of Cards", criminalMinds.getOutputFolderName());
+        assertTrue(houseOfCards.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
+        assertEquals("House Of Cards", houseOfCards.getOutputFolderName());
+
+        String houseOfCardsPath2 = StaticPathsProvider.getDownloadsPath();
+        String houseOfCardsFolder2 = "House of Cards s06";
+        String houseOfCardsFile2 = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
+
+        inMemoryFileSystem.create(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2, 2);
+        Video houseOfCards2 = VideoResolver.resolveTvShow(String.join("/",
+                houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2), outputResolver::resolve);
+
+        assertTrue(houseOfCards2.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
+        assertEquals("House Of Cards", houseOfCards2.getOutputFolderName());
     }
 }
