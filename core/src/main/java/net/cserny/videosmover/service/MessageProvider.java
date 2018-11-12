@@ -58,4 +58,10 @@ public class MessageProvider {
                 String.format("Video folder '%s' already exists, are you sure you want to move the video?", existingFolder),
                 "Video folder already exists");
     }
+
+    public static Message invalidManualPathSpecified(String manualPathSpecified) {
+        return new Message(Alert.AlertType.WARNING,
+                String.format("Manual path specified '%s' is invalid, falling back to previous valid path", manualPathSpecified),
+                "Invalid manual path specified");
+    }
 }

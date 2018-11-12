@@ -112,7 +112,7 @@ public class MainController implements Initializable {
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
                     outputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService));
+                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService, messageRegistry));
                     break;
             }
         }

@@ -15,10 +15,14 @@ import javafx.scene.text.Text;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.*;
 import net.cserny.videosmover.service.CachedMetadataService;
+import net.cserny.videosmover.service.MessageProvider;
+import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -27,15 +31,18 @@ import java.util.regex.Pattern;
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private final CachedMetadataService metadataService;
+    private final SimpleMessageRegistry messageRegistry;
     private final CustomTextField customTextField;
     private final Button button;
     private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)$");
 
     private StringProperty boundProperty = null;
     private SimpleVideoOutput videoOutput;
+    private Path previousValidManualPath;
 
-    public CustomTextFieldCell(CachedMetadataService metadataService) {
+    public CustomTextFieldCell(CachedMetadataService metadataService, SimpleMessageRegistry messageRegistry) {
         this.metadataService = metadataService;
+        this.messageRegistry = messageRegistry;
 
         button = initButton();
         customTextField = initCustomTextField();
@@ -192,13 +199,21 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private void updateVideoRowOutput(SimpleStringProperty outputProperty) {
         VideoRow videoRow = getTableView().getItems().get(getIndex());
         String value = outputProperty.getValue();
-        if (videoRow != null && value != null && !value.isEmpty()) {
+        if (videoRow != null && !StringUtils.isEmpty(value)) {
             videoRow.setOutput(convertToPath(value));
         }
     }
 
     private VideoPath convertToPath(String manualPath) {
-        Path path = StaticPathsProvider.getPath(manualPath);
+        Path path = null;
+        try {
+            path = StaticPathsProvider.getPath(manualPath);
+            previousValidManualPath = path;
+        } catch (InvalidPathException e) {
+            path = previousValidManualPath;
+            messageRegistry.displayMessage(MessageProvider.invalidManualPathSpecified(manualPath));
+        }
+
         String outputPath = path.getParent().toString();
         String outputFolder = path.getFileName().toString();
         String year = "";
