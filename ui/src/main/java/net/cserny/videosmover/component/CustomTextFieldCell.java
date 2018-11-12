@@ -172,6 +172,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     @Override
     protected void updateItem(String output, boolean empty) {
         super.updateItem(output, empty);
+        int caretPosition = customTextField.getCaretPosition();
 
         if (output != null && !output.isEmpty()) {
             processForShow(output);
@@ -194,6 +195,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
             updateVideoRowOutput(outputProperty);
         }
         setContentDisplay(contentDisplay);
+        customTextField.positionCaret(caretPosition);
     }
 
     private void updateVideoRowOutput(SimpleStringProperty outputProperty) {
