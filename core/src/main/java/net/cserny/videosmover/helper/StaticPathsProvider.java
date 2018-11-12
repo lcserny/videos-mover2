@@ -8,6 +8,8 @@ import java.nio.file.*;
 
 public class StaticPathsProvider {
 
+    private static final String separator = "/";
+
     private static FileSystem fileSystem;
     private static String downloadsPath;
     private static String moviesPath;
@@ -54,9 +56,9 @@ public class StaticPathsProvider {
     }
 
     public static String getPathString(boolean appendRootSlash, String... paths) {
-        String fullPath = String.join(File.separator, paths);
+        String fullPath = String.join(separator, paths);
         if (appendRootSlash) {
-            fullPath = File.separator + fullPath;
+            fullPath = separator + fullPath;
         }
         return fullPath;
     }
