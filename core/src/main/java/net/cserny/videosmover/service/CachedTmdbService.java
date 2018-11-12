@@ -8,6 +8,7 @@ import info.movito.themoviedbapi.model.core.ResponseStatusException;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import net.cserny.videosmover.helper.PropertiesLoader;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
@@ -171,7 +172,8 @@ public class CachedTmdbService implements CachedMetadataService {
     private String buildPosterUrl(String posterPath) {
         if (posterPath == null || posterPath.isEmpty()) {
             try {
-                URL resource = getClass().getResource("/images/no-poster.jpg");
+                URL resource = getClass().getResource(
+                        StaticPathsProvider.getPathString(true, "images", "no-poster.jpg"));
                 if (resource != null) {
                   return resource.toURI().toString();
                 }
