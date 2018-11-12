@@ -53,7 +53,8 @@ public class VideoCleanerTest {
         String movieFile = "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
-        Video video = VideoResolver.resolveMovie(String.join("/", moviePath, movieFolder, movieFile),
+        Video video = VideoResolver.resolveMovie(
+                StaticPathsProvider.getPathString(false, moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
         assertCleaning(video, true);
@@ -65,7 +66,8 @@ public class VideoCleanerTest {
         String videoFile = "fromDownloads.mp4";
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
-        Video video = VideoResolver.resolveMovie(String.join("/", videoPath, videoFile),
+        Video video = VideoResolver.resolveMovie(
+                StaticPathsProvider.getPathString(false, videoPath, videoFile),
                 outputResolver::resolve);
 
         assertCleaning(video, false);
@@ -78,7 +80,8 @@ public class VideoCleanerTest {
         String videoFile = "the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 2);
-        Video video = VideoResolver.resolveMovie(String.join("/", videoPath, videoFolder, videoFile),
+        Video video = VideoResolver.resolveMovie(
+                StaticPathsProvider.getPathString(false, videoPath, videoFolder, videoFile),
                 outputResolver::resolve);
 
         assertCleaning(video, false);

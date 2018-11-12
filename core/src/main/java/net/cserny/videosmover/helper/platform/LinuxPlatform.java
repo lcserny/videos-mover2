@@ -5,7 +5,7 @@ public class LinuxPlatform extends Platform {
     LinuxPlatform() { }
 
     @Override
-    public String getPathPrefix() {
+    public String getRootPathPrefix() {
         return "";
     }
 
