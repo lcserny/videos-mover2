@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Video {
 
-    private Date date;
+    private VideoDate date;
     private String fileName;
     private String inputPath;
     private String inputFolderName;
@@ -55,11 +55,11 @@ public class Video {
         this.outputFolderName = outputFolderName;
     }
 
-    public Date getDate() {
+    public VideoDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(VideoDate date) {
         this.date = date;
     }
 
