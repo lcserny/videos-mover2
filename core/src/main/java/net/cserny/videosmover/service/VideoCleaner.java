@@ -29,6 +29,7 @@ public class VideoCleaner {
     public void clean(Path inputPath) {
         for (RemovalRestriction restriction : removalRestrictions) {
             if (restriction.isRestricted(inputPath)) {
+                messageRegistry.displayMessage(MessageProvider.removalNotAllowed(inputPath.toString()));
                 return;
             }
         }

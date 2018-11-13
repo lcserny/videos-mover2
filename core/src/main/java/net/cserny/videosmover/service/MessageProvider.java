@@ -3,6 +3,8 @@ package net.cserny.videosmover.service;
 import javafx.scene.control.Alert;
 import net.cserny.videosmover.model.Message;
 
+import java.nio.file.Path;
+
 public class MessageProvider {
 
     public static Message inputMissing() {
@@ -63,5 +65,11 @@ public class MessageProvider {
         return new Message(Alert.AlertType.WARNING,
                 String.format("Manual path specified '%s' is invalid, falling back to previous valid path", manualPathSpecified),
                 "Invalid manual path specified");
+    }
+
+    public static Message removalNotAllowed(String inputPath) {
+        return new Message(Alert.AlertType.INFORMATION,
+                String.format("Video folder '%s' will not be deleted, restricted removal path detected", inputPath),
+                "Path removal not allowed");
     }
 }
