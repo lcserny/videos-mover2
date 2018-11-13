@@ -47,7 +47,7 @@ public class VideoCheckerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, null, 0);
 
-        assertFalse(isVideoResult(StaticPathsProvider.getPathString(false, videoPath, videoFolder)));
+        assertFalse(isVideoResult(StaticPathsProvider.getJoinedPathString(false, videoPath, videoFolder)));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class VideoCheckerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 0);
 
-        assertFalse(isVideoResult(StaticPathsProvider.getPathString(false, videoPath, videoFolder, videoFile)));
+        assertFalse(isVideoResult(StaticPathsProvider.getJoinedPathString(false, videoPath, videoFolder, videoFile)));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class VideoCheckerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 2);
 
-        assertTrue(isVideoResult(StaticPathsProvider.getPathString(false, videoPath, videoFolder, videoFile)));
+        assertTrue(isVideoResult(StaticPathsProvider.getJoinedPathString(false, videoPath, videoFolder, videoFile)));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class VideoCheckerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 1);
 
-        assertFalse(isVideoResult(StaticPathsProvider.getPathString(false, videoPath, videoFolder, videoFile)));
+        assertFalse(isVideoResult(StaticPathsProvider.getJoinedPathString(false, videoPath, videoFolder, videoFile)));
     }
 
     @Test
@@ -91,6 +91,6 @@ public class VideoCheckerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 2);
 
-        assertFalse(isVideoResult(StaticPathsProvider.getPathString(false, videoPath, videoFolder, videoFile)));
+        assertFalse(isVideoResult(StaticPathsProvider.getJoinedPathString(false, videoPath, videoFolder, videoFile)));
     }
 }

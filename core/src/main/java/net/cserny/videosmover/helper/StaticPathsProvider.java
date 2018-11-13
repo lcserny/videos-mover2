@@ -1,10 +1,9 @@
 package net.cserny.videosmover.helper;
 
-import net.cserny.videosmover.facade.MainFacade;
-import net.cserny.videosmover.model.VideoPath;
-
-import java.io.File;
-import java.nio.file.*;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class StaticPathsProvider {
 
@@ -42,16 +41,16 @@ public class StaticPathsProvider {
         return fileSystem.getPath(path, parts);
     }
 
-    public static String getPathString(boolean appendRootSlash, String... paths) {
-        String fullPath = String.join(SEPARATOR, paths);
-        if (appendRootSlash) {
-            fullPath = SEPARATOR + fullPath;
+    public static String getJoinedPathString(String startPath, String... paths) {
+        String joinedPaths = String.join(SEPARATOR, paths);
+        if (startPath == null) {
+            return joinedPaths;
         }
-        return fullPath;
-    }
 
-    public static Path getPath(VideoPath videoPath) {
-        return fileSystem.getPath(videoPath.getOutputPath()).resolve(MainFacade.combineOutputFolderAndYear(videoPath));
+        if (!startPath.endsWith(SEPARATOR)) {
+            startPath += SEPARATOR;
+        }
+        return startPath + joinedPaths;
     }
 
     public static FileSystem getFileSystem() {

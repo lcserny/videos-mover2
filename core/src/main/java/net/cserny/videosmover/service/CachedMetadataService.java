@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
-import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
 
@@ -19,7 +19,7 @@ public interface CachedMetadataService {
 
     Map<String, List<VideoMetadata>> getVideoCache();
 
-    VideoPath adjustVideoPath(VideoPath videoPath, VideoType videoType);
+    void adjustVideoPath(Video video);
 
     String keyFormat(String prefix, VideoQuery query);
 }

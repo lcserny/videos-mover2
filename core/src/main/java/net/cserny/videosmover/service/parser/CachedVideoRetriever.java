@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.model.SimpleVideoOutput;
+import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
@@ -26,14 +27,14 @@ public class CachedVideoRetriever implements VideoNameParser {
     }
 
     @Override
-    public void parseTvShow(VideoPath videoPath, List<VideoAdjustmentObserver> observers) {
+    public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
         String internal = parseOutputInternal(videoPath.getOutputFolder(),
                 StaticPathsProvider.getTvShowsPath(), CachedMetadataService.TVSHOW_PREFIX);
         videoPath.setOutputFolder(internal);
     }
 
     @Override
-    public void parseMovie(VideoPath videoPath, List<VideoAdjustmentObserver> observers) {
+    public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
         String internal = parseOutputInternal(videoPath.getOutputFolder(),
                 StaticPathsProvider.getMoviesPath(), CachedMetadataService.MOVIE_PREFIX);
         videoPath.setOutputFolder(internal);

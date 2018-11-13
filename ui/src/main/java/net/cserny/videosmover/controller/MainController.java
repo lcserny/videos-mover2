@@ -2,11 +2,9 @@ package net.cserny.videosmover.controller;
 
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -16,7 +14,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
-import net.cserny.videosmover.component.CallbackButtonAction;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
@@ -126,13 +123,13 @@ public class MainController implements Initializable {
 
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getPathString(true, "images", "loading.gif"))));
+                StaticPathsProvider.getJoinedPathString(true, "images", "loading.gif"))));
         new Thread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream(
-                    StaticPathsProvider.getPathString(true, "images", "scan-button.png"))));
+                    StaticPathsProvider.getJoinedPathString(true, "images", "scan-button.png"))));
         }).start();
     }
 

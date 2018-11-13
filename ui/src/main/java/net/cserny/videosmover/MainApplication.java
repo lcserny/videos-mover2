@@ -13,7 +13,6 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 
 public class MainApplication extends Application {
@@ -39,7 +38,7 @@ public class MainApplication extends Application {
         initContext();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                StaticPathsProvider.getPathString(true,  "fxml", "main.fxml")));
+                StaticPathsProvider.getJoinedPathString(true,  "fxml", "main.fxml")));
         loader.setController(controller);
         parent = loader.load();
     }
@@ -57,7 +56,7 @@ public class MainApplication extends Application {
         primaryStage.setTitle(TITLE);
         primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getPathString(true, "images", "application.png"))));
+                StaticPathsProvider.getJoinedPathString(true, "images", "application.png"))));
         primaryStage.centerOnScreen();
         primaryStage.show();
 

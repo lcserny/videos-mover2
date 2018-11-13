@@ -2,7 +2,6 @@ package net.cserny.videosmover.facade;
 
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.*;
@@ -51,20 +50,14 @@ public class MainFacade {
 
     private void handleToggleVideoType(VideoType videoType, VideoRow videoRow) {
         videoRow.setVideoType(videoType);
-        VideoPath videoPath = VideoPath.emptyVideoPath;
         if (videoType != VideoType.NONE) {
             VideoExistenceObserver observer = new VideoExistenceObserver();
-            videoPath = outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
+            outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
             if (observer.shouldAdjustPath()) {
-                videoPath = cachedTmdbService.adjustVideoPath(videoPath, videoType);
+                cachedTmdbService.adjustVideoPath(videoRow.getVideo());
             }
         }
-        videoRow.setOutput(videoPath);
-    }
-
-    public static String combineOutputFolderAndYear(VideoPath videoPath) {
-        String year = videoPath.getYear() != null && !videoPath.getYear().isEmpty() ? " (" + videoPath.getYear() + ")" : "";
-        return videoPath.getOutputFolder() + year;
+        videoRow.setOutput(videoRow.getVideo());
     }
 
     public void moveVideos(List<Video> videos) {

@@ -95,6 +95,15 @@ public class Video {
         this.videoType = videoType;
     }
 
+    public String getOutputPathWithoutFolder() {
+        String noFileNameOutputPath = outputPath.replaceAll(fileName, "");
+        return noFileNameOutputPath.substring(0, noFileNameOutputPath.length() - 1);
+    }
+
+    public String getInputFolderNameFromFileName() {
+        return fileName.substring(0, fileName.lastIndexOf('.'));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

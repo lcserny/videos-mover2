@@ -2,8 +2,6 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoPath;
-import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 import net.cserny.videosmover.service.parser.VideoNameParser;
 
@@ -22,29 +20,35 @@ public class OutputResolver {
         this.nameParserList = nameParserList;
     }
 
-    public VideoPath resolve(Video video, List<VideoAdjustmentObserver> observers) {
-        String resolvedName = video.getInputPath().getFileName().toString();
-        if (video.getInputPath().toString().equals(StaticPathsProvider.getDownloadsPath())) {
-            resolvedName = video.getInputFilename();
+    public void resolve(Video video, List<VideoAdjustmentObserver> observers) {
+        String resolvedName = video.getInputFolderName();
+        if (resolvedName == null) {
+            resolvedName = video.getInputFolderNameFromFileName();
         }
+        video.setOutputFolderName(resolvedName);
 
-        VideoPath videoPath = new VideoPath();
-        videoPath.setOutputFolder(resolvedName);
-        videoPath.setOutputPath(video.getVideoType() == VideoType.MOVIE
-                    ? StaticPathsProvider.getMoviesPath()
-                    : StaticPathsProvider.getTvShowsPath());
+        String outputPathWithoutFolder = null;
+        switch (video.getVideoType()) {
+            case MOVIE:
+                outputPathWithoutFolder = StaticPathsProvider.getMoviesPath();
+                break;
+            case TVSHOW:
+                outputPathWithoutFolder = StaticPathsProvider.getTvShowsPath();
+                break;
+        }
+        video.setOutputPath(StaticPathsProvider.getJoinedPathString(outputPathWithoutFolder,
+                resolvedName, video.getFileName()));
 
+        // TODO: improve this, 3 parser for movie and 3 for Tv, more OOP
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
                 case MOVIE:
-                    videoNameParser.parseMovie(videoPath, observers);
+                    videoNameParser.parseMovie(video, observers);
                     break;
                 case TVSHOW:
-                    videoNameParser.parseTvShow(videoPath, observers);
+                    videoNameParser.parseTvShow(video, observers);
                     break;
             }
         }
-
-        return videoPath;
     }
 }

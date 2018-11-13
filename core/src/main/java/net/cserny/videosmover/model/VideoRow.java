@@ -13,7 +13,7 @@ public class VideoRow {
 
     public VideoRow(Video video) {
         this.video = video;
-        setName(video.getInputFilename());
+        setName(video.getFileName());
     }
 
     public Video getVideo() {
@@ -40,12 +40,8 @@ public class VideoRow {
         return output;
     }
 
-    public void setOutput(VideoPath videoPath) {
-        this.output.set(StaticPathsProvider.getPath(videoPath).toString());
-        if (!videoPath.isEmpty()) {
-            video.setOutputPath(StaticPathsProvider.getPath(videoPath.getOutputPath()));
-            video.setOutputFolderName(MainFacade.combineOutputFolderAndYear(videoPath));
-        }
+    public void setOutput(Video video) {
+        this.output.set(video.getOutputPathWithoutFolder());
     }
 
     public VideoType getVideoType() {

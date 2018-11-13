@@ -1,7 +1,7 @@
 package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.helper.PropertiesLoader;
-import net.cserny.videosmover.model.VideoPath;
+import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 
 import javax.inject.Inject;
@@ -26,7 +26,7 @@ public class VideoNameTrimmer implements VideoNameParser {
     }
 
     @Override
-    public void parseTvShow(VideoPath videoPath, List<VideoAdjustmentObserver> observers) {
+    public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
         String trimmed = trim(videoPath.getOutputFolder());
         String withoutExtension = removeExtension(trimmed);
         String camelCase = toCamelCase(withoutExtension);
@@ -34,7 +34,7 @@ public class VideoNameTrimmer implements VideoNameParser {
     }
 
     @Override
-    public void parseMovie(VideoPath videoPath, List<VideoAdjustmentObserver> observers) {
+    public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
         parseTvShow(videoPath, observers);
         appendYear(videoPath);
     }
