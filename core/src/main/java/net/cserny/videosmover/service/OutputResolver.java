@@ -26,19 +26,11 @@ public class OutputResolver {
             resolvedName = video.getInputFolderNameFromFileName();
         }
         video.setOutputFolderName(resolvedName);
+        adjustOutputFolderName(video, observers);
+        adjustOutputPath(video);
+    }
 
-        String outputPathWithoutFolder = null;
-        switch (video.getVideoType()) {
-            case MOVIE:
-                outputPathWithoutFolder = StaticPathsProvider.getMoviesPath();
-                break;
-            case TVSHOW:
-                outputPathWithoutFolder = StaticPathsProvider.getTvShowsPath();
-                break;
-        }
-        video.setOutputPath(StaticPathsProvider.getJoinedPathString(outputPathWithoutFolder,
-                resolvedName, video.getFileName()));
-
+    private void adjustOutputFolderName(Video video, List<VideoAdjustmentObserver> observers) {
         // TODO: improve this, 3 parser for movie and 3 for Tv, more OOP
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
@@ -50,5 +42,19 @@ public class OutputResolver {
                     break;
             }
         }
+    }
+
+    private void adjustOutputPath(Video video) {
+        String outputPathWithoutFolder = null;
+        switch (video.getVideoType()) {
+            case MOVIE:
+                outputPathWithoutFolder = StaticPathsProvider.getMoviesPath();
+                break;
+            case TVSHOW:
+                outputPathWithoutFolder = StaticPathsProvider.getTvShowsPath();
+                break;
+        }
+        video.setOutputPath(StaticPathsProvider.getJoinedPathString(outputPathWithoutFolder,
+                video.getOutputFolderName(), video.getFileName()));
     }
 }
