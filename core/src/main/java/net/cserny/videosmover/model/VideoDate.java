@@ -1,5 +1,7 @@
 package net.cserny.videosmover.model;
 
+import java.util.Objects;
+
 public class VideoDate {
 
     private int year;
@@ -37,6 +39,22 @@ public class VideoDate {
 
     public void setDay(int day) {
         this.day = day;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VideoDate videoDate = (VideoDate) o;
+        return year == videoDate.year &&
+                month == videoDate.month &&
+                day == videoDate.day;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(year, month, day);
     }
 
     @Override

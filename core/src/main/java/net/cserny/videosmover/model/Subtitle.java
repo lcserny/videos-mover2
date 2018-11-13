@@ -7,8 +7,6 @@ public class Subtitle {
     private String fileName;
     private String inputPath;
     private String inputFolderName;
-    private String outputPath;
-    private String outputFolderName;
 
     public String getFileName() {
         return fileName;
@@ -34,22 +32,6 @@ public class Subtitle {
         this.inputFolderName = inputFolderName;
     }
 
-    public String getOutputPath() {
-        return outputPath;
-    }
-
-    public void setOutputPath(String outputPath) {
-        this.outputPath = outputPath;
-    }
-
-    public String getOutputFolderName() {
-        return outputFolderName;
-    }
-
-    public void setOutputFolderName(String outputFolderName) {
-        this.outputFolderName = outputFolderName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,15 +39,13 @@ public class Subtitle {
         Subtitle subtitle = (Subtitle) o;
         return Objects.equals(fileName, subtitle.fileName) &&
                 Objects.equals(inputPath, subtitle.inputPath) &&
-                Objects.equals(inputFolderName, subtitle.inputFolderName) &&
-                Objects.equals(outputPath, subtitle.outputPath) &&
-                Objects.equals(outputFolderName, subtitle.outputFolderName);
+                Objects.equals(inputFolderName, subtitle.inputFolderName);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(fileName, inputPath, inputFolderName, outputPath, outputFolderName);
+        return Objects.hash(fileName, inputPath, inputFolderName);
     }
 
     @Override
@@ -74,8 +54,6 @@ public class Subtitle {
                 "fileName='" + fileName + '\'' +
                 ", inputPath='" + inputPath + '\'' +
                 ", inputFolderName='" + inputFolderName + '\'' +
-                ", outputPath='" + outputPath + '\'' +
-                ", outputFolderName='" + outputFolderName + '\'' +
                 '}';
     }
 }
