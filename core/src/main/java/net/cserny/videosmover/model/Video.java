@@ -22,7 +22,7 @@ import java.util.Objects;
 * */
 public class Video {
 
-    private VideoDate date;
+    private VideoDate date = new VideoDate();
     private String fileName;
     private String inputPath;
     private String inputFolderName;
@@ -101,7 +101,10 @@ public class Video {
     }
 
     public String getInputFolderNameFromFileName() {
-        return fileName.substring(0, fileName.lastIndexOf('.'));
+        if (fileName.contains(".")) {
+            return fileName.substring(0, fileName.lastIndexOf('.'));
+        }
+        return fileName;
     }
 
     @Override

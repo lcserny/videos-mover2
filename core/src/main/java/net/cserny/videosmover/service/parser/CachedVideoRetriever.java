@@ -1,25 +1,27 @@
 package net.cserny.videosmover.service.parser;
 
-import net.cserny.videosmover.model.SimpleVideoOutput;
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoDate;
 import net.cserny.videosmover.model.VideoMetadata;
-import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedMetadataService;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Singleton
 public class CachedVideoRetriever implements VideoNameParser {
 
     private final CachedMetadataService cachedTmdbService;
+    private static final Pattern releaseDatePattern = Pattern.compile("(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})");
 
     @Inject
     public CachedVideoRetriever(CachedMetadataService cachedTmdbService) {
@@ -28,37 +30,52 @@ public class CachedVideoRetriever implements VideoNameParser {
 
     @Override
     public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
-        String internal = parseOutputInternal(videoPath.getOutputFolder(),
-                StaticPathsProvider.getTvShowsPath(), CachedMetadataService.TVSHOW_PREFIX);
-        videoPath.setOutputFolder(internal);
+        String internal = parseOutputInternal(video, StaticPathsProvider.getTvShowsPath(),
+                CachedMetadataService.TVSHOW_PREFIX);
+        video.setOutputFolderName(internal);
     }
 
     @Override
     public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
-        String internal = parseOutputInternal(videoPath.getOutputFolder(),
-                StaticPathsProvider.getMoviesPath(), CachedMetadataService.MOVIE_PREFIX);
-        videoPath.setOutputFolder(internal);
+        String internal = parseOutputInternal(video, StaticPathsProvider.getMoviesPath(),
+                CachedMetadataService.MOVIE_PREFIX);
+        video.setOutputFolderName(internal);
     }
 
-    private String parseOutputInternal(String output, String rootPath, String cachePrefix) {
-        SimpleVideoOutput videoOutput = SimpleVideoOutputHelper.buildVideoOutput(rootPath + File.separator + output);
-        VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).withYear(videoOutput.getYear()).build();
+    private String parseOutputInternal(Video video, String rootPath, String cachePrefix) {
+        VideoQuery videoQuery = VideoQuery.newInstance()
+                .withName(video.getOutputFolderName())
+                .withYear(video.getDate().getYear())
+                .build();
         String formattedKey = cachedTmdbService.keyFormat(cachePrefix, videoQuery);
-        String foundOutput = checkVideoCache(formattedKey);
+        String foundOutput = checkVideoCache(formattedKey, video);
 
-        return foundOutput != null ? foundOutput : output;
+        return foundOutput != null ? foundOutput : video.getOutputFolderName();
     }
 
-    private String checkVideoCache(String key) {
+    private String checkVideoCache(String key, Video video) {
         Map<String, List<VideoMetadata>> videoCache = cachedTmdbService.getVideoCache();
         if (videoCache.containsKey(key)) {
             List<VideoMetadata> videoMetadataList = videoCache.get(key);
             for (VideoMetadata videoMetadata : videoMetadataList) {
                 if (videoMetadata.isSelected()) {
-                    return SimpleVideoOutputHelper.formatOutputWithoutPath(videoMetadata);
+                    populateYear(video, videoMetadata);
+                    return videoMetadata.getName();
                 }
             }
         }
         return null;
+    }
+
+    private void populateYear(Video video, VideoMetadata videoMetadata) {
+        if (!StringUtils.isEmpty(videoMetadata.getReleaseDate())) {
+            Matcher matcher = releaseDatePattern.matcher(videoMetadata.getReleaseDate());
+            if (matcher.find()) {
+                VideoDate date = video.getDate();
+                date.setYear(Integer.valueOf(matcher.group("year")));
+                date.setMonth(Integer.valueOf(matcher.group("month")));
+                date.setDay(Integer.valueOf(matcher.group("day")));
+            }
+        }
     }
 }

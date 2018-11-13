@@ -2,7 +2,9 @@ package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoDate;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -27,16 +29,16 @@ public class VideoNameTrimmer implements VideoNameParser {
 
     @Override
     public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
-        String trimmed = trim(videoPath.getOutputFolder());
-        String withoutExtension = removeExtension(trimmed);
-        String camelCase = toCamelCase(withoutExtension);
-        videoPath.setOutputFolder(camelCase);
+        String trimmed = trim(video.getOutputFolderName());
+        String withoutSpecialChars = stripSpecialChars(trimmed);
+        String titleCase = toTitleCase(withoutSpecialChars);
+        video.setOutputFolderName(titleCase);
     }
 
     @Override
     public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
-        parseTvShow(videoPath, observers);
-        appendYear(videoPath);
+        parseTvShow(video, observers);
+        appendYear(video);
     }
 
     private String trim(String filename) {
@@ -49,53 +51,34 @@ public class VideoNameTrimmer implements VideoNameParser {
         return filename;
     }
 
-    private String toCamelCase(String name) {
-        StringBuilder camelCaseString = new StringBuilder();
-        String[] nameParts = stripSpecialChars(name).split("\\s+");
-        for (int i = 0; i < nameParts.length; i++) {
-            if (i != 0) {
-                camelCaseString.append(" ");
+    private String toTitleCase(String name) {
+        StringBuilder titleCase = new StringBuilder();
+        boolean nextTitleCase = true;
+        for (char c : name.toCharArray()) {
+            if (Character.isSpaceChar(c)) {
+                nextTitleCase = true;
+            } else if (nextTitleCase) {
+                c = Character.toTitleCase(c);
+                nextTitleCase = false;
             }
-            camelCaseString.append(toProperCase(nameParts[i]));
+            titleCase.append(c);
         }
-        return camelCaseString.toString();
-    }
-
-    private String removeExtension(String text) {
-        boolean extensionPeriodExists = text.charAt(text.length() - 4) == '.';
-        boolean extensionFirstLetter = isExtensionLetterOrDigit(text.charAt(text.length() - 3));
-        boolean extensionSecondLetter = isExtensionLetterOrDigit(text.charAt(text.length() - 2));
-        boolean extensionThirdLetter = isExtensionLetterOrDigit(text.charAt(text.length() - 1));
-
-        if (extensionPeriodExists && extensionFirstLetter && extensionSecondLetter && extensionThirdLetter) {
-            return text.substring(0, text.length() - 4);
-        }
-        return text;
-    }
-
-    private boolean isExtensionLetterOrDigit(char a) {
-        boolean letter = Character.isLetter(a);
-        boolean digit = Character.isDigit(a);
-
-        return (letter && Character.isLowerCase(a)) || digit;
+        return titleCase.toString();
     }
 
     private String stripSpecialChars(String videoName) {
         return videoName.replaceAll("([\\[._\\]])", " ").trim();
     }
 
-    private String toProperCase(String text) {
-        return text.substring(0, 1).toUpperCase() + text.substring(1);
-    }
-
-    private void appendYear(VideoPath videoPath) {
-        Matcher matcher = videoPattern.matcher(videoPath.getOutputFolder());
+    private void appendYear(Video video) {
+        Matcher matcher = videoPattern.matcher(video.getOutputFolderName());
         if (matcher.find()) {
             if (matcher.start(2) != 0) {
-                videoPath.setOutputFolder(matcher.group(1).trim());
+                video.setOutputFolderName(matcher.group(1).trim());
                 String yearString = matcher.group(2);
-                if (yearString != null) {
-                    videoPath.setYear(yearString);
+                if (!StringUtils.isEmpty(yearString)) {
+                    VideoDate videoDate = video.getDate();
+                    videoDate.setYear(Integer.valueOf(yearString));
                 }
             }
         }

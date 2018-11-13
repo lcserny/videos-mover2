@@ -4,40 +4,40 @@ import java.util.Objects;
 
 public class VideoDate {
 
-    private int year;
-    private int month;
-    private int day;
+    private Integer year;
+    private Integer month;
+    private Integer day;
 
     public VideoDate() {
     }
 
-    public VideoDate(int year, int month, int day) {
+    public VideoDate(Integer year, Integer month, Integer day) {
         this.year = year;
         this.month = month;
         this.day = day;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public int getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(int month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 
-    public int getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(Integer day) {
         this.day = day;
     }
 
@@ -46,14 +46,13 @@ public class VideoDate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VideoDate videoDate = (VideoDate) o;
-        return year == videoDate.year &&
-                month == videoDate.month &&
-                day == videoDate.day;
+        return Objects.equals(year, videoDate.year) &&
+                Objects.equals(month, videoDate.month) &&
+                Objects.equals(day, videoDate.day);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(year, month, day);
     }
 

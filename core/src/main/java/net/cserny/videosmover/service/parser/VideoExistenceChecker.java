@@ -4,7 +4,7 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoPath;
+import net.cserny.videosmover.model.VideoDate;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
@@ -20,10 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Singleton
 public class VideoExistenceChecker implements VideoNameParser {
+
+    private static final Pattern releaseDatePattern = Pattern.compile("\\((?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})\\)$");
+    private static final Pattern yearPattern = Pattern.compile("\\((?<year>\\d{4})\\)$");
 
     private final SimpleMessageRegistry messageRegistry;
     private int similarityPercent;
@@ -36,18 +40,18 @@ public class VideoExistenceChecker implements VideoNameParser {
 
     @Override
     public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
-        String existing = checkExisting(StaticPathsProvider.getTvShowsPath(), videoPath.getOutputFolder(), observers);
-        videoPath.setOutputFolder(existing);
+        String existing = checkExisting(StaticPathsProvider.getTvShowsPath(), video, observers);
+        video.setOutputFolderName(existing);
     }
 
     @Override
     public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
-        String existing = checkExisting(StaticPathsProvider.getMoviesPath(), videoPath.getOutputFolder(), observers);
-        videoPath.setOutputFolder(existing);
+        String existing = checkExisting(StaticPathsProvider.getMoviesPath(), video, observers);
+        video.setOutputFolderName(existing);
     }
 
-    private String checkExisting(String path, String fileName, List<VideoAdjustmentObserver> observers) {
-        Optional<String> existingFolder = probeExistingFolder(StaticPathsProvider.getPath(path), fileName);
+    private String checkExisting(String path, Video video, List<VideoAdjustmentObserver> observers) {
+        Optional<String> existingFolder = probeExistingFolder(StaticPathsProvider.getPath(path), video.getOutputFolderName());
         if (existingFolder.isPresent()) {
             for (VideoAdjustmentObserver observer : observers) {
                 observer.dontAdjustPath();
@@ -55,9 +59,24 @@ public class VideoExistenceChecker implements VideoNameParser {
             if (!path.equals(StaticPathsProvider.getTvShowsPath())) {
                 messageRegistry.displayMessage(MessageProvider.existingFolderFound(existingFolder.get()));
             }
+
+            populateYear(existingFolder.get(), video);
             return existingFolder.get();
         }
-        return fileName;
+        return video.getOutputFolderName();
+    }
+
+    private void populateYear(String existingFolder, Video video) {
+        VideoDate date = video.getDate();
+        Matcher releaseDateMatcher = releaseDatePattern.matcher(existingFolder);
+        Matcher yearMatcher = yearPattern.matcher(existingFolder);
+        if (releaseDateMatcher.find()) {
+            date.setYear(Integer.valueOf(releaseDateMatcher.group("year")));
+            date.setMonth(Integer.valueOf(releaseDateMatcher.group("month")));
+            date.setDay(Integer.valueOf(releaseDateMatcher.group("day")));
+        } else if (yearMatcher.find()) {
+            date.setYear(Integer.valueOf(releaseDateMatcher.group("year")));
+        }
     }
 
     private Optional<String> probeExistingFolder(Path path, String filename) {
