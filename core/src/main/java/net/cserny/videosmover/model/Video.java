@@ -3,6 +3,23 @@ package net.cserny.videosmover.model;
 import java.util.List;
 import java.util.Objects;
 
+/*
+* Example for movie D:/Downloads/SomeMovie/SomeVideo.mp4:
+* ---------------------------------------------------------------
+* fileName = SomeVideo.mp4
+* inputPath = D:/Downloads/SomeMovie/SomeVideo.mp4
+* inputFolderName = SomeMovie
+* outputPath = D:/Movies/FormattedSomeMovie/SomeVideo.mp4
+* outputFolderName = FormattedSomeMovie
+*
+* Example for movie D:/Downloads/SomeVideo.mp4:
+* ---------------------------------------------------------------
+* fileName = SomeVideo.mp4
+* inputPath = D:/Downloads/SomeVideo.mp4
+* inputFolderName = null
+* outputPath = D:/Movies/FormattedFromNameSomeMovie/SomeVideo.mp4
+* outputFolderName = FormattedFromNameSomeMovie
+* */
 public class Video {
 
     private VideoDate date;

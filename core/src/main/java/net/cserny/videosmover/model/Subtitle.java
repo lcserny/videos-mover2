@@ -2,6 +2,25 @@ package net.cserny.videosmover.model;
 
 import java.util.Objects;
 
+/*
+ * Example for subtitle D:/Downloads/SomeMovie/SomeVideo.srt:
+ * ---------------------------------------------------------------
+ * fileName = SomeVideo.srt
+ * inputPath = D:/Downloads/SomeMovie/SomeVideo.srt
+ * inputFolderName = null
+ *
+ * Example for subtitle D:/Downloads/SomeMovie/Subs/SomeVideo.srt:
+ * ---------------------------------------------------------------
+ * fileName = SomeVideo.srt
+ * inputPath = D:/Downloads/SomeMovie/Subs/SomeVideo.srt
+ * inputFolderName = Subs
+ *
+ * Example for subtitle D:/Downloads/SomeVideo.srt:
+ * ---------------------------------------------------------------
+ * fileName = SomeVideo.srt
+ * inputPath = D:/Downloads/SomeVideo.srt
+ * inputFolderName = null
+ * */
 public class Subtitle {
 
     private String fileName;
