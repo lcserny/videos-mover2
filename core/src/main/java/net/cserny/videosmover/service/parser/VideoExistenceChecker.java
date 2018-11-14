@@ -26,9 +26,6 @@ import java.util.stream.Collectors;
 @Singleton
 public class VideoExistenceChecker implements VideoNameParser {
 
-    private static final Pattern releaseDatePattern = Pattern.compile("\\((?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})\\)$");
-    private static final Pattern yearPattern = Pattern.compile("\\((?<year>\\d{4})\\)$");
-
     private final SimpleMessageRegistry messageRegistry;
     private int similarityPercent;
 
@@ -68,8 +65,8 @@ public class VideoExistenceChecker implements VideoNameParser {
 
     private void populateYear(String existingFolder, Video video) {
         VideoDate date = video.getDate();
-        Matcher releaseDateMatcher = releaseDatePattern.matcher(existingFolder);
-        Matcher yearMatcher = yearPattern.matcher(existingFolder);
+        Matcher releaseDateMatcher = SimpleVideoOutputHelper.RELEASE_DATE.matcher(existingFolder);
+        Matcher yearMatcher = SimpleVideoOutputHelper.YEAR_ONLY.matcher(existingFolder);
         if (releaseDateMatcher.find()) {
             date.setYear(Integer.valueOf(releaseDateMatcher.group("year")));
             date.setMonth(Integer.valueOf(releaseDateMatcher.group("month")));
@@ -96,7 +93,7 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     private String trimReleaseDate(String filename) {
-        Matcher matcher = SimpleVideoOutputHelper.RELEASE_DATE_PATTERN.matcher(filename);
+        Matcher matcher = SimpleVideoOutputHelper.NAME_WITH_RELEASE_DATE.matcher(filename);
         if (matcher.find()) {
             filename = matcher.group("name");
         }

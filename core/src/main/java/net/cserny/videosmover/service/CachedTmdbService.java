@@ -8,8 +8,8 @@ import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
-import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
 
@@ -55,9 +55,12 @@ public class CachedTmdbService implements CachedMetadataService {
     @Override
     public List<VideoMetadata> searchMetadata(VideoQuery query, VideoType type) {
         switch (type) {
-            case MOVIE: return searchMovieMetadata(query);
-            case TVSHOW: return searchTvShowMetadata(query);
-            default: return Collections.emptyList();
+            case MOVIE:
+                return searchMovieMetadata(query);
+            case TVSHOW:
+                return searchTvShowMetadata(query);
+            default:
+                return Collections.emptyList();
         }
     }
 
@@ -67,19 +70,15 @@ public class CachedTmdbService implements CachedMetadataService {
     }
 
     @Override
-    public VideoPath adjustVideoPath(VideoPath videoPath, VideoType videoType) {
-        Integer year = videoPath.getYear() != null && !videoPath.getYear().isEmpty()
-                ? Integer.valueOf(videoPath.getYear().substring(0, 4))
-                : null;
-
-        VideoQuery.Builder queryBuilder = VideoQuery.newInstance().withName(videoPath.getOutputFolder());
-        if (year != null) {
-            queryBuilder.withYear(year);
-        }
-        VideoQuery query = queryBuilder.build();
+    public void adjustVideoPath(Video video) {
+        VideoQuery query = VideoQuery.newInstance()
+                .withName(video.getOutputFolderName())
+                .withYear(video.getDate().getYear())
+                .build();
 
         List<VideoMetadata> metadataList = Collections.emptyList();
-        switch (videoType) {
+        // TODO: make OOP, use a class sent in constructor that knows how to handle
+        switch (video.getVideoType()) {
             case MOVIE:
                 metadataList = searchMovieMetadata(query);
                 break;
@@ -90,11 +89,9 @@ public class CachedTmdbService implements CachedMetadataService {
 
         if (!metadataList.isEmpty()) {
             VideoMetadata metadata = metadataList.get(0);
-            videoPath.setOutputFolder(metadata.getName());
-            videoPath.setYear(metadata.getReleaseDate());
+            video.setOutputFolderName(metadata.getName());
+            video.getDate().setFromReleaseDate(metadata.getReleaseDate());
         }
-
-        return videoPath;
     }
 
     @Override
@@ -172,9 +169,9 @@ public class CachedTmdbService implements CachedMetadataService {
         if (posterPath == null || posterPath.isEmpty()) {
             try {
                 URL resource = getClass().getResource(
-                        StaticPathsProvider.getJoinedPathString(true, "images", "no-poster.jpg"));
+                        StaticPathsProvider.getJoinedPathString("/images", "no-poster.jpg"));
                 if (resource != null) {
-                  return resource.toURI().toString();
+                    return resource.toURI().toString();
                 }
             } catch (URISyntaxException e) {
                 e.printStackTrace();
@@ -191,8 +188,8 @@ public class CachedTmdbService implements CachedMetadataService {
         TmdbSearch search = getTmdbApi().getSearch();
         return query.getYear() != null
                 ? query.getLanguage() != null
-                        ? search.searchMovie(query.getName(), query.getYear(), query.getLanguage(), false, 1)
-                        : search.searchMovie(query.getName(), query.getYear(), null, false, 1)
+                ? search.searchMovie(query.getName(), query.getYear(), query.getLanguage(), false, 1)
+                : search.searchMovie(query.getName(), query.getYear(), null, false, 1)
                 : search.searchMovie(query.getName(), null, null, false, 1);
     }
 

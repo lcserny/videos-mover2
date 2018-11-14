@@ -53,7 +53,7 @@ public class MainFacade {
         if (videoType != VideoType.NONE) {
             VideoExistenceObserver observer = new VideoExistenceObserver();
             outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
-            if (observer.shouldAdjustPath()) { // TODO
+            if (observer.shouldAdjustPath()) {
                 cachedTmdbService.adjustVideoPath(videoRow.getVideo());
             }
         }

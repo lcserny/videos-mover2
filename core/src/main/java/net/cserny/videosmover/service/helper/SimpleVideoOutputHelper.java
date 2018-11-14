@@ -4,7 +4,11 @@ import java.util.regex.Pattern;
 
 public class SimpleVideoOutputHelper {
 
-    public static final Pattern RELEASE_DATE_PATTERN = Pattern.compile("(?<name>.*) \\((?<year>\\d{4})(-\\d{2}-\\d{2})?\\)$");
+    public static final Pattern NAME_WITH_RELEASE_DATE = Pattern.compile("(?<name>.*) \\((?<year>\\d{4})(-\\d{2}-\\d{2})?\\)$");
+
+    public static final Pattern RELEASE_DATE = Pattern.compile("\\((?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})\\)$");
+
+    public static final Pattern YEAR_ONLY = Pattern.compile("\\((?<year>\\d{4})\\)$");
 
 //    public static SimpleVideoOutput buildVideoOutput(String output) {
 //        Path outputPath = StaticPathsProvider.getPath(output);

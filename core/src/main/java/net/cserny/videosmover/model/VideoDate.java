@@ -1,6 +1,9 @@
 package net.cserny.videosmover.model;
 
+import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
+
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 public class VideoDate {
 
@@ -39,6 +42,15 @@ public class VideoDate {
 
     public void setDay(Integer day) {
         this.day = day;
+    }
+
+    public void setFromReleaseDate(String releaseDate) {
+        Matcher matcher = SimpleVideoOutputHelper.RELEASE_DATE.matcher(releaseDate);
+        if (matcher.find()) {
+            year = Integer.valueOf(matcher.group("year"));
+            month = Integer.valueOf(matcher.group("month"));
+            day = Integer.valueOf(matcher.group("day"));
+        }
     }
 
     @Override

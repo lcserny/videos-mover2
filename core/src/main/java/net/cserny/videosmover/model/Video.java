@@ -96,7 +96,7 @@ public class Video {
     }
 
     public String getOutputPathWithoutFolder() {
-        String noFileNameOutputPath = outputPath.replaceAll(fileName, "");
+        String noFileNameOutputPath = outputPath.replace(fileName, "");
         return noFileNameOutputPath.substring(0, noFileNameOutputPath.length() - 1);
     }
 
