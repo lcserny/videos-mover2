@@ -34,11 +34,10 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final SimpleMessageRegistry messageRegistry;
     private final CustomTextField customTextField;
     private final Button button;
-    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)$");
+//    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)$");
 
     private StringProperty boundProperty = null;
-    private SimpleVideoOutput videoOutput;
-    private Path previousValidManualPath;
+    private Video video;
 
     public CustomTextFieldCell(CachedMetadataService metadataService, SimpleMessageRegistry messageRegistry) {
         this.metadataService = metadataService;
@@ -50,14 +49,14 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         setGraphic(customTextField);
     }
 
-    private void processForShow(String output) {
+    private void processForShow(Video video) {
         button.setVisible(true);
-        videoOutput = SimpleVideoOutputHelper.buildVideoOutput(output);
+        this.video = video;
     }
 
     private void processForHide() {
         button.setVisible(false);
-        videoOutput = null;
+        video = null;
     }
 
     private CustomTextField initCustomTextField() {
@@ -69,11 +68,11 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private Button initButton() {
 
         Image mainImage = new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString(true, "images", "scan-button.png")));
+                StaticPathsProvider.getJoinedPathString("/images", "scan-button.png")));
         Image altImage = new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString(true, "images", "tmdb_logo_small.png")));
+                StaticPathsProvider.getJoinedPathString("/images", "tmdb_logo_small.png")));
         Image loadingImage = new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString(true, "images", "loading.gif")));
+                StaticPathsProvider.getJoinedPathString("/images", "loading.gif")));
         ImageView imageView = buildButtonImageView(mainImage);
 
         Button button = new Button("", imageView);
@@ -157,8 +156,8 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     }
 
     private List<VideoMetadata> processVideoMetadataList() {
-        VideoQuery videoQuery = VideoQuery.newInstance().withName(videoOutput.getName()).build();
-        return metadataService.searchMetadata(videoQuery, videoOutput.getVideoType());
+        VideoQuery videoQuery = VideoQuery.newInstance().withName(video.getOutputFolderName()).build();
+        return metadataService.searchMetadata(videoQuery, video.getVideoType());
     }
 
     private void togglePopover(Button button, PopOver popOver) {
@@ -175,7 +174,8 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         int caretPosition = customTextField.getCaretPosition();
 
         if (output != null && !output.isEmpty()) {
-            processForShow(output);
+            VideoRow videoRow = getTableView().getItems().get(getIndex());
+            processForShow(videoRow.getVideo());
         } else {
             processForHide();
         }
@@ -199,33 +199,9 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     }
 
     private void updateVideoRowOutput(SimpleStringProperty outputProperty) {
-        VideoRow videoRow = getTableView().getItems().get(getIndex());
         String value = outputProperty.getValue();
-        if (videoRow != null && !StringUtils.isEmpty(value)) {
-            videoRow.setOutput(convertToPath(value));
+        if (video != null && !StringUtils.isEmpty(value)) {
+            video.setOutputPathFromManualValue(value);
         }
-    }
-
-    private VideoPath convertToPath(String manualPath) {
-        Path path = null;
-        try {
-            path = StaticPathsProvider.getPath(manualPath);
-            previousValidManualPath = path;
-        } catch (InvalidPathException e) {
-            path = previousValidManualPath;
-            messageRegistry.displayMessage(MessageProvider.invalidManualPathSpecified(manualPath));
-        }
-
-        String outputPath = path.getParent().toString();
-        String outputFolder = path.getFileName().toString();
-        String year = "";
-
-        Matcher matcher = valuePattern.matcher(outputFolder);
-        if (matcher.find()) {
-            outputFolder = matcher.group("outFolder");
-            year = matcher.group("year");
-        }
-
-        return new VideoPath(outputPath, outputFolder, year);
     }
 }

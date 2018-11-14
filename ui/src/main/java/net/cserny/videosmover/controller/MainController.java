@@ -38,11 +38,16 @@ import java.util.stream.Collectors;
 @Singleton
 public class MainController implements Initializable {
 
-    @FXML private ImageView loadingImage;
-    @FXML private Pane settingsPane;
-    @FXML private TableView<VideoRow> tableView;
-    @FXML private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField;
-    @FXML private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
+    @FXML
+    private ImageView loadingImage;
+    @FXML
+    private Pane settingsPane;
+    @FXML
+    private TableView<VideoRow> tableView;
+    @FXML
+    private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField;
+    @FXML
+    private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
     private final MainFacade facade;
     private final SimpleMessageRegistry messageRegistry;
@@ -123,13 +128,13 @@ public class MainController implements Initializable {
 
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString(true, "images", "loading.gif"))));
+                StaticPathsProvider.getJoinedPathString("/images", "loading.gif"))));
         new Thread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream(
-                    StaticPathsProvider.getJoinedPathString(true, "images", "scan-button.png"))));
+                    StaticPathsProvider.getJoinedPathString("/images", "scan-button.png"))));
         }).start();
     }
 
