@@ -1,82 +1,31 @@
 package net.cserny.videosmover.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/*
-* Example for movie D:/Downloads/SomeMovie/SomeVideo.mp4:
-* ---------------------------------------------------------------
-* fileName = SomeVideo.mp4
-* inputPath = D:/Downloads/SomeMovie/SomeVideo.mp4
-* inputFolderName = SomeMovie
-* outputPath = D:/Movies/FormattedSomeMovie/SomeVideo.mp4
-* outputFolderName = FormattedSomeMovie
-*
-* Example for movie D:/Downloads/SomeVideo.mp4:
-* ---------------------------------------------------------------
-* fileName = SomeVideo.mp4
-* inputPath = D:/Downloads/SomeVideo.mp4
-* inputFolderName = null
-* outputPath = D:/Movies/FormattedFromNameSomeMovie/SomeVideo.mp4
-* outputFolderName = FormattedFromNameSomeMovie
-* */
 public class Video {
 
-    private VideoDate date = new VideoDate();
     private String fileName;
-    private String inputPath;
-    private String inputFolderName;
-    private String outputPath;
-    private String outputFolderName;
-    private List<Subtitle> subtitles;
-    private VideoType videoType;
+    private String fullInputPath;
+    private String outputFolderWithoutDate;
+    private Integer year;
+    private Integer month;
+    private Integer day;
+    private List<Subtitle> subtitles = new ArrayList<>();
+    private VideoType videoType = VideoType.NONE;
+
+    public Video(String fileName, String fullInputPath) {
+        this.fileName = fileName;
+        this.fullInputPath = fullInputPath;
+    }
 
     public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getInputPath() {
-        return inputPath;
-    }
-
-    public void setInputPath(String inputPath) {
-        this.inputPath = inputPath;
-    }
-
-    public String getInputFolderName() {
-        return inputFolderName;
-    }
-
-    public void setInputFolderName(String inputFolderName) {
-        this.inputFolderName = inputFolderName;
-    }
-
-    public String getOutputPath() {
-        return outputPath;
-    }
-
-    public void setOutputPath(String outputPath) {
-        this.outputPath = outputPath;
-    }
-
-    public String getOutputFolderName() {
-        return outputFolderName;
-    }
-
-    public void setOutputFolderName(String outputFolderName) {
-        this.outputFolderName = outputFolderName;
-    }
-
-    public VideoDate getDate() {
-        return date;
-    }
-
-    public void setDate(VideoDate date) {
-        this.date = date;
+    public String getFullInputPath() {
+        return fullInputPath;
     }
 
     public List<Subtitle> getSubtitles() {
@@ -95,16 +44,40 @@ public class Video {
         this.videoType = videoType;
     }
 
-    public String getOutputPathWithoutFolder() {
-        String noFileNameOutputPath = outputPath.replace(fileName, "");
-        return noFileNameOutputPath.substring(0, noFileNameOutputPath.length() - 1);
+    public String getOutputFolderWithoutDate() {
+        return outputFolderWithoutDate;
     }
 
-    public String getInputFolderNameFromFileName() {
-        if (fileName.contains(".")) {
-            return fileName.substring(0, fileName.lastIndexOf('.'));
-        }
-        return fileName;
+    public void setOutputFolderWithoutDate(String outputFolderWithoutDate) {
+        this.outputFolderWithoutDate = outputFolderWithoutDate;
+    }
+
+    public String getOutputFolderWithDate() {
+        return outputFolderWithoutDate; // TODO + append date stuff
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public Integer getMonth() {
+        return month;
+    }
+
+    public void setMonth(Integer month) {
+        this.month = month;
+    }
+
+    public Integer getDay() {
+        return day;
+    }
+
+    public void setDay(Integer day) {
+        this.day = day;
     }
 
     @Override
@@ -113,29 +86,29 @@ public class Video {
         if (o == null || getClass() != o.getClass()) return false;
         Video video = (Video) o;
         return Objects.equals(fileName, video.fileName) &&
-                Objects.equals(inputPath, video.inputPath) &&
-                Objects.equals(inputFolderName, video.inputFolderName) &&
-                Objects.equals(outputPath, video.outputPath) &&
-                Objects.equals(outputFolderName, video.outputFolderName) &&
-                Objects.equals(date, video.date) &&
+                Objects.equals(fullInputPath, video.fullInputPath) &&
+                Objects.equals(outputFolderWithoutDate, video.outputFolderWithoutDate) &&
+                Objects.equals(year, video.year) &&
+                Objects.equals(month, video.month) &&
+                Objects.equals(day, video.day) &&
                 Objects.equals(subtitles, video.subtitles) &&
                 videoType == video.videoType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, inputPath, inputFolderName, outputPath, outputFolderName, date, subtitles, videoType);
+        return Objects.hash(fileName, fullInputPath, outputFolderWithoutDate, year, month, day, subtitles, videoType);
     }
 
     @Override
     public String toString() {
         return "Video{" +
                 "fileName='" + fileName + '\'' +
-                ", inputPath='" + inputPath + '\'' +
-                ", inputFolderName='" + inputFolderName + '\'' +
-                ", outputPath='" + outputPath + '\'' +
-                ", outputFolderName='" + outputFolderName + '\'' +
-                ", date=" + date +
+                ", fullInputPath='" + fullInputPath + '\'' +
+                ", outputFolderWithoutDate='" + outputFolderWithoutDate + '\'' +
+                ", year=" + year +
+                ", month=" + month +
+                ", day=" + day +
                 ", subtitles=" + subtitles +
                 ", videoType=" + videoType +
                 '}';
