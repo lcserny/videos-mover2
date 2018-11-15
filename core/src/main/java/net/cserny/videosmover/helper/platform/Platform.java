@@ -8,6 +8,10 @@ public abstract class Platform {
 
     private static Platform instance;
 
+    static {
+        initPlatform();
+    }
+
     public static Platform initPlatform() {
         if (instance == null) {
             String os = System.getProperty("os.name");
@@ -22,7 +26,9 @@ public abstract class Platform {
         return instance;
     }
 
-    public abstract String getRootPathPrefix();
+    public static String getRootPathPrefix() {
+        instance.get
+    }
 
     public abstract String getName();
 }

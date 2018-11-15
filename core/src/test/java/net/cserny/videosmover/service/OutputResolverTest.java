@@ -123,6 +123,7 @@ public class OutputResolverTest {
                 getJoinedPathString(chicagoMedPath, chicagoMedFile),
                 outputResolver::resolve);
 
+        // TODO: this needs fixing on windows
         assertEquals("Chicago Med", chicagoMed.getOutputFolderWithoutDate());
     }
 

@@ -1,5 +1,6 @@
 package net.cserny.videosmover.helper;
 
+import net.cserny.videosmover.helper.platform.Platform;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.FileSystem;
@@ -9,7 +10,8 @@ import java.nio.file.Path;
 
 public class StaticPathsProvider {
 
-    public static final String SEPARATOR = "/";
+    // TODO: init this from platform
+    public static String SEPARATOR;
 
     private static FileSystem fileSystem;
     private static String downloadsPath;
@@ -21,6 +23,8 @@ public class StaticPathsProvider {
     }
 
     private static void initPaths() {
+        SEPARATOR = "";
+
         fileSystem = FileSystems.getDefault();
 
         downloadsPath = PreferencesLoader.getDownloadsPath();
