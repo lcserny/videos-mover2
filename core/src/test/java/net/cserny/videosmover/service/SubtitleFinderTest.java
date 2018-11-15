@@ -55,7 +55,7 @@ public class SubtitleFinderTest {
 
         inMemoryFileSystem.create(tvPath, tvFolder, tvFile, 2);
 
-        List<Path> subtitles = processSubtitles(getJoinedPathString(tvPath, tvFolder, tvFile));
+        List<Path> subtitles = processSubtitles(getJoinedPathString(tvPath, tvFolder));
         assertTrue(subtitles.isEmpty());
     }
 
@@ -67,9 +67,9 @@ public class SubtitleFinderTest {
         String bigSickSubFile = "subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder, "Sub"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder, "Subs"), bigSickSubFile, 0);
 
-        List<Path> subtitles = processSubtitles(getJoinedPathString(bigSickPath, bigSickFolder, bigSickFile));
+        List<Path> subtitles = processSubtitles(getJoinedPathString(bigSickPath, bigSickFolder));
         assertFalse(subtitles.isEmpty());
     }
 
@@ -80,7 +80,7 @@ public class SubtitleFinderTest {
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
 
-        List<Path> subtitles = processSubtitles(getJoinedPathString(videoPath, videoFile));
+        List<Path> subtitles = processSubtitles(getJoinedPathString(videoPath));
         assertTrue(subtitles.isEmpty());
     }
 }

@@ -62,10 +62,14 @@ public class Video {
             return outputFolderWithoutDate;
         }
 
-        String dateAppend = String.format(" (%d)", year);
+        String dateAppend = "";
+        if (year != null) {
+            dateAppend = String.format(" (%d)", year);
+        }
         if (month != null && day != null) {
             dateAppend = String.format(" (%d-%d-%d)", year, month, day);
         }
+
         return outputFolderWithoutDate + dateAppend;
     }
 
@@ -102,10 +106,9 @@ public class Video {
     }
 
     public void setOutputFolderWithoutDateFromFilename() {
-        if (fileName.contains(".")) {
-            outputFolderWithoutDate = fileName.substring(0, fileName.lastIndexOf('.'));
-        }
-        outputFolderWithoutDate = fileName;
+        outputFolderWithoutDate = fileName.contains(".")
+                ? fileName.substring(0, fileName.lastIndexOf('.'))
+                : fileName;
     }
 
     public void setDateFromReleaseDate(String releaseDate) {

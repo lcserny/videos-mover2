@@ -53,7 +53,8 @@ public class VideoMoverTest {
         String gotFile = "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
 
         inMemoryFileSystem.create(gotPath, gotFolder, gotFile, 2);
-        Video got = VideoResolver.resolveTvShow(getJoinedPathString(gotPath, gotFolder, gotFile),
+        Video got = VideoResolver.resolveTvShow(gotPath,
+                getJoinedPathString(gotPath, gotFolder, gotFile),
                 outputResolver::resolve);
 
         String cmPath = StaticPathsProvider.getDownloadsPath();
@@ -61,7 +62,8 @@ public class VideoMoverTest {
         String cmFile = "criminil.mids.s01e01.720p.x264.mp4";
 
         inMemoryFileSystem.create(cmPath, cmFolder, cmFile, 2);
-        Video cm = VideoResolver.resolveTvShow(getJoinedPathString(cmPath, cmFolder, cmFile),
+        Video cm = VideoResolver.resolveTvShow(cmPath,
+                getJoinedPathString(cmPath, cmFolder, cmFile),
                 outputResolver::resolve);
 
         List<Video> videoList = Arrays.asList(got, cm);
@@ -84,7 +86,9 @@ public class VideoMoverTest {
 
         inMemoryFileSystem.create(bsPath, bsFolder, bsFile, 2);
         inMemoryFileSystem.create(bsPath, getJoinedPathString(bsFolder, "Sub"), bsSubFile, 0);
-        Video video = VideoResolver.resolveMovie(getJoinedPathString(bsPath, bsFolder, bsFile), outputResolver::resolve);
+        Video video = VideoResolver.resolveMovie(bsPath,
+                getJoinedPathString(bsPath, bsFolder, bsFile),
+                outputResolver::resolve);
 
         Path subtitlePath = StaticPathsProvider.getPath(getJoinedPathString(bsPath, bsFolder, "Sub", bsSubFile));
         Subtitle subtitle = new Subtitle(subtitlePath.getFileName().toString(), subtitlePath.toString());
@@ -110,23 +114,28 @@ public class VideoMoverTest {
         inMemoryFileSystem.create(ggPath, getJoinedPathString(ggFolder, "Subs"), ggSub1File, 0);
         inMemoryFileSystem.create(ggPath, getJoinedPathString(ggFolder, "Subs"), ggSub2File, 0);
 
-        Video movie = VideoResolver.resolveMovie(getJoinedPathString(ggPath, ggFolder, ggFile), outputResolver::resolve);
+        Video movie = VideoResolver.resolveMovie(ggPath,
+                getJoinedPathString(ggPath, ggFolder, ggFile),
+                outputResolver::resolve);
+
         Path subPath1 = StaticPathsProvider.getPath(getJoinedPathString(ggPath, ggFolder, "Subs", ggSub1File));
         Path subPath2 = StaticPathsProvider.getPath(getJoinedPathString(ggPath, ggFolder, "Subs", ggSub2File));
         movie.setSubtitles(Arrays.asList(
                 new Subtitle(subPath1.getFileName().toString(), subPath1.toString()),
-                new Subtitle(subPath1.getFileName().toString(), subPath2.toString())));
+                new Subtitle(subPath2.getFileName().toString(), subPath2.toString())));
 
         assertTrue(videoMover.move(movie));
 
-        assertTrue(Files.exists(StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath())
+        Path sub1 = StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath())
                 .resolve(movie.getOutputFolderWithDate())
                 .resolve("Subs")
-                .resolve(subPath1.getFileName())));
+                .resolve(subPath1.getFileName());
+        assertTrue(Files.exists(sub1));
 
-        assertTrue(Files.exists(StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath())
+        Path sub2 = StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath())
                 .resolve(movie.getOutputFolderWithDate())
                 .resolve("Subs")
-                .resolve(subPath2.getFileName())));
+                .resolve(subPath2.getFileName());
+        assertTrue(Files.exists(sub2));
     }
 }

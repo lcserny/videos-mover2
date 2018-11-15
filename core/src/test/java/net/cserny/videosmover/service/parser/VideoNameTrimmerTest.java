@@ -1,8 +1,11 @@
 package net.cserny.videosmover.service.parser;
 
+import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -14,6 +17,17 @@ import static org.junit.Assert.assertEquals;
 public class VideoNameTrimmerTest {
 
     private VideoNameTrimmer videoNameTrimmer = new VideoNameTrimmer();
+    private InMemoryFileSystem inMemoryFileSystem;
+
+    @Before
+    public void setUp() throws Exception {
+        inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        inMemoryFileSystem.closeFileSystem();
+    }
 
     @Test
     public void extensionWithLetterAndDigitIsTrimmedCorrectly() {
@@ -22,7 +36,7 @@ public class VideoNameTrimmerTest {
         String fileName = path.getFileName().toString();
         Video video = new Video(fileName, path.toString());
         video.setVideoType(VideoType.MOVIE);
-        video.setOutputFolderWithoutDate(fileName);
+        video.setOutputFolderWithoutDateFromFilename();
 
         videoNameTrimmer.parseMovie(video, Collections.emptyList());
 

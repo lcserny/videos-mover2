@@ -53,7 +53,7 @@ public class VideoCleanerTest {
         String movieFile = "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
-        Video video = VideoResolver.resolveMovie(
+        Video video = VideoResolver.resolveMovie(moviePath,
                 StaticPathsProvider.getJoinedPathString(moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
@@ -66,7 +66,7 @@ public class VideoCleanerTest {
         String videoFile = "fromDownloads.mp4";
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
-        Video video = VideoResolver.resolveMovie(
+        Video video = VideoResolver.resolveMovie(videoPath,
                 StaticPathsProvider.getJoinedPathString(videoPath, videoFile),
                 outputResolver::resolve);
 
@@ -80,7 +80,7 @@ public class VideoCleanerTest {
         String videoFile = "the.hero.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 2);
-        Video video = VideoResolver.resolveMovie(
+        Video video = VideoResolver.resolveMovie(videoPath,
                 StaticPathsProvider.getJoinedPathString(videoPath, videoFolder, videoFile),
                 outputResolver::resolve);
 
@@ -89,7 +89,7 @@ public class VideoCleanerTest {
 
     private void assertCleaning(Video video, boolean removeExpected) throws IOException {
         boolean moveSuccessful = videoMover.move(video);
-        Path inputPath = StaticPathsProvider.getPath(video.getFullInputPath());
+        Path inputPath = StaticPathsProvider.getPath(video.getInputPathWithoutFileName());
         videoCleaner.clean(inputPath);
 
         assertTrue(moveSuccessful);

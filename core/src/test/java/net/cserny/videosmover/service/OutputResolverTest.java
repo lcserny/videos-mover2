@@ -45,7 +45,8 @@ public class OutputResolverTest {
         String movieFile = "1922.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
-        Video video = VideoResolver.resolveMovie(getJoinedPathString(moviePath, movieFolder, movieFile),
+        Video video = VideoResolver.resolveMovie(moviePath,
+                getJoinedPathString(moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
         assertThat(video.getOutputFolderWithoutDate(), containsString("1922"));
@@ -58,7 +59,8 @@ public class OutputResolverTest {
         String tvFile = "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
 
         inMemoryFileSystem.create(tvPath, tvFolder, tvFile, 2);
-        Video video = VideoResolver.resolveTvShow(getJoinedPathString(tvPath, tvFolder, tvFile),
+        Video video = VideoResolver.resolveTvShow(tvPath,
+                getJoinedPathString(tvPath, tvFolder, tvFile),
                 outputResolver::resolve);
 
         assertEquals("Game Of Thrones", video.getOutputFolderWithoutDate());
@@ -71,7 +73,8 @@ public class OutputResolverTest {
         String bigSickFile = "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        Video bigSick = VideoResolver.resolveMovie(getJoinedPathString(bigSickPath, bigSickFolder, bigSickFile),
+        Video bigSick = VideoResolver.resolveMovie(bigSickPath,
+                getJoinedPathString(bigSickPath, bigSickFolder, bigSickFile),
                 outputResolver::resolve);
 
         assertEquals("The Big Sick", bigSick.getOutputFolderWithoutDate());
@@ -81,7 +84,8 @@ public class OutputResolverTest {
         String acrimonyFile = "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT.mkv";
 
         inMemoryFileSystem.create(acrimonyPath, acrimonyFolder, acrimonyFile, 2);
-        Video acrimony = VideoResolver.resolveMovie(getJoinedPathString(acrimonyPath, acrimonyFolder, acrimonyFile),
+        Video acrimony = VideoResolver.resolveMovie(acrimonyPath,
+                getJoinedPathString(acrimonyPath, acrimonyFolder, acrimonyFile),
                 outputResolver::resolve);
 
         assertEquals("Acrimony (2018)", acrimony.getOutputFolderWithDate());
@@ -94,7 +98,8 @@ public class OutputResolverTest {
         String criminalMindsFile = "criminil.mids.s01e01.720p.x264.mp4";
 
         inMemoryFileSystem.create(criminalMindsPath, criminalMindsFolder, criminalMindsFile, 2);
-        Video criminalMinds = VideoResolver.resolveTvShow(getJoinedPathString(criminalMindsPath, criminalMindsFolder, criminalMindsFile),
+        Video criminalMinds = VideoResolver.resolveTvShow(criminalMindsPath,
+                getJoinedPathString(criminalMindsPath, criminalMindsFolder, criminalMindsFile),
                 outputResolver::resolve);
 
         assertEquals("Criminal Minds", criminalMinds.getOutputFolderWithoutDate());
@@ -104,7 +109,8 @@ public class OutputResolverTest {
         String chicagoPdFile = "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS.mkv";
 
         inMemoryFileSystem.create(chicagoPdPath, chicagoPdFolder, chicagoPdFile, 2);
-        Video chicagoPd = VideoResolver.resolveTvShow(getJoinedPathString(chicagoPdPath, chicagoPdFolder, chicagoPdFile),
+        Video chicagoPd = VideoResolver.resolveTvShow(chicagoPdPath,
+                getJoinedPathString(chicagoPdPath, chicagoPdFolder, chicagoPdFile),
                 outputResolver::resolve);
 
         assertEquals("Chicago PD", chicagoPd.getOutputFolderWithoutDate());
@@ -113,7 +119,8 @@ public class OutputResolverTest {
         String chicagoMedFile = "Chicago.Med.S03E14.HDTV.x264-KILLERS[eztv].mkv";
 
         inMemoryFileSystem.create(chicagoMedPath, null, chicagoMedFile, 2);
-        Video chicagoMed = VideoResolver.resolveTvShow(getJoinedPathString(chicagoMedPath, chicagoMedFile),
+        Video chicagoMed = VideoResolver.resolveTvShow(chicagoMedPath,
+                getJoinedPathString(chicagoMedPath, chicagoMedFile),
                 outputResolver::resolve);
 
         assertEquals("Chicago Med", chicagoMed.getOutputFolderWithoutDate());
@@ -126,7 +133,8 @@ public class OutputResolverTest {
         String houseOfCardsFile = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
 
         inMemoryFileSystem.create(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile, 2);
-        Video houseOfCards = VideoResolver.resolveTvShow(getJoinedPathString(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile),
+        Video houseOfCards = VideoResolver.resolveTvShow(houseOfCardsPath,
+                getJoinedPathString(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile),
                 outputResolver::resolve);
 
         assertEquals("House Of Cards", houseOfCards.getOutputFolderWithoutDate());
@@ -136,7 +144,8 @@ public class OutputResolverTest {
         String houseOfCardsFile2 = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
 
         inMemoryFileSystem.create(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2, 2);
-        Video houseOfCards2 = VideoResolver.resolveTvShow(getJoinedPathString(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2),
+        Video houseOfCards2 = VideoResolver.resolveTvShow(houseOfCardsPath2,
+                getJoinedPathString(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2),
                 outputResolver::resolve);
 
         assertEquals("House Of Cards", houseOfCards2.getOutputFolderWithoutDate());

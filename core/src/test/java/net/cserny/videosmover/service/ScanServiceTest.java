@@ -69,7 +69,7 @@ public class ScanServiceTest {
         String bigSickSubFile = "Subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder + "Sub"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder, "Sub"), bigSickSubFile, 0);
 
         for (Video video : scanService.scan(getJoinedPathString(bigSickPath, bigSickFolder))) {
             if (video.getFullInputPath().contains(getJoinedPathString(bigSickPath, bigSickFolder))) {
