@@ -1,5 +1,7 @@
 package net.cserny.videosmover.helper;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -43,7 +45,7 @@ public class StaticPathsProvider {
 
     public static String getJoinedPathString(String startPath, String... paths) {
         String joinedPaths = String.join(SEPARATOR, paths);
-        if (startPath == null) {
+        if (StringUtils.isEmpty(startPath)) {
             return joinedPaths;
         }
 

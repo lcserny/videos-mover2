@@ -38,7 +38,7 @@ public class MainApplication extends Application {
         initContext();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                StaticPathsProvider.getJoinedPathString(true,  "fxml", "main.fxml")));
+                StaticPathsProvider.getJoinedPathString("/fxml", "main.fxml")));
         loader.setController(controller);
         parent = loader.load();
     }
@@ -56,7 +56,7 @@ public class MainApplication extends Application {
         primaryStage.setTitle(TITLE);
         primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString(true, "images", "application.png"))));
+                StaticPathsProvider.getJoinedPathString("/images", "application.png"))));
         primaryStage.centerOnScreen();
         primaryStage.show();
 

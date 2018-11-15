@@ -4,10 +4,8 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoDate;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
-import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 
 import javax.inject.Inject;
@@ -19,9 +17,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static net.cserny.videosmover.service.helper.VideoOutputHelper.trimReleaseDate;
 
 @Singleton
 public class VideoExistenceChecker implements VideoNameParser {
@@ -37,50 +35,38 @@ public class VideoExistenceChecker implements VideoNameParser {
 
     @Override
     public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
-        String existing = checkExisting(StaticPathsProvider.getTvShowsPath(), video, observers);
-        video.setOutputFolderName(existing);
+        parse(StaticPathsProvider.getTvShowsPath(), video, observers);
     }
 
     @Override
     public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
-        String existing = checkExisting(StaticPathsProvider.getMoviesPath(), video, observers);
-        video.setOutputFolderName(existing);
+        parse(StaticPathsProvider.getMoviesPath(), video, observers);
     }
 
-    private String checkExisting(String path, Video video, List<VideoAdjustmentObserver> observers) {
-        Optional<String> existingFolder = probeExistingFolder(StaticPathsProvider.getPath(path), video.getOutputFolderName());
-        if (existingFolder.isPresent()) {
+    private void parse(String path, Video video, List<VideoAdjustmentObserver> observers) {
+        Optional<String> existingFolderOptional = probeExistingFolder(StaticPathsProvider.getPath(path), video.getOutputFolderWithoutDate());
+        if (existingFolderOptional.isPresent()) {
             for (VideoAdjustmentObserver observer : observers) {
                 observer.dontAdjustPath();
             }
+            String existingFolder = existingFolderOptional.get();
             if (!path.equals(StaticPathsProvider.getTvShowsPath())) {
-                messageRegistry.displayMessage(MessageProvider.existingFolderFound(existingFolder.get()));
+                messageRegistry.displayMessage(MessageProvider.existingFolderFound(existingFolder));
             }
 
-            populateYear(existingFolder.get(), video);
-            return existingFolder.get();
-        }
-        return video.getOutputFolderName();
-    }
-
-    private void populateYear(String existingFolder, Video video) {
-        VideoDate date = video.getDate();
-        Matcher releaseDateMatcher = SimpleVideoOutputHelper.RELEASE_DATE.matcher(existingFolder);
-        Matcher yearMatcher = SimpleVideoOutputHelper.YEAR_ONLY.matcher(existingFolder);
-        if (releaseDateMatcher.find()) {
-            date.setYear(Integer.valueOf(releaseDateMatcher.group("year")));
-            date.setMonth(Integer.valueOf(releaseDateMatcher.group("month")));
-            date.setDay(Integer.valueOf(releaseDateMatcher.group("day")));
-        } else if (yearMatcher.find()) {
-            date.setYear(Integer.valueOf(releaseDateMatcher.group("year")));
+            video.setOutputFolderWithoutDate(existingFolder);
+            video.setDateFromReleaseDate(existingFolder);
         }
     }
 
-    private Optional<String> probeExistingFolder(Path path, String filename) {
+    private Optional<String> probeExistingFolder(Path path, String outputFolderNameWithoutDate) {
         int maxCoefficient = 0;
         Path selectedFolder = null;
         for (Path dirPath : findDirectories(path)) {
-            int currentCoefficient = FuzzySearch.ratio(trimReleaseDate(filename), trimReleaseDate(dirPath.getFileName().toString()));
+            int currentCoefficient = FuzzySearch.ratio(
+                    trimReleaseDate(outputFolderNameWithoutDate),
+                    trimReleaseDate(dirPath.getFileName().toString()));
+
             if (currentCoefficient > maxCoefficient) {
                 maxCoefficient = currentCoefficient;
                 selectedFolder = dirPath.getFileName();
@@ -90,14 +76,6 @@ public class VideoExistenceChecker implements VideoNameParser {
         return selectedFolder != null && maxCoefficient >= similarityPercent
                 ? Optional.of(selectedFolder.toString())
                 : Optional.empty();
-    }
-
-    private String trimReleaseDate(String filename) {
-        Matcher matcher = SimpleVideoOutputHelper.NAME_WITH_RELEASE_DATE.matcher(filename);
-        if (matcher.find()) {
-            filename = matcher.group("name");
-        }
-        return filename;
     }
 
     private List<Path> findDirectories(Path path) {

@@ -24,40 +24,36 @@ public class SubtitlesFinder {
         subtitleExtensions = PropertiesLoader.getSubtitleExtensions();
     }
 
-    public List<Subtitle> find(Path videoPath) {
-        Path directory = videoPath.getParent();
+    public List<Subtitle> find(Path directory) {
         if (directory.toString().equals(StaticPathsProvider.getDownloadsPath())) {
             return Collections.emptyList();
         }
         return collectSubtitles(directory);
     }
 
-    private List<Subtitle> collectSubtitles(Path directory) {
+    private List<Subtitle> collectSubtitles(Path videoDirectory) {
         try {
-            return Files.walk(directory, 2, FileVisitOption.FOLLOW_LINKS)
+            return Files.walk(videoDirectory, 2, FileVisitOption.FOLLOW_LINKS)
                     .filter(Files::isRegularFile)
                     .filter(this::filterSubtitles)
-                    .map(subtitlePath -> mapSubtitle(subtitlePath, directory))
+                    .map(subtitlePath -> mapSubtitle(subtitlePath, videoDirectory))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             return Collections.emptyList();
         }
     }
 
-    private Subtitle mapSubtitle(Path subtitlePath, Path videoInputPath) {
-        Subtitle subtitle = new Subtitle();
-        subtitle.setFileName(subtitlePath.getFileName().toString());
-
-        subtitle.setInputPath(subtitlePath.getParent().toString());
-        if (!videoInputPath.equals(subtitlePath.getParent())) {
-            subtitle.setInputFolderName(subtitlePath.getParent().getFileName().toString());
+    private Subtitle mapSubtitle(Path subtitlePath, Path videoDirectory) {
+        Subtitle subtitle = new Subtitle(subtitlePath.getFileName().toString(), subtitlePath.toString());
+        if (!videoDirectory.equals(subtitlePath.getParent())) {
+            subtitle.setSubFolder(subtitlePath.getParent().getFileName().toString());
         }
         return subtitle;
     }
 
     private boolean filterSubtitles(Path subtitle) {
         for (String subtitleExtension : subtitleExtensions) {
-            if (subtitle.toString().endsWith(subtitleExtension)) {
+            if (subtitle.getFileName().toString().endsWith(subtitleExtension)) {
                 return true;
             }
         }

@@ -6,7 +6,6 @@ import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
-import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -68,7 +67,7 @@ public class VideoMetadataServiceTest {
         videoPath.setOutputFolder("Fences");
         videoPath.setYear("2016");
 
-        VideoPath outVideoPath = metadataService.adjustVideoPath(videoPath, VideoType.MOVIE);
+        VideoPath outVideoPath = metadataService.adjustOutputAndDate(videoPath, VideoType.MOVIE);
 
         assertEquals(outVideoPath.getOutputFolder(), "Fences");
         assertEquals(outVideoPath.getYear(), "2016-12-16");

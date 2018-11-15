@@ -32,7 +32,7 @@ public class ScanService {
                     .filter(Files::isRegularFile)
                     .filter(videoChecker::isVideo)
                     .map(path -> mapScannedVideos(path, location))
-                    .sorted(Comparator.comparing(video -> video.getInputPath().toString().toLowerCase()))
+                    .sorted(Comparator.comparing(video -> video.getFullInputPath().toLowerCase()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             return Collections.emptyList();
@@ -40,14 +40,10 @@ public class ScanService {
     }
 
     private Video mapScannedVideos(Path videoPath, String location) {
-        Video video = new Video();
-        video.setFileName(videoPath.getFileName().toString());
-
-        video.setInputPath(videoPath.getParent().toString());
-        if (!video.getInputPath().equals(location)) {
-            video.setInputFolderName(videoPath.getParent().getFileName().toString());
+        Video video = new Video(videoPath.getFileName().toString(), videoPath.toString());
+        if (!video.getInputPathWithoutFileName().equals(location)) {
+            video.setOutputFolderWithoutDate(videoPath.getParent().getFileName().toString());
         }
-
         video.setSubtitles(subtitlesFinder.find(videoPath.getParent()));
         return video;
     }

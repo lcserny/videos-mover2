@@ -2,7 +2,6 @@ package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoDate;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 import org.apache.commons.lang3.StringUtils;
 
@@ -29,16 +28,16 @@ public class VideoNameTrimmer implements VideoNameParser {
 
     @Override
     public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
-        String trimmed = trim(video.getOutputFolderName());
+        String trimmed = trim(video.getOutputFolderWithoutDate());
         String withoutSpecialChars = stripSpecialChars(trimmed);
         String titleCase = toTitleCase(withoutSpecialChars);
-        video.setOutputFolderName(titleCase);
+        video.setOutputFolderWithoutDate(titleCase);
     }
 
     @Override
     public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
         parseTvShow(video, observers);
-        appendYear(video);
+        resolveYear(video);
     }
 
     private String trim(String filename) {
@@ -70,15 +69,14 @@ public class VideoNameTrimmer implements VideoNameParser {
         return videoName.replaceAll("([\\[._\\]])", " ").trim();
     }
 
-    private void appendYear(Video video) {
-        Matcher matcher = videoPattern.matcher(video.getOutputFolderName());
+    private void resolveYear(Video video) {
+        Matcher matcher = videoPattern.matcher(video.getOutputFolderWithoutDate());
         if (matcher.find()) {
             if (matcher.start(2) != 0) {
-                video.setOutputFolderName(matcher.group(1).trim());
+                video.setOutputFolderWithoutDate(matcher.group(1).trim());
                 String yearString = matcher.group(2);
                 if (!StringUtils.isEmpty(yearString)) {
-                    VideoDate videoDate = video.getDate();
-                    videoDate.setYear(Integer.valueOf(yearString));
+                    video.setYear(Integer.valueOf(yearString));
                 }
             }
         }

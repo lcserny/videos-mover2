@@ -1,27 +1,21 @@
 package net.cserny.videosmover.service.parser;
 
-import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
-import net.cserny.videosmover.model.VideoDate;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedMetadataService;
-import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Optional;
 
 @Singleton
 public class CachedVideoRetriever implements VideoNameParser {
 
     private final CachedMetadataService cachedTmdbService;
-    private static final Pattern releaseDatePattern = Pattern.compile("(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})");
 
     @Inject
     public CachedVideoRetriever(CachedMetadataService cachedTmdbService) {
@@ -30,52 +24,37 @@ public class CachedVideoRetriever implements VideoNameParser {
 
     @Override
     public void parseTvShow(Video video, List<VideoAdjustmentObserver> observers) {
-        String internal = parseOutputInternal(video, StaticPathsProvider.getTvShowsPath(),
-                CachedMetadataService.TVSHOW_PREFIX);
-        video.setOutputFolderName(internal);
+        parse(video, CachedMetadataService.TVSHOW_PREFIX);
     }
 
     @Override
     public void parseMovie(Video video, List<VideoAdjustmentObserver> observers) {
-        String internal = parseOutputInternal(video, StaticPathsProvider.getMoviesPath(),
-                CachedMetadataService.MOVIE_PREFIX);
-        video.setOutputFolderName(internal);
+        parse(video, CachedMetadataService.MOVIE_PREFIX);
     }
 
-    private String parseOutputInternal(Video video, String rootPath, String cachePrefix) {
+    private void parse(Video video, String cachePrefix) {
         VideoQuery videoQuery = VideoQuery.newInstance()
-                .withName(video.getOutputFolderName())
-                .withYear(video.getDate().getYear())
+                .withName(video.getOutputFolderWithoutDate())
+                .withYear(video.getYear())
                 .build();
         String formattedKey = cachedTmdbService.keyFormat(cachePrefix, videoQuery);
-        String foundOutput = checkVideoCache(formattedKey, video);
+        Optional<VideoMetadata> foundOutputOptional = findInVideoCache(formattedKey);
 
-        return foundOutput != null ? foundOutput : video.getOutputFolderName();
+        if (foundOutputOptional.isPresent()) {
+            video.setOutputFolderWithoutDate(foundOutputOptional.get().getName());
+            video.setDateFromReleaseDate(foundOutputOptional.get().getReleaseDate());
+        }
     }
 
-    private String checkVideoCache(String key, Video video) {
-        Map<String, List<VideoMetadata>> videoCache = cachedTmdbService.getVideoCache();
-        if (videoCache.containsKey(key)) {
-            List<VideoMetadata> videoMetadataList = videoCache.get(key);
+    private Optional<VideoMetadata> findInVideoCache(String key) {
+        List<VideoMetadata> videoMetadataList = cachedTmdbService.getVideoCache().get(key);
+        if (videoMetadataList != null) {
             for (VideoMetadata videoMetadata : videoMetadataList) {
                 if (videoMetadata.isSelected()) {
-                    populateYear(video, videoMetadata);
-                    return videoMetadata.getName();
+                    return Optional.of(videoMetadata);
                 }
             }
         }
-        return null;
-    }
-
-    private void populateYear(Video video, VideoMetadata videoMetadata) {
-        if (!StringUtils.isEmpty(videoMetadata.getReleaseDate())) {
-            Matcher matcher = releaseDatePattern.matcher(videoMetadata.getReleaseDate());
-            if (matcher.find()) {
-                VideoDate date = video.getDate();
-                date.setYear(Integer.valueOf(matcher.group("year")));
-                date.setMonth(Integer.valueOf(matcher.group("month")));
-                date.setDay(Integer.valueOf(matcher.group("day")));
-            }
-        }
+        return Optional.empty();
     }
 }

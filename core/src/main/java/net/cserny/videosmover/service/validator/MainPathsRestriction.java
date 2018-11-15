@@ -17,18 +17,18 @@ public class MainPathsRestriction implements RemovalRestriction {
     public MainPathsRestriction() { }
 
     @Override
-    public boolean isRestricted(Path inputPath) {
+    public boolean isRestricted(Path inputFolderPath) {
         if (restrictedFolders == null) {
             refreshRestrictedFolders();
         }
 
-        String inputPathString = inputPath.toString();
+        String inputPathString = inputFolderPath.toString();
         if (!inputPathString.startsWith(StaticPathsProvider.getDownloadsPath())) {
             return true;
         }
 
         for (String restrictedFolder : restrictedFolders) {
-            if (inputPathString.equalsIgnoreCase(restrictedFolder)) {
+            if (inputPathString.equals(restrictedFolder)) {
                 return true;
             }
         }

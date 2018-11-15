@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,32 +27,32 @@ public class VideoCleaner {
         this.messageRegistry = messageRegistry;
     }
 
-    public void clean(Path inputPath) {
+    public void clean(Path inputFolderPath) {
         for (RemovalRestriction restriction : removalRestrictions) {
-            if (restriction.isRestricted(inputPath)) {
-                messageRegistry.displayMessage(MessageProvider.removalNotAllowed(inputPath.toString()));
+            if (restriction.isRestricted(inputFolderPath)) {
+                messageRegistry.displayMessage(MessageProvider.removalNotAllowed(inputFolderPath.toString()));
                 return;
             }
         }
 
         try {
-            recursiveDelete(inputPath);
+            recursiveDelete(inputFolderPath);
         } catch (IOException e) {
             messageRegistry.displayMessage(MessageProvider.cleanupFailed());
         }
     }
 
     public void clean(List<Video> videos) {
-        videos.stream().map(Video::getInputPath)
+        videos.stream().map(video -> Paths.get(video.getInputPathWithoutFileName()))
                 .collect(Collectors.toSet())
                 .forEach(this::clean);
     }
 
-    private void recursiveDelete(Path sourceParent) throws IOException {
-        List<Path> sourceParentContentPaths = Files.walk(sourceParent, Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
+    private void recursiveDelete(Path inputFolderPath) throws IOException {
+        List<Path> sourceParentContentPaths = Files.walk(inputFolderPath, Integer.MAX_VALUE, FileVisitOption.FOLLOW_LINKS)
                 .collect(Collectors.toList());
         for (Path path : sourceParentContentPaths) {
-            if (path != sourceParent) {
+            if (path != inputFolderPath) {
                 if (Files.isRegularFile(path)) {
                     Files.delete(path);
                 } else if (Files.isDirectory(path)) {
@@ -59,6 +60,6 @@ public class VideoCleaner {
                 }
             }
         }
-        Files.deleteIfExists(sourceParent);
+        Files.deleteIfExists(inputFolderPath);
     }
 }

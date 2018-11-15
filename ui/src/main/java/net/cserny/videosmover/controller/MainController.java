@@ -114,7 +114,7 @@ public class MainController implements Initializable {
                 case "outputCol":
                     TableColumn<VideoRow, String> outputCol = (TableColumn<VideoRow, String>) column;
                     outputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService, messageRegistry));
+                    outputCol.setCellFactory(param -> new CustomTextFieldCell(metadataService));
                     break;
             }
         }
@@ -145,7 +145,7 @@ public class MainController implements Initializable {
         }
 
         List<Video> selectedVideos = tableView.getItems().stream()
-                .filter(videoRow -> videoRow.getVideoType() != VideoType.NONE && videoRow.getVideoType() != null)
+                .filter(videoRow -> videoRow.getVideoType() != VideoType.NONE)
                 .map(VideoRow::getVideo)
                 .collect(Collectors.toList());
 

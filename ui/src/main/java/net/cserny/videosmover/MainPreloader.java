@@ -19,7 +19,7 @@ public class MainPreloader extends Preloader {
         stage = primaryStage;
 
         Pane splashPane = new Pane(new ImageView(new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString(true, "images", "loading.gif")))));
+                StaticPathsProvider.getJoinedPathString("/images", "loading.gif")))));
         stage.setScene(new Scene(splashPane, Color.TRANSPARENT));
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setAlwaysOnTop(true);

@@ -1,5 +1,7 @@
 package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.model.Subtitle;
 import net.cserny.videosmover.model.Video;
 
 import javax.inject.Inject;
@@ -7,6 +9,7 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Singleton
@@ -24,22 +27,38 @@ public class VideoMover {
     public boolean move(Video video) throws IOException {
         videoNameService.check(video);
 
-        Path sourceFile = video.getInputPath().resolve(video.getInputFilename());
-        Path targetFolder = video.getOutputPath().resolve(video.getOutputFolderName());
-        Path targetFile = targetFolder.resolve(video.getInputFilename());
+        Path sourceFile = Paths.get(video.getFullInputPath());
+        Path targetFolder = generateTargetFolderPath(video);
+        Path targetFile = targetFolder.resolve(video.getFileName());
 
         createDirectoryInternal(targetFolder);
         moveInternal(sourceFile, targetFile);
 
-        List<Path> subtitles = video.getSubtitles();
+        List<Subtitle> subtitles = video.getSubtitles();
         if (subtitles != null && !subtitles.isEmpty()) {
-            for (Path subtitle : subtitles) {
-                Path partialTarget = getPartialSubtitleTarget(targetFolder, subtitle);
-                moveInternal(subtitle, partialTarget.resolve(subtitle.getFileName()));
+            for (Subtitle subtitle : subtitles) {
+                Path partialTarget = resolveSubtitleFolderPath(targetFolder, subtitle);
+                moveInternal(Paths.get(subtitle.getFullInputPath()), partialTarget.resolve(subtitle.getFileName()));
             }
         }
 
         return Files.exists(targetFile);
+    }
+
+    private Path generateTargetFolderPath(Video video) {
+        String rootPath = null;
+        // TODO: make more OOP
+        switch (video.getVideoType()) {
+            case MOVIE:
+                rootPath = StaticPathsProvider.getMoviesPath();
+                break;
+            case TVSHOW:
+                rootPath = StaticPathsProvider.getTvShowsPath();
+                break;
+        }
+
+        String pathString = StaticPathsProvider.getJoinedPathString(rootPath, video.getOutputFolderWithDate());
+        return Paths.get(pathString);
     }
 
     public boolean move(List<Video> videoList) {
@@ -55,17 +74,17 @@ public class VideoMover {
         return true;
     }
 
-    private Path getPartialSubtitleTarget(Path target, Path subtitle) throws IOException {
-        Path partialTarget = target;
-        if (getParentFolderName(subtitle).equals(SUBTITLE_SUBPATH)) {
-            partialTarget = target.resolve(SUBTITLE_SUBPATH);
+    private Path resolveSubtitleFolderPath(Path targetFolder, Subtitle subtitle) throws IOException {
+        Path partialTarget = targetFolder;
+        if (getParentFolderName(Paths.get(subtitle.getFullInputPath())).equals(SUBTITLE_SUBPATH)) {
+            partialTarget = targetFolder.resolve(SUBTITLE_SUBPATH);
             createDirectoryInternal(partialTarget);
         }
         return partialTarget;
     }
 
-    private String getParentFolderName(Path path) {
-        return path.getParent().getFileName().toString();
+    private String getParentFolderName(Path subtitlePath) {
+        return subtitlePath.getParent().getFileName().toString();
     }
 
     private void createDirectoryInternal(Path directory) throws IOException {

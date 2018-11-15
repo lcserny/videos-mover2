@@ -13,25 +13,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import net.cserny.videosmover.helper.StaticPathsProvider;
-import net.cserny.videosmover.model.*;
+import net.cserny.videosmover.model.Video;
+import net.cserny.videosmover.model.VideoMetadata;
+import net.cserny.videosmover.model.VideoQuery;
+import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.service.CachedMetadataService;
-import net.cserny.videosmover.service.MessageProvider;
-import net.cserny.videosmover.service.SimpleMessageRegistry;
-import net.cserny.videosmover.service.helper.SimpleVideoOutputHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
-import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static net.cserny.videosmover.service.helper.VideoOutputHelper.trimReleaseDate;
 
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private final CachedMetadataService metadataService;
-    private final SimpleMessageRegistry messageRegistry;
     private final CustomTextField customTextField;
     private final Button button;
 //    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)$");
@@ -39,9 +36,8 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private StringProperty boundProperty = null;
     private Video video;
 
-    public CustomTextFieldCell(CachedMetadataService metadataService, SimpleMessageRegistry messageRegistry) {
+    public CustomTextFieldCell(CachedMetadataService metadataService) {
         this.metadataService = metadataService;
-        this.messageRegistry = messageRegistry;
 
         button = initButton();
         customTextField = initCustomTextField();
@@ -150,13 +146,19 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     }
 
     private void handleHboxClick(VideoMetadata videoMetadata, PopOver popOver) {
-        customTextField.setText(SimpleVideoOutputHelper.formatOutput(videoOutput, videoMetadata));
+        video.setOutputFolderWithoutDate(videoMetadata.getName());
+        video.setDateFromReleaseDate(videoMetadata.getReleaseDate());
+
+        customTextField.setText(video.getOutputFolderWithDate());
         videoMetadata.setSelected(true);
         popOver.hide();
     }
 
     private List<VideoMetadata> processVideoMetadataList() {
-        VideoQuery videoQuery = VideoQuery.newInstance().withName(video.getOutputFolderName()).build();
+        VideoQuery videoQuery = VideoQuery.newInstance()
+                .withName(video.getOutputFolderWithoutDate())
+                .withYear(video.getYear())
+                .build();
         return metadataService.searchMetadata(videoQuery, video.getVideoType());
     }
 
@@ -173,8 +175,9 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         super.updateItem(output, empty);
         int caretPosition = customTextField.getCaretPosition();
 
+        VideoRow videoRow = null;
         if (output != null && !output.isEmpty()) {
-            VideoRow videoRow = getTableView().getItems().get(getIndex());
+            videoRow = getTableView().getItems().get(getIndex());
             processForShow(videoRow.getVideo());
         } else {
             processForHide();
@@ -192,16 +195,20 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
                 boundProperty = outputProperty;
                 customTextField.textProperty().bindBidirectional(boundProperty);
             }
-            updateVideoRowOutput(outputProperty);
+            updateVideoRowOutput(outputProperty, videoRow);
         }
         setContentDisplay(contentDisplay);
         customTextField.positionCaret(caretPosition);
     }
 
-    private void updateVideoRowOutput(SimpleStringProperty outputProperty) {
-        String value = outputProperty.getValue();
-        if (video != null && !StringUtils.isEmpty(value)) {
-            video.setOutputPathFromManualValue(value);
+    private void updateVideoRowOutput(SimpleStringProperty outputProperty, VideoRow videoRow) {
+        String outputFolderWithPossiblyDate = outputProperty.getValue();
+        if (video != null && !StringUtils.isEmpty(outputFolderWithPossiblyDate)) {
+            video.setOutputFolderWithoutDate(trimReleaseDate(outputFolderWithPossiblyDate));
+            video.setDateFromReleaseDate(outputFolderWithPossiblyDate);
+            if (videoRow != null) {
+                videoRow.setOutput(video);
+            }
         }
     }
 }

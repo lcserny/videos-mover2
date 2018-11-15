@@ -18,9 +18,9 @@ public class CustomPathsRestriction implements RemovalRestriction {
     }
 
     @Override
-    public boolean isRestricted(Path inputPath) {
+    public boolean isRestricted(Path inputFolderPath) {
         for (String restrictedFolder : restrictedFolders) {
-            if (inputPath.getFileName().toString().equals(restrictedFolder)) {
+            if (inputFolderPath.getFileName().toString().equals(restrictedFolder)) {
                 return true;
             }
         }

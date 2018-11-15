@@ -19,7 +19,7 @@ public interface CachedMetadataService {
 
     Map<String, List<VideoMetadata>> getVideoCache();
 
-    void adjustVideoPath(Video video);
+    void adjustOutputAndDate(Video video);
 
     String keyFormat(String prefix, VideoQuery query);
 }

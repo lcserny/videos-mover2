@@ -70,10 +70,10 @@ public class CachedTmdbService implements CachedMetadataService {
     }
 
     @Override
-    public void adjustVideoPath(Video video) {
+    public void adjustOutputAndDate(Video video) {
         VideoQuery query = VideoQuery.newInstance()
-                .withName(video.getOutputFolderName())
-                .withYear(video.getDate().getYear())
+                .withName(video.getOutputFolderWithoutDate())
+                .withYear(video.getYear())
                 .build();
 
         List<VideoMetadata> metadataList = Collections.emptyList();
@@ -89,8 +89,8 @@ public class CachedTmdbService implements CachedMetadataService {
 
         if (!metadataList.isEmpty()) {
             VideoMetadata metadata = metadataList.get(0);
-            video.setOutputFolderName(metadata.getName());
-            video.getDate().setFromReleaseDate(metadata.getReleaseDate());
+            video.setOutputFolderWithoutDate(metadata.getName());
+            video.setDateFromReleaseDate(metadata.getReleaseDate());
         }
     }
 

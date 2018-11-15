@@ -1,8 +1,13 @@
 package net.cserny.videosmover.model;
 
+import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.service.helper.VideoOutputHelper;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 public class Video {
 
@@ -82,6 +87,42 @@ public class Video {
 
     public void setDay(Integer day) {
         this.day = day;
+    }
+
+    public String getInputPathWithoutFileName() {
+        String noFilenamePath = fullInputPath.replace(fileName, "");
+        if (noFilenamePath.endsWith(StaticPathsProvider.SEPARATOR)) {
+            noFilenamePath = noFilenamePath.substring(0, noFilenamePath.length() - 1);
+        }
+        return noFilenamePath;
+    }
+
+    public void setOutputFolderWithoutDateFromFilename() {
+        if (fileName.contains(".")) {
+            outputFolderWithoutDate = fileName.substring(0, fileName.lastIndexOf('.'));
+        }
+        outputFolderWithoutDate = fileName;
+    }
+
+    public void setDateFromReleaseDate(String releaseDate) {
+        if (StringUtils.isEmpty(releaseDate)) {
+            return;
+        }
+
+        Matcher matcher = VideoOutputHelper.RELEASE_DATE.matcher(releaseDate);
+        if (matcher.find()) {
+            String year = matcher.group("year");
+            String month = matcher.group("month");
+            String day = matcher.group("day");
+
+            this.year = Integer.valueOf(year);
+            if (StringUtils.isNumeric(month)) {
+                this.month = Integer.valueOf(month);
+            }
+            if (StringUtils.isNumeric(day)) {
+                this.day = Integer.valueOf(day);
+            }
+        }
     }
 
     @Override

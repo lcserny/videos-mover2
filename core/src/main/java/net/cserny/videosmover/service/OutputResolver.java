@@ -1,6 +1,5 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 import net.cserny.videosmover.service.parser.VideoNameParser;
@@ -21,17 +20,15 @@ public class OutputResolver {
     }
 
     public void resolve(Video video, List<VideoAdjustmentObserver> observers) {
-        String resolvedName = video.getInputFolderName();
-        if (resolvedName == null) {
-            resolvedName = video.getInputFolderNameFromFileName();
+        if (video.getOutputFolderWithoutDate() == null) {
+            video.setOutputFolderWithoutDateFromFilename();
         }
-        video.setOutputFolderName(resolvedName);
         adjustOutputFolderName(video, observers);
-        adjustOutputPath(video);
     }
 
     private void adjustOutputFolderName(Video video, List<VideoAdjustmentObserver> observers) {
         // TODO: improve this, 3 parser for movie and 3 for Tv, more OOP
+        // maybe add pe video un Config object care stie sa puna path si etc specific cna d se bifeaza videoType?
         for (VideoNameParser videoNameParser : nameParserList) {
             switch (video.getVideoType()) {
                 case MOVIE:
@@ -42,19 +39,5 @@ public class OutputResolver {
                     break;
             }
         }
-    }
-
-    private void adjustOutputPath(Video video) {
-        String outputPathWithoutFolder = null;
-        switch (video.getVideoType()) {
-            case MOVIE:
-                outputPathWithoutFolder = StaticPathsProvider.getMoviesPath();
-                break;
-            case TVSHOW:
-                outputPathWithoutFolder = StaticPathsProvider.getTvShowsPath();
-                break;
-        }
-        video.setOutputPath(StaticPathsProvider.getJoinedPathString(outputPathWithoutFolder,
-                video.getOutputFolderName(), video.getFileName()));
     }
 }

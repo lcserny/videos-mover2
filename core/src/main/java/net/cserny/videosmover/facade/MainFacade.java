@@ -54,7 +54,7 @@ public class MainFacade {
             VideoExistenceObserver observer = new VideoExistenceObserver();
             outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
             if (observer.shouldAdjustPath()) {
-                cachedTmdbService.adjustVideoPath(videoRow.getVideo());
+                cachedTmdbService.adjustOutputAndDate(videoRow.getVideo());
             }
         }
         videoRow.setOutput(videoRow.getVideo());

@@ -13,7 +13,7 @@ public class VideoRow {
 
     public VideoRow(Video video) {
         this.video = video;
-        setName(video.getFileName());
+        this.name.set(video.getFileName());
     }
 
     public Video getVideo() {
@@ -41,7 +41,7 @@ public class VideoRow {
     }
 
     public void setOutput(Video video) {
-        this.output.set(video.getOutputPathWithoutFolder());
+        this.output.set(video.getOutputFolderWithDate());
     }
 
     public VideoType getVideoType() {
