@@ -53,7 +53,11 @@ public class Video {
     }
 
     public String getOutputFolderWithDate() {
-        return outputFolderWithoutDate; // TODO + append date stuff
+        String dateAppend = String.format(" (%d)", year);
+        if (month != null && day != null) {
+            dateAppend = String.format(" (%d-%d-%d)", year, month, day);
+        }
+        return outputFolderWithoutDate + dateAppend;
     }
 
     public Integer getYear() {
