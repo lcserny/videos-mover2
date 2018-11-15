@@ -1,6 +1,7 @@
 package net.cserny.videosmover.controller;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -126,16 +127,15 @@ public class MainController implements Initializable {
             return;
         }
 
-
         loadingImage.setImage(new Image(getClass().getResourceAsStream(
                 StaticPathsProvider.getJoinedPathString("/images", "loading.gif"))));
-        new Thread(() -> {
+        Platform.runLater(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
             loadingImage.setImage(new Image(getClass().getResourceAsStream(
                     StaticPathsProvider.getJoinedPathString("/images", "scan-button.png"))));
-        }).start();
+        });
     }
 
     public void moveVideos(ActionEvent event) {
@@ -159,12 +159,12 @@ public class MainController implements Initializable {
         ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene().lookup("#moveProgress");
         progressIndicator.setVisible(true);
         progressIndicator.setProgress(-1.0f);
-        new Thread(() -> {
+        Platform.runLater(() -> {
             facade.moveVideos(selectedVideos);
             region.setVisible(false);
             progressIndicator.setVisible(false);
             loadTableView(event);
-        }).start();
+        });
     }
 
     public void setDownloadsPath(ActionEvent event) {
