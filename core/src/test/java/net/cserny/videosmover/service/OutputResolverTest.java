@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
+import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 
@@ -44,10 +45,10 @@ public class OutputResolverTest {
         String movieFile = "1922.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
-        Video video = VideoResolver.resolveMovie(StaticPathsProvider.getJoinedPathString(false, moviePath, movieFolder, movieFile),
+        Video video = VideoResolver.resolveMovie(getJoinedPathString(moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
-        assertThat(video.getOutputFolderName(), containsString("1922"));
+        assertThat(video.getOutputFolderWithoutDate(), containsString("1922"));
     }
 
     @Test
@@ -57,11 +58,10 @@ public class OutputResolverTest {
         String tvFile = "game.of.thrones.s07e06.720p.A.Song.Of.Ice.And.Fire.x264.mp4";
 
         inMemoryFileSystem.create(tvPath, tvFolder, tvFile, 2);
-        Video video = VideoResolver.resolveTvShow(StaticPathsProvider.getJoinedPathString(false, tvPath, tvFolder, tvFile),
+        Video video = VideoResolver.resolveTvShow(getJoinedPathString(tvPath, tvFolder, tvFile),
                 outputResolver::resolve);
 
-        assertTrue(video.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Game Of Thrones", video.getOutputFolderName());
+        assertEquals("Game Of Thrones", video.getOutputFolderWithoutDate());
     }
 
     @Test
@@ -71,22 +71,20 @@ public class OutputResolverTest {
         String bigSickFile = "the.big.sick.2017.1080p.BluRay.x264.YIFY.mp4";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        Video bigSick = VideoResolver.resolveMovie(StaticPathsProvider.getJoinedPathString(false, bigSickPath, bigSickFolder, bigSickFile),
+        Video bigSick = VideoResolver.resolveMovie(getJoinedPathString(bigSickPath, bigSickFolder, bigSickFile),
                 outputResolver::resolve);
 
-        assertTrue(bigSick.getOutputPath().startsWith(StaticPathsProvider.getMoviesPath()));
-        assertEquals("The Big Sick", bigSick.getOutputFolderName());
+        assertEquals("The Big Sick", bigSick.getOutputFolderWithoutDate());
 
         String acrimonyPath = StaticPathsProvider.getDownloadsPath();
         String acrimonyFolder = "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT";
         String acrimonyFile = "Acrimony.2018.1080p.WEB-DL.DD5.1.H264-FGT.mkv";
 
         inMemoryFileSystem.create(acrimonyPath, acrimonyFolder, acrimonyFile, 2);
-        Video acrimony = VideoResolver.resolveMovie(StaticPathsProvider.getJoinedPathString(false, acrimonyPath, acrimonyFolder, acrimonyFile),
+        Video acrimony = VideoResolver.resolveMovie(getJoinedPathString(acrimonyPath, acrimonyFolder, acrimonyFile),
                 outputResolver::resolve);
 
-        assertTrue(acrimony.getOutputPath().startsWith(StaticPathsProvider.getMoviesPath()));
-        assertEquals("Acrimony (2018)", acrimony.getOutputFolderName());
+        assertEquals("Acrimony (2018)", acrimony.getOutputFolderWithDate());
     }
 
     @Test
@@ -96,32 +94,29 @@ public class OutputResolverTest {
         String criminalMindsFile = "criminil.mids.s01e01.720p.x264.mp4";
 
         inMemoryFileSystem.create(criminalMindsPath, criminalMindsFolder, criminalMindsFile, 2);
-        Video criminalMinds = VideoResolver.resolveTvShow(StaticPathsProvider.getJoinedPathString(false, criminalMindsPath, criminalMindsFolder, criminalMindsFile),
+        Video criminalMinds = VideoResolver.resolveTvShow(getJoinedPathString(criminalMindsPath, criminalMindsFolder, criminalMindsFile),
                 outputResolver::resolve);
 
-        assertTrue(criminalMinds.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Criminal Minds", criminalMinds.getOutputFolderName());
+        assertEquals("Criminal Minds", criminalMinds.getOutputFolderWithoutDate());
 
         String chicagoPdPath = StaticPathsProvider.getDownloadsPath();
         String chicagoPdFolder = "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS[rarbg]";
         String chicagoPdFile = "Chicago.PD.S05E21.REPACK.HDTV.x264-KILLERS.mkv";
 
         inMemoryFileSystem.create(chicagoPdPath, chicagoPdFolder, chicagoPdFile, 2);
-        Video chicagoPd = VideoResolver.resolveTvShow(StaticPathsProvider.getJoinedPathString(false, chicagoPdPath, chicagoPdFolder, chicagoPdFile),
+        Video chicagoPd = VideoResolver.resolveTvShow(getJoinedPathString(chicagoPdPath, chicagoPdFolder, chicagoPdFile),
                 outputResolver::resolve);
 
-        assertTrue(chicagoPd.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Chicago PD", chicagoPd.getOutputFolderName());
+        assertEquals("Chicago PD", chicagoPd.getOutputFolderWithoutDate());
 
         String chicagoMedPath = StaticPathsProvider.getDownloadsPath();
         String chicagoMedFile = "Chicago.Med.S03E14.HDTV.x264-KILLERS[eztv].mkv";
 
         inMemoryFileSystem.create(chicagoMedPath, null, chicagoMedFile, 2);
-        Video chicagoMed = VideoResolver.resolveTvShow(StaticPathsProvider.getJoinedPathString(false, chicagoMedPath, chicagoMedFile),
+        Video chicagoMed = VideoResolver.resolveTvShow(getJoinedPathString(chicagoMedPath, chicagoMedFile),
                 outputResolver::resolve);
 
-        assertTrue(chicagoMed.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("Chicago Med", chicagoMed.getOutputFolderName());
+        assertEquals("Chicago Med", chicagoMed.getOutputFolderWithoutDate());
     }
 
     @Test
@@ -131,21 +126,19 @@ public class OutputResolverTest {
         String houseOfCardsFile = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
 
         inMemoryFileSystem.create(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile, 2);
-        Video houseOfCards = VideoResolver.resolveTvShow(StaticPathsProvider.getJoinedPathString(false,
-                houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile), outputResolver::resolve);
+        Video houseOfCards = VideoResolver.resolveTvShow(getJoinedPathString(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile),
+                outputResolver::resolve);
 
-        assertTrue(houseOfCards.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("House Of Cards", houseOfCards.getOutputFolderName());
+        assertEquals("House Of Cards", houseOfCards.getOutputFolderWithoutDate());
 
         String houseOfCardsPath2 = StaticPathsProvider.getDownloadsPath();
         String houseOfCardsFolder2 = "House of Cards s06";
         String houseOfCardsFile2 = "House.of.Cards.US.S06E01.Chapter.66.1080p.NF.WEB-DL.DD5.1.x264-NTG.mkv";
 
         inMemoryFileSystem.create(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2, 2);
-        Video houseOfCards2 = VideoResolver.resolveTvShow(StaticPathsProvider.getJoinedPathString(false,
-                houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2), outputResolver::resolve);
+        Video houseOfCards2 = VideoResolver.resolveTvShow(getJoinedPathString(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2),
+                outputResolver::resolve);
 
-        assertTrue(houseOfCards2.getOutputPath().startsWith(StaticPathsProvider.getTvShowsPath()));
-        assertEquals("House Of Cards", houseOfCards2.getOutputFolderName());
+        assertEquals("House Of Cards", houseOfCards2.getOutputFolderWithoutDate());
     }
 }

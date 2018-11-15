@@ -2,8 +2,8 @@ package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.CoreTestComponent;
 import net.cserny.videosmover.DaggerCoreTestComponent;
+import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
-import net.cserny.videosmover.model.VideoPath;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
 import org.junit.Test;
@@ -11,9 +11,7 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class VideoMetadataServiceTest {
 
@@ -63,13 +61,16 @@ public class VideoMetadataServiceTest {
 
     @Test
     public void searchTMDBInfoTest() throws Exception {
-        VideoPath videoPath = new VideoPath();
-        videoPath.setOutputFolder("Fences");
-        videoPath.setYear("2016");
+        Video video = new Video(null, null);
+        video.setVideoType(VideoType.MOVIE);
+        video.setOutputFolderWithoutDate("Fences");
+        video.setYear(2016);
 
-        VideoPath outVideoPath = metadataService.adjustOutputAndDate(videoPath, VideoType.MOVIE);
+        metadataService.adjustOutputAndDate(video);
 
-        assertEquals(outVideoPath.getOutputFolder(), "Fences");
-        assertEquals(outVideoPath.getYear(), "2016-12-16");
+        assertEquals(video.getOutputFolderWithoutDate(), "Fences");
+        assertEquals(video.getYear().toString(), "2016");
+        assertEquals(video.getMonth().toString(), "12");
+        assertEquals(video.getDay().toString(), "16");
     }
 }

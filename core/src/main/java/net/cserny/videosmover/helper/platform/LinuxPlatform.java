@@ -6,7 +6,7 @@ public class LinuxPlatform extends Platform {
 
     @Override
     public String getRootPathPrefix() {
-        return "";
+        return "/";
     }
 
     @Override

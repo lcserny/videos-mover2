@@ -1,5 +1,6 @@
 package net.cserny.videosmover.service;
 
+import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.validator.RemovalRestriction;
 
@@ -43,7 +44,7 @@ public class VideoCleaner {
     }
 
     public void clean(List<Video> videos) {
-        videos.stream().map(video -> Paths.get(video.getInputPathWithoutFileName()))
+        videos.stream().map(video -> StaticPathsProvider.getPath(video.getInputPathWithoutFileName()))
                 .collect(Collectors.toSet())
                 .forEach(this::clean);
     }

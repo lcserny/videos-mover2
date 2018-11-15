@@ -12,7 +12,9 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -40,7 +42,9 @@ public class SubtitleFinderTest {
 
     private List<Path> processSubtitles(String pathString) throws IOException {
         Path videoPath = StaticPathsProvider.getPath(pathString);
-        return subtitlesFinder.find(videoPath);
+        return subtitlesFinder.find(videoPath).stream()
+                .map(subtitle -> StaticPathsProvider.getPath(subtitle.getFullInputPath()))
+                .collect(Collectors.toList());
     }
 
     @Test
@@ -51,7 +55,7 @@ public class SubtitleFinderTest {
 
         inMemoryFileSystem.create(tvPath, tvFolder, tvFile, 2);
 
-        List<Path> subtitles = processSubtitles(StaticPathsProvider.getJoinedPathString(false, tvPath, tvFolder, tvFile));
+        List<Path> subtitles = processSubtitles(getJoinedPathString(tvPath, tvFolder, tvFile));
         assertTrue(subtitles.isEmpty());
     }
 
@@ -63,10 +67,9 @@ public class SubtitleFinderTest {
         String bigSickSubFile = "subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, bigSickFolder +
-                StaticPathsProvider.getPathString(true, "Sub"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder, "Sub"), bigSickSubFile, 0);
 
-        List<Path> subtitles = processSubtitles(StaticPathsProvider.getJoinedPathString(false, bigSickPath, bigSickFolder, bigSickFile));
+        List<Path> subtitles = processSubtitles(getJoinedPathString(bigSickPath, bigSickFolder, bigSickFile));
         assertFalse(subtitles.isEmpty());
     }
 
@@ -77,7 +80,7 @@ public class SubtitleFinderTest {
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
 
-        List<Path> subtitles = processSubtitles(StaticPathsProvider.getJoinedPathString(false, videoPath, videoFile));
+        List<Path> subtitles = processSubtitles(getJoinedPathString(videoPath, videoFile));
         assertTrue(subtitles.isEmpty());
     }
 }

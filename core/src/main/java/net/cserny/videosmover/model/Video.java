@@ -58,6 +58,10 @@ public class Video {
     }
 
     public String getOutputFolderWithDate() {
+        if (videoType == VideoType.TVSHOW) {
+            return outputFolderWithoutDate;
+        }
+
         String dateAppend = String.format(" (%d)", year);
         if (month != null && day != null) {
             dateAppend = String.format(" (%d-%d-%d)", year, month, day);

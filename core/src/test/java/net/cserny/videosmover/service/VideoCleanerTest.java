@@ -54,7 +54,7 @@ public class VideoCleanerTest {
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
         Video video = VideoResolver.resolveMovie(
-                StaticPathsProvider.getJoinedPathString(false, moviePath, movieFolder, movieFile),
+                StaticPathsProvider.getJoinedPathString(moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
         assertCleaning(video, true);
@@ -67,7 +67,7 @@ public class VideoCleanerTest {
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
         Video video = VideoResolver.resolveMovie(
-                StaticPathsProvider.getJoinedPathString(false, videoPath, videoFile),
+                StaticPathsProvider.getJoinedPathString(videoPath, videoFile),
                 outputResolver::resolve);
 
         assertCleaning(video, false);
@@ -81,7 +81,7 @@ public class VideoCleanerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 2);
         Video video = VideoResolver.resolveMovie(
-                StaticPathsProvider.getJoinedPathString(false, videoPath, videoFolder, videoFile),
+                StaticPathsProvider.getJoinedPathString(videoPath, videoFolder, videoFile),
                 outputResolver::resolve);
 
         assertCleaning(video, false);
@@ -89,7 +89,7 @@ public class VideoCleanerTest {
 
     private void assertCleaning(Video video, boolean removeExpected) throws IOException {
         boolean moveSuccessful = videoMover.move(video);
-        Path inputPath = video.getInputPath();
+        Path inputPath = StaticPathsProvider.getPath(video.getFullInputPath());
         videoCleaner.clean(inputPath);
 
         assertTrue(moveSuccessful);

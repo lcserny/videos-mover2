@@ -27,7 +27,7 @@ public class VideoMover {
     public boolean move(Video video) throws IOException {
         videoNameService.check(video);
 
-        Path sourceFile = Paths.get(video.getFullInputPath());
+        Path sourceFile = StaticPathsProvider.getPath(video.getFullInputPath());
         Path targetFolder = generateTargetFolderPath(video);
         Path targetFile = targetFolder.resolve(video.getFileName());
 
@@ -38,7 +38,7 @@ public class VideoMover {
         if (subtitles != null && !subtitles.isEmpty()) {
             for (Subtitle subtitle : subtitles) {
                 Path partialTarget = resolveSubtitleFolderPath(targetFolder, subtitle);
-                moveInternal(Paths.get(subtitle.getFullInputPath()), partialTarget.resolve(subtitle.getFileName()));
+                moveInternal(StaticPathsProvider.getPath(subtitle.getFullInputPath()), partialTarget.resolve(subtitle.getFileName()));
             }
         }
 
@@ -58,7 +58,7 @@ public class VideoMover {
         }
 
         String pathString = StaticPathsProvider.getJoinedPathString(rootPath, video.getOutputFolderWithDate());
-        return Paths.get(pathString);
+        return StaticPathsProvider.getPath(pathString);
     }
 
     public boolean move(List<Video> videoList) {
@@ -76,7 +76,7 @@ public class VideoMover {
 
     private Path resolveSubtitleFolderPath(Path targetFolder, Subtitle subtitle) throws IOException {
         Path partialTarget = targetFolder;
-        if (getParentFolderName(Paths.get(subtitle.getFullInputPath())).equals(SUBTITLE_SUBPATH)) {
+        if (getParentFolderName(StaticPathsProvider.getPath(subtitle.getFullInputPath())).equals(SUBTITLE_SUBPATH)) {
             partialTarget = targetFolder.resolve(SUBTITLE_SUBPATH);
             createDirectoryInternal(partialTarget);
         }

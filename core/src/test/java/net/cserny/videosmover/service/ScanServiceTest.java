@@ -4,6 +4,7 @@ import net.cserny.videosmover.CoreTestComponent;
 import net.cserny.videosmover.DaggerCoreTestComponent;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.model.Subtitle;
 import net.cserny.videosmover.model.Video;
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
+import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
 import static org.junit.Assert.*;
 
 public class ScanServiceTest {
@@ -67,13 +69,11 @@ public class ScanServiceTest {
         String bigSickSubFile = "Subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, bigSickFolder +
-                StaticPathsProvider.getPathString(true, "Sub"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder + "Sub"), bigSickSubFile, 0);
 
-        for (Video video : scanService.scan(StaticPathsProvider.getJoinedPathString(false, bigSickPath, bigSickFolder))) {
-            if (video.getInputPath().toString().contains(
-                    StaticPathsProvider.getJoinedPathString(false, bigSickPath, bigSickFolder))) {
-                List<Path> subtitles = video.getSubtitles();
+        for (Video video : scanService.scan(getJoinedPathString(bigSickPath, bigSickFolder))) {
+            if (video.getFullInputPath().contains(getJoinedPathString(bigSickPath, bigSickFolder))) {
+                List<Subtitle> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());
                 assertEquals(1, subtitles.size());
@@ -101,7 +101,7 @@ public class ScanServiceTest {
 
         List<Video> videosScanned = scanService.scan(StaticPathsProvider.getDownloadsPath());
         List<Video> sortedVideos = new ArrayList<>(videosScanned);
-        sortedVideos.sort(Comparator.comparing(video -> video.getInputPath().toString().toLowerCase()));
+        sortedVideos.sort(Comparator.comparing(video -> video.getFullInputPath().toLowerCase()));
         for (int i = 0; i < videosScanned.size(); i++) {
             assertEquals(sortedVideos.get(i), videosScanned.get(i));
         }

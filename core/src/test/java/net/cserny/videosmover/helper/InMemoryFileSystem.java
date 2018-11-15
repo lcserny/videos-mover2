@@ -20,19 +20,19 @@ public class InMemoryFileSystem {
     }
 
     public static String getDownloads() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "Downloads");
+        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(),"Downloads");
     }
 
     public static String getMovies() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "Movies");
+        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(),"Movies");
     }
 
     public static String getTvShows() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "TvShows");
+        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(),"TvShows");
     }
 
     public static String getEmpty() {
-        return platform.getRootPathPrefix() + StaticPathsProvider.getPathString(true, "empty");
+        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(),"empty");
     }
 
     public static InMemoryFileSystem initFileSystem() throws IOException {
