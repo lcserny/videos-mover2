@@ -43,6 +43,10 @@ public class StaticPathsProvider {
     }
 
     public static String getJoinedPathString(String startPath, String... paths) {
+        if (paths == null || paths.length == 0) {
+            return startPath;
+        }
+
         String joinedPaths = String.join(SEPARATOR, paths);
         if (StringUtils.isEmpty(startPath)) {
             return joinedPaths;
@@ -51,6 +55,7 @@ public class StaticPathsProvider {
         if (!startPath.endsWith(SEPARATOR)) {
             startPath += SEPARATOR;
         }
+
         return startPath + joinedPaths;
     }
 
