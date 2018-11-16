@@ -1,6 +1,6 @@
 package net.cserny.videosmover.helper;
 
-import net.cserny.videosmover.helper.platform.Platform;
+import net.cserny.videosmover.helper.platform.PlatformService;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.FileSystem;
@@ -10,23 +10,18 @@ import java.nio.file.Path;
 
 public class StaticPathsProvider {
 
-    public static String SEPARATOR;
+    public static String SEPARATOR = PlatformService.getSeparator();
 
-    private static FileSystem fileSystem;
+    private static FileSystem fileSystem = FileSystems.getDefault();
     private static String downloadsPath;
     private static String moviesPath;
     private static String tvShowsPath;
 
     static {
-        Platform platform = Platform.initPlatform();
-        SEPARATOR = platform.getSeparator();
-
         initPaths();
     }
 
     private static void initPaths() {
-        fileSystem = FileSystems.getDefault();
-
         downloadsPath = PreferencesLoader.getDownloadsPath();
         if (!Files.exists(getPath(downloadsPath))) {
             downloadsPath = null;

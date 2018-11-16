@@ -1,30 +1,16 @@
 package net.cserny.videosmover.helper.platform;
 
-public abstract class Platform {
+import java.io.File;
 
-    static final String WINDOWS = "windows";
-    static final String MAC = "mac";
-    static final String LINUX = "linux";
+interface Platform {
 
-    private static Platform instance;
-
-    public static Platform initPlatform() {
-        if (instance == null) {
-            String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                instance = new WindowsPlatform();
-            } else if (os.contains("OS X")) {
-                instance = new MacPlatform();
-            } else {
-                instance = new LinuxPlatform();
-            }
-        }
-        return instance;
+    default String getDefaultRoot() {
+        return File.listRoots()[0].toString();
     }
 
-    public abstract String getRootPathPrefix();
+    String getName();
 
-    public abstract String getName();
-
-    public abstract String getSeparator();
+    default String getSeparator() {
+        return File.separator;
+    };
 }

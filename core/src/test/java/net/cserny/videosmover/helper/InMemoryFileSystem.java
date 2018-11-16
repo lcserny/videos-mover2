@@ -2,7 +2,7 @@ package net.cserny.videosmover.helper;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import net.cserny.videosmover.helper.platform.Platform;
+import net.cserny.videosmover.helper.platform.PlatformService;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
@@ -12,26 +12,21 @@ import java.nio.file.Path;
 public class InMemoryFileSystem {
 
     private FileSystem fileSystem;
-    private static Platform platform;
-
-    static {
-        platform = Platform.initPlatform();
-    }
 
     public static String getDownloads() {
-        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(), "Downloads");
+        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "Downloads");
     }
 
     public static String getMovies() {
-        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(), "Movies");
+        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "Movies");
     }
 
     public static String getTvShows() {
-        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(), "TvShows");
+        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "TvShows");
     }
 
     public static String getEmpty() {
-        return StaticPathsProvider.getJoinedPathString(platform.getRootPathPrefix(), "empty");
+        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "empty");
     }
 
     public static InMemoryFileSystem initFileSystem() throws IOException {
