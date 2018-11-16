@@ -63,12 +63,9 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private Button initButton() {
 
-        Image mainImage = new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString("/images", "scan-button.png")));
-        Image altImage = new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString("/images", "tmdb_logo_small.png")));
-        Image loadingImage = new Image(getClass().getResourceAsStream(
-                StaticPathsProvider.getJoinedPathString("/images", "loading.gif")));
+        Image mainImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
+        Image altImage = new Image(getClass().getResourceAsStream("/images/tmdb_logo_small.png"));
+        Image loadingImage = new Image(getClass().getResourceAsStream("/images/loading.gif"));
         ImageView imageView = buildButtonImageView(mainImage);
 
         Button button = new Button("", imageView);

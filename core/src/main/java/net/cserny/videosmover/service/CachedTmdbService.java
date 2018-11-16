@@ -168,8 +168,7 @@ public class CachedTmdbService implements CachedMetadataService {
     private String buildPosterUrl(String posterPath) {
         if (posterPath == null || posterPath.isEmpty()) {
             try {
-                URL resource = getClass().getResource(
-                        StaticPathsProvider.getJoinedPathString("/images", "no-poster.jpg"));
+                URL resource = getClass().getResource("/images/no-poster.jpg");
                 if (resource != null) {
                     return resource.toURI().toString();
                 }
