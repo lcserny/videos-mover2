@@ -9,7 +9,6 @@ import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Singleton
@@ -57,7 +56,7 @@ public class VideoMover {
                 break;
         }
 
-        String pathString = StaticPathsProvider.getJoinedPathString(rootPath, video.getOutputFolderWithDate());
+        String pathString = StaticPathsProvider.joinPaths(rootPath, video.getOutputFolderWithDate());
         return StaticPathsProvider.getPath(pathString);
     }
 

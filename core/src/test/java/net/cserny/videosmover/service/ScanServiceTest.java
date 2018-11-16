@@ -11,13 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import static junit.framework.TestCase.assertTrue;
-import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
+import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.junit.Assert.*;
 
 public class ScanServiceTest {
@@ -69,10 +68,10 @@ public class ScanServiceTest {
         String bigSickSubFile = "Subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder, "Sub"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, joinPaths(bigSickFolder, "Sub"), bigSickSubFile, 0);
 
-        for (Video video : scanService.scan(getJoinedPathString(bigSickPath, bigSickFolder))) {
-            if (video.getFullInputPath().contains(getJoinedPathString(bigSickPath, bigSickFolder))) {
+        for (Video video : scanService.scan(joinPaths(bigSickPath, bigSickFolder))) {
+            if (video.getFullInputPath().contains(joinPaths(bigSickPath, bigSickFolder))) {
                 List<Subtitle> subtitles = video.getSubtitles();
                 assertNotNull(subtitles);
                 assertFalse(subtitles.isEmpty());

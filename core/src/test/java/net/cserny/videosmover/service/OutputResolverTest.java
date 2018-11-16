@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import javax.inject.Inject;
 
-import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
+import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 
@@ -46,7 +46,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
         Video video = VideoResolver.resolveMovie(moviePath,
-                getJoinedPathString(moviePath, movieFolder, movieFile),
+                joinPaths(moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
         assertThat(video.getOutputFolderWithoutDate(), containsString("1922"));
@@ -60,7 +60,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(tvPath, tvFolder, tvFile, 2);
         Video video = VideoResolver.resolveTvShow(tvPath,
-                getJoinedPathString(tvPath, tvFolder, tvFile),
+                joinPaths(tvPath, tvFolder, tvFile),
                 outputResolver::resolve);
 
         assertEquals("Game Of Thrones", video.getOutputFolderWithoutDate());
@@ -74,7 +74,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
         Video bigSick = VideoResolver.resolveMovie(bigSickPath,
-                getJoinedPathString(bigSickPath, bigSickFolder, bigSickFile),
+                joinPaths(bigSickPath, bigSickFolder, bigSickFile),
                 outputResolver::resolve);
 
         assertEquals("The Big Sick", bigSick.getOutputFolderWithoutDate());
@@ -85,7 +85,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(acrimonyPath, acrimonyFolder, acrimonyFile, 2);
         Video acrimony = VideoResolver.resolveMovie(acrimonyPath,
-                getJoinedPathString(acrimonyPath, acrimonyFolder, acrimonyFile),
+                joinPaths(acrimonyPath, acrimonyFolder, acrimonyFile),
                 outputResolver::resolve);
 
         assertEquals("Acrimony (2018)", acrimony.getOutputFolderWithDate());
@@ -99,7 +99,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(criminalMindsPath, criminalMindsFolder, criminalMindsFile, 2);
         Video criminalMinds = VideoResolver.resolveTvShow(criminalMindsPath,
-                getJoinedPathString(criminalMindsPath, criminalMindsFolder, criminalMindsFile),
+                joinPaths(criminalMindsPath, criminalMindsFolder, criminalMindsFile),
                 outputResolver::resolve);
 
         assertEquals("Criminal Minds", criminalMinds.getOutputFolderWithoutDate());
@@ -110,7 +110,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(chicagoPdPath, chicagoPdFolder, chicagoPdFile, 2);
         Video chicagoPd = VideoResolver.resolveTvShow(chicagoPdPath,
-                getJoinedPathString(chicagoPdPath, chicagoPdFolder, chicagoPdFile),
+                joinPaths(chicagoPdPath, chicagoPdFolder, chicagoPdFile),
                 outputResolver::resolve);
 
         assertEquals("Chicago PD", chicagoPd.getOutputFolderWithoutDate());
@@ -120,7 +120,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(chicagoMedPath, null, chicagoMedFile, 2);
         Video chicagoMed = VideoResolver.resolveTvShow(chicagoMedPath,
-                getJoinedPathString(chicagoMedPath, chicagoMedFile),
+                joinPaths(chicagoMedPath, chicagoMedFile),
                 outputResolver::resolve);
 
         assertEquals("Chicago Med", chicagoMed.getOutputFolderWithoutDate());
@@ -134,7 +134,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile, 2);
         Video houseOfCards = VideoResolver.resolveTvShow(houseOfCardsPath,
-                getJoinedPathString(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile),
+                joinPaths(houseOfCardsPath, houseOfCardsFolder, houseOfCardsFile),
                 outputResolver::resolve);
 
         assertEquals("House Of Cards", houseOfCards.getOutputFolderWithoutDate());
@@ -145,7 +145,7 @@ public class OutputResolverTest {
 
         inMemoryFileSystem.create(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2, 2);
         Video houseOfCards2 = VideoResolver.resolveTvShow(houseOfCardsPath2,
-                getJoinedPathString(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2),
+                joinPaths(houseOfCardsPath2, houseOfCardsFolder2, houseOfCardsFile2),
                 outputResolver::resolve);
 
         assertEquals("House Of Cards", houseOfCards2.getOutputFolderWithoutDate());

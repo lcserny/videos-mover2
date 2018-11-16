@@ -42,21 +42,20 @@ public class StaticPathsProvider {
         return fileSystem.getPath(path, parts);
     }
 
-    public static String getJoinedPathString(String startPath, String... paths) {
+    public static String joinPaths(String startPath, String... paths) {
+        if (StringUtils.isEmpty(startPath)) {
+            throw new IllegalArgumentException("Invalid startPath argument provided");
+        }
+
+        if (startPath.length() > 1 && startPath.endsWith(SEPARATOR)) {
+            startPath = startPath.substring(0, startPath.lastIndexOf(SEPARATOR));
+        }
+
         if (paths == null || paths.length == 0) {
             return startPath;
         }
 
-        String joinedPaths = String.join(SEPARATOR, paths);
-        if (StringUtils.isEmpty(startPath)) {
-            return joinedPaths;
-        }
-
-        if (!startPath.endsWith(SEPARATOR)) {
-            startPath += SEPARATOR;
-        }
-
-        return startPath + joinedPaths;
+        return startPath + SEPARATOR + String.join(SEPARATOR, paths);
     }
 
     public static FileSystem getFileSystem() {

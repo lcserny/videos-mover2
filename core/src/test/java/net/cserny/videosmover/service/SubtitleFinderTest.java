@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
+import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -55,7 +55,7 @@ public class SubtitleFinderTest {
 
         inMemoryFileSystem.create(tvPath, tvFolder, tvFile, 2);
 
-        List<Path> subtitles = processSubtitles(getJoinedPathString(tvPath, tvFolder));
+        List<Path> subtitles = processSubtitles(joinPaths(tvPath, tvFolder));
         assertTrue(subtitles.isEmpty());
     }
 
@@ -67,9 +67,9 @@ public class SubtitleFinderTest {
         String bigSickSubFile = "subtitle.srt";
 
         inMemoryFileSystem.create(bigSickPath, bigSickFolder, bigSickFile, 2);
-        inMemoryFileSystem.create(bigSickPath, getJoinedPathString(bigSickFolder, "Subs"), bigSickSubFile, 0);
+        inMemoryFileSystem.create(bigSickPath, joinPaths(bigSickFolder, "Subs"), bigSickSubFile, 0);
 
-        List<Path> subtitles = processSubtitles(getJoinedPathString(bigSickPath, bigSickFolder));
+        List<Path> subtitles = processSubtitles(joinPaths(bigSickPath, bigSickFolder));
         assertFalse(subtitles.isEmpty());
     }
 
@@ -80,7 +80,7 @@ public class SubtitleFinderTest {
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
 
-        List<Path> subtitles = processSubtitles(getJoinedPathString(videoPath));
+        List<Path> subtitles = processSubtitles(joinPaths(videoPath));
         assertTrue(subtitles.isEmpty());
     }
 }

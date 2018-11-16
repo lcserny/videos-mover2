@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.nio.file.Path;
 import java.util.Collections;
 
-import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
+import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.junit.Assert.assertEquals;
 
 public class VideoNameTrimmerTest {
@@ -31,7 +31,7 @@ public class VideoNameTrimmerTest {
 
     @Test
     public void extensionWithLetterAndDigitIsTrimmedCorrectly() {
-        String pathString = getJoinedPathString(StaticPathsProvider.getDownloadsPath(), "leo.mp4");
+        String pathString = joinPaths(StaticPathsProvider.getDownloadsPath(), "leo.mp4");
         Path path = StaticPathsProvider.getPath(pathString);
         String fileName = path.getFileName().toString();
         Video video = new Video(fileName, path.toString());

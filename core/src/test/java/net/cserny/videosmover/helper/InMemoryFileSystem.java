@@ -14,19 +14,19 @@ public class InMemoryFileSystem {
     private FileSystem fileSystem;
 
     public static String getDownloads() {
-        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "Downloads");
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads");
     }
 
     public static String getMovies() {
-        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "Movies");
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies");
     }
 
     public static String getTvShows() {
-        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "TvShows");
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows");
     }
 
     public static String getEmpty() {
-        return StaticPathsProvider.getJoinedPathString(PlatformService.getDefaultRoot(), "empty");
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty");
     }
 
     public static InMemoryFileSystem initFileSystem() throws IOException {

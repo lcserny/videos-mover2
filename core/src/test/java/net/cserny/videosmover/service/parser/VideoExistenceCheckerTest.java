@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 
-import static net.cserny.videosmover.helper.StaticPathsProvider.getJoinedPathString;
+import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.junit.Assert.*;
 
 public class VideoExistenceCheckerTest {
@@ -55,7 +55,7 @@ public class VideoExistenceCheckerTest {
         String existingFolder = "The Big Sick (2017)";
         inMemoryFileSystem.create(existingPath, existingFolder, null, 0);
 
-        String pathString = getJoinedPathString(existingPath, existingFolder);
+        String pathString = joinPaths(existingPath, existingFolder);
         Path path = StaticPathsProvider.getPath(pathString);
         Video video = new Video(null, path.toString());
         video.setVideoType(VideoType.MOVIE);
@@ -72,7 +72,7 @@ public class VideoExistenceCheckerTest {
         String existingFolder = "I Am Batman (2099)";
         inMemoryFileSystem.create(existingPath, existingFolder, null, 0);
 
-        String pathString = getJoinedPathString(existingPath, existingFolder);
+        String pathString = joinPaths(existingPath, existingFolder);
         Path path = StaticPathsProvider.getPath(pathString);
         Video video = new Video(null, path.toString());
         video.setVideoType(VideoType.MOVIE);

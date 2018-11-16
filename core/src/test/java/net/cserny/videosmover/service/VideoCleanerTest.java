@@ -54,7 +54,7 @@ public class VideoCleanerTest {
 
         inMemoryFileSystem.create(moviePath, movieFolder, movieFile, 2);
         Video video = VideoResolver.resolveMovie(moviePath,
-                StaticPathsProvider.getJoinedPathString(moviePath, movieFolder, movieFile),
+                StaticPathsProvider.joinPaths(moviePath, movieFolder, movieFile),
                 outputResolver::resolve);
 
         assertCleaning(video, true);
@@ -67,7 +67,7 @@ public class VideoCleanerTest {
 
         inMemoryFileSystem.create(videoPath, null, videoFile, 2);
         Video video = VideoResolver.resolveMovie(videoPath,
-                StaticPathsProvider.getJoinedPathString(videoPath, videoFile),
+                StaticPathsProvider.joinPaths(videoPath, videoFile),
                 outputResolver::resolve);
 
         assertCleaning(video, false);
@@ -81,7 +81,7 @@ public class VideoCleanerTest {
 
         inMemoryFileSystem.create(videoPath, videoFolder, videoFile, 2);
         Video video = VideoResolver.resolveMovie(videoPath,
-                StaticPathsProvider.getJoinedPathString(videoPath, videoFolder, videoFile),
+                StaticPathsProvider.joinPaths(videoPath, videoFolder, videoFile),
                 outputResolver::resolve);
 
         assertCleaning(video, false);
