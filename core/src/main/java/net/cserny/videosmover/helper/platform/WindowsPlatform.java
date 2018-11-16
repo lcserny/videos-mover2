@@ -2,15 +2,21 @@ package net.cserny.videosmover.helper.platform;
 
 public class WindowsPlatform extends Platform {
 
-    WindowsPlatform() { }
+    WindowsPlatform() {
+    }
 
     @Override
     public String getRootPathPrefix() {
-        return "c:/";
+        return "c:";
     }
 
     @Override
     public String getName() {
         return Platform.WINDOWS;
+    }
+
+    @Override
+    public String getSeparator() {
+        return "\\";
     }
 }

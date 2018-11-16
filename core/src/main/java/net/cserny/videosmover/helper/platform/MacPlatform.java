@@ -2,15 +2,21 @@ package net.cserny.videosmover.helper.platform;
 
 public class MacPlatform extends Platform {
 
-    MacPlatform() { }
+    MacPlatform() {
+    }
 
     @Override
     public String getRootPathPrefix() {
-        return "/";
+        return "";
     }
 
     @Override
     public String getName() {
         return Platform.MAC;
+    }
+
+    @Override
+    public String getSeparator() {
+        return "/";
     }
 }

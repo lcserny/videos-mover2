@@ -10,7 +10,6 @@ import java.nio.file.Path;
 
 public class StaticPathsProvider {
 
-    // TODO: init this from platform
     public static String SEPARATOR;
 
     private static FileSystem fileSystem;
@@ -19,12 +18,13 @@ public class StaticPathsProvider {
     private static String tvShowsPath;
 
     static {
+        Platform platform = Platform.initPlatform();
+        SEPARATOR = platform.getSeparator();
+
         initPaths();
     }
 
     private static void initPaths() {
-        SEPARATOR = "";
-
         fileSystem = FileSystems.getDefault();
 
         downloadsPath = PreferencesLoader.getDownloadsPath();

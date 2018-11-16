@@ -2,15 +2,21 @@ package net.cserny.videosmover.helper.platform;
 
 public class LinuxPlatform extends Platform {
 
-    LinuxPlatform() { }
+    LinuxPlatform() {
+    }
 
     @Override
     public String getRootPathPrefix() {
-        return "/";
+        return "";
     }
 
     @Override
     public String getName() {
         return Platform.LINUX;
+    }
+
+    @Override
+    public String getSeparator() {
+        return "/";
     }
 }
