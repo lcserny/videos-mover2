@@ -8,7 +8,11 @@ public class TwoThreadsExecutor {
     private static ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     public static void doInAnotherThread(Runnable runnable) {
-        executorService.execute(runnable);
+        try {
+            executorService.execute(runnable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void shutdown() {
