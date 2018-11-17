@@ -26,6 +26,7 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
+import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,7 +35,11 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
+
+import static net.cserny.videosmover.service.thread.TwoThreadsExecutor.doInAnotherThread;
 
 @Singleton
 public class MainController implements Initializable {
@@ -54,6 +59,8 @@ public class MainController implements Initializable {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
+
+    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     @Inject
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
@@ -128,7 +135,7 @@ public class MainController implements Initializable {
         }
 
         loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
-        Platform.runLater(() -> {
+        doInAnotherThread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
@@ -157,7 +164,7 @@ public class MainController implements Initializable {
         ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene().lookup("#moveProgress");
         progressIndicator.setVisible(true);
         progressIndicator.setProgress(-1.0f);
-        Platform.runLater(() -> {
+        doInAnotherThread(() -> {
             facade.moveVideos(selectedVideos);
             region.setVisible(false);
             progressIndicator.setVisible(false);

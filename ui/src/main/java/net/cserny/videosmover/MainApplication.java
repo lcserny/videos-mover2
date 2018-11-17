@@ -8,9 +8,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.MessageDisplayProvider;
+import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -59,5 +59,10 @@ public class MainApplication extends Application {
         primaryStage.show();
 
         stageProvider.setStage(primaryStage);
+    }
+
+    @Override
+    public void stop() throws Exception {
+        TwoThreadsExecutor.shutdown();
     }
 }
