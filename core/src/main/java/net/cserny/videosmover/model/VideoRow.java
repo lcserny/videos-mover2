@@ -14,6 +14,7 @@ public class VideoRow {
     public VideoRow(Video video) {
         this.video = video;
         this.name.set(video.getFileName());
+        this.videoType.set(video.getVideoType());
     }
 
     public Video getVideo() {

@@ -1,7 +1,6 @@
 package net.cserny.videosmover.controller;
 
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +25,6 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
-import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,8 +33,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import static net.cserny.videosmover.service.thread.TwoThreadsExecutor.doInAnotherThread;
@@ -59,8 +55,6 @@ public class MainController implements Initializable {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
-
-    private final ExecutorService executorService = Executors.newFixedThreadPool(2);
 
     @Inject
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,

@@ -12,12 +12,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.service.CachedMetadataService;
+import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
@@ -31,7 +31,6 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
     private final CachedMetadataService metadataService;
     private final CustomTextField customTextField;
     private final Button button;
-//    private final Pattern valuePattern = Pattern.compile("(?<outFolder>.*) \\((?<year>.*)\\)$");
 
     private StringProperty boundProperty = null;
     private Video video;
@@ -74,12 +73,12 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         button.setTooltip(new Tooltip("Search for video metadata online"));
         button.setOnAction(event -> {
             setImageToButton(button, loadingImage);
-            new Thread(() -> {
+            TwoThreadsExecutor.doInAnotherThread(() -> {
                 List<VideoMetadata> videoMetadataList = processVideoMetadataList();
                 setImageToButton(button, altImage);
                 PopOver popOver = buildPopover(videoMetadataList, mainImage, altImage);
                 Platform.runLater(() -> togglePopover(button, popOver));
-            }).start();
+            });
         });
 
         return button;
