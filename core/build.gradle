@@ -1,4 +1,4 @@
 dependencies {
-    compile group: 'me.xdrop', name: 'fuzzywuzzy', version: '1.1.8'
-    compile group: 'info.movito', name: 'themoviedbapi', version: '1.6'
+    implementation 'me.xdrop:fuzzywuzzy:1.2.0'
+    implementation 'info.movito:themoviedbapi:1.7'
 }
