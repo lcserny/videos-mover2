@@ -1,9 +1,9 @@
 package net.cserny.videosmover.service.parser;
 
 import net.cserny.videosmover.helper.PropertiesLoader;
+import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -75,7 +75,7 @@ public class VideoNameTrimmer implements VideoNameParser {
             if (matcher.start(2) != 0) {
                 video.setOutputFolderWithoutDate(matcher.group(1).trim());
                 String yearString = matcher.group(2);
-                if (!StringUtils.isEmpty(yearString)) {
+                if (!StringHelper.isEmpty(yearString)) {
                     video.setYear(Integer.valueOf(yearString));
                 }
             }

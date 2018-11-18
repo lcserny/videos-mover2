@@ -1,7 +1,6 @@
 package net.cserny.videosmover.helper;
 
 import net.cserny.videosmover.helper.platform.PlatformService;
-import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -43,7 +42,7 @@ public class StaticPathsProvider {
     }
 
     public static String joinPaths(String startPath, String... paths) {
-        if (StringUtils.isEmpty(startPath)) {
+        if (StringHelper.isEmpty(startPath)) {
             throw new IllegalArgumentException("Invalid startPath argument provided");
         }
 

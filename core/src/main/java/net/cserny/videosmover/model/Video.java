@@ -1,8 +1,8 @@
 package net.cserny.videosmover.model;
 
 import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.service.helper.VideoOutputHelper;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +112,7 @@ public class Video {
     }
 
     public void setDateFromReleaseDate(String releaseDate) {
-        if (StringUtils.isEmpty(releaseDate)) {
+        if (StringHelper.isEmpty(releaseDate)) {
             return;
         }
 
@@ -123,10 +123,10 @@ public class Video {
             String day = matcher.group("day");
 
             this.year = Integer.valueOf(year);
-            if (StringUtils.isNumeric(month)) {
+            if (StringHelper.isNumeric(month)) {
                 this.month = Integer.valueOf(month);
             }
-            if (StringUtils.isNumeric(day)) {
+            if (StringHelper.isNumeric(day)) {
                 this.day = Integer.valueOf(day);
             }
         }

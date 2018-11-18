@@ -12,13 +12,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
-import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -199,7 +199,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private void updateVideoRowOutput(SimpleStringProperty outputProperty, VideoRow videoRow) {
         String outputFolderWithPossiblyDate = outputProperty.getValue();
-        if (video != null && !StringUtils.isEmpty(outputFolderWithPossiblyDate)) {
+        if (video != null && !StringHelper.isEmpty(outputFolderWithPossiblyDate)) {
             video.setOutputFolderWithoutDate(trimReleaseDate(outputFolderWithPossiblyDate));
             video.setDateFromReleaseDate(outputFolderWithPossiblyDate);
             if (videoRow != null) {

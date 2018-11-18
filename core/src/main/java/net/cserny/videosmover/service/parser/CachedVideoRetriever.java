@@ -5,7 +5,6 @@ import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

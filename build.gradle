@@ -10,10 +10,6 @@ buildscript {
     }
 }
 
-plugins {
-    id "net.ltgt.apt" version "0.19"
-}
-
 allprojects {
     apply plugin: 'maven'
     apply plugin: 'com.google.osdetector'
@@ -27,7 +23,6 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
-    apply plugin: 'net.ltgt.apt'
 
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -39,16 +34,21 @@ subprojects {
     }
 
     dependencies {
+        annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
+
+        // TODO: doesn't work
+        testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
+
         implementation "org.openjfx:javafx-base:11.0.1:$platform"
         implementation "org.openjfx:javafx-graphics:11.0.1:$platform"
         implementation "org.openjfx:javafx-controls:11.0.1:$platform"
+        implementation "org.openjfx:javafx-fxml:11.0.1:$platform"
         implementation 'com.google.dagger:dagger:2.19'
         implementation 'ch.qos.logback:logback-classic:1.2.3'
-        annotationProcessor 'com.google.dagger:dagger-compiler:2.19'
+
         testImplementation 'ch.qos.logback:logback-classic:1.2.3'
         testImplementation 'com.google.jimfs:jimfs:1.1'
         testImplementation 'junit:junit:4.12'
         testImplementation "org.mockito:mockito-core:2.23.0"
-        testAnnotationProcessor 'com.google.dagger:dagger-compiler:2.19'
     }
 }
