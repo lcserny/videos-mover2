@@ -1,5 +1,7 @@
 package net.cserny.videosmover.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -13,9 +15,6 @@ import javafx.util.Duration;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {

@@ -1,9 +1,9 @@
 package net.cserny.videosmover.service.validator;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.PropertiesLoader;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,20 +1,13 @@
 package net.cserny.videosmover;
 
-import dagger.Module;
-import dagger.Provides;
-import dagger.multibindings.IntoSet;
-import net.cserny.videosmover.controller.MainController;
+import com.google.inject.AbstractModule;
 import net.cserny.videosmover.provider.InWindowMessageDisplayProvider;
-import net.cserny.videosmover.provider.MainStageProvider;
-import net.cserny.videosmover.service.*;
+import net.cserny.videosmover.service.MessageDisplayProvider;
 
-import javax.inject.Singleton;
+public class UiModule extends AbstractModule {
 
-@Module
-public class UiModule {
-
-    @Provides
-    public MessageDisplayProvider messageDisplayProvider(InWindowMessageDisplayProvider inWindowMessageDisplayProvider) {
-        return inWindowMessageDisplayProvider;
+    @Override
+    protected void configure() {
+        bind(MessageDisplayProvider.class).to(InWindowMessageDisplayProvider.class);
     }
 }

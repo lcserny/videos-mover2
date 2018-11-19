@@ -1,9 +1,9 @@
 package net.cserny.videosmover.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.cserny.videosmover.model.Message;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 

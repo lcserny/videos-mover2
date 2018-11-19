@@ -1,5 +1,7 @@
 package net.cserny.videosmover.controller;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -26,8 +28,6 @@ import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.File;
 import java.net.URL;
 import java.util.List;

@@ -1,14 +1,15 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.CoreTestComponent;
-import net.cserny.videosmover.DaggerCoreTestComponent;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import net.cserny.videosmover.CoreModule;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
 import org.junit.Test;
 
-import javax.inject.Inject;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -19,8 +20,8 @@ public class VideoMetadataServiceTest {
     CachedMetadataService metadataService;
 
     public VideoMetadataServiceTest() {
-        CoreTestComponent component = DaggerCoreTestComponent.create();
-        component.inject(this);
+        Injector injector = Guice.createInjector(new CoreModule());
+        injector.injectMembers(this);
     }
 
     @Test

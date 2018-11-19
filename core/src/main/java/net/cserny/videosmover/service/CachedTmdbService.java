@@ -1,5 +1,7 @@
 package net.cserny.videosmover.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import info.movito.themoviedbapi.*;
 import info.movito.themoviedbapi.model.Credits;
 import info.movito.themoviedbapi.model.MovieDb;
@@ -13,8 +15,6 @@ import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;

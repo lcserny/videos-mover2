@@ -1,5 +1,8 @@
 package net.cserny.videosmover;
 
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +15,6 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 public class MainApplication extends Application {
@@ -43,8 +45,8 @@ public class MainApplication extends Application {
     }
 
     private void initContext() {
-        ApplicationComponent component = DaggerApplicationComponent.create();
-        component.inject(this);
+        Injector injector = Guice.createInjector(new UiModule(), new CoreModule());
+        injector.injectMembers(this);
 
         Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
     }

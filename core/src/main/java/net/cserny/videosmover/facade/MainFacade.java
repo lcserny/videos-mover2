@@ -1,5 +1,7 @@
 package net.cserny.videosmover.facade;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
@@ -7,8 +9,6 @@ import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.*;
 import net.cserny.videosmover.service.observer.VideoExistenceObserver;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;

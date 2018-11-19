@@ -1,9 +1,8 @@
 package net.cserny.videosmover.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.stage.Stage;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class MainStageProvider {

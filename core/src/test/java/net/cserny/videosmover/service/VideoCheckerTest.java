@@ -1,14 +1,15 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.CoreTestComponent;
-import net.cserny.videosmover.DaggerCoreTestComponent;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import net.cserny.videosmover.CoreModule;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
@@ -22,8 +23,8 @@ public class VideoCheckerTest {
     private InMemoryFileSystem inMemoryFileSystem;
 
     public VideoCheckerTest() {
-        CoreTestComponent component = DaggerCoreTestComponent.create();
-        component.inject(this);
+        Injector injector = Guice.createInjector(new CoreModule());
+        injector.injectMembers(this);
     }
 
     @Before

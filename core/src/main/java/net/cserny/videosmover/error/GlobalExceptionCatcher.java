@@ -1,13 +1,12 @@
 package net.cserny.videosmover.error;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import javafx.scene.control.Alert;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @Singleton
 public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {

@@ -1,7 +1,9 @@
 package net.cserny.videosmover.service.parser;
 
-import net.cserny.videosmover.CoreTestComponent;
-import net.cserny.videosmover.DaggerCoreTestComponent;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import net.cserny.videosmover.CoreModule;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
@@ -13,14 +15,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collections;
 
 import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class VideoExistenceCheckerTest {
 
@@ -34,14 +35,16 @@ public class VideoExistenceCheckerTest {
     private InMemoryFileSystem inMemoryFileSystem;
 
     public VideoExistenceCheckerTest() {
-        CoreTestComponent component = DaggerCoreTestComponent.create();
-        component.inject(this);
+        Injector injector = Guice.createInjector(new CoreModule());
+        injector.injectMembers(this);
     }
 
     @Before
     public void setUp() throws Exception {
         inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
-        messageRegistry.registerDisplayProvider(message -> { cachedMessage = message.getContent(); });
+        messageRegistry.registerDisplayProvider(message -> {
+            cachedMessage = message.getContent();
+        });
     }
 
     @After

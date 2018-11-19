@@ -1,62 +1,37 @@
 package net.cserny.videosmover;
 
-import dagger.Module;
-import dagger.Provides;
-import dagger.multibindings.IntoSet;
-import net.cserny.videosmover.service.*;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
+import net.cserny.videosmover.service.CachedMetadataService;
+import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.DefaultOutputVideoNameService;
+import net.cserny.videosmover.service.OutputVideoNameService;
 import net.cserny.videosmover.service.parser.*;
 import net.cserny.videosmover.service.validator.*;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+public class CoreModule extends AbstractModule {
 
-@Module
-public class CoreModule {
+    @Override
+    protected void configure() {
+        Multibinder<VideoNameParser> videoNameParserMultibinder = Multibinder.newSetBinder(binder(), VideoNameParser.class);
+        videoNameParserMultibinder.addBinding().to(VideoNameTrimmer.class);
+        videoNameParserMultibinder.addBinding().to(CachedVideoRetriever.class);
+        videoNameParserMultibinder.addBinding().to(VideoExistenceChecker.class);
 
-    @Provides
-    public Set<VideoNameParser> videoNameParsers(VideoNameTrimmer trimmer,
-                                                 CachedVideoRetriever retriever,
-                                                 VideoExistenceChecker checker) {
-        Set<VideoNameParser> parsers = new LinkedHashSet<>();
-        parsers.add(trimmer);
-        parsers.add(checker);
-        parsers.add(retriever);
-        return parsers;
-    }
+        Multibinder<VideoValidator> videoValidatorMultibinder = Multibinder.newSetBinder(binder(), VideoValidator.class);
+        videoValidatorMultibinder.addBinding().to(VideoPathValidator.class);
+        videoValidatorMultibinder.addBinding().to(VideoTypeValidator.class);
+        videoValidatorMultibinder.addBinding().to(VideoSizeValidator.class);
 
-    @Provides
-    public Set<VideoValidator> videoValidators(VideoPathValidator pathValidator,
-                                               VideoTypeValidator typeValidator,
-                                               VideoSizeValidator sizeValidator) {
-        Set<VideoValidator> validators = new LinkedHashSet<>();
-        validators.add(pathValidator);
-        validators.add(typeValidator);
-        validators.add(sizeValidator);
-        return validators;
-    }
+        Multibinder<RemovalRestriction> removalRestrictionMultibinder = Multibinder.newSetBinder(binder(), RemovalRestriction.class);
+        removalRestrictionMultibinder.addBinding().to(MainPathsRestriction.class);
+        removalRestrictionMultibinder.addBinding().to(CustomPathsRestriction.class);
 
-    @Provides @IntoSet
-    public RemovalRestriction mainPathsRestriction(MainPathsRestriction mainPathsRestriction) {
-        return mainPathsRestriction;
-    }
+        Multibinder<OutputVideoNameChecker> outputVideoNameCheckerMultibinder = Multibinder.newSetBinder(binder(), OutputVideoNameChecker.class);
+        outputVideoNameCheckerMultibinder.addBinding().to(TvShowOutputVideoNameChecker.class);
 
-    @Provides @IntoSet
-    public RemovalRestriction customPathsRestriction(CustomPathsRestriction customPathsRestriction) {
-        return customPathsRestriction;
-    }
+        bind(OutputVideoNameService.class).to(DefaultOutputVideoNameService.class);
 
-    @Provides @IntoSet
-    public OutputVideoNameChecker outputVideoNameChecker(TvShowOutputVideoNameChecker tvShowOutputVideoNameChecker) {
-        return tvShowOutputVideoNameChecker;
-    }
-
-    @Provides
-    public OutputVideoNameService outputVideoNameService(DefaultOutputVideoNameService outputVideoNameService) {
-        return outputVideoNameService;
-    }
-
-    @Provides
-    public CachedMetadataService cachedMetadataService(SimpleMessageRegistry messageRegistry) {
-        return new CachedTmdbService(messageRegistry);
+        bind(CachedMetadataService.class).to(CachedTmdbService.class);
     }
 }

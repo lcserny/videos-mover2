@@ -1,7 +1,9 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.CoreTestComponent;
-import net.cserny.videosmover.DaggerCoreTestComponent;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import net.cserny.videosmover.CoreModule;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.helper.VideoResolver;
@@ -10,11 +12,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.inject.Inject;
-
 import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 public class OutputResolverTest {
 
@@ -24,8 +25,8 @@ public class OutputResolverTest {
     private InMemoryFileSystem inMemoryFileSystem;
 
     public OutputResolverTest() {
-        CoreTestComponent component = DaggerCoreTestComponent.create();
-        component.inject(this);
+        Injector injector = Guice.createInjector(new CoreModule());
+        injector.injectMembers(this);
     }
 
     @Before

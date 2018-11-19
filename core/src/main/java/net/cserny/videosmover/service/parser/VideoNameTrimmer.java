@@ -1,12 +1,12 @@
 package net.cserny.videosmover.service.parser;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

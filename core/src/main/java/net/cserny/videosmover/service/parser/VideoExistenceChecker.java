@@ -1,5 +1,7 @@
 package net.cserny.videosmover.service.parser;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
@@ -8,8 +10,6 @@ import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;

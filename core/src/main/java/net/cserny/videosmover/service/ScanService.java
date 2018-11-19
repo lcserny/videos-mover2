@@ -1,10 +1,10 @@
 package net.cserny.videosmover.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
