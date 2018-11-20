@@ -4,11 +4,7 @@ import java.util.prefs.Preferences;
 
 public class PreferencesLoader {
 
-    private static final Preferences preferences;
-
-    static {
-        preferences = Preferences.userNodeForPackage(PreferencesLoader.class);
-    }
+    private static final Preferences preferences = Preferences.userNodeForPackage(PreferencesLoader.class);
 
     public static String getDownloadsPath() {
         return preferences.get(PropertiesLoader.PATH_DOWNLOADS_KEY, PropertiesLoader.getDownloadsPath());
