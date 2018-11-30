@@ -42,7 +42,7 @@ public class VideoRow {
     }
 
     public void setOutput(Video video) {
-        this.output.set(video.getOutputFolderWithDate());
+        this.output.set(video != null ? video.getOutputFolderWithDate() : "");
     }
 
     public VideoType getVideoType() {

@@ -58,19 +58,13 @@ public class Video {
     }
 
     public String getOutputFolderWithDate() {
-        if (videoType == VideoType.TVSHOW) {
-            return outputFolderWithoutDate;
-        }
-
-        String dateAppend = "";
         if (year != null) {
-            dateAppend = String.format(" (%d)", year);
+            if (videoType == VideoType.TVSHOW || (month == null && day == null)) {
+                return String.format("%s (%d)", outputFolderWithoutDate, year);
+            }
+            return String.format("%s (%d-%d-%d)", outputFolderWithoutDate, year, month, day);
         }
-        if (month != null && day != null) {
-            dateAppend = String.format(" (%d-%d-%d)", year, month, day);
-        }
-
-        return outputFolderWithoutDate + dateAppend;
+        return outputFolderWithoutDate;
     }
 
     public Integer getYear() {

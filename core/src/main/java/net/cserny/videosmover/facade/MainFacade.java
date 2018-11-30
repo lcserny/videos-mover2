@@ -50,12 +50,15 @@ public class MainFacade {
 
     private void handleToggleVideoType(VideoType videoType, VideoRow videoRow) {
         videoRow.setVideoType(videoType);
-        if (videoType != VideoType.NONE) {
-            VideoExistenceObserver observer = new VideoExistenceObserver();
-            outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
-            if (observer.shouldAdjustPath()) {
-                cachedTmdbService.adjustOutputAndDate(videoRow.getVideo());
-            }
+        if (videoType == VideoType.NONE) {
+            videoRow.setOutput(null);
+            return;
+        }
+
+        VideoExistenceObserver observer = new VideoExistenceObserver();
+        outputResolver.resolve(videoRow.getVideo(), Collections.singletonList(observer));
+        if (observer.shouldAdjustPath()) {
+            cachedTmdbService.adjustOutputAndDate(videoRow.getVideo());
         }
         videoRow.setOutput(videoRow.getVideo());
     }
