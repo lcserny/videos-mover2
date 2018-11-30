@@ -35,6 +35,6 @@ public class VideoTypeValidator implements VideoValidator {
                 return true;
             }
         }
-        return false;
+        return mimeType != null && mimeType.startsWith("video/");
     }
 }
