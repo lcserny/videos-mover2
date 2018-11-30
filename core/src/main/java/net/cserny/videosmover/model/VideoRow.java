@@ -45,6 +45,10 @@ public class VideoRow {
         this.output.set(video != null ? video.getOutputFolderWithDate() : "");
     }
 
+    public void setOutputManual(String output) {
+        this.output.set(output);
+    }
+
     public VideoType getVideoType() {
         return videoType.get();
     }

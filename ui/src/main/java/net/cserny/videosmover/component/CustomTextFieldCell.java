@@ -34,6 +34,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private StringProperty boundProperty = null;
     private Video video;
+    private boolean manuallyEditingTextField;
 
     public CustomTextFieldCell(CachedMetadataService metadataService) {
         this.metadataService = metadataService;
@@ -56,12 +57,13 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
     private CustomTextField initCustomTextField() {
         CustomTextField customTextField = new CustomTextField();
+        customTextField.focusedProperty()
+                .addListener((observable, oldValue, focused) -> { manuallyEditingTextField = focused; });
         customTextField.setRight(button);
         return customTextField;
     }
 
     private Button initButton() {
-
         Image mainImage = new Image(getClass().getResourceAsStream("/images/scan-button.png"));
         Image altImage = new Image(getClass().getResourceAsStream("/images/tmdb_logo_small.png"));
         Image loadingImage = new Image(getClass().getResourceAsStream("/images/loading.gif"));
@@ -172,7 +174,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         int caretPosition = customTextField.getCaretPosition();
 
         VideoRow videoRow = null;
-        if (output != null && !output.isEmpty()) {
+        if (!StringHelper.isEmpty(output)) {
             videoRow = getTableView().getItems().get(getIndex());
             processForShow(videoRow.getVideo());
         } else {
@@ -193,6 +195,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
             }
             updateVideoRowOutput(outputProperty, videoRow);
         }
+
         setContentDisplay(contentDisplay);
         customTextField.positionCaret(caretPosition);
     }
@@ -203,7 +206,11 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
             video.setOutputFolderWithoutDate(trimReleaseDate(outputFolderWithPossiblyDate));
             video.setDateFromReleaseDate(outputFolderWithPossiblyDate);
             if (videoRow != null) {
-                videoRow.setOutput(video);
+                if (manuallyEditingTextField) {
+                    videoRow.setOutputManual(outputFolderWithPossiblyDate);
+                } else {
+                    videoRow.setOutput(video);
+                }
             }
         }
     }
