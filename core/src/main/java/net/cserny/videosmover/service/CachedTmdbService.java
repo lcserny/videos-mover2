@@ -17,6 +17,7 @@ import net.cserny.videosmover.model.VideoType;
 
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -98,7 +99,8 @@ public class CachedTmdbService implements CachedMetadataService {
     public String keyFormat(String prefix, VideoQuery query) {
         String formatted = prefix + query.getName();
         formatted = query.getYear() != null ? formatted + "_" + query.getYear() : formatted;
-        formatted = formatted.replaceAll(" ", "_");
+        formatted = Normalizer.normalize(formatted, Normalizer.Form.NFD);
+        formatted = formatted.replaceAll("[^a-zA-Z0-9]]", "_");
         return formatted.toLowerCase();
     }
 
