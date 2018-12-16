@@ -13,4 +13,8 @@ interface Platform {
     default String getSeparator() {
         return File.separator;
     };
+
+    default PlatformTrimPathData trimPath(PlatformTrimPathData pathData) {
+        return pathData;
+    }
 }

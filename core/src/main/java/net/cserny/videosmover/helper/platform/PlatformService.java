@@ -30,4 +30,8 @@ public class PlatformService {
     public static String getSeparator() {
         return platform.getSeparator();
     }
+
+    public static PlatformTrimPathData trimPath(PlatformTrimPathData pathData) {
+        return platform.trimPath(pathData);
+    }
 }

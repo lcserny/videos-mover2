@@ -1,6 +1,7 @@
 package net.cserny.videosmover.helper;
 
 import net.cserny.videosmover.helper.platform.PlatformService;
+import net.cserny.videosmover.helper.platform.PlatformTrimPathData;
 
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -38,7 +39,8 @@ public class StaticPathsProvider {
     }
 
     public static Path getPath(String path, String... parts) {
-        return fileSystem.getPath(path, parts);
+        PlatformTrimPathData trimPathData = PlatformService.trimPath(new PlatformTrimPathData(path, parts));
+        return fileSystem.getPath(trimPathData.getPath(), trimPathData.getParts());
     }
 
     public static String joinPaths(String startPath, String... paths) {
