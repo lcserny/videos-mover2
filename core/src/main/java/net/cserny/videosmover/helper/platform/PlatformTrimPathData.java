@@ -7,6 +7,10 @@ public class PlatformTrimPathData {
     private String path;
     private String[] parts;
 
+    public PlatformTrimPathData(String path) {
+        this(path, null);
+    }
+
     public PlatformTrimPathData(String path, String[] parts) {
         this.path = path;
         this.parts = parts;

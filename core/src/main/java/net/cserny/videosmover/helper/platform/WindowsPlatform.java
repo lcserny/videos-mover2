@@ -1,9 +1,11 @@
 package net.cserny.videosmover.helper.platform;
 
+import java.util.regex.Pattern;
+
 class WindowsPlatform implements Platform {
 
-    private static final String SPECIAL_CHARS = "[\\\\/:*?\"<>|]";
-    private static final int MAX_PATH_SIZE = 256;
+    static final String SPECIAL_CHARS = "[\\\\/:*?\"<>|]";
+    static final int MAX_PATH_SIZE = 256;
 
     @Override
     public String getName() {
@@ -35,12 +37,35 @@ class WindowsPlatform implements Platform {
     }
 
     private String renameToSaveSpace(String path) {
-        // TODO
-        return path;
+        String[] split = path.split(Pattern.quote(getSeparator()));
+        int remainingChars = 0;
+        for (int i = 0; i < split.length - 1; i++) {
+            remainingChars += split[i].length();
+        }
+
+        String lastPart = split[split.length - 1];
+
+        String extension = lastPart.charAt(lastPart.length() - 4) == '.'
+                ? lastPart.substring(lastPart.length() - 4)
+                : "";
+        remainingChars += extension.length();
+
+        // TODO: if remaining chars > lastPart.length() then trim from previous part also and so on OR throw?
+        String trimmed = lastPart.substring(0, (MAX_PATH_SIZE - remainingChars));
+
+        split[split.length - 1] = trimmed + extension;
+        return String.join(getSeparator(), split);
     }
 
     private String clearSpecialChars(String part) {
-        // TODO: for each individual part of the path do this, not the whole things
-        return part.replaceAll(SPECIAL_CHARS, "");
+        String[] split = part.split(Pattern.quote(getSeparator()));
+        for (int i = 0; i < split.length; i++) {
+            String splitPart = split[i];
+            if (i == 0 && splitPart.charAt(1) == ':' && splitPart.length() == 2) {
+                continue;
+            }
+            split[i] = splitPart.replaceAll(SPECIAL_CHARS, "");
+        }
+        return String.join(getSeparator(), split);
     }
 }
