@@ -4,24 +4,25 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-// TODO: not finished yet, neet to test also specialCharsStrip
 public class WindowsPlatformTest {
 
     private WindowsPlatform platform = new WindowsPlatform();
 
     @Test
-    public void testLengthTrim() {
-        String longPath = "C:\\SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomeVideo name with a lot of characters.mp4";
-        String expected = "C:\\SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\"
-                + "SomePath with a lot of charcters in it\\SomePath with a lot of charcters in it\\SomePath with a.mp4";
+    public void testSpecialCharsTrim() {
+        String path = String.format("%s%s%s%s",
+                platform.getDefaultRoot(),
+                "The Lord of the Rings: The Fellowship of <>the Ring (2001)",
+                platform.getSeparator(),
+                "The_Lord_of_the_Rings:_The_Fellowship_of_<>the_Ring.mp4");
 
-        PlatformTrimPathData pathData = platform.trimPath(new PlatformTrimPathData(longPath));
+        String expected = String.format("%s%s%s%s",
+                platform.getDefaultRoot(),
+                "The Lord of the Rings The Fellowship of the Ring (2001)",
+                platform.getSeparator(),
+                "The_Lord_of_the_Rings_The_Fellowship_of_the_Ring.mp4");
+
+        PlatformTrimPathData pathData = platform.trimPath(new PlatformTrimPathData(path));
 
         assertEquals(pathData.getPath(), expected);
     }
