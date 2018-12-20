@@ -24,6 +24,9 @@ class WindowsPlatform implements Platform {
         if (pathData.hasParts()) {
             String[] parts = pathData.getParts();
             for (int i = 0; i < parts.length; i++) {
+                if (parts[i].length() > MAX_PATH_SIZE) {
+                    throw new RuntimeException("Path too long, maximum allowed size is: " + MAX_PATH_SIZE);
+                }
                 parts[i] = clearSpecialChars(parts[i]);
             }
             pathData.setParts(parts);
