@@ -25,6 +25,7 @@ import org.controlsfx.control.textfield.CustomTextField;
 import java.util.List;
 
 import static net.cserny.videosmover.service.helper.VideoOutputHelper.trimReleaseDate;
+import static net.cserny.videosmover.service.thread.TwoThreadsExecutor.doInAnotherThread;
 
 public class CustomTextFieldCell extends TableCell<VideoRow, String> {
 
@@ -75,7 +76,7 @@ public class CustomTextFieldCell extends TableCell<VideoRow, String> {
         button.setTooltip(new Tooltip("Search for video metadata online"));
         button.setOnAction(event -> {
             setImageToButton(button, loadingImage);
-            TwoThreadsExecutor.doInAnotherThread(() -> {
+            doInAnotherThread(() -> {
                 List<VideoMetadata> videoMetadataList = processVideoMetadataList();
                 setImageToButton(button, altImage);
                 PopOver popOver = buildPopover(videoMetadataList, mainImage, altImage);
