@@ -44,19 +44,18 @@ public class VideoExistenceChecker implements VideoNameParser {
     }
 
     private void parse(String path, Video video, List<VideoAdjustmentObserver> observers) {
-        Optional<String> existingFolderOptional = probeExistingFolder(StaticPathsProvider.getPath(path), video.getOutputFolderWithoutDate());
-        if (existingFolderOptional.isPresent()) {
+        probeExistingFolder(StaticPathsProvider.getPath(path), video.getOutputFolderWithoutDate()).ifPresent(existingFolder -> {
             for (VideoAdjustmentObserver observer : observers) {
                 observer.dontAdjustPath();
             }
-            String existingFolder = existingFolderOptional.get();
+
             if (!path.equals(StaticPathsProvider.getTvShowsPath())) {
                 messageRegistry.displayMessage(MessageProvider.existingFolderFound(existingFolder));
             }
 
             video.setOutputFolderWithoutDate(existingFolder);
             video.setDateFromReleaseDate(existingFolder);
-        }
+        });
     }
 
     private Optional<String> probeExistingFolder(Path path, String outputFolderNameWithoutDate) {
