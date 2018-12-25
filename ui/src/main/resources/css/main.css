@@ -14,11 +14,21 @@
 }
 
 #settingsPane {
-    -fx-cursor: hand;
     -fx-pref-width: 500;
-    -fx-border-color: transparent gray transparent transparent;
-    -fx-border-width: 1px;
     -fx-translate-x: -480px;
+}
+
+#settingsVisualHint {
+    -fx-pref-height: 650;
+    -fx-pref-width: 20;
+    -fx-translate-x: 480px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent #cdcdcd transparent transparent;
+    -fx-border-width: 1px;
+    -fx-background-image: url("/images/right_arrow.png");
+    -fx-background-size: 15 100;
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
 }
 
 #settingsTitle {

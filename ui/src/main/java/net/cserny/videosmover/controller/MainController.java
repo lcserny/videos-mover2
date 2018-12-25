@@ -46,7 +46,7 @@ public class MainController implements Initializable {
     @FXML
     private ImageView loadingImage;
     @FXML
-    private Pane settingsPane;
+    private Pane settingsPane, settingsVisualHint;
     @FXML
     private TableView<VideoRow> tableView;
     @FXML
@@ -104,7 +104,7 @@ public class MainController implements Initializable {
         openSettings.setToX(0);
         TranslateTransition closeSettings = new TranslateTransition(Duration.millis(250), settingsPane);
 
-        settingsPane.setOnMouseClicked(event -> {
+        settingsVisualHint.setOnMouseClicked(event -> {
             if (settingsPane.getTranslateX() != 0) {
                 openSettings.play();
             } else {

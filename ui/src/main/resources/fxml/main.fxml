@@ -5,12 +5,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
-<StackPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.112" stylesheets="@/css/main.css">
+<StackPane stylesheets="@/css/main.css" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
     <Pane fx:id="container">
         <VBox id="main-container">
             <TableView fx:id="tableView">
                 <columns>
-                    <TableColumn fx:id="nameCol" text="Name" editable="false"/>
+                    <TableColumn fx:id="nameCol" editable="false" text="Name"/>
                     <TableColumn fx:id="typeCol" text="Type"/>
                     <TableColumn fx:id="outputCol" text="Output"/>
                 </columns>
@@ -23,11 +23,14 @@
 
                 <right>
                     <HBox>
-                        <Button mnemonicParsing="false" disable="true" fx:id="moveButton" onAction="#moveVideos" styleClass="default-button" text="Move Selected Files"/>
+                        <Button fx:id="moveButton" disable="true" mnemonicParsing="false" onAction="#moveVideos"
+                                styleClass="default-button" text="Move Selected Files"/>
 
-                        <Button defaultButton="true" mnemonicParsing="false" fx:id="scanButton" onAction="#loadTableView" text="Search Downloads">
+                        <Button fx:id="scanButton" defaultButton="true" mnemonicParsing="false"
+                                onAction="#loadTableView" text="Search Downloads">
                             <graphic>
-                                <ImageView fx:id="loadingImage" pickOnBounds="true" fitHeight="30" fitWidth="45" preserveRatio="true">
+                                <ImageView fx:id="loadingImage" fitHeight="30" fitWidth="45" pickOnBounds="true"
+                                           preserveRatio="true">
                                     <Image url="@/images/scan-button.png"/>
                                 </ImageView>
                             </graphic>
@@ -43,23 +46,24 @@
                 <Separator/>
 
                 <HBox styleClass="set-path-container">
-                    <Button mnemonicParsing="false" styleClass="default-button, set-path-button" text="Downloads" fx:id="setDownloadsButton"
-                        onAction="#setDownloadsPath"/>
+                    <Button fx:id="setDownloadsButton" mnemonicParsing="false" onAction="#setDownloadsPath"
+                            styleClass="default-button, set-path-button" text="Downloads"/>
                     <TextField fx:id="downloadsPathTextField" disable="true" styleClass="path-text"/>
                 </HBox>
 
                 <HBox styleClass="set-path-container">
-                    <Button mnemonicParsing="false" fx:id="setMoviesButton" styleClass="default-button, set-path-button" text="Movies"
-                        onAction="#setMoviesPath"/>
+                    <Button fx:id="setMoviesButton" mnemonicParsing="false" onAction="#setMoviesPath"
+                            styleClass="default-button, set-path-button" text="Movies"/>
                     <TextField fx:id="moviePathTextField" disable="true" styleClass="path-text"/>
                 </HBox>
 
                 <HBox styleClass="set-path-container">
-                    <Button mnemonicParsing="false" fx:id="setTvShowsButton" styleClass="default-button, set-path-button" text="TV Shows"
-                        onAction="#setTvShowsPath"/>
+                    <Button fx:id="setTvShowsButton" mnemonicParsing="false" onAction="#setTvShowsPath"
+                            styleClass="default-button, set-path-button" text="TV Shows"/>
                     <TextField fx:id="tvShowPathTextField" disable="true" styleClass="path-text"/>
                 </HBox>
             </VBox>
+            <Pane fx:id="settingsVisualHint"/>
         </Pane>
     </Pane>
 
