@@ -2,14 +2,14 @@ package net.cserny.videosmover.helper;
 
 import com.google.inject.Singleton;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 @Singleton
 public class DefaultLoadingService implements LoadingService {
 
-    private final Set<Runnable> showLoadingRunnables = new HashSet<>();
-    private final Set<Runnable> hideLoadingRunnables = new HashSet<>();
+    private final Set<Runnable> showLoadingRunnables = new CopyOnWriteArraySet<>();
+    private final Set<Runnable> hideLoadingRunnables = new CopyOnWriteArraySet<>();
 
     @Override
     public void showLoading() {
