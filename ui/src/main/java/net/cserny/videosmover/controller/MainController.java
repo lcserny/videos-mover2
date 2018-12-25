@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
@@ -105,6 +106,7 @@ public class MainController implements Initializable {
         TranslateTransition closeSettings = new TranslateTransition(Duration.millis(250), settingsPane);
 
         settingsVisualHint.setOnMouseClicked(event -> {
+            settingsVisualHint.setScaleX(settingsVisualHint.getScaleX() == 1 ? -1 : 1);
             if (settingsPane.getTranslateX() != 0) {
                 openSettings.play();
             } else {
