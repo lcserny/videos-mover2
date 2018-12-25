@@ -151,4 +151,22 @@ public class OutputResolverTest {
 
         assertEquals("House Of Cards", houseOfCards2.getOutputFolderWithoutDate());
     }
+
+    @Test
+    public void resolve_doubleYearInTVShow() throws Exception {
+        String existingExtrasPath = StaticPathsProvider.getTvShowsPath();
+        String existingExtrasFolder = "Extras (2005)";
+        inMemoryFileSystem.create(existingExtrasPath, existingExtrasFolder, null, 0);
+
+        String extrasPath = StaticPathsProvider.getDownloadsPath();
+        String extrasFolder = "Extras S02e01-06";
+        String extrasFile = "Extras S02.Ciak.Sbagliati.Ppb1.avi";
+        inMemoryFileSystem.create(extrasPath, extrasFolder, extrasFile, 2);
+
+        Video extras = VideoResolver.resolveTvShow(extrasPath,
+                joinPaths(extrasPath, extrasFolder, extrasFile),
+                outputResolver::resolve);
+
+        assertEquals("Extras (2005)", extras.getOutputFolderWithDate());
+    }
 }
