@@ -37,12 +37,10 @@ public class CachedVideoRetriever implements VideoNameParser {
                 .withYear(video.getYear())
                 .build();
         String formattedKey = cachedTmdbService.keyFormat(cachePrefix, videoQuery);
-        Optional<VideoMetadata> foundOutputOptional = findInVideoCache(formattedKey);
-
-        if (foundOutputOptional.isPresent()) {
-            video.setOutputFolderWithoutDate(foundOutputOptional.get().getName());
-            video.setDateFromReleaseDate(foundOutputOptional.get().getReleaseDate());
-        }
+        findInVideoCache(formattedKey).ifPresent(videoMetadata -> {
+            video.setOutputFolderWithoutDate(videoMetadata.getName());
+            video.setDateFromReleaseDate(videoMetadata.getReleaseDate());
+        });
     }
 
     private Optional<VideoMetadata> findInVideoCache(String key) {
