@@ -2,9 +2,14 @@ package net.cserny.videosmover.helper;
 
 public interface LoadingService {
 
-    void showLoading();
+    String SCAN_LOADING_KEY = "scanLoading";
+    String MOVE_LOADING_KEY = "moveLoading";
 
-    void hideLoading();
+    void showLoading(String label);
 
-    void register(Runnable showLoadingRunnable, Runnable hideLoadingRunnable);
+    void hideLoading(String label);
+
+    void hideAllLoadings();
+
+    void register(String label, Runnable showLoadingRunnable, Runnable hideLoadingRunnable);
 }

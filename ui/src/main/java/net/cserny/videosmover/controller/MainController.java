@@ -36,6 +36,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import static net.cserny.videosmover.helper.LoadingService.MOVE_LOADING_KEY;
+import static net.cserny.videosmover.helper.LoadingService.SCAN_LOADING_KEY;
 import static net.cserny.videosmover.service.thread.TwoThreadsExecutor.doInAnotherThread;
 
 @Singleton
@@ -77,10 +79,21 @@ public class MainController implements Initializable {
     }
 
     private void initLoading() {
-        loadingService.register(() -> {
+        loadingService.register(SCAN_LOADING_KEY, () -> {
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
         }, () -> {
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
+        });
+
+        Region region = (Region) stageProvider.getStage().getScene().lookup("#opaqueRegion");
+        ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene().lookup("#moveProgress");
+        loadingService.register(MOVE_LOADING_KEY, () -> {
+            region.setVisible(true);
+            progressIndicator.setProgress(-1.0f);
+            progressIndicator.setVisible(true);
+        }, () -> {
+            region.setVisible(false);
+            progressIndicator.setVisible(false);
         });
     }
 
@@ -140,12 +153,12 @@ public class MainController implements Initializable {
             return;
         }
 
-        loadingService.showLoading();
+        loadingService.showLoading(SCAN_LOADING_KEY);
         doInAnotherThread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
-            loadingService.hideLoading();
+            loadingService.hideLoading(SCAN_LOADING_KEY);
         });
     }
 
@@ -165,15 +178,10 @@ public class MainController implements Initializable {
             return;
         }
 
-        Region region = (Region) stageProvider.getStage().getScene().lookup("#opaqueRegion");
-        region.setVisible(true);
-        ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene().lookup("#moveProgress");
-        progressIndicator.setVisible(true);
-        progressIndicator.setProgress(-1.0f);
+        loadingService.showLoading(MOVE_LOADING_KEY);
         doInAnotherThread(() -> {
             facade.moveVideos(selectedVideos);
-            region.setVisible(false);
-            progressIndicator.setVisible(false);
+            loadingService.hideLoading(MOVE_LOADING_KEY);
             loadTableView(event);
         });
     }

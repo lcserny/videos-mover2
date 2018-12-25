@@ -29,7 +29,7 @@ public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {
         String title = e.getMessage() != null ? e.getMessage() : "Exception thrown";
         Message message = new Message(Alert.AlertType.ERROR, content, title);
         messageRegistry.displayMessage(message);
-        loadingService.hideLoading();
+        loadingService.hideAllLoadings();
 
         LOGGER.error(message.getTitle(), e);
     }
