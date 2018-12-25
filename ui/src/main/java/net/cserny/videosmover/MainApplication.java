@@ -61,6 +61,7 @@ public class MainApplication extends Application {
         primaryStage.show();
 
         stageProvider.setStage(primaryStage);
+        controller.initLoading();
     }
 
     @Override

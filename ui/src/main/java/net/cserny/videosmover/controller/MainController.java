@@ -75,18 +75,20 @@ public class MainController implements Initializable {
         initTable();
         initDefaultPaths();
         initSlidingSettingsPane();
-        initLoading();
     }
 
-    private void initLoading() {
+    public void initLoading() {
+        Region region = (Region) stageProvider.getStage().getScene()
+                .lookup("#opaqueRegion");
+        ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene()
+                .lookup("#moveProgress");
+
         loadingService.register(SCAN_LOADING_KEY, () -> {
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
         }, () -> {
             loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
         });
 
-        Region region = (Region) stageProvider.getStage().getScene().lookup("#opaqueRegion");
-        ProgressIndicator progressIndicator = (ProgressIndicator) stageProvider.getStage().getScene().lookup("#moveProgress");
         loadingService.register(MOVE_LOADING_KEY, () -> {
             region.setVisible(true);
             progressIndicator.setProgress(-1.0f);
