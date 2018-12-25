@@ -19,6 +19,7 @@ import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
+import net.cserny.videosmover.helper.LoadingService;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
@@ -55,14 +56,16 @@ public class MainController implements Initializable {
     private final SimpleMessageRegistry messageRegistry;
     private final MainStageProvider stageProvider;
     private final CachedMetadataService metadataService;
+    private final LoadingService loadingService;
 
     @Inject
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
-                          CachedMetadataService metadataService) {
+                          CachedMetadataService metadataService, LoadingService loadingService) {
         this.facade = facade;
         this.stageProvider = stageProvider;
         this.messageRegistry = messageRegistry;
         this.metadataService = metadataService;
+        this.loadingService = loadingService;
     }
 
     @Override
@@ -70,6 +73,15 @@ public class MainController implements Initializable {
         initTable();
         initDefaultPaths();
         initSlidingSettingsPane();
+        initLoading();
+    }
+
+    private void initLoading() {
+        loadingService.register(() -> {
+            loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
+        }, () -> {
+            loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
+        });
     }
 
     private void initSlidingSettingsPane() {
@@ -128,12 +140,12 @@ public class MainController implements Initializable {
             return;
         }
 
-        loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/loading.gif")));
+        loadingService.showLoading();
         doInAnotherThread(() -> {
             List<VideoRow> videoRowList = facade.scanVideos();
             tableView.setItems(FXCollections.observableList(videoRowList));
             moveButton.setDisable(videoRowList.isEmpty());
-            loadingImage.setImage(new Image(getClass().getResourceAsStream("/images/scan-button.png")));
+            loadingService.hideLoading();
         });
     }
 

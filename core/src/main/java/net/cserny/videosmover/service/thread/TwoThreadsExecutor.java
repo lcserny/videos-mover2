@@ -16,8 +16,8 @@ public class TwoThreadsExecutor {
     }
 
     public static void shutdown() {
-        if (!executorService.isTerminated()) {
-            executorService.shutdown();
+        if (!executorService.isShutdown()) {
+            executorService.shutdownNow();
         }
     }
 }
