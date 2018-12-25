@@ -9,7 +9,7 @@ public class VideoOutputHelper {
     public static final Pattern NAME_WITH_RELEASE_DATE = Pattern.compile("(?<name>.*)\\s" + RELEASE_DATE);
 
     public static String trimReleaseDate(String filename) {
-        Matcher matcher = VideoOutputHelper.NAME_WITH_RELEASE_DATE.matcher(filename);
+        Matcher matcher = NAME_WITH_RELEASE_DATE.matcher(filename);
         if (matcher.find()) {
             filename = matcher.group("name").trim();
         }

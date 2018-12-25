@@ -53,7 +53,7 @@ public class VideoExistenceChecker implements VideoNameParser {
                 messageRegistry.displayMessage(MessageProvider.existingFolderFound(existingFolder));
             }
 
-            video.setOutputFolderWithoutDate(existingFolder);
+            video.setOutputFolderWithoutDate(trimReleaseDate(existingFolder));
             video.setDateFromReleaseDate(existingFolder);
         });
     }
