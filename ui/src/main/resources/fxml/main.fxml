@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -42,7 +43,7 @@
 
         <Pane fx:id="settingsPane">
             <VBox id="settings-container">
-                <Text id="settingsTitle">Settings</Text>
+                <Text id="settingsTitle">General Settings</Text>
                 <Separator/>
 
                 <HBox styleClass="set-path-container">
@@ -62,6 +63,19 @@
                             styleClass="default-button, set-path-button" text="TV Shows"/>
                     <TextField fx:id="tvShowPathTextField" disable="true" styleClass="path-text"/>
                 </HBox>
+
+                <Text id="onlineMetadataTitle" text="Online Metadata Settings">
+                    <VBox.margin>
+                        <Insets top="30.0"/>
+                    </VBox.margin>
+                </Text>
+                <Separator/>
+                <CheckBox fx:id="enableOnlineMetadataCheckbox" text="Enable online metadata search">
+                    <padding>
+                        <Insets bottom="5.0" top="5.0"/>
+                    </padding>
+                </CheckBox>
+                <TextField fx:id="onlineMetadataApiKey" promptText="Online metadata API key"/>
             </VBox>
             <Pane fx:id="settingsVisualHint"/>
         </Pane>

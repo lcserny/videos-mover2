@@ -31,7 +31,7 @@
     -fx-background-repeat: stretch;
 }
 
-#settingsTitle {
+#settingsTitle, #onlineMetadataTitle {
     -fx-font-size: 14;
 }
 
