@@ -39,4 +39,13 @@ public class PreferencesLoader {
     public static void setOnlineMetadataApiKey(String apiKey) {
         preferences.put(ONLINE_METADATA_API_KEY, apiKey);
     }
+
+    public static boolean isEnabledOnlineMetadataSearch() {
+        String bool = preferences.get(ENABLE_ONLINE_METADATA_SEARCH_KEY, getEnabledOnlineMetadataSearch());
+        return Boolean.valueOf(bool);
+    }
+
+    public static void setEnabledOnlineMetadataSearch(boolean enabled) {
+        preferences.put(ENABLE_ONLINE_METADATA_SEARCH_KEY, String.valueOf(enabled));
+    }
 }

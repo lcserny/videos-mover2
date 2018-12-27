@@ -16,9 +16,9 @@ import net.cserny.videosmover.model.VideoType;
 
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.Normalizer;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Supplier;
 
 // TODO: change this to something faster?
@@ -27,11 +27,7 @@ public class CachedTmdbService implements CachedMetadataService {
 
     private static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/w92%s";
     private static final String NO_API_KEY = "<CHANGE_ME>";
-    private static final AtomicBoolean apiKeyChanged = new AtomicBoolean();
-
     private final SimpleMessageRegistry messageRegistry;
-
-    private Map<String, List<VideoMetadata>> videoCache = new HashMap<>(50);
     private TmdbApi tmdbApi;
 
     @Inject
@@ -56,12 +52,11 @@ public class CachedTmdbService implements CachedMetadataService {
     }
 
     @Override
-    public void apiKeyChanged() {
-        apiKeyChanged.set(true);
-    }
-
-    @Override
     public List<VideoMetadata> searchMetadata(VideoQuery query, VideoType type) {
+        if (!isEnabled()) {
+            return Collections.emptyList();
+        }
+
         switch (type) {
             case MOVIE:
                 return searchMovieMetadata(query);
@@ -73,12 +68,11 @@ public class CachedTmdbService implements CachedMetadataService {
     }
 
     @Override
-    public Map<String, List<VideoMetadata>> getVideoCache() {
-        return videoCache;
-    }
-
-    @Override
     public void adjustOutputAndDate(Video video) {
+        if (!isEnabled()) {
+            return;
+        }
+
         VideoQuery query = VideoQuery.newInstance()
                 .withName(video.getOutputFolderWithoutDate())
                 .withYear(video.getYear())
@@ -100,15 +94,6 @@ public class CachedTmdbService implements CachedMetadataService {
             video.setOutputFolderWithoutDate(metadata.getName());
             video.setDateFromReleaseDate(metadata.getReleaseDate());
         }
-    }
-
-    @Override
-    public String keyFormat(String prefix, VideoQuery query) {
-        String formatted = prefix + query.getName();
-        formatted = query.getYear() != null ? formatted + "_" + query.getYear() : formatted;
-        formatted = Normalizer.normalize(formatted, Normalizer.Form.NFD);
-        formatted = formatted.replaceAll("[^a-zA-Z0-9]]", "_");
-        return formatted.toLowerCase();
     }
 
     private List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) {

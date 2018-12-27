@@ -15,6 +15,7 @@ public class PropertiesLoader {
     public static final String PATH_DOWNLOADS_KEY = "path.downloads";
     public static final String PATH_MOVIES_KEY = "path.movies";
     public static final String PATH_TVSHOWS_KEY = "path.tvshows";
+    public static final String ENABLE_ONLINE_METADATA_SEARCH_KEY = "enable.online.metadata.search";
     public static final String ONLINE_METADATA_API_KEY = "online.metadata.api.key";
 
     private static final String SIMILARITY_PERCENT_KEY = "similarity.percent";
@@ -44,6 +45,10 @@ public class PropertiesLoader {
 
     public static String getOnlineMetadataApiKey() {
         return getString(ONLINE_METADATA_API_KEY);
+    }
+
+    public static String getEnabledOnlineMetadataSearch() {
+        return getString(ENABLE_ONLINE_METADATA_SEARCH_KEY);
     }
 
     public static String getDownloadsPath() {

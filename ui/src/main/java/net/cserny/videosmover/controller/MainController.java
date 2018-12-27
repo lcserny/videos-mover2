@@ -44,6 +44,8 @@ import static net.cserny.videosmover.service.thread.TwoThreadsExecutor.doInAnoth
 public class MainController implements Initializable {
 
     @FXML
+    private CheckBox enableOnlineMetadataCheckbox;
+    @FXML
     private ImageView loadingImage;
     @FXML
     private Pane settingsPane, settingsVisualHint;
@@ -75,14 +77,20 @@ public class MainController implements Initializable {
         initTable();
         initDefaultPaths();
         initSlidingSettingsPane();
-        populateApiKey();
+        initApiSettings();
     }
 
-    private void populateApiKey() {
+    private void initApiSettings() {
         String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
         if (!StringHelper.isEmpty(apiKey)) {
             onlineMetadataApiKey.setText(apiKey);
         }
+        enableOnlineMetadataCheckbox.setSelected(PreferencesLoader.isEnabledOnlineMetadataSearch());
+    }
+
+    public void onlineMetadataEnableChanged(ActionEvent event) {
+        boolean selected = enableOnlineMetadataCheckbox.isSelected();
+        PreferencesLoader.setEnabledOnlineMetadataSearch(selected);
     }
 
     public void initLoading() {
@@ -110,7 +118,7 @@ public class MainController implements Initializable {
     public void onlineMetadataAPIKeyChanged(KeyEvent event) {
         String newApiKey = onlineMetadataApiKey.getText();
         PreferencesLoader.setOnlineMetadataApiKey(newApiKey);
-        metadataService.apiKeyChanged();
+        metadataService.setApiKeyChanged();
     }
 
     private void initSlidingSettingsPane() {

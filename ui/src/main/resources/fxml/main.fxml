@@ -70,7 +70,8 @@
                     </VBox.margin>
                 </Text>
                 <Separator/>
-                <CheckBox fx:id="enableOnlineMetadataCheckbox" text="Enable online metadata search">
+                <CheckBox fx:id="enableOnlineMetadataCheckbox" text="Enable online metadata search"
+                          onAction="#onlineMetadataEnableChanged">
                     <padding>
                         <Insets bottom="5.0" top="5.0"/>
                     </padding>

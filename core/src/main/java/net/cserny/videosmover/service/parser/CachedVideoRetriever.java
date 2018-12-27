@@ -14,11 +14,11 @@ import java.util.Optional;
 @Singleton
 public class CachedVideoRetriever implements VideoNameParser {
 
-    private final CachedMetadataService cachedTmdbService;
+    private final CachedMetadataService cachedMetadataService;
 
     @Inject
-    public CachedVideoRetriever(CachedMetadataService cachedTmdbService) {
-        this.cachedTmdbService = cachedTmdbService;
+    public CachedVideoRetriever(CachedMetadataService cachedMetadataService) {
+        this.cachedMetadataService = cachedMetadataService;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class CachedVideoRetriever implements VideoNameParser {
                 .withName(video.getOutputFolderWithoutDate())
                 .withYear(video.getYear())
                 .build();
-        String formattedKey = cachedTmdbService.keyFormat(cachePrefix, videoQuery);
+        String formattedKey = cachedMetadataService.keyFormat(cachePrefix, videoQuery);
         findInVideoCache(formattedKey).ifPresent(videoMetadata -> {
             video.setOutputFolderWithoutDate(videoMetadata.getName());
             video.setDateFromReleaseDate(videoMetadata.getReleaseDate());
@@ -44,7 +44,7 @@ public class CachedVideoRetriever implements VideoNameParser {
     }
 
     private Optional<VideoMetadata> findInVideoCache(String key) {
-        List<VideoMetadata> videoMetadataList = cachedTmdbService.getVideoCache().get(key);
+        List<VideoMetadata> videoMetadataList = cachedMetadataService.videoCache.get(key);
         if (videoMetadataList != null) {
             for (VideoMetadata videoMetadata : videoMetadataList) {
                 if (videoMetadata.isSelected()) {
