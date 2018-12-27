@@ -75,8 +75,15 @@
                         <Insets bottom="5.0" top="5.0"/>
                     </padding>
                 </CheckBox>
-                <TextField fx:id="onlineMetadataApiKey" onKeyTyped="#onlineMetadataAPIKeyChanged"
-                           promptText="Online metadata API key"/>
+                <HBox>
+                    <Text id="onlineMetadataApiKeyLabel" text="API Key">
+                        <HBox.margin>
+                            <Insets right="10.0" top="5.0"/>
+                        </HBox.margin>
+                    </Text>
+                    <TextField fx:id="onlineMetadataApiKey" onKeyTyped="#onlineMetadataAPIKeyChanged" prefWidth="382.0"
+                               promptText="Enter the online metadata API key here"/>
+                </HBox>
             </VBox>
             <Pane fx:id="settingsVisualHint"/>
         </Pane>

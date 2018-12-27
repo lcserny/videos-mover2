@@ -31,8 +31,18 @@
     -fx-background-repeat: stretch;
 }
 
-#settingsTitle, #onlineMetadataTitle {
+#onlineMetadataApiKey {
+    -fx-background-color: #f8f8f8;
+    -fx-border-width: 1px;
+    -fx-border-color: #cdcdcd;
+}
+
+#settingsTitle, #onlineMetadataTitle, #onlineMetadataApiKeyLabel, #enableOnlineMetadataCheckbox {
     -fx-font-size: 14;
+}
+
+#onlineMetadataApiKeyLabel {
+    -fx-fill: #7d7d7d;
 }
 
 #settings-container {
