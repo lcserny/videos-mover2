@@ -1,10 +1,7 @@
 package net.cserny.videosmover.helper;
 
-import com.google.common.io.Resources;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +15,8 @@ public class PropertiesLoader {
     public static final String PATH_DOWNLOADS_KEY = "path.downloads";
     public static final String PATH_MOVIES_KEY = "path.movies";
     public static final String PATH_TVSHOWS_KEY = "path.tvshows";
+    public static final String ONLINE_METADATA_API_KEY = "online.metadata.api.key";
 
-    private static final String TMDB_API_KEY = "tmdb.api.key";
     private static final String SIMILARITY_PERCENT_KEY = "similarity.percent";
     private static final String MIN_VIDEO_SIZE_KEY = "minimum.video.size";
     private static final String VIDEO_EXCLUDE_PATHS_KEY = "video.exclude.paths";
@@ -35,16 +32,18 @@ public class PropertiesLoader {
     }
 
     private static void initApplication() {
-        URL url = Resources.getResource("application.properties");
-        try (InputStream inputStream = Resources.asByteSource(url).openBufferedStream()) {
-            application.load(inputStream);
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        try (InputStream resourceStream = loader.getResourceAsStream("application.properties")) {
+            if (resourceStream != null) {
+                application.load(resourceStream);
+            }
         } catch (IOException e) {
             LOGGER.severe("Failed to load application.properties!");
         }
     }
 
-    public static String getTmdbApiKey() {
-        return getString(TMDB_API_KEY);
+    public static String getOnlineMetadataApiKey() {
+        return getString(ONLINE_METADATA_API_KEY);
     }
 
     public static String getDownloadsPath() {
@@ -81,7 +80,7 @@ public class PropertiesLoader {
 
     public static long getMinimumVideoSize() {
         Optional<String> stringOptional = processString(MIN_VIDEO_SIZE_KEY);
-        if (!stringOptional.isPresent()) {
+        if (stringOptional.isEmpty()) {
             throw new RuntimeException("Environment does not contain any value for key: " + MIN_VIDEO_SIZE_KEY);
         }
         return Long.valueOf(stringOptional.get());
@@ -89,7 +88,7 @@ public class PropertiesLoader {
 
     public static int getSimilarityPercent() {
         Optional<String> stringOptional = processString(SIMILARITY_PERCENT_KEY);
-        if (!stringOptional.isPresent()) {
+        if (stringOptional.isEmpty()) {
             throw new RuntimeException("Environment does not contain any value for key: " + SIMILARITY_PERCENT_KEY);
         }
         return Integer.valueOf(stringOptional.get());
@@ -97,7 +96,7 @@ public class PropertiesLoader {
 
     private static List<String> getStringList(String key, String splitRegex) {
         Optional<String> stringOptional = processString(key);
-        if (!stringOptional.isPresent()) {
+        if (stringOptional.isEmpty()) {
             throw new RuntimeException("Environment does not contain any value for key: " + key);
         }
         return Arrays.asList(stringOptional.get().split(splitRegex));
@@ -105,7 +104,7 @@ public class PropertiesLoader {
 
     private static String getString(String key) {
         return processString(key).orElseThrow(() -> new RuntimeException(
-                        "Environment does not contain any value for key: " + key));
+                "Environment does not contain any value for key: " + key));
     }
 
     private static Optional<String> processString(String key) {
@@ -115,7 +114,7 @@ public class PropertiesLoader {
         }
 
         String propVal = application.getProperty(key);
-        if (propVal != null && !propVal.isEmpty()) {
+        if (!StringHelper.isEmpty(propVal)) {
             return Optional.of(propVal);
         }
 
@@ -124,12 +123,12 @@ public class PropertiesLoader {
 
     private static Optional<String> getFromEnv(String key) {
         String envVal = System.getenv(key);
-        if (envVal != null && !envVal.isEmpty()) {
+        if (!StringHelper.isEmpty(envVal)) {
             return Optional.of(envVal);
         }
 
         envVal = System.getenv(key.replaceAll("\\.", "_").toUpperCase());
-        if (envVal != null && !envVal.isEmpty()) {
+        if (!StringHelper.isEmpty(envVal)) {
             return Optional.of(envVal);
         }
 

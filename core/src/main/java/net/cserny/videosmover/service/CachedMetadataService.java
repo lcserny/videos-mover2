@@ -22,4 +22,6 @@ public interface CachedMetadataService {
     void adjustOutputAndDate(Video video);
 
     String keyFormat(String prefix, VideoQuery query);
+
+    void apiKeyChanged();
 }

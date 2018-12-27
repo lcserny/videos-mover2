@@ -12,7 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BackgroundImage;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.DirectoryChooser;
@@ -20,8 +20,7 @@ import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
-import net.cserny.videosmover.helper.LoadingService;
-import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.helper.*;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
@@ -51,7 +50,7 @@ public class MainController implements Initializable {
     @FXML
     private TableView<VideoRow> tableView;
     @FXML
-    private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField;
+    private TextField downloadsPathTextField, moviePathTextField, tvShowPathTextField, onlineMetadataApiKey;
     @FXML
     private Button moveButton, scanButton, setDownloadsButton, setMoviesButton, setTvShowsButton;
 
@@ -76,6 +75,14 @@ public class MainController implements Initializable {
         initTable();
         initDefaultPaths();
         initSlidingSettingsPane();
+        populateApiKey();
+    }
+
+    private void populateApiKey() {
+        String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
+        if (!StringHelper.isEmpty(apiKey)) {
+            onlineMetadataApiKey.setText(apiKey);
+        }
     }
 
     public void initLoading() {
@@ -98,6 +105,12 @@ public class MainController implements Initializable {
             region.setVisible(false);
             progressIndicator.setVisible(false);
         });
+    }
+
+    public void onlineMetadataAPIKeyChanged(KeyEvent event) {
+        String newApiKey = onlineMetadataApiKey.getText();
+        PreferencesLoader.setOnlineMetadataApiKey(newApiKey);
+        metadataService.apiKeyChanged();
     }
 
     private void initSlidingSettingsPane() {

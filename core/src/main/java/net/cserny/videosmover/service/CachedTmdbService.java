@@ -8,8 +8,7 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
-import net.cserny.videosmover.helper.PropertiesLoader;
-import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.helper.PreferencesLoader;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
@@ -19,6 +18,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.Normalizer;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 // TODO: change this to something faster?
@@ -27,6 +27,7 @@ public class CachedTmdbService implements CachedMetadataService {
 
     private static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/w92%s";
     private static final String NO_API_KEY = "<CHANGE_ME>";
+    private static final AtomicBoolean apiKeyChanged = new AtomicBoolean();
 
     private final SimpleMessageRegistry messageRegistry;
 
@@ -39,18 +40,24 @@ public class CachedTmdbService implements CachedMetadataService {
     }
 
     private void initApi() {
-        String apiKey = PropertiesLoader.getTmdbApiKey();
+        String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
         if (apiKey.equals(NO_API_KEY)) {
             messageRegistry.displayMessage(MessageProvider.noMetadataServiceApiKey());
         }
+        apiKeyChanged.set(false);
         this.tmdbApi = new TmdbApi(apiKey);
     }
 
     private TmdbApi getTmdbApi() {
-        if (tmdbApi == null) {
+        if (tmdbApi == null || apiKeyChanged.get()) {
             initApi();
         }
         return tmdbApi;
+    }
+
+    @Override
+    public void apiKeyChanged() {
+        apiKeyChanged.set(true);
     }
 
     @Override
