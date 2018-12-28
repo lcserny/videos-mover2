@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 // TODO: change this to something faster?
+// TODO: improve the isEnabled in all methods
 @Singleton
 public class CachedTmdbService implements CachedMetadataService {
 
