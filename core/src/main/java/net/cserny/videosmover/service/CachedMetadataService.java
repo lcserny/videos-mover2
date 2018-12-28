@@ -1,6 +1,7 @@
 package net.cserny.videosmover.service;
 
 import net.cserny.videosmover.helper.PreferencesLoader;
+import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
@@ -16,13 +17,16 @@ public interface CachedMetadataService {
 
     Map<String, List<VideoMetadata>> videoCache = new HashMap<>(50);
     AtomicBoolean apiKeyChanged = new AtomicBoolean();
+    String NO_API_KEY = "<CHANGE_ME>";
     String MOVIE_PREFIX = "MOVIE_";
     String TVSHOW_PREFIX = "TVSHOW_";
     int DEFAULT_CAST_SIZE = 5;
     int DEFAULT_VIDEOS_SIZE = 5;
 
     default boolean isEnabled() {
-        return PreferencesLoader.isEnabledOnlineMetadataSearch();
+        boolean enabled = PreferencesLoader.isEnabledOnlineMetadataSearch();
+        String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
+        return enabled && !StringHelper.isEmpty(apiKey) && NO_API_KEY.equals(apiKey);
     }
 
     default String keyFormat(String prefix, VideoQuery query) {

@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 public class CachedTmdbService implements CachedMetadataService {
 
     private static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/w92%s";
-    private static final String NO_API_KEY = "<CHANGE_ME>";
+
     private final SimpleMessageRegistry messageRegistry;
     private TmdbApi tmdbApi;
 
