@@ -26,7 +26,7 @@ public interface CachedMetadataService {
     default boolean isEnabled() {
         boolean enabled = PreferencesLoader.isEnabledOnlineMetadataSearch();
         String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
-        return enabled && !StringHelper.isEmpty(apiKey) && NO_API_KEY.equals(apiKey);
+        return enabled && !StringHelper.isEmpty(apiKey) && !NO_API_KEY.equals(apiKey);
     }
 
     default String keyFormat(String prefix, VideoQuery query) {
