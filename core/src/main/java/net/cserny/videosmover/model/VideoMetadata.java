@@ -3,6 +3,7 @@ package net.cserny.videosmover.model;
 import java.util.List;
 
 public class VideoMetadata {
+
     private String name;
     private String releaseDate;
     private String description;
