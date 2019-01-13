@@ -5,7 +5,7 @@ import com.google.inject.multibindings.Multibinder;
 import net.cserny.videosmover.helper.DefaultLoadingService;
 import net.cserny.videosmover.helper.LoadingService;
 import net.cserny.videosmover.service.CachedMetadataService;
-import net.cserny.videosmover.service.CachedTmdbService;
+import net.cserny.videosmover.service.MovitoCachedTmdbService;
 import net.cserny.videosmover.service.DefaultOutputVideoNameService;
 import net.cserny.videosmover.service.OutputVideoNameService;
 import net.cserny.videosmover.service.parser.*;
@@ -34,7 +34,7 @@ public class CoreModule extends AbstractModule {
 
         bind(OutputVideoNameService.class).to(DefaultOutputVideoNameService.class);
 
-        bind(CachedMetadataService.class).to(CachedTmdbService.class);
+        bind(CachedMetadataService.class).to(MovitoCachedTmdbService.class);
 
         bind(LoadingService.class).to(DefaultLoadingService.class);
     }

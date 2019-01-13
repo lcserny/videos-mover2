@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 // TODO: change this to something faster?
 // TODO: improve the isEnabled in all methods
 @Singleton
-public class CachedTmdbService implements CachedMetadataService {
+public class MovitoCachedTmdbService implements CachedMetadataService {
 
     private static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/w92%s";
 
@@ -32,7 +32,7 @@ public class CachedTmdbService implements CachedMetadataService {
     private TmdbApi tmdbApi;
 
     @Inject
-    public CachedTmdbService(SimpleMessageRegistry messageRegistry) {
+    public MovitoCachedTmdbService(SimpleMessageRegistry messageRegistry) {
         this.messageRegistry = messageRegistry;
     }
 
