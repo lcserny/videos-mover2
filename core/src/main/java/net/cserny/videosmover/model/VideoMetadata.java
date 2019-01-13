@@ -1,8 +1,13 @@
 package net.cserny.videosmover.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class VideoMetadata {
+
+    private static final DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
     private String name;
     private String releaseDate;
@@ -25,6 +30,10 @@ public class VideoMetadata {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = format.format(releaseDate);
     }
 
     public String getDescription() {

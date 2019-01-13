@@ -3,14 +3,22 @@ package net.cserny.videosmover.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.uwetrottmann.tmdb2.Tmdb;
+import com.uwetrottmann.tmdb2.entities.*;
+import com.uwetrottmann.tmdb2.enumerations.AppendToResponseItem;
+import com.uwetrottmann.tmdb2.services.SearchService;
 import net.cserny.videosmover.helper.PreferencesLoader;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Singleton
 public class TrottmannCachedTmdbService implements CachedMetadataService {
@@ -43,47 +51,55 @@ public class TrottmannCachedTmdbService implements CachedMetadataService {
 
     private List<VideoMetadata> searchMovieMetadata(VideoQuery movieQuery) {
         return searchInternal(movieQuery, MOVIE_PREFIX, () -> {
-            List<MovieDb> results = searchMovieInternal(movieQuery).getResults();
-            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
-            List<VideoMetadata> metadataList = new ArrayList<>();
-            for (int i = 0; i < maxIndex; i++) {
-                VideoMetadata metadata = buildMovieVideoMetadata(results.get(i));
-                metadataList.add(metadata);
+            MovieResultsPage resultsPage = searchMovieInternal(movieQuery);
+            if (resultsPage != null) {
+                List<BaseMovie> movies = resultsPage.results;
+                int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, movies.size());
+                List<VideoMetadata> metadataList = new ArrayList<>();
+                for (int i = 0; i < maxIndex; i++) {
+                    VideoMetadata metadata = buildMovieVideoMetadata(movies.get(i));
+                    metadataList.add(metadata);
+                }
+                return metadataList;
             }
-            return metadataList;
+            return null;
         });
     }
 
-    private VideoMetadata buildMovieVideoMetadata(MovieDb movieResult) {
+    private VideoMetadata buildMovieVideoMetadata(BaseMovie movieResult) {
         VideoMetadata metadata = new VideoMetadata();
-        metadata.setName(movieResult.getTitle());
-        metadata.setReleaseDate(movieResult.getReleaseDate());
-        metadata.setPosterUrl(buildPosterUrl(movieResult.getPosterPath()));
-        metadata.setDescription(movieResult.getOverview());
-        metadata.setCast(getMovieCast(movieResult.getId()));
+        metadata.setName(movieResult.title);
+        metadata.setReleaseDate(movieResult.release_date);
+        metadata.setPosterUrl(buildPosterUrl(movieResult.poster_path));
+        metadata.setDescription(movieResult.overview);
+        metadata.setCast(getMovieCast(movieResult.id));
         return metadata;
     }
 
     private List<VideoMetadata> searchTvShowMetadata(VideoQuery tvShowQuery) {
         return searchInternal(tvShowQuery, TVSHOW_PREFIX, () -> {
-            List<TvSeries> results = searchTvInternal(tvShowQuery).getResults();
-            int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, results.size());
-            List<VideoMetadata> metadataList = new ArrayList<>();
-            for (int i = 0; i < maxIndex; i++) {
-                VideoMetadata metadata = buildTvShowVideoMetadata(results.get(i));
-                metadataList.add(metadata);
+            TvShowResultsPage tvShowResultsPage = searchTvInternal(tvShowQuery);
+            if (tvShowResultsPage != null) {
+                List<BaseTvShow> tvShows = tvShowResultsPage.results;
+                int maxIndex = Math.min(DEFAULT_VIDEOS_SIZE, tvShows.size());
+                List<VideoMetadata> metadataList = new ArrayList<>();
+                for (int i = 0; i < maxIndex; i++) {
+                    VideoMetadata metadata = buildTvShowVideoMetadata(tvShows.get(i));
+                    metadataList.add(metadata);
+                }
+                return metadataList;
             }
-            return metadataList;
+            return null;
         });
     }
 
-    private VideoMetadata buildTvShowVideoMetadata(TvSeries tvResult) {
+    private VideoMetadata buildTvShowVideoMetadata(BaseTvShow tvResult) {
         VideoMetadata metadata = new VideoMetadata();
-        metadata.setName(tvResult.getName());
-        metadata.setReleaseDate(tvResult.getFirstAirDate());
-        metadata.setPosterUrl(buildPosterUrl(tvResult.getPosterPath()));
-        metadata.setDescription(tvResult.getOverview());
-        metadata.setCast(getTvShowCast(tvResult.getId()));
+        metadata.setName(tvResult.name);
+        metadata.setReleaseDate(tvResult.first_air_date);
+        metadata.setPosterUrl(buildPosterUrl(tvResult.poster_path));
+        metadata.setDescription(tvResult.overview);
+        metadata.setCast(getTvShowCast(tvResult.id));
         return metadata;
     }
 
@@ -123,29 +139,44 @@ public class TrottmannCachedTmdbService implements CachedMetadataService {
     }
 
     private MovieResultsPage searchMovieInternal(VideoQuery query) {
-        TmdbSearch search = getTmdbApi().getSearch();
-        return query.getYear() != null
-                ? query.getLanguage() != null
-                ? search.searchMovie(query.getName(), query.getYear(), query.getLanguage(), false, 1)
-                : search.searchMovie(query.getName(), query.getYear(), null, false, 1)
-                : search.searchMovie(query.getName(), null, null, false, 1);
+        SearchService search = getTmdbApi().searchService();
+        try {
+            return search.movie(query.getName(), 1, query.getLanguage(), false, query.getYear(),
+                    null, null)
+                    .execute().body();
+        } catch (IOException e) {
+            messageRegistry.displayMessage(MessageProvider.problemOccurred());
+        }
+        return null;
     }
 
-    private TvResultsPage searchTvInternal(VideoQuery query) {
-        TmdbSearch search = getTmdbApi().getSearch();
-        return query.getLanguage() != null
-                ? search.searchTv(query.getName(), query.getLanguage(), 1)
-                : search.searchTv(query.getName(), null, 1);
+    private TvShowResultsPage searchTvInternal(VideoQuery query) {
+        SearchService search = getTmdbApi().searchService();
+        try {
+            return search.tv(query.getName(), 1, query.getLanguage(), null, null)
+                    .execute().body();
+        } catch (IOException e) {
+            messageRegistry.displayMessage(MessageProvider.problemOccurred());
+        }
+        return null;
     }
 
     private List<String> getMovieCast(int movieId) {
-        MovieDb movie = getTmdbApi().getMovies().getMovie(movieId, null, TmdbMovies.MovieMethod.credits);
-        return searchForCast(movieId, movie.getCredits());
+        try {
+            return searchForCast(movieId, getTmdbApi().moviesService().credits(movieId).execute().body());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     private List<String> getTvShowCast(int tvShowId) {
-        TvSeries series = getTmdbApi().getTvSeries().getSeries(tvShowId, null, TmdbTV.TvMethod.credits);
-        return searchForCast(tvShowId, series.getCredits());
+        try {
+            return searchForCast(tvShowId, getTmdbApi().tvService().credits(tvShowId, null).execute().body());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     private List<String> searchForCast(int id, Credits credits) {
@@ -153,12 +184,12 @@ public class TrottmannCachedTmdbService implements CachedMetadataService {
             return Collections.emptyList();
         }
 
-        List<PersonCast> personCastList = credits.getCast();
+        List<CastMember> personCastList = credits.cast;
         int maxIndex = Math.min(DEFAULT_CAST_SIZE, personCastList.size());
         List<String> cast = new ArrayList<>();
         for (int i = 0; i < maxIndex; i++) {
-            PersonCast person = personCastList.get(i);
-            cast.add(person.getName());
+            CastMember person = personCastList.get(i);
+            cast.add(person.name);
         }
         return cast;
     }
