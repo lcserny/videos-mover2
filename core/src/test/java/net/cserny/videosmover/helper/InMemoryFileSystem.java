@@ -37,15 +37,15 @@ public class InMemoryFileSystem {
 
         Path downloadsFolder = inMemoryFileSystem.fileSystem.getPath(getDownloads());
         Files.createDirectory(downloadsFolder);
-        StaticPathsProvider.setDownloadsPath(downloadsFolder.toString());
+        StaticPathsProvider.setDownloadsPath(downloadsFolder.toString(), false);
 
         Path moviesFolder = inMemoryFileSystem.fileSystem.getPath(getMovies());
         Files.createDirectory(moviesFolder);
-        StaticPathsProvider.setMoviesPath(moviesFolder.toString());
+        StaticPathsProvider.setMoviesPath(moviesFolder.toString(), false);
 
         Path tvShowsFolder = inMemoryFileSystem.fileSystem.getPath(getTvShows());
         Files.createDirectory(tvShowsFolder);
-        StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
+        StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString(), false);
 
         Files.createDirectory(inMemoryFileSystem.fileSystem.getPath(getEmpty()));
 
