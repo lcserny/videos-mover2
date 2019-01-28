@@ -1,8 +1,5 @@
 package net.cserny.videosmover;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,41 +11,41 @@ import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 
+@SpringBootApplication
 public class MainApplication extends Application {
 
     public static final String TITLE = "Downloads VideoMover";
 
-    @Inject
+    @Autowired
     GlobalExceptionCatcher exceptionCatcher;
 
-    @Inject
+    @Autowired
     MainStageProvider stageProvider;
 
-    @Inject
+    @Autowired
     MainController controller;
 
-    @Inject
+    @Autowired
     MessageDisplayProvider messageDisplayProvider;
 
+    private ConfigurableApplicationContext context;
     private Parent parent;
 
     @Override
     public void init() throws IOException {
-        initContext();
+        context = SpringApplication.run(MainApplication.class);
+        Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setController(controller);
         parent = loader.load();
-    }
-
-    private void initContext() {
-        Injector injector = Guice.createInjector(new UiModule(), new CoreModule());
-        injector.injectMembers(this);
-
-        Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
     }
 
     @Override
@@ -66,6 +63,7 @@ public class MainApplication extends Application {
 
     @Override
     public void stop() throws Exception {
+        context.stop();
         TwoThreadsExecutor.shutdown();
     }
 }

@@ -1,15 +1,15 @@
 package net.cserny.videosmover.error;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import javafx.scene.control.Alert;
 import net.cserny.videosmover.helper.LoadingService;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Singleton
+@Component
 public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionCatcher.class);
@@ -17,7 +17,7 @@ public class GlobalExceptionCatcher implements Thread.UncaughtExceptionHandler {
     private final SimpleMessageRegistry messageRegistry;
     private final LoadingService loadingService;
 
-    @Inject
+    @Autowired
     public GlobalExceptionCatcher(SimpleMessageRegistry messageRegistry, LoadingService loadingService) {
         this.messageRegistry = messageRegistry;
         this.loadingService = loadingService;

@@ -1,7 +1,5 @@
 package net.cserny.videosmover.controller;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -20,7 +18,10 @@ import javafx.util.Duration;
 import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
-import net.cserny.videosmover.helper.*;
+import net.cserny.videosmover.helper.LoadingService;
+import net.cserny.videosmover.helper.PreferencesLoader;
+import net.cserny.videosmover.helper.StaticPathsProvider;
+import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
@@ -28,6 +29,8 @@ import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.net.URL;
@@ -40,7 +43,7 @@ import static net.cserny.videosmover.helper.LoadingService.MOVE_LOADING_KEY;
 import static net.cserny.videosmover.helper.LoadingService.SCAN_LOADING_KEY;
 import static net.cserny.videosmover.service.thread.TwoThreadsExecutor.doInAnotherThread;
 
-@Singleton
+@Controller
 public class MainController implements Initializable {
 
     @FXML
@@ -62,7 +65,7 @@ public class MainController implements Initializable {
     private final CachedMetadataService metadataService;
     private final LoadingService loadingService;
 
-    @Inject
+    @Autowired
     public MainController(MainFacade facade, SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider,
                           CachedMetadataService metadataService, LoadingService loadingService) {
         this.facade = facade;

@@ -1,16 +1,17 @@
 package net.cserny.videosmover.provider;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Singleton
+@Component
 public class MainStageProvider {
 
     private Stage stage;
 
-    @Inject
-    public MainStageProvider() { }
+    @Autowired
+    public MainStageProvider() {
+    }
 
     public Stage getStage() {
         return stage;

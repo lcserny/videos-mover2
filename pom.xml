@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.2.RELEASE</version>
+    </parent>
+
+    <groupId>net.cserny.videos-mover2</groupId>
+    <artifactId>videos-mover-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ui</module>
+        <module>core</module>
+    </modules>
+
+    <properties>
+        <start-class>net.cserny.videosmover.Main</start-class>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <spring.boot.version>2.1.2.RELEASE</spring.boot.version>
+        <javafx.version>11.0.1</javafx.version>
+        <jimfs.version>1.1</jimfs.version>
+        <controlsfx.version>9.0.0</controlsfx.version>
+        <testfx.monocle.version>jdk-11+26</testfx.monocle.version>
+        <testfx.junit.version>4.0.15-alpha</testfx.junit.version>
+        <awaitility.version>3.1.3</awaitility.version>
+        <fuzzyquzzy.version>1.2.0</fuzzyquzzy.version>
+        <tmdb.version>1.7</tmdb.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.jimfs</groupId>
+            <artifactId>jimfs</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-base</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-graphics</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-controls</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-fxml</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.jimfs</groupId>
+                <artifactId>jimfs</artifactId>
+                <version>${jimfs.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.controlsfx</groupId>
+                <artifactId>controlsfx</artifactId>
+                <version>${controlsfx.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testfx</groupId>
+                <artifactId>openjfx-monocle</artifactId>
+                <version>${testfx.monocle.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testfx</groupId>
+                <artifactId>testfx-junit</artifactId>
+                <version>${testfx.junit.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.awaitility</groupId>
+                <artifactId>awaitility</artifactId>
+                <version>${awaitility.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>me.xdrop</groupId>
+                <artifactId>fuzzywuzzy</artifactId>
+                <version>${fuzzyquzzy.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>info.movito</groupId>
+                <artifactId>themoviedbapi</artifactId>
+                <version>${tmdb.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+</project>

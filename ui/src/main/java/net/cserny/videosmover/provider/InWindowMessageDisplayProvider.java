@@ -1,7 +1,5 @@
 package net.cserny.videosmover.provider;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -15,14 +13,16 @@ import javafx.util.Duration;
 import net.cserny.videosmover.model.Message;
 import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Singleton
+@Component
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
 
     private final SimpleMessageRegistry messageRegistry;
     private MainStageProvider stageProvider;
 
-    @Inject
+    @Autowired
     public InWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
         this.messageRegistry = messageRegistry;
         this.stageProvider = stageProvider;

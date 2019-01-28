@@ -1,4 +1,0 @@
-dependencies {
-    implementation 'me.xdrop:fuzzywuzzy:1.2.0'
-    implementation 'info.movito:themoviedbapi:1.7'
-}
