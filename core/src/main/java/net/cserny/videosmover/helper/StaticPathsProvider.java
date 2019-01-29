@@ -72,14 +72,7 @@ public class StaticPathsProvider {
     }
 
     public static void setDownloadsPath(String downloadsPath) {
-        setDownloadsPath(downloadsPath, true);
-    }
-
-    public static void setDownloadsPath(String downloadsPath, boolean setInPreferences) {
         StaticPathsProvider.downloadsPath = downloadsPath;
-        if (setInPreferences) {
-            PreferencesLoader.setDownloadsPath(downloadsPath);
-        }
     }
 
     public static String getMoviesPath() {
@@ -87,14 +80,7 @@ public class StaticPathsProvider {
     }
 
     public static void setMoviesPath(String moviesPath) {
-        setMoviesPath(moviesPath, true);
-    }
-
-    public static void setMoviesPath(String moviesPath, boolean setInPreferences) {
         StaticPathsProvider.moviesPath = moviesPath;
-        if (setInPreferences) {
-            PreferencesLoader.setMoviesPath(moviesPath);
-        }
     }
 
     public static String getTvShowsPath() {
@@ -102,13 +88,6 @@ public class StaticPathsProvider {
     }
 
     public static void setTvShowsPath(String tvShowsPath) {
-        setTvShowsPath(tvShowsPath, true);
-    }
-
-    public static void setTvShowsPath(String tvShowsPath, boolean setInPreferences) {
         StaticPathsProvider.tvShowsPath = tvShowsPath;
-        if (setInPreferences) {
-            PreferencesLoader.setTvShowsPath(tvShowsPath);
-        }
     }
 }

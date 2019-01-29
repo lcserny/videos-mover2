@@ -220,6 +220,7 @@ public class MainController implements Initializable {
                 .ifPresent(path -> {
                     downloadsPathTextField.setText(path);
                     StaticPathsProvider.setDownloadsPath(path);
+                    PreferencesLoader.setDownloadsPath(path);
                 });
     }
 
@@ -228,6 +229,7 @@ public class MainController implements Initializable {
                 .ifPresent(path -> {
                     moviePathTextField.setText(path);
                     StaticPathsProvider.setMoviesPath(path);
+                    PreferencesLoader.setMoviesPath(path);
                 });
     }
 
@@ -236,6 +238,7 @@ public class MainController implements Initializable {
                 .ifPresent(path -> {
                     tvShowPathTextField.setText(path);
                     StaticPathsProvider.setTvShowsPath(path);
+                    PreferencesLoader.setTvShowsPath(path);
                 });
     }
 
