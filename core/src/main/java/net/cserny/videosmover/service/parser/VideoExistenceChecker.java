@@ -1,13 +1,13 @@
 package net.cserny.videosmover.service.parser;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
-import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static net.cserny.videosmover.constants.PropertyConstants.SIMILARITY_PERCENT_KEY;
 import static net.cserny.videosmover.service.helper.VideoOutputHelper.trimReleaseDate;
 
 @Order(2)
@@ -27,12 +28,13 @@ import static net.cserny.videosmover.service.helper.VideoOutputHelper.trimReleas
 public class VideoExistenceChecker implements VideoNameParser {
 
     private final SimpleMessageRegistry messageRegistry;
+
+    @Value("${" + SIMILARITY_PERCENT_KEY + "}")
     private int similarityPercent;
 
     @Autowired
     public VideoExistenceChecker(SimpleMessageRegistry messageRegistry) {
         this.messageRegistry = messageRegistry;
-        similarityPercent = PropertiesLoader.getSimilarityPercent();
     }
 
     @Override

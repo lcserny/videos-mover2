@@ -6,7 +6,7 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.MovieResultsPage;
 import info.movito.themoviedbapi.model.people.PersonCast;
 import info.movito.themoviedbapi.model.tv.TvSeries;
-import net.cserny.videosmover.helper.PreferencesLoader;
+import net.cserny.videosmover.helper.ApplicationPreferences;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
@@ -37,7 +37,7 @@ public class CachedTmdbService implements CachedMetadataService {
     }
 
     private void initApi() {
-        String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
+        String apiKey = ApplicationPreferences.getOnlineMetadataApiKey();
         if (apiKey.equals(NO_API_KEY)) {
             messageRegistry.displayMessage(MessageProvider.noMetadataServiceApiKey());
         }

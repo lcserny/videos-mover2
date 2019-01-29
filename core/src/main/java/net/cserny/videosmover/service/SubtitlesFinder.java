@@ -1,9 +1,8 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Subtitle;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,15 +13,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.cserny.videosmover.constants.PropertyConstants.SUBTITLE_EXTENSIONS_KEY;
+
 @Service
 public class SubtitlesFinder {
 
+    @Value("#{'${" + SUBTITLE_EXTENSIONS_KEY + "}'.split(',')}")
     private List<String> subtitleExtensions;
-
-    @Autowired
-    public SubtitlesFinder() {
-        subtitleExtensions = PropertiesLoader.getSubtitleExtensions();
-    }
 
     public List<Subtitle> find(Path directory) {
         if (directory.toString().equals(StaticPathsProvider.getDownloadsPath())) {

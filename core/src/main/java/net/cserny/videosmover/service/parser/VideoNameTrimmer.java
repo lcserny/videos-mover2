@@ -1,17 +1,19 @@
 package net.cserny.videosmover.service.parser;
 
-import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static net.cserny.videosmover.constants.PropertyConstants.VIDEO_TRIM_PARTS_KEY;
 
 @Order(0)
 @Component
@@ -20,9 +22,12 @@ public class VideoNameTrimmer implements VideoNameParser {
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
     private List<Pattern> nameTrimPartPatterns;
 
-    @Autowired
-    public VideoNameTrimmer() {
-        nameTrimPartPatterns = PropertiesLoader.getNameTrimParts().stream()
+    @Value("#{'${" + VIDEO_TRIM_PARTS_KEY + "}'.split(';')}")
+    private List<String> nameTrimPartPatternStrings;
+
+    @PostConstruct
+    private void init() {
+        nameTrimPartPatterns = nameTrimPartPatternStrings.stream()
                 .filter(part -> !part.isEmpty())
                 .map(part -> Pattern.compile("(?i)(-?" + part + ")"))
                 .collect(Collectors.toList());

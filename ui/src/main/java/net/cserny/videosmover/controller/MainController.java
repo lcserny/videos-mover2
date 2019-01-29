@@ -19,7 +19,7 @@ import net.cserny.videosmover.component.CustomTextFieldCell;
 import net.cserny.videosmover.component.RadioButtonTableCell;
 import net.cserny.videosmover.facade.MainFacade;
 import net.cserny.videosmover.helper.LoadingService;
-import net.cserny.videosmover.helper.PreferencesLoader;
+import net.cserny.videosmover.helper.ApplicationPreferences;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
@@ -30,7 +30,6 @@ import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -85,16 +84,16 @@ public class MainController implements Initializable {
     }
 
     private void initApiSettings() {
-        String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
+        String apiKey = ApplicationPreferences.getOnlineMetadataApiKey();
         if (!StringHelper.isEmpty(apiKey)) {
             onlineMetadataApiKey.setText(apiKey);
         }
-        enableOnlineMetadataCheckbox.setSelected(PreferencesLoader.isEnabledOnlineMetadataSearch());
+        enableOnlineMetadataCheckbox.setSelected(ApplicationPreferences.isEnabledOnlineMetadataSearch());
     }
 
     public void onlineMetadataEnableChanged(ActionEvent event) {
         boolean selected = enableOnlineMetadataCheckbox.isSelected();
-        PreferencesLoader.setEnabledOnlineMetadataSearch(selected);
+        ApplicationPreferences.setEnabledOnlineMetadataSearch(selected);
     }
 
     public void initLoading() {
@@ -121,7 +120,7 @@ public class MainController implements Initializable {
 
     public void onlineMetadataAPIKeyChanged(KeyEvent event) {
         String newApiKey = onlineMetadataApiKey.getText();
-        PreferencesLoader.setOnlineMetadataApiKey(newApiKey);
+        ApplicationPreferences.setOnlineMetadataApiKey(newApiKey);
         metadataService.setApiKeyChanged();
     }
 
@@ -220,7 +219,7 @@ public class MainController implements Initializable {
                 .ifPresent(path -> {
                     downloadsPathTextField.setText(path);
                     StaticPathsProvider.setDownloadsPath(path);
-                    PreferencesLoader.setDownloadsPath(path);
+                    ApplicationPreferences.setDownloadsPath(path);
                 });
     }
 
@@ -229,7 +228,7 @@ public class MainController implements Initializable {
                 .ifPresent(path -> {
                     moviePathTextField.setText(path);
                     StaticPathsProvider.setMoviesPath(path);
-                    PreferencesLoader.setMoviesPath(path);
+                    ApplicationPreferences.setMoviesPath(path);
                 });
     }
 
@@ -238,7 +237,7 @@ public class MainController implements Initializable {
                 .ifPresent(path -> {
                     tvShowPathTextField.setText(path);
                     StaticPathsProvider.setTvShowsPath(path);
-                    PreferencesLoader.setTvShowsPath(path);
+                    ApplicationPreferences.setTvShowsPath(path);
                 });
     }
 

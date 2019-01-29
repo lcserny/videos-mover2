@@ -1,6 +1,6 @@
 package net.cserny.videosmover.service;
 
-import net.cserny.videosmover.helper.PreferencesLoader;
+import net.cserny.videosmover.helper.ApplicationPreferences;
 import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
@@ -24,8 +24,8 @@ public interface CachedMetadataService {
     int DEFAULT_VIDEOS_SIZE = 5;
 
     default boolean isEnabled() {
-        boolean enabled = PreferencesLoader.isEnabledOnlineMetadataSearch();
-        String apiKey = PreferencesLoader.getOnlineMetadataApiKey();
+        boolean enabled = ApplicationPreferences.isEnabledOnlineMetadataSearch();
+        String apiKey = ApplicationPreferences.getOnlineMetadataApiKey();
         return enabled && !StringHelper.isEmpty(apiKey) && !NO_API_KEY.equals(apiKey);
     }
 

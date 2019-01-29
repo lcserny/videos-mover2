@@ -1,23 +1,20 @@
 package net.cserny.videosmover.service.validator;
 
-import net.cserny.videosmover.helper.PropertiesLoader;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.util.List;
 
+import static net.cserny.videosmover.constants.PropertyConstants.VIDEO_EXCLUDE_PATHS_KEY;
+
 @Order(0)
 @Component
 public class VideoPathValidator implements VideoValidator {
 
+    @Value("#{'${" + VIDEO_EXCLUDE_PATHS_KEY + "}'.split(',')}")
     private List<String> excludedVideoPaths;
-
-    @Autowired
-    public VideoPathValidator() {
-        excludedVideoPaths = PropertiesLoader.getVideoExcludePaths();
-    }
 
     @Override
     public boolean isValid(Path file) {

@@ -22,17 +22,17 @@ public class StaticPathsProvider {
     }
 
     private static void initPaths() {
-        downloadsPath = PreferencesLoader.getDownloadsPath();
+        downloadsPath = ApplicationPreferences.getDownloadsPath();
         if (!Files.exists(getPath(downloadsPath))) {
             downloadsPath = null;
         }
 
-        moviesPath = PreferencesLoader.getMoviesPath();
+        moviesPath = ApplicationPreferences.getMoviesPath();
         if (!Files.exists(getPath(moviesPath))) {
             moviesPath = null;
         }
 
-        tvShowsPath = PreferencesLoader.getTvShowsPath();
+        tvShowsPath = ApplicationPreferences.getTvShowsPath();
         if (!Files.exists(getPath(tvShowsPath))) {
             tvShowsPath = null;
         }
