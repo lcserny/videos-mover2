@@ -9,11 +9,10 @@ import javafx.stage.Stage;
 import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
-import net.cserny.videosmover.service.MessageDisplayProvider;
 import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
@@ -23,29 +22,20 @@ public class MainApplication extends Application {
 
     public static final String TITLE = "Downloads VideoMover";
 
-    @Autowired
-    GlobalExceptionCatcher exceptionCatcher;
-
-    @Autowired
-    MainStageProvider stageProvider;
-
-    @Autowired
-    MainController controller;
-
-    @Autowired
-    MessageDisplayProvider messageDisplayProvider;
-
     private ConfigurableApplicationContext context;
+    private MainController controller;
     private Parent parent;
 
     @Override
     public void init() throws IOException {
         context = SpringApplication.run(MainApplication.class);
-        Thread.setDefaultUncaughtExceptionHandler(exceptionCatcher);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        loader.setController(controller);
+        loader.setControllerFactory(context::getBean);
         parent = loader.load();
+
+        controller = loader.getController();
+        Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
     }
 
     @Override
@@ -57,7 +47,7 @@ public class MainApplication extends Application {
         primaryStage.centerOnScreen();
         primaryStage.show();
 
-        stageProvider.setStage(primaryStage);
+        context.getBean(MainStageProvider.class).setStage(primaryStage);
         controller.initLoading();
     }
 
