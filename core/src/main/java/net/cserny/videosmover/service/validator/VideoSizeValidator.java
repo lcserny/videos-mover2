@@ -1,19 +1,21 @@
 package net.cserny.videosmover.service.validator;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.PropertiesLoader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Singleton
+@Order(2)
+@Component
 public class VideoSizeValidator implements VideoValidator {
 
     private Long minimumVideoSize;
 
-    @Inject
+    @Autowired
     public VideoSizeValidator() {
         minimumVideoSize = PropertiesLoader.getMinimumVideoSize();
     }

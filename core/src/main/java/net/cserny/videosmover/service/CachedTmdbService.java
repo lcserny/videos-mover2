@@ -1,7 +1,5 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import info.movito.themoviedbapi.*;
 import info.movito.themoviedbapi.model.Credits;
 import info.movito.themoviedbapi.model.MovieDb;
@@ -13,6 +11,8 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.model.VideoType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 
 // TODO: change this to something faster?
 // TODO: improve the isEnabled in all methods
-@Singleton
+@Service
 public class CachedTmdbService implements CachedMetadataService {
 
     private static final String POSTER_URL_PATTERN = "http://image.tmdb.org/t/p/w92%s";
@@ -31,7 +31,7 @@ public class CachedTmdbService implements CachedMetadataService {
     private final SimpleMessageRegistry messageRegistry;
     private TmdbApi tmdbApi;
 
-    @Inject
+    @Autowired
     public CachedTmdbService(SimpleMessageRegistry messageRegistry) {
         this.messageRegistry = messageRegistry;
     }

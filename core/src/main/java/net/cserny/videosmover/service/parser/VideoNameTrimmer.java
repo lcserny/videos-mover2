@@ -1,24 +1,26 @@
 package net.cserny.videosmover.service.parser;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StringHelper;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@Singleton
+@Order(0)
+@Component
 public class VideoNameTrimmer implements VideoNameParser {
 
     private final Pattern videoPattern = Pattern.compile("(.*)(\\d{4})");
     private List<Pattern> nameTrimPartPatterns;
 
-    @Inject
+    @Autowired
     public VideoNameTrimmer() {
         nameTrimPartPatterns = PropertiesLoader.getNameTrimParts().stream()
                 .filter(part -> !part.isEmpty())

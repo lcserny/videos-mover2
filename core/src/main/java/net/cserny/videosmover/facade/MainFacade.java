@@ -1,19 +1,19 @@
 package net.cserny.videosmover.facade;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoRow;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.*;
 import net.cserny.videosmover.service.observer.VideoExistenceObserver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Singleton
+@Service
 public class MainFacade {
 
     private final ScanService scanService;
@@ -23,7 +23,7 @@ public class MainFacade {
     private final VideoCleaner videoCleaner;
     private final SimpleMessageRegistry messageRegistry;
 
-    @Inject
+    @Autowired
     public MainFacade(ScanService scanService, OutputResolver outputResolver, CachedMetadataService cachedTmdbService,
                       VideoMover videoMover, VideoCleaner videoCleaner, SimpleMessageRegistry messageRegistry) {
         this.scanService = scanService;

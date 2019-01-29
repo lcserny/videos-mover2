@@ -1,22 +1,24 @@
 package net.cserny.videosmover.service.parser;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
 import net.cserny.videosmover.service.CachedMetadataService;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
-@Singleton
+@Order(1)
+@Component
 public class CachedVideoRetriever implements VideoNameParser {
 
     private final CachedMetadataService cachedMetadataService;
 
-    @Inject
+    @Autowired
     public CachedVideoRetriever(CachedMetadataService cachedMetadataService) {
         this.cachedMetadataService = cachedMetadataService;
     }

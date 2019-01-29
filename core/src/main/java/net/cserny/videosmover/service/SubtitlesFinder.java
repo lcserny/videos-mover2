@@ -1,10 +1,10 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Subtitle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -14,12 +14,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Singleton
+@Service
 public class SubtitlesFinder {
 
     private List<String> subtitleExtensions;
 
-    @Inject
+    @Autowired
     public SubtitlesFinder() {
         subtitleExtensions = PropertiesLoader.getSubtitleExtensions();
     }

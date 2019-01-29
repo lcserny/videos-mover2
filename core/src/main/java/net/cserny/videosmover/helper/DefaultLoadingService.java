@@ -1,13 +1,13 @@
 package net.cserny.videosmover.helper;
 
-import com.google.inject.Singleton;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-@Singleton
+@Component
 public class DefaultLoadingService implements LoadingService {
 
     private final Map<String, Set<Runnable>> showLoadingRunnables = new ConcurrentHashMap<>();

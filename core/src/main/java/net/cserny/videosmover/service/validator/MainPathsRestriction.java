@@ -1,20 +1,23 @@
 package net.cserny.videosmover.service.validator;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.StaticPathsProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-@Singleton
+@Order(0)
+@Component
 public class MainPathsRestriction implements RemovalRestriction {
 
     private List<String> restrictedFolders;
 
-    @Inject
-    public MainPathsRestriction() { }
+    @Autowired
+    public MainPathsRestriction() {
+    }
 
     @Override
     public boolean isRestricted(Path inputFolderPath) {

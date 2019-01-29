@@ -1,16 +1,16 @@
 package net.cserny.videosmover.service.parser;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Singleton
+@Component
 public class TvShowOutputVideoNameChecker implements OutputVideoNameChecker {
 
     private final SimpleMessageRegistry messageRegistry;
@@ -18,7 +18,7 @@ public class TvShowOutputVideoNameChecker implements OutputVideoNameChecker {
             "(.*)s(?<season>\\d{1,4})e(?<episodes>\\d{1,3}([eE-]{1,2}\\d{1,3})?)(.*)",
             Pattern.CASE_INSENSITIVE);
 
-    @Inject
+    @Autowired
     public TvShowOutputVideoNameChecker(SimpleMessageRegistry messageRegistry) {
         this.messageRegistry = messageRegistry;
     }

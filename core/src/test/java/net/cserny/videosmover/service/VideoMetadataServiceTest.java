@@ -1,9 +1,6 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import net.cserny.videosmover.CoreModule;
+import net.cserny.videosmover.CoreConfiguration;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoMetadata;
 import net.cserny.videosmover.model.VideoQuery;
@@ -11,22 +8,28 @@ import net.cserny.videosmover.model.VideoType;
 import net.cserny.videosmover.rules.MetadataServiceEnabledRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = CoreConfiguration.class)
 public class VideoMetadataServiceTest {
 
-    @Inject
+    @Autowired
     CachedMetadataService metadataService;
 
     @Rule
     public MetadataServiceEnabledRule rule = new MetadataServiceEnabledRule();
 
-    public VideoMetadataServiceTest() {
-        Injector injector = Guice.createInjector(new CoreModule());
-        injector.injectMembers(this);
+    @PostConstruct
+    public void init() {
         rule.setMetadataService(metadataService);
     }
 

@@ -1,18 +1,18 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.parser.OutputVideoNameChecker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@Singleton
+@Service
 public class DefaultOutputVideoNameService implements OutputVideoNameService {
 
     private Set<OutputVideoNameChecker> outputVideoNameCheckers;
 
-    @Inject
+    @Autowired
     public DefaultOutputVideoNameService(Set<OutputVideoNameChecker> outputVideoNameCheckers) {
         this.outputVideoNameCheckers = outputVideoNameCheckers;
     }

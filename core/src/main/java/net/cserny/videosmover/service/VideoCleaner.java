@@ -1,28 +1,26 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.validator.RemovalRestriction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Singleton
+@Service
 public class VideoCleaner {
 
     private Set<RemovalRestriction> removalRestrictions;
     private final SimpleMessageRegistry messageRegistry;
 
-    @Inject
+    @Autowired
     public VideoCleaner(Set<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
         this.removalRestrictions = removalRestrictions;
         this.messageRegistry = messageRegistry;

@@ -1,20 +1,22 @@
 package net.cserny.videosmover.service.validator;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.PropertiesLoader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-@Singleton
+@Order(1)
+@Component
 public class VideoTypeValidator implements VideoValidator {
 
     private List<String> allowedMimeTypes;
 
-    @Inject
+    @Autowired
     public VideoTypeValidator() {
         allowedMimeTypes = PropertiesLoader.getVideoMimeTypes();
     }

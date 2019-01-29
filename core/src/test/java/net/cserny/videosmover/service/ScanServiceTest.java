@@ -1,9 +1,6 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import net.cserny.videosmover.CoreModule;
+import net.cserny.videosmover.CoreConfiguration;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Subtitle;
@@ -11,6 +8,10 @@ import net.cserny.videosmover.model.Video;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -20,17 +21,14 @@ import static junit.framework.TestCase.assertTrue;
 import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = CoreConfiguration.class)
 public class ScanServiceTest {
 
-    @Inject
+    @Autowired
     ScanService scanService;
 
     private InMemoryFileSystem inMemoryFileSystem;
-
-    public ScanServiceTest() {
-        Injector injector = Guice.createInjector(new CoreModule());
-        injector.injectMembers(this);
-    }
 
     @Before
     public void setUp() throws Exception {

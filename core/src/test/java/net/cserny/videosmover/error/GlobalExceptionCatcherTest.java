@@ -1,30 +1,28 @@
 package net.cserny.videosmover.error;
 
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import net.cserny.videosmover.CoreModule;
+import net.cserny.videosmover.CoreConfiguration;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hamcrest.core.StringContains.containsString;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = CoreConfiguration.class)
 public class GlobalExceptionCatcherTest {
 
     private static String DISPLAYED_MESSAGE;
 
-    @Inject
+    @Autowired
     GlobalExceptionCatcher globalExceptionCatcher;
 
-    @Inject
+    @Autowired
     SimpleMessageRegistry messageRegistry;
-
-    public GlobalExceptionCatcherTest() {
-        Injector injector = Guice.createInjector(new CoreModule());
-        injector.injectMembers(this);
-    }
 
     @Before
     public void setUp() {

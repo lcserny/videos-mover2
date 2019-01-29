@@ -1,24 +1,24 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.helper.StaticPathsProvider;
 import net.cserny.videosmover.model.Subtitle;
 import net.cserny.videosmover.model.Video;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-@Singleton
+@Service
 public class VideoMover {
 
     private static final String SUBTITLE_SUBPATH = "Subs";
 
     private final OutputVideoNameService videoNameService;
 
-    @Inject
+    @Autowired
     public VideoMover(OutputVideoNameService videoNameService) {
         this.videoNameService = videoNameService;
     }

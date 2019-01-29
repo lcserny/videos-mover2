@@ -1,19 +1,18 @@
 package net.cserny.videosmover.service;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.cserny.videosmover.service.validator.VideoValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 
-@Singleton
+@Service
 public class VideoChecker {
 
     private Set<VideoValidator> videoValidatorList;
 
-    @Inject
+    @Autowired
     public VideoChecker(Set<VideoValidator> videoValidators) {
         this.videoValidatorList = videoValidators;
     }

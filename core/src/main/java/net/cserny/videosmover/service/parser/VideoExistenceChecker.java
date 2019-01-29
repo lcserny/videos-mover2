@@ -1,7 +1,5 @@
 package net.cserny.videosmover.service.parser;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 import net.cserny.videosmover.helper.PropertiesLoader;
 import net.cserny.videosmover.helper.StaticPathsProvider;
@@ -9,6 +7,9 @@ import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.service.MessageProvider;
 import net.cserny.videosmover.service.SimpleMessageRegistry;
 import net.cserny.videosmover.service.observer.VideoAdjustmentObserver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -21,13 +22,14 @@ import java.util.stream.Collectors;
 
 import static net.cserny.videosmover.service.helper.VideoOutputHelper.trimReleaseDate;
 
-@Singleton
+@Order(2)
+@Component
 public class VideoExistenceChecker implements VideoNameParser {
 
     private final SimpleMessageRegistry messageRegistry;
     private int similarityPercent;
 
-    @Inject
+    @Autowired
     public VideoExistenceChecker(SimpleMessageRegistry messageRegistry) {
         this.messageRegistry = messageRegistry;
         similarityPercent = PropertiesLoader.getSimilarityPercent();
