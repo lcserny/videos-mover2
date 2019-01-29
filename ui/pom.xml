@@ -12,15 +12,6 @@
     <artifactId>ui</artifactId>
 
     <dependencies>
-        <!-- this needs to be before the actual core dependency to make tests use resources from tests first -->
-        <dependency>
-            <groupId>net.cserny.videos-mover2</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>net.cserny.videos-mover2</groupId>
             <artifactId>core</artifactId>
