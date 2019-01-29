@@ -5,15 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class VideoChecker {
 
-    private Set<VideoValidator> videoValidatorList;
+    private List<VideoValidator> videoValidatorList;
 
     @Autowired
-    public VideoChecker(Set<VideoValidator> videoValidators) {
+    public VideoChecker(List<VideoValidator> videoValidators) {
         this.videoValidatorList = videoValidators;
     }
 

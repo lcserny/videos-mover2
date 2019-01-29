@@ -151,7 +151,6 @@ public class OutputResolverTest {
     }
 
     @Test
-    // TODO: this works only if tmdb works...
     public void resolve_doubleYearInTVShow() throws Exception {
         String existingExtrasPath = StaticPathsProvider.getTvShowsPath();
         String existingExtrasFolder = "Extras (2005)";

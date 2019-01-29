@@ -5,15 +5,16 @@ import net.cserny.videosmover.service.parser.OutputVideoNameChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class DefaultOutputVideoNameService implements OutputVideoNameService {
 
-    private Set<OutputVideoNameChecker> outputVideoNameCheckers;
+    private List<OutputVideoNameChecker> outputVideoNameCheckers;
 
     @Autowired
-    public DefaultOutputVideoNameService(Set<OutputVideoNameChecker> outputVideoNameCheckers) {
+    public DefaultOutputVideoNameService(List<OutputVideoNameChecker> outputVideoNameCheckers) {
         this.outputVideoNameCheckers = outputVideoNameCheckers;
     }
 

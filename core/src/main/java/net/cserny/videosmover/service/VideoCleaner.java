@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Service
 public class VideoCleaner {
 
-    private Set<RemovalRestriction> removalRestrictions;
+    private List<RemovalRestriction> removalRestrictions;
     private final SimpleMessageRegistry messageRegistry;
 
     @Autowired
-    public VideoCleaner(Set<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
+    public VideoCleaner(List<RemovalRestriction> removalRestrictions, SimpleMessageRegistry messageRegistry) {
         this.removalRestrictions = removalRestrictions;
         this.messageRegistry = messageRegistry;
     }

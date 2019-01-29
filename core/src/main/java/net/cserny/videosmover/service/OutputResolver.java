@@ -12,10 +12,10 @@ import java.util.Set;
 @Service
 public class OutputResolver {
 
-    private Set<VideoNameParser> nameParserList;
+    private List<VideoNameParser> nameParserList;
 
     @Autowired
-    public OutputResolver(Set<VideoNameParser> nameParserList) {
+    public OutputResolver(List<VideoNameParser> nameParserList) {
         this.nameParserList = nameParserList;
     }
 
