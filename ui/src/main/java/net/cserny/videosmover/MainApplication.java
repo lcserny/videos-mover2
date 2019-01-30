@@ -10,8 +10,8 @@ import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.io.IOException;
 
@@ -24,7 +24,7 @@ public class MainApplication extends Application {
 
     @Override
     public void init() throws IOException {
-        context = new SpringApplicationBuilder().sources(UiConfiguration.class, CoreConfiguration.class).build().run();
+        context = new AnnotationConfigApplicationContext(UiConfiguration.class, CoreConfiguration.class);
         Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));

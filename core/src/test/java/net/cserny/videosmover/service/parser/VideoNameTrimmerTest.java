@@ -3,7 +3,6 @@ package net.cserny.videosmover.service.parser;
 import net.cserny.videosmover.CoreConfiguration;
 import net.cserny.videosmover.helper.InMemoryFileSystem;
 import net.cserny.videosmover.helper.StaticPathsProvider;
-import net.cserny.videosmover.helper.VideoResolver;
 import net.cserny.videosmover.model.Video;
 import net.cserny.videosmover.model.VideoType;
 import org.junit.After;
@@ -11,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.nio.file.Path;
@@ -21,7 +20,7 @@ import static net.cserny.videosmover.helper.StaticPathsProvider.joinPaths;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = CoreConfiguration.class)
+@ContextConfiguration(classes = CoreConfiguration.class)
 public class VideoNameTrimmerTest {
 
     @Autowired
