@@ -12,40 +12,49 @@ import java.nio.file.Path;
 public class InMemoryFileSystem {
 
     private FileSystem fileSystem;
+    private String downloads;
+    private String movies;
+    private String tvShows;
+    private String empty;
 
     public InMemoryFileSystem() throws IOException {
         fileSystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
         StaticPathsProvider.setFileSystem(fileSystem);
 
-        Path downloadsFolder = fileSystem.getPath(getDownloads());
+        downloads = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads");
+        movies = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies");
+        tvShows = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows");
+        empty = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty");
+
+        Path downloadsFolder = fileSystem.getPath(downloads);
         Files.createDirectory(downloadsFolder);
         StaticPathsProvider.setDownloadsPath(downloadsFolder.toString());
 
-        Path moviesFolder = fileSystem.getPath(getMovies());
+        Path moviesFolder = fileSystem.getPath(movies);
         Files.createDirectory(moviesFolder);
         StaticPathsProvider.setMoviesPath(moviesFolder.toString());
 
-        Path tvShowsFolder = fileSystem.getPath(getTvShows());
+        Path tvShowsFolder = fileSystem.getPath(tvShows);
         Files.createDirectory(tvShowsFolder);
         StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
 
-        Files.createDirectory(fileSystem.getPath(getEmpty()));
+        Files.createDirectory(fileSystem.getPath(empty));
     }
 
-    private String getDownloads() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads");
+    public String getDownloads() {
+        return downloads;
     }
 
-    private String getMovies() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies");
+    public String getMovies() {
+        return movies;
     }
 
-    private String getTvShows() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows");
+    public String getTvShows() {
+        return tvShows;
     }
 
     public String getEmpty() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty");
+        return empty;
     }
 
     public void closeFileSystem() throws IOException {
