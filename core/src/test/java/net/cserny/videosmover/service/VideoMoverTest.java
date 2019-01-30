@@ -37,7 +37,7 @@ public class VideoMoverTest {
 
     @Before
     public void setUp() throws Exception {
-        inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
+        inMemoryFileSystem = new InMemoryFileSystem();
     }
 
     @After

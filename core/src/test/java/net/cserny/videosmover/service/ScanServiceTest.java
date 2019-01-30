@@ -32,7 +32,7 @@ public class ScanServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        inMemoryFileSystem = InMemoryFileSystem.initFileSystem();
+        inMemoryFileSystem = new InMemoryFileSystem();
     }
 
     @After
@@ -42,7 +42,7 @@ public class ScanServiceTest {
 
     @Test
     public void scan_whenEmptyFolderReturnEmptyList() throws Exception {
-        List<Video> videosScanned = scanService.scan(InMemoryFileSystem.getEmpty());
+        List<Video> videosScanned = scanService.scan(inMemoryFileSystem.getEmpty());
         assertNotNull(videosScanned);
         assertTrue(videosScanned.isEmpty());
     }

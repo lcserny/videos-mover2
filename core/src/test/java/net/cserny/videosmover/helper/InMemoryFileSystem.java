@@ -13,43 +13,39 @@ public class InMemoryFileSystem {
 
     private FileSystem fileSystem;
 
-    public static String getDownloads() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads");
-    }
+    public InMemoryFileSystem() throws IOException {
+        fileSystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
+        StaticPathsProvider.setFileSystem(fileSystem);
 
-    public static String getMovies() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies");
-    }
-
-    public static String getTvShows() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows");
-    }
-
-    public static String getEmpty() {
-        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty");
-    }
-
-    public static InMemoryFileSystem initFileSystem() throws IOException {
-        InMemoryFileSystem inMemoryFileSystem = new InMemoryFileSystem();
-
-        inMemoryFileSystem.fileSystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
-        StaticPathsProvider.setFileSystem(inMemoryFileSystem.fileSystem);
-
-        Path downloadsFolder = inMemoryFileSystem.fileSystem.getPath(getDownloads());
+        Path downloadsFolder = fileSystem.getPath(getDownloads());
         Files.createDirectory(downloadsFolder);
         StaticPathsProvider.setDownloadsPath(downloadsFolder.toString());
 
-        Path moviesFolder = inMemoryFileSystem.fileSystem.getPath(getMovies());
+        Path moviesFolder = fileSystem.getPath(getMovies());
         Files.createDirectory(moviesFolder);
         StaticPathsProvider.setMoviesPath(moviesFolder.toString());
 
-        Path tvShowsFolder = inMemoryFileSystem.fileSystem.getPath(getTvShows());
+        Path tvShowsFolder = fileSystem.getPath(getTvShows());
         Files.createDirectory(tvShowsFolder);
         StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
 
-        Files.createDirectory(inMemoryFileSystem.fileSystem.getPath(getEmpty()));
+        Files.createDirectory(fileSystem.getPath(getEmpty()));
+    }
 
-        return inMemoryFileSystem;
+    private String getDownloads() {
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads");
+    }
+
+    private String getMovies() {
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies");
+    }
+
+    private String getTvShows() {
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows");
+    }
+
+    public String getEmpty() {
+        return StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty");
     }
 
     public void closeFileSystem() throws IOException {
