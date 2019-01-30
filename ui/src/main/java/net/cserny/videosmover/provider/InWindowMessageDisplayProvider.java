@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class InWindowMessageDisplayProvider implements MessageDisplayProvider {
 
     private final SimpleMessageRegistry messageRegistry;
-    private MainStageProvider stageProvider;
+    private final MainStageProvider stageProvider;
 
     @Autowired
     public InWindowMessageDisplayProvider(SimpleMessageRegistry messageRegistry, MainStageProvider stageProvider) {
