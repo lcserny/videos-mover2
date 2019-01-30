@@ -21,5 +21,11 @@
             <groupId>info.movito</groupId>
             <artifactId>themoviedbapi</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.jimfs</groupId>
+            <artifactId>jimfs</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
