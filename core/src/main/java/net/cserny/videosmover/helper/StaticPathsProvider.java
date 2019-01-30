@@ -16,6 +16,7 @@ public class StaticPathsProvider {
     private static String downloadsPath;
     private static String moviesPath;
     private static String tvShowsPath;
+    private static String emptyPath = "";
 
     static {
         initPaths();
@@ -89,5 +90,13 @@ public class StaticPathsProvider {
 
     public static void setTvShowsPath(String tvShowsPath) {
         StaticPathsProvider.tvShowsPath = tvShowsPath;
+    }
+
+    public static String getEmptyPath() {
+        return emptyPath;
+    }
+
+    public static void setEmptyPath(String emptyPath) {
+        StaticPathsProvider.emptyPath = emptyPath;
     }
 }

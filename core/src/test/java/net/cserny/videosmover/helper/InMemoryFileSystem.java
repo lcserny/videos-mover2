@@ -5,61 +5,43 @@ import com.google.common.jimfs.Jimfs;
 import net.cserny.videosmover.helper.platform.PlatformService;
 
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class InMemoryFileSystem {
 
-    private FileSystem fileSystem;
-    private String downloads;
-    private String movies;
-    private String tvShows;
-    private String empty;
-
     public InMemoryFileSystem() throws IOException {
-        fileSystem = Jimfs.newFileSystem(Configuration.forCurrentPlatform());
-        StaticPathsProvider.setFileSystem(fileSystem);
+        init();
+        createStructure();
+    }
 
-        downloads = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads");
-        movies = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies");
-        tvShows = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows");
-        empty = StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty");
+    private void init() {
+        StaticPathsProvider.setFileSystem(Jimfs.newFileSystem(Configuration.forCurrentPlatform()));
+        StaticPathsProvider.setDownloadsPath(StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Downloads"));
+        StaticPathsProvider.setMoviesPath(StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "Movies"));
+        StaticPathsProvider.setTvShowsPath(StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "TvShows"));
+        StaticPathsProvider.setEmptyPath(StaticPathsProvider.joinPaths(PlatformService.getDefaultRoot(), "empty"));
+    }
 
-        Path downloadsFolder = fileSystem.getPath(downloads);
+    private void createStructure() throws IOException {
+        Path downloadsFolder = StaticPathsProvider.getPath(StaticPathsProvider.getDownloadsPath());
         Files.createDirectory(downloadsFolder);
         StaticPathsProvider.setDownloadsPath(downloadsFolder.toString());
 
-        Path moviesFolder = fileSystem.getPath(movies);
+        Path moviesFolder = StaticPathsProvider.getPath(StaticPathsProvider.getMoviesPath());
         Files.createDirectory(moviesFolder);
         StaticPathsProvider.setMoviesPath(moviesFolder.toString());
 
-        Path tvShowsFolder = fileSystem.getPath(tvShows);
+        Path tvShowsFolder = StaticPathsProvider.getPath(StaticPathsProvider.getTvShowsPath());
         Files.createDirectory(tvShowsFolder);
         StaticPathsProvider.setTvShowsPath(tvShowsFolder.toString());
 
-        Files.createDirectory(fileSystem.getPath(empty));
-    }
-
-    public String getDownloads() {
-        return downloads;
-    }
-
-    public String getMovies() {
-        return movies;
-    }
-
-    public String getTvShows() {
-        return tvShows;
-    }
-
-    public String getEmpty() {
-        return empty;
+        Files.createDirectory(StaticPathsProvider.getPath(StaticPathsProvider.getEmptyPath()));
     }
 
     public void closeFileSystem() throws IOException {
-        if (fileSystem != null) {
-            fileSystem.close();
+        if (StaticPathsProvider.getFileSystem() != null) {
+            StaticPathsProvider.getFileSystem().close();
         }
     }
 

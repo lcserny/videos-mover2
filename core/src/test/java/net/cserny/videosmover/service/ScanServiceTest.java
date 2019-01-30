@@ -42,7 +42,7 @@ public class ScanServiceTest {
 
     @Test
     public void scan_whenEmptyFolderReturnEmptyList() throws Exception {
-        List<Video> videosScanned = scanService.scan(inMemoryFileSystem.getEmpty());
+        List<Video> videosScanned = scanService.scan(StaticPathsProvider.getEmptyPath());
         assertNotNull(videosScanned);
         assertTrue(videosScanned.isEmpty());
     }
