@@ -20,7 +20,7 @@ import java.io.IOException;
 @SpringBootApplication
 public class MainApplication extends Application {
 
-    public static final String TITLE = "Downloads VideoMover";
+    private static final String TITLE = "Downloads VideoMover";
 
     private ConfigurableApplicationContext context;
     private MainController controller;
