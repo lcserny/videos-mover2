@@ -10,32 +10,26 @@ import net.cserny.videosmover.controller.MainController;
 import net.cserny.videosmover.error.GlobalExceptionCatcher;
 import net.cserny.videosmover.provider.MainStageProvider;
 import net.cserny.videosmover.service.thread.TwoThreadsExecutor;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.IOException;
 
-@SpringBootApplication
 public class MainApplication extends Application {
 
     private static final String TITLE = "Downloads VideoMover";
 
     private ConfigurableApplicationContext context;
-    private MainController controller;
     private Parent parent;
 
     @Override
     public void init() throws IOException {
-        context = SpringApplication.run(MainApplication.class);
+        context = new SpringApplicationBuilder().sources(UiConfiguration.class, CoreConfiguration.class).build().run();
+        Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         loader.setControllerFactory(context::getBean);
         parent = loader.load();
-
-        controller = loader.getController();
-        Thread.setDefaultUncaughtExceptionHandler(context.getBean(GlobalExceptionCatcher.class));
     }
 
     @Override
@@ -48,7 +42,7 @@ public class MainApplication extends Application {
         primaryStage.show();
 
         context.getBean(MainStageProvider.class).setStage(primaryStage);
-        controller.initLoading();
+        context.getBean(MainController.class).initLoading();
     }
 
     @Override
