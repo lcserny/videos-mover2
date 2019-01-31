@@ -15,14 +15,6 @@
         <start-web-class>net.cserny.videosmover.web.WebApplication</start-web-class>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>net.cserny.videos-mover2</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <finalName>VideosMover-Web</finalName>
         <plugins>
