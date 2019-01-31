@@ -1,6 +1,9 @@
 package net.cserny.videosmover.web;
 
 import com.sun.net.httpserver.HttpServer;
+import net.cserny.videosmover.web.html.TestHandler;
+import net.cserny.videosmover.web.json.HelloHandler;
+import net.cserny.videosmover.web.json.HomeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +27,8 @@ public class WebApplication {
 
     private static void initContexts(HttpServer server) {
         server.createContext(TestHandler.CONTEXT, new TestHandler());
+        server.createContext(HelloHandler.CONTEXT, new HelloHandler());
+        server.createContext(HomeHandler.CONTEXT, new HomeHandler());
         // TODO: add more
     }
 }

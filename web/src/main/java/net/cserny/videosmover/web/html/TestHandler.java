@@ -1,4 +1,4 @@
-package net.cserny.videosmover.web;
+package net.cserny.videosmover.web.html;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
