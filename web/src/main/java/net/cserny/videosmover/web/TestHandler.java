@@ -11,19 +11,15 @@ import java.nio.charset.Charset;
 
 public class TestHandler implements HttpHandler {
 
-    public static final String CONTEXT = "/test";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(TestHandler.class);
+    public static final String CONTEXT = "/test";
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         LOGGER.info("Start of request for: " + CONTEXT);
 
-        byte[] response = "Check my RAM usage!".getBytes(Charset.forName("UTF-8"));
-        exchange.sendResponseHeaders(200, response.length);
-        OutputStream outputStream = exchange.getResponseBody();
-        outputStream.write(response);
-        outputStream.close();
+        HtmlHttpExchange htmlHttpExchange = new HtmlHttpExchange(exchange, CONTEXT);
+        htmlHttpExchange.process();
 
         LOGGER.info("End of request for: " + CONTEXT);
     }
