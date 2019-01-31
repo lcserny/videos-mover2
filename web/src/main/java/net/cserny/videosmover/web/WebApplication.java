@@ -15,10 +15,15 @@ public class WebApplication {
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext(TestHandler.CONTEXT, new TestHandler());
+        initContexts(server);
         server.setExecutor(Executors.newSingleThreadExecutor());
         server.start();
 
         LOGGER.info("Started webserver at port " + PORT);
+    }
+
+    private static void initContexts(HttpServer server) {
+        server.createContext(TestHandler.CONTEXT, new TestHandler());
+        // TODO: add more
     }
 }

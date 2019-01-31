@@ -8,12 +8,10 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
-import java.nio.charset.Charset;
 
-public class HtmlHttpExchange {
+public class HtmlHttpExchangeProcessor implements HttpExchangeProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlHttpExchange.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HtmlHttpExchangeProcessor.class);
     private static final String EXTENSION = ".html";
     private static final String PATH = "/templates/html";
     private static final String CONTENT_TYPE = "text/html";
@@ -21,11 +19,12 @@ public class HtmlHttpExchange {
     private final HttpExchange exchange;
     private final String context;
 
-    public HtmlHttpExchange(HttpExchange exchange, String context) {
+    public HtmlHttpExchangeProcessor(HttpExchange exchange, String context) {
         this.exchange = exchange;
         this.context = context;
     }
 
+    @Override
     public void process() throws IOException {
         InputStream htmlStream = getClass().getResourceAsStream(PATH + context + EXTENSION);
         byte[] response = new BufferedInputStream(htmlStream).readAllBytes();
