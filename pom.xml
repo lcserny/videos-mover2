@@ -117,12 +117,14 @@
                 <groupId>com.google.jimfs</groupId>
                 <artifactId>jimfs</artifactId>
                 <version>${jimfs.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -135,12 +137,14 @@
                 <groupId>org.testfx</groupId>
                 <artifactId>openjfx-monocle</artifactId>
                 <version>${testfx.monocle.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.testfx</groupId>
                 <artifactId>testfx-junit</artifactId>
                 <version>${testfx.junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -153,6 +157,7 @@
                 <groupId>org.awaitility</groupId>
                 <artifactId>awaitility</artifactId>
                 <version>${awaitility.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -171,12 +176,14 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
