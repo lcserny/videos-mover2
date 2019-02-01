@@ -33,6 +33,6 @@ public class ResourceExchangeProcessor implements HttpExchangeProcessor {
 
         OutputStream outputStream = exchange.getResponseBody();
         outputStream.write(response);
-        outputStream.close();
+        outputStream.flush();
     }
 }
