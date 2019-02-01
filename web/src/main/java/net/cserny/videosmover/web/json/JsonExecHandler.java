@@ -23,15 +23,9 @@ public abstract class JsonExecHandler implements HttpHandler {
 
         Process proc = Runtime.getRuntime().exec(JAVA_COMMAND + " -jar " + LIB_FOLDER + jar + " " + threads + " " + url);
 
-        BufferedReader inReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        String line;
-        while ((line = inReader.readLine()) != null) {
-            byteArrayOutputStream.write((line + "\n").getBytes(StandardCharsets.UTF_8));
-        }
-        inReader.close();
-        byte[] response = byteArrayOutputStream.toByteArray();
-        byteArrayOutputStream.close();
+        BufferedInputStream inputStream = new BufferedInputStream(proc.getInputStream());
+        byte[] response = inputStream.readAllBytes();
+        inputStream.close();
 
         exchange.sendResponseHeaders(200, response.length);
         exchange.getResponseHeaders().add("Content-Type", "text/html");
@@ -39,6 +33,7 @@ public abstract class JsonExecHandler implements HttpHandler {
         OutputStream outputStream = exchange.getResponseBody();
         outputStream.write(response);
         outputStream.flush();
+        outputStream.close();
     }
 
     private static Map<String, String> parseQueryString(String qs) {
